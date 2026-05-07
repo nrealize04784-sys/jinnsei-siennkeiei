@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>人生支援経営 | 社員の人生を守る、新しい経営思想</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@300;400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Anton&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deepest: #07080a;
+    --bg-primary: #0c1115;
+    --bg-secondary: #11181e;
+    --bg-tertiary: #1a232b;
+    --bg-cream: #f5ecd6;
+    --accent-gold: #d4b270;
+    --accent-gold-bright: #ecd194;
+    --accent-gold-deep: #a88848;
+    --accent-champagne: #f0e2c4;
+    --text-primary: #faf6ec;
+    --text-bright: #ffffff;
+    --text-secondary: #d4cdb8;
+    --text-muted: #948a78;
+    --text-dark: #0c1115;
+    --border-gold: rgba(212, 178, 112, 0.5);
+    --border-subtle: rgba(212, 178, 112, 0.15);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: var(--accent-gold); color: var(--bg-deepest); }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.95;
+    letter-spacing: 0.05em;
+    overflow-x: hidden;
+  }
+
+  .container { max-width: 1380px; margin: 0 auto; padding: 0 56px; }
+  @media (max-width: 768px) { .container { padding: 0 22px; } }
+
+  /* ========================================================
+     LOADER
+     ======================================================== */
+  .loader {
+    position: fixed; inset: 0;
+    background: var(--bg-deepest);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.6s ease;
+  }
+  .loader.done { opacity: 0; pointer-events: none; }
+  .loader.gone { display: none !important; }
+  .loader-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--accent-gold-bright);
+    letter-spacing: 0.4em;
+    margin-bottom: 36px;
+    overflow: hidden;
+    height: 76px;
+    line-height: 76px;
+  }
+  .loader-logo span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: loaderUp 1.2s var(--ease-out) forwards;
+  }
+  @keyframes loaderUp { to { transform: translateY(0); } }
+  .loader-bar {
+    width: 320px; height: 1px;
+    background: rgba(212, 178, 112, 0.2);
+    overflow: hidden;
+    position: relative;
+  }
+  .loader-bar::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%; width: 0;
+    background: var(--accent-gold-bright);
+    animation: loaderBar 1.5s ease 0.4s forwards;
+  }
+  @keyframes loaderBar { to { width: 100%; } }
+  .loader-num {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--text-secondary);
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    margin-top: 22px;
+    font-weight: 500;
+  }
+
+  /* ========================================================
+     SCROLL PROGRESS
+     ======================================================== */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--accent-gold-deep), var(--accent-gold-bright));
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
+
+  /* ========================================================
+     CUSTOM CURSOR
+     ======================================================== */
+  .cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--accent-gold-bright);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, background 0.3s;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 50px; height: 50px;
+    border: 1px solid var(--accent-gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s var(--ease-out), width 0.4s, height 0.4s, background 0.4s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring.hover {
+    width: 100px; height: 100px;
+    background: rgba(212, 178, 112, 0.1);
+    border-color: var(--accent-gold-bright);
+  }
+  @media (max-width: 968px) { .cursor-dot, .cursor-ring { display: none; } body { cursor: auto; } }
+
+  /* ========================================================
+     SIDE INDICATOR (LEFT) — with section labels
+     ======================================================== */
+  .side-indicator {
+    position: fixed;
+    left: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .side-dot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-decoration: none;
+    transition: color 0.4s ease, transform 0.4s var(--ease-out);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .side-dot::before {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: var(--text-muted);
+    transition: all 0.4s var(--ease-out);
+    flex-shrink: 0;
+  }
+  .side-dot .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: color 0.4s ease;
+    min-width: 18px;
+  }
+  .side-dot .label {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    transition: color 0.4s ease, opacity 0.4s ease, transform 0.4s var(--ease-out);
+    opacity: 0.7;
+  }
+  .side-dot.active { color: var(--accent-gold-bright); }
+  .side-dot.active .num { color: var(--accent-gold-bright); }
+  .side-dot.active .label {
+    color: var(--accent-gold-bright);
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  .side-dot.active::before {
+    width: 50px;
+    background: var(--accent-gold-bright);
+  }
+  .side-dot:hover { transform: translateX(4px); }
+  .side-dot:hover .num,
+  .side-dot:hover .label { color: var(--accent-gold-bright); opacity: 1; }
+  .side-dot:hover::before { background: var(--accent-gold-bright); width: 38px; }
+  @media (max-width: 1280px) { .side-indicator { display: none; } }
+
+  /* WE ARE badge — hidden (logo lives in top right) */
+  .we-are { display: none; }
+
+  /* ========================================================
+     NAV
+     ======================================================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 0;
+    transition: all 0.5s ease;
+  }
+  nav.scrolled {
+    background: rgba(7, 8, 10, 0.85);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 16px 0;
+  }
+  nav .container { display: flex; justify-content: space-between; align-items: center; }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-mark {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+  }
+  .logo-mark svg { width: 100%; height: 100%; display: block; }
+  .logo-text {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 16px;
+    color: var(--text-bright);
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .logo-text small {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold-bright);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* ========================================================
+     NAV LOGO BADGE (left of nav text)
+     ======================================================== */
+  .nav-logo-badge {
+    width: 110px;
+    height: 88px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 6px 8px;
+    box-shadow: 0 8px 22px -6px rgba(0,0,0,0.5), 0 0 0 1px var(--border-gold);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
+  }
+  .nav-logo-badge:hover {
+    transform: scale(1.04) translateY(-1px);
+    box-shadow: 0 14px 30px -8px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-gold-bright);
+  }
+  .nav-logo-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  @media (max-width: 768px) {
+    .nav-logo-badge { width: 78px; height: 62px; padding: 4px 6px; }
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+  }
+  .nav-link {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .nav-link:hover { color: var(--accent-gold-bright); }
+  .nav-cta {
+    padding: 14px 30px;
+    background: var(--accent-gold-bright);
+    color: var(--bg-deepest);
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-decoration: none;
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    transition: all 0.4s ease;
+  }
+  .nav-cta:hover {
+    background: var(--text-bright);
+    transform: translateY(-2px);
+  }
+  @media (max-width: 968px) { .nav-links { display: none; } .nav-cta { display: none; } }
+
+  /* ========================================================
+     ANIMATIONS — TEXT REVEAL
+     ======================================================== */
+  .reveal-mask { overflow: hidden; display: inline-block; }
+  .reveal-mask > * {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 1.2s var(--ease-out);
+  }
+  .reveal-mask.in > * { transform: translateY(0); }
+  .reveal-mask.delay-1 > * { transition-delay: 0.15s; }
+  .reveal-mask.delay-2 > * { transition-delay: 0.3s; }
+  .reveal-mask.delay-3 > * { transition-delay: 0.45s; }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.3s ease, transform 1.3s var(--ease-out);
+  }
+  .fade-up.in { opacity: 1; transform: translateY(0); }
+
+  /* ========================================================
+     UTIL: HIGHLIGHTER (gold marker behind text)
+     ======================================================== */
+  .marker {
+    position: relative;
+    display: inline-block;
+    color: var(--bg-deepest);
+    font-weight: 800;
+    padding: 0 12px;
+    margin: 0 2px;
+    z-index: 1;
+  }
+  .marker::before {
+    content: '';
+    position: absolute;
+    inset: 6% 0;
+    background: var(--accent-gold-bright);
+    z-index: -1;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.9s var(--ease-out) 0.3s;
+  }
+  .marker.in::before, .fade-up.in .marker::before, .in .marker::before { transform: scaleX(1); }
+
+  /* underline accent */
+  .underline {
+    position: relative;
+    display: inline-block;
+    padding: 0 4px;
+  }
+  .underline::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -3px;
+    width: 100%; height: 3px;
+    background: var(--accent-gold-bright);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.9s var(--ease-out) 0.4s;
+  }
+  .in .underline::after, .underline.in::after { transform: scaleX(1); }
+
+  /* ========================================================
+     MEGA TYPE — NOVASELL-STYLE
+     ======================================================== */
+  .mega-type {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: var(--text-bright);
+    font-size: clamp(120px, 24vw, 380px);
+  }
+  .mega-type.gold {
+    color: var(--accent-gold-bright);
+    -webkit-text-stroke: 0;
+  }
+  .mega-type.outline {
+    -webkit-text-stroke: 1.5px var(--accent-gold-bright);
+    color: transparent;
+  }
+
+  /* ========================================================
+     SECTION BADGE (top-left of section)
+     ======================================================== */
+  .section-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold-bright);
+  }
+  .section-badge::before {
+    content: '→';
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--accent-gold);
+    font-size: 22px;
+  }
+  .section-badge .num {
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+
+  /* ========================================================
+     HERO — with photo background
+     ======================================================== */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    padding: 110px 0 60px;
+    overflow: hidden;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+  }
+  .hero > .container { width: 100%; }
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    background:
+      url('hero.png') center/cover no-repeat;
+    z-index: 0;
+    transform: scale(1.06);
+    animation: heroZoom 18s ease-out forwards;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.12); }
+    to { transform: scale(1); }
+  }
+  .hero-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7, 8, 10, 0.45) 0%, rgba(7, 8, 10, 0.6) 50%, rgba(7, 8, 10, 0.92) 100%),
+      linear-gradient(90deg, rgba(7, 8, 10, 0.55) 0%, rgba(7, 8, 10, 0.2) 50%, rgba(7, 8, 10, 0.4) 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(212, 178, 112, 0.18), transparent 55%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 178, 112, 0.08), transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero > .container { position: relative; z-index: 3; }
+  .floating-orb {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+    animation: float 22s ease-in-out infinite;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .floating-orb.o1 {
+    top: -150px; right: -150px;
+    background: radial-gradient(circle, rgba(212, 178, 112, 0.55), transparent 70%);
+  }
+  .floating-orb.o2 {
+    bottom: -200px; left: -120px;
+    background: radial-gradient(circle, rgba(168, 136, 72, 0.35), transparent 70%);
+    animation-delay: -10s;
+    animation-duration: 28s;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(70px, 50px) scale(1.12); }
+  }
+
+  .hero-tagline {
+    position: relative;
+    z-index: 2;
+    display: block;
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(38px, 6.4vw, 88px);
+    line-height: 1.15;
+    letter-spacing: 0.06em;
+    color: var(--text-bright);
+    margin-bottom: 24px;
+    font-weight: 700;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+  }
+  .hero-tagline .line { padding: 0.04em 0; }
+  .hero-tagline .accent {
+    color: var(--accent-gold-bright);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-champagne));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-tagline .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero-tagline .line > span {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
+    animation: taglineUp 1.4s var(--ease-out) forwards;
+  }
+  .hero-tagline .line:nth-child(1) > span { animation-delay: 0.3s; }
+  .hero-tagline .line:nth-child(2) > span { animation-delay: 0.7s; }
+  @keyframes taglineUp {
+    0% { transform: translateY(110%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  .hero-tagline .line:nth-child(2) > span {
+    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-champagne) 60%, var(--accent-gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 20px rgba(212, 178, 112, 0.5));
+  }
+
+  /* MASSIVE BLEEDING TYPE */
+  .hero-mega {
+    position: relative;
+    z-index: 1;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 14vw, 220px);
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    color: var(--accent-gold-bright);
+    margin: 0 0 0 -4px;
+    background: linear-gradient(180deg, var(--accent-gold-bright) 0%, var(--accent-champagne) 60%, var(--accent-gold-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: hidden;
+    white-space: nowrap;
+    filter: drop-shadow(0 4px 30px rgba(0, 0, 0, 0.55));
+    opacity: 0.9;
+  }
+  .hero-jp { text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6); }
+  .hero-tagline { text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55); }
+  .hero-mega .char {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: charUp 1.2s var(--ease-out) forwards;
+  }
+  .hero-mega .char:nth-child(1) { animation-delay: 0.05s; }
+  .hero-mega .char:nth-child(2) { animation-delay: 0.15s; }
+  .hero-mega .char:nth-child(3) { animation-delay: 0.25s; }
+  .hero-mega .char:nth-child(4) { animation-delay: 0.35s; }
+  .hero-mega .char:nth-child(5) { animation-delay: 0.45s; }
+  .hero-mega .char:nth-child(6) { animation-delay: 0.55s; }
+  @keyframes charUp { to { transform: translateY(0); } }
+
+  /* HERO BOTTOM ROW */
+  .hero-bottom {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 50px;
+    align-items: end;
+    margin-top: 12px;
+  }
+  .hero-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(18px, 1.8vw, 24px);
+    line-height: 2.1;
+    color: var(--text-bright);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    max-width: 580px;
+  }
+  .hero-jp .em { color: var(--accent-gold-bright); font-weight: 700; }
+
+  /* HERO CTA — BIG MINCHO */
+  .cta-wrap { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 24px 40px;
+    font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.5s var(--ease-out);
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    min-width: 320px;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--text-bright);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s var(--ease-out);
+    z-index: -1;
+    border-radius: 999px;
+  }
+  .btn:hover::before { transform: scaleX(1); }
+  .btn-primary {
+    background: var(--accent-gold-bright);
+    color: var(--bg-deepest);
+    border: 1.5px solid var(--accent-gold-bright);
+  }
+  .btn-primary.btn-light {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-gold-bright);
+    border: 1.5px solid var(--accent-gold-bright);
+    backdrop-filter: blur(6px);
+  }
+  .btn-primary.btn-light::before { background: var(--accent-gold-bright); }
+  .btn-primary.btn-light:hover { color: var(--bg-deepest); }
+  .btn-secondary {
+    background: var(--bg-deepest);
+    color: var(--text-bright);
+    border: 1.5px solid var(--text-bright);
+  }
+  .btn-secondary::before { background: var(--accent-gold-bright); }
+  .btn-secondary:hover { color: var(--bg-deepest); }
+  .btn-arrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    transition: transform 0.5s var(--ease-out);
+    font-weight: 400;
+  }
+  .btn:hover .btn-arrow { transform: translateX(8px); }
+  .btn-pointer {
+    color: var(--accent-gold-deep);
+    font-size: 18px;
+    margin-right: -4px;
+    font-weight: 800;
+  }
+  .btn-primary .btn-pointer { color: var(--bg-deepest); }
+  @media (max-width: 540px) {
+    .btn { min-width: auto; width: 100%; padding: 22px 28px; font-size: 16px; }
+    .cta-wrap { align-items: stretch; }
+  }
+
+  /* SCROLL HINT */
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    text-align: center;
+  }
+  .scroll-hint span {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    color: var(--accent-gold-bright);
+    font-family: 'Bebas Neue', sans-serif;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(180deg, var(--accent-gold-bright), transparent);
+    margin: 0 auto;
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(0.3); transform-origin: top; }
+    50% { transform: scaleY(1); }
+  }
+
+  /* ========================================================
+     MARQUEE BANNER
+     ======================================================== */
+  .marquee-banner {
+    background: var(--accent-gold-bright);
+    color: var(--bg-deepest);
+    overflow: hidden;
+    padding: 28px 0;
+    border-top: 1px solid var(--accent-gold-deep);
+    border-bottom: 1px solid var(--accent-gold-deep);
+  }
+  .marquee-banner.dark {
+    background: var(--bg-deepest);
+    color: var(--accent-gold-bright);
+    border-color: var(--border-subtle);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 80px;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .marquee-track.reverse { animation-direction: reverse; animation-duration: 32s; }
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 0.18em;
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    font-weight: 400;
+  }
+  .marquee-item.jp {
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 700;
+    font-size: 28px;
+  }
+  .marquee-item::after {
+    content: '✦';
+    font-size: 24px;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ========================================================
+     SECTION : PROBLEM (huge text + lines)
+     ======================================================== */
+  .section {
+    padding: 160px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-problem {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .problem-mega-bg {
+    position: absolute;
+    top: 30px;
+    left: -50px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 26vw, 380px);
+    color: rgba(212, 178, 112, 0.05);
+    letter-spacing: -0.02em;
+    line-height: 0.85;
+    pointer-events: none;
+    -webkit-text-stroke: 1px rgba(212, 178, 112, 0.18);
+    color: transparent;
+  }
+  .problem-content {
+    position: relative;
+    z-index: 1;
+    max-width: 940px;
+    margin: 0 auto;
+  }
+  .problem-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(40px, 5.5vw, 76px);
+    line-height: 1.4;
+    color: var(--text-bright);
+    margin-bottom: 100px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .problem-line {
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 2.2;
+    margin-bottom: 100px;
+    color: var(--text-bright);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-align: center;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .problem-line:last-child { margin-bottom: 0; }
+
+  /* ========================================================
+     SECTION : REDEFINE — circle with rotating text
+     ======================================================== */
+  .section-redefine {
+    text-align: center;
+    background: var(--bg-primary);
+    padding: 200px 0;
+  }
+  .redefine-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(140px, 20vw, 300px);
+    line-height: 0.85;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 30px;
+  }
+  .redefine-mega .gold {
+    color: var(--accent-gold-bright);
+    background: linear-gradient(180deg, var(--accent-gold-bright), var(--accent-gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .redefine-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(20px, 2.2vw, 30px);
+    color: var(--text-bright);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
+  .redefine-body {
+    max-width: 760px;
+    margin: 0 auto 80px;
+    font-size: 19px;
+    line-height: 2.4;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .redefine-body p { margin-bottom: 36px; }
+
+  /* CIRCLE WITH ROTATING TEXT */
+  .pillar-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    margin-top: 80px;
+    align-items: center;
+  }
+  .pillar-circle {
+    position: relative;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-gold-bright);
+    background: rgba(212, 178, 112, 0.06);
+    display: grid;
+    place-items: center;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px;
+  }
+  .pillar-circle .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold-bright);
+    margin-bottom: 14px;
+  }
+  .pillar-circle .body {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--text-bright);
+    font-size: 17px;
+    line-height: 2;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .pillar-circle .body .em { color: var(--accent-gold-bright); }
+
+  /* rotating text around circle */
+  .rotating-text {
+    position: absolute;
+    inset: -30px;
+    animation: spin 30s linear infinite;
+    pointer-events: none;
+  }
+  .rotating-text svg { width: 100%; height: 100%; }
+  .rotating-text text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.35em;
+    fill: var(--accent-gold);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ========================================================
+     SECTION : DEFINITION CARDS
+     ======================================================== */
+  .section-definition {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .def-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 100px;
+  }
+  .def-megaword {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(100px, 16vw, 220px);
+    line-height: 0.85;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+  }
+  .def-body {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 19px;
+    line-height: 2.3;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .def-body .ttl {
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: var(--accent-gold-bright);
+    margin-bottom: 24px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    padding: 50px 40px;
+    transition: all 0.6s var(--ease-out);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-champagne));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+  }
+  .card:hover { transform: translateY(-8px); }
+  .card:hover::before { opacity: 1; }
+  .card > * { position: relative; z-index: 1; transition: color 0.5s ease; }
+  .card:hover .card-num,
+  .card:hover .card-title,
+  .card:hover .card-desc { color: var(--bg-deepest); }
+
+  /* round badge with number, contained inside card top-right */
+  .card-badge {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--accent-gold-bright);
+    display: grid;
+    place-items: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--bg-deepest);
+    letter-spacing: 0.05em;
+    z-index: 2;
+    box-shadow: 0 6px 18px -4px rgba(0,0,0,0.5);
+    transition: transform 0.5s var(--ease-out), background 0.5s ease, color 0.5s ease;
+  }
+  .card:hover .card-badge {
+    background: var(--bg-deepest);
+    color: var(--accent-gold-bright);
+    transform: rotate(20deg) scale(1.05);
+  }
+
+  .card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--accent-gold-bright);
+    line-height: 1;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+  .card-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+    letter-spacing: 0.13em;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .card-desc {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  /* ========================================================
+     SECTION : STEPS (with massive STEP numbers)
+     ======================================================== */
+  .section-steps {
+    background: var(--bg-primary);
+    overflow: hidden;
+  }
+  .steps-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 90px;
+  }
+  .steps-megaword {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 13vw, 180px);
+    line-height: 0.85;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+  }
+  .steps-megaword .gold { color: var(--accent-gold-bright); }
+
+  .step-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .step-item {
+    display: grid;
+    grid-template-columns: 240px 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 0;
+    border-top: 1px solid var(--border-subtle);
+    position: relative;
+    transition: all 0.5s ease;
+    overflow: hidden;
+  }
+  .step-item:last-child { border-bottom: 1px solid var(--border-subtle); }
+  .step-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(212, 178, 112, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .step-item:hover::before { transform: translateX(0); }
+  .step-item:hover { padding-left: 24px; }
+
+  .step-step {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent-gold-bright);
+    letter-spacing: 0.4em;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .step-step .big {
+    font-size: 90px;
+    color: var(--text-bright);
+    letter-spacing: 0;
+    line-height: 1;
+    transition: color 0.5s ease;
+  }
+  .step-item:hover .step-step .big { color: var(--accent-gold-bright); }
+
+  .step-info { display: flex; flex-direction: column; gap: 8px; }
+  .step-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    color: var(--text-bright);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .step-desc {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.8;
+  }
+  .step-arrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--accent-gold);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .step-item:hover .step-arrow { transform: translateX(14px); color: var(--accent-gold-bright); }
+
+  .steps-emphasis {
+    margin-top: 100px;
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+    border-radius: 24px;
+    border: 1px solid var(--border-gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .steps-emphasis::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(212, 178, 112, 0.15), transparent 70%);
+  }
+  .steps-emphasis-line {
+    position: relative;
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(28px, 3.6vw, 50px);
+    color: var(--accent-gold-bright);
+    letter-spacing: 0.18em;
+    line-height: 1.7;
+    font-weight: 700;
+  }
+  .steps-emphasis-line span { display: block; }
+  .steps-emphasis-en {
+    position: relative;
+    margin-top: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--text-muted);
+    letter-spacing: 0.4em;
+  }
+
+  @media (max-width: 768px) {
+    .step-item { grid-template-columns: 1fr; gap: 16px; }
+    .step-step .big { font-size: 70px; }
+    .step-arrow { display: none; }
+  }
+
+  /* ========================================================
+     SECTION : BENEFITS
+     ======================================================== */
+  .section-benefits {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 100px;
+    align-items: start;
+  }
+  .benefits-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 13vw, 180px);
+    line-height: 0.85;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+  }
+  .benefits-mega .gold { color: var(--accent-gold-bright); }
+  .benefits-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 19px;
+    line-height: 2.3;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .benefits-list { list-style: none; }
+  .benefits-list li {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 21px;
+    color: var(--text-bright);
+    letter-spacing: 0.07em;
+    font-weight: 600;
+    position: relative;
+    transition: padding 0.5s var(--ease-out);
+    overflow: hidden;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .benefits-list li::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent-gold-bright);
+    transition: width 0.7s var(--ease-out);
+  }
+  .benefits-list li:hover { padding-left: 18px; }
+  .benefits-list li:hover::before { width: 100%; }
+  .benefit-num {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--accent-gold-bright);
+    font-size: 40px;
+    min-width: 60px;
+    line-height: 1;
+  }
+  .benefits-summary {
+    margin-top: 50px;
+    padding: 40px;
+    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-champagne));
+    border-radius: 20px;
+    color: var(--bg-deepest);
+  }
+  .benefits-summary p {
+    font-size: 22px;
+    line-height: 2.1;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    font-family: 'Shippori Mincho', serif;
+  }
+  @media (max-width: 968px) { .benefits-grid { grid-template-columns: 1fr; gap: 60px; } }
+
+  /* ========================================================
+     SECTION : MISSION
+     ======================================================== */
+  .section-mission {
+    position: relative;
+    padding: 220px 0;
+    background: var(--bg-deepest);
+    overflow: hidden;
+  }
+  .mission-bg-text {
+    position: absolute;
+    bottom: -40px;
+    left: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 26vw, 380px);
+    color: rgba(212, 178, 112, 0.04);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+    -webkit-text-stroke: 1px rgba(212, 178, 112, 0.15);
+    color: transparent;
+  }
+  .mission-content { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; text-align: center; }
+  .mission-line {
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 2.2;
+    margin-bottom: 50px;
+    color: var(--text-bright);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .mission-line.lead {
+    font-size: clamp(32px, 4vw, 52px);
+    color: var(--accent-gold-bright);
+    margin-bottom: 80px;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  .mission-stack {
+    margin: 80px 0;
+    padding: 70px 0;
+    border-top: 1px solid var(--border-gold);
+    border-bottom: 1px solid var(--border-gold);
+  }
+  .mission-stack-line {
+    font-size: 24px;
+    color: var(--text-bright);
+    margin-bottom: 26px;
+    letter-spacing: 0.13em;
+    font-weight: 600;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .mission-stack-line:last-child { margin-bottom: 0; }
+  .mission-final {
+    font-size: clamp(24px, 2.8vw, 36px);
+    color: var(--accent-gold-bright);
+    line-height: 2;
+    letter-spacing: 0.09em;
+    font-weight: 700;
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  /* ========================================================
+     SECTION : DECLARATION
+     ======================================================== */
+  .section-declaration {
+    text-align: center;
+    padding: 240px 0;
+    background:
+      radial-gradient(ellipse at center, rgba(212, 178, 112, 0.12), transparent 60%),
+      var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .declaration-mega {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(160px, 26vw, 420px);
+    color: rgba(212, 178, 112, 0.05);
+    -webkit-text-stroke: 1px rgba(212, 178, 112, 0.2);
+    color: transparent;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .section-declaration .container { position: relative; z-index: 1; }
+  .declaration-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.7em;
+    color: var(--accent-gold-bright);
+    margin-bottom: 100px;
+    text-transform: uppercase;
+  }
+  .declaration-eyebrow::before,
+  .declaration-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 80px;
+    height: 1px;
+    background: var(--accent-gold-bright);
+    vertical-align: middle;
+    margin: 0 30px;
+  }
+  .declaration-line {
+    font-size: clamp(26px, 3.4vw, 44px);
+    line-height: 2.4;
+    margin-bottom: 64px;
+    color: var(--text-bright);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .declaration-line.gold {
+    color: var(--accent-gold-bright);
+    margin-top: 100px;
+  }
+
+  /* ========================================================
+     SECTION : CLOSING
+     ======================================================== */
+  .section-closing {
+    text-align: center;
+    padding: 180px 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .closing-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 14vw, 200px);
+    line-height: 0.9;
+    color: var(--accent-gold-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+  }
+  .closing-emphasis {
+    font-size: clamp(34px, 4.6vw, 60px);
+    color: var(--text-bright);
+    letter-spacing: 0.18em;
+    line-height: 1.7;
+    margin-bottom: 50px;
+    font-weight: 700;
+    font-family: 'Shippori Mincho', serif;
+  }
+  .closing-emphasis span { display: block; }
+  .closing-sub {
+    font-size: clamp(20px, 2.2vw, 26px);
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+    line-height: 2;
+    font-weight: 600;
+    font-family: 'Shippori Mincho', serif;
+  }
+
+  /* ========================================================
+     SECTION : FAMILY (bottom emotional anchor)
+     ======================================================== */
+  .section-family {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--bg-deepest);
+  }
+  .family-photo {
+    position: absolute;
+    inset: 0;
+    background: url('bottom.png') center/cover no-repeat;
+    z-index: 0;
+    transform: scale(1.06);
+    transition: transform 1.2s var(--ease-out);
+  }
+  .section-family:hover .family-photo { transform: scale(1.02); }
+  .family-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7, 8, 10, 0.55) 0%, rgba(7, 8, 10, 0.35) 50%, rgba(7, 8, 10, 0.92) 100%),
+      linear-gradient(90deg, rgba(7, 8, 10, 0.6) 0%, rgba(7, 8, 10, 0.15) 60%, rgba(7, 8, 10, 0.5) 100%);
+  }
+  .family-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 940px;
+    padding: 110px 40px;
+  }
+  .family-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5em;
+    color: var(--accent-gold-bright);
+    margin-bottom: 36px;
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .family-eyebrow::before,
+  .family-eyebrow::after {
+    content: '';
+    width: 56px; height: 1px;
+    background: var(--accent-gold-bright);
+  }
+  .family-headline {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(34px, 5.4vw, 70px);
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    color: var(--text-bright);
+    font-weight: 700;
+    margin-bottom: 44px;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.75);
+  }
+  .family-headline .gold {
+    color: var(--accent-gold-bright);
+    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-champagne));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .family-sub {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(17px, 1.8vw, 22px);
+    line-height: 2.3;
+    color: var(--text-primary);
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .family-mega {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 38%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 16vw, 240px);
+    line-height: 0.85;
+    -webkit-text-stroke: 1px rgba(212, 178, 112, 0.22);
+    color: transparent;
+    letter-spacing: -0.02em;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  /* ========================================================
+     SECTION : CTA — STEP1 ENTER style
+     ======================================================== */
+  .section-cta {
+    background: var(--bg-primary);
+    text-align: left;
+    padding: 200px 0;
+    border-top: 1px solid var(--border-gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 22vw, 360px);
+    line-height: 0.85;
+    color: var(--accent-gold-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 30px;
+    background: linear-gradient(180deg, var(--accent-gold-bright), var(--accent-gold-deep));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .cta-jp-tag {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--text-bright);
+    font-size: 22px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
+  .cta-jp-tag::before {
+    content: '/ ';
+    color: var(--accent-gold-bright);
+  }
+  .cta-step-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .cta-step-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    color: var(--accent-gold-bright);
+    margin-bottom: 12px;
+  }
+  .cta-step-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 120px);
+    line-height: 0.9;
+    color: var(--text-bright);
+    letter-spacing: 0.02em;
+  }
+  .cta-step-big .pointer { color: var(--accent-gold-bright); margin-left: 12px; font-size: 0.5em; vertical-align: middle; }
+  .cta-step-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+  .cta-form-card {
+    background: var(--bg-tertiary);
+    border-radius: 24px;
+    padding: 44px;
+    border: 1px solid var(--border-subtle);
+  }
+  .cta-form-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    align-items: center;
+  }
+  .cta-form-row.textarea-row { align-items: start; }
+  .cta-form-row:last-of-type { border-bottom: none; }
+  .cta-form-label {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--accent-gold-bright);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+  }
+  .cta-form-row.textarea-row .cta-form-label { padding-top: 14px; }
+  .cta-form-input,
+  .cta-form-textarea {
+    width: 100%;
+    background: rgba(7, 8, 10, 0.4);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-bright);
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    padding: 14px 18px;
+    border-radius: 10px;
+    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    resize: none;
+  }
+  .cta-form-input::placeholder,
+  .cta-form-textarea::placeholder { color: var(--text-muted); }
+  .cta-form-input:hover,
+  .cta-form-textarea:hover { border-color: var(--border-gold); }
+  .cta-form-input:focus,
+  .cta-form-textarea:focus {
+    border-color: var(--accent-gold-bright);
+    background: rgba(7, 8, 10, 0.6);
+    box-shadow: 0 0 0 3px rgba(212, 178, 112, 0.18);
+  }
+  .cta-form-textarea {
+    min-height: 130px;
+    line-height: 1.8;
+    font-family: 'Shippori Mincho', serif;
+    resize: vertical;
+  }
+  .cta-form-submit {
+    margin-top: 30px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-family: 'Shippori Mincho', serif;
+  }
+  @media (max-width: 968px) {
+    .cta-step-grid { grid-template-columns: 1fr; gap: 50px; }
+  }
+
+  /* ========================================================
+     FOOTER
+     ======================================================== */
+  footer {
+    background: var(--bg-deepest);
+    padding: 120px 0 60px;
+    border-top: 1px solid var(--border-subtle);
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-mega {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 14vw, 200px);
+    line-height: 0.85;
+    color: rgba(212, 178, 112, 0.06);
+    -webkit-text-stroke: 1px rgba(212, 178, 112, 0.2);
+    color: transparent;
+    letter-spacing: -0.02em;
+    margin-bottom: 60px;
+    text-align: center;
+    pointer-events: none;
+  }
+  .footer-content { text-align: center; position: relative; z-index: 1; }
+  .footer-quote {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px;
+    color: var(--text-primary);
+    line-height: 2.3;
+    max-width: 700px;
+    margin: 0 auto 60px;
+    letter-spacing: 0.09em;
+    font-weight: 500;
+  }
+  .footer-divider {
+    width: 80px;
+    height: 1px;
+    background: var(--accent-gold-bright);
+    margin: 0 auto 50px;
+  }
+  .footer-logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .footer-logo-text {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 17px;
+    color: var(--accent-gold-bright);
+    letter-spacing: 0.25em;
+    font-weight: 700;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.3em;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  /* ========== RESPONSIVE TWEAKS ========== */
+  @media (max-width: 968px) {
+    .section { padding: 110px 0; }
+    .hero { padding: 110px 0 80px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .pillar-row { grid-template-columns: 1fr; gap: 50px; }
+    .def-header { grid-template-columns: 1fr; gap: 40px; }
+    .steps-header { grid-template-columns: 1fr; gap: 30px; }
+    .hero-bottom { grid-template-columns: 1fr; gap: 30px; }
+    .cta-wrap { align-items: stretch; }
+    .pillar-circle { width: 280px; height: 280px; padding: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo"><span>JINSEI</span></div>
+  <div class="loader-bar"></div>
+  <div class="loader-num">人生支援経営</div>
+</div>
+
+<!-- LOADER DISMISSAL — runs immediately, before any other script -->
+<script>
+(function(){
+  var loader = document.getElementById('loader');
+  if (!loader) return;
+  var dismissed = false;
+  function fade(){
+    if (dismissed) return;
+    dismissed = true;
+    loader.classList.add('done');
+    setTimeout(function(){ loader.classList.add('gone'); }, 700);
+  }
+  // Primary: dismiss after 1.6s
+  setTimeout(fade, 1600);
+  // Safety net 1: dismiss no matter what after 2.5s
+  setTimeout(fade, 2500);
+  // Safety net 2: click anywhere to dismiss
+  loader.addEventListener('click', fade);
+  // Safety net 3: dismiss on any error
+  window.addEventListener('error', function(){ setTimeout(fade, 100); });
+})();
+</script>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+
+<!-- SIDE INDICATOR -->
+<div class="side-indicator" id="sideIndicator">
+  <a class="side-dot active" data-target="hero"><span class="num">00</span><span class="label">トップ</span></a>
+  <a class="side-dot" data-target="problem"><span class="num">01</span><span class="label">問題提起</span></a>
+  <a class="side-dot" data-target="redefine"><span class="num">02</span><span class="label">再定義</span></a>
+  <a class="side-dot" data-target="definition"><span class="num">03</span><span class="label">6つの柱</span></a>
+  <a class="side-dot" data-target="steps"><span class="num">04</span><span class="label">5ステップ</span></a>
+  <a class="side-dot" data-target="benefits"><span class="num">05</span><span class="label">企業の変化</span></a>
+  <a class="side-dot" data-target="mission"><span class="num">06</span><span class="label">使命</span></a>
+  <a class="side-dot" data-target="declaration"><span class="num">07</span><span class="label">宣言</span></a>
+  <a class="side-dot" data-target="family"><span class="num">08</span><span class="label">家族のために</span></a>
+  <a class="side-dot" data-target="cta"><span class="num">09</span><span class="label">お問い合わせ</span></a>
+</div>
+
+<!-- WE ARE -->
+<div class="we-are">
+  <div class="ttl">WE ARE</div>
+  <div class="name">JINSEI<br>SHIEN KEIEI</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <div class="logo">
+      <div class="nav-logo-badge" aria-label="人生支援経営法人 ロゴ">
+        <img src="logo.png" alt="人生支援経営法人 ロゴ" />
+      </div>
+      <div class="logo-text" style="font-size:16px;">一社）人生支援経営推進協会<small>JINSEI SHIEN KEIEI SUISHIN KYOKAI · 2026</small></div>
+    </div>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">トップ</a>
+      <a href="#definition" class="nav-link">理念</a>
+      <a href="#steps" class="nav-link">プロセス</a>
+      <a href="#benefits" class="nav-link">変化</a>
+      <a href="#cta" class="nav-link">資料請求</a>
+    </div>
+    <a href="#cta" class="nav-cta">お問い合わせ</a>
+  </div>
+</nav>
+
+<!-- ===================================
+     1. HERO
+     =================================== -->
+<section class="hero" id="hero">
+  <div class="hero-photo"></div>
+  <div class="floating-orb o1"></div>
+  <div class="floating-orb o2"></div>
+  <div class="container">
+    <div class="hero-tagline">
+      <span class="line"><span>社員の人生を、</span></span>
+      <span class="line"><span>守る経営へ。</span></span>
+    </div>
+    <h1 class="hero-mega" aria-label="JINSEI">
+      <span class="char">J</span><span class="char">I</span><span class="char">N</span><span class="char">S</span><span class="char">E</span><span class="char">I</span>
+    </h1>
+    <div class="hero-bottom">
+      <div class="hero-jp fade-up">
+        福利厚生の時代は、終わった。<br>
+        これから必要なのは、<br>
+        社員の人生を支える「<span class="em">基盤</span>」である。<br>
+        <br>
+        企業は、給与を支払う場所から、<br>
+        <span class="em">人生を守る存在</span>へ。
+      </div>
+      <div class="cta-wrap fade-up">
+        <a href="#cta" class="btn btn-primary"><span class="btn-pointer">▶</span> 人生支援経営を導入する <span class="btn-arrow">→</span></a>
+        <a href="#cta" class="btn btn-primary btn-light"><span class="btn-pointer">▶</span> 理念資料を請求する <span class="btn-arrow">→</span></a>
+        <a href="#cta" class="btn btn-secondary"><span class="btn-pointer">▶</span> 導入相談をする <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+
+  </div>
+  <div class="scroll-hint"><span>SCROLL</span></div>
+</section>
+
+<!-- ===================================
+     MARQUEE
+     =================================== -->
+<div class="marquee-banner">
+  <div class="marquee-track">
+    <div class="marquee-item">PROTECT THE LIFE OF EVERY EMPLOYEE</div>
+    <div class="marquee-item jp">人生支援経営</div>
+    <div class="marquee-item">A NEW MANAGEMENT PHILOSOPHY</div>
+    <div class="marquee-item jp">社員の人生を、守る</div>
+    <div class="marquee-item">PROTECT THE LIFE OF EVERY EMPLOYEE</div>
+    <div class="marquee-item jp">人生支援経営</div>
+    <div class="marquee-item">A NEW MANAGEMENT PHILOSOPHY</div>
+    <div class="marquee-item jp">社員の人生を、守る</div>
+  </div>
+</div>
+
+<!-- ===================================
+     2. PROBLEM
+     =================================== -->
+<section class="section section-problem" id="problem">
+  <div class="problem-mega-bg">PROBLEM</div>
+  <div class="container">
+    <div class="section-badge fade-up"><span class="num">01 /</span> PROBLEM</div>
+    <h2 class="problem-title fade-up">今、<span class="marker">企業に問われている</span>こと。</h2>
+    <div class="problem-content">
+      <p class="problem-line fade-up">物価は上昇し続けている。<br>将来不安は、消えない。<br>情報は増えているのに、<span class="marker">判断は難しくなる</span>。</p>
+      <p class="problem-line fade-up">多くの社員が、<br>家計、住居、老後、保険、災害、健康。<br><span class="underline">人生の重要事項</span>を、<br>十分に考えられないまま働いている。</p>
+      <p class="problem-line fade-up">問題は、お金だけではない。<br>問題は、<span class="marker">判断軸の欠如</span>である。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     3. REDEFINE
+     =================================== -->
+<section class="section section-redefine" id="redefine">
+  <div class="container">
+    <div class="section-badge fade-up" style="justify-content:center;"><span class="num">02 /</span> REDEFINE</div>
+    <h2 class="redefine-mega fade-up">RE-<span class="gold">DEFINE</span></h2>
+    <div class="redefine-jp fade-up">企業の役割を、<span class="marker">再定義する。</span></div>
+    <div class="redefine-body">
+      <p class="fade-up">これまで企業は、「働く場所」として機能してきた。</p>
+      <p class="fade-up">しかしこれからは、社員の人生の基盤として、しっかりと存在する。</p>
+    </div>
+
+    <!-- TWO PILLAR CIRCLES -->
+    <div class="pillar-row">
+      <div class="pillar-circle fade-up">
+        <div class="rotating-text">
+          <svg viewBox="0 0 360 360">
+            <defs><path id="circle1" d="M 180,180 m -160,0 a 160,160 0 1,1 320,0 a 160,160 0 1,1 -320,0" /></defs>
+            <text><textPath href="#circle1">★ PILLAR · A · 人生支援経営 · LIFE SUPPORT MANAGEMENT · 経営の中心 · </textPath></text>
+          </svg>
+        </div>
+        <div>
+          <div class="label">PILLAR · A</div>
+          <div class="body">社員の人生を守ることを、<br><span class="em">経営の中心</span>に据える。</div>
+        </div>
+      </div>
+      <div class="pillar-circle fade-up">
+        <div class="rotating-text" style="animation-direction: reverse;">
+          <svg viewBox="0 0 360 360">
+            <defs><path id="circle2" d="M 180,180 m -160,0 a 160,160 0 1,1 320,0 a 160,160 0 1,1 -320,0" /></defs>
+            <text><textPath href="#circle2">★ PILLAR · B · 仕組みとして実装する · IMPLEMENT AS A SYSTEM · 行動に落とし込む · </textPath></text>
+          </svg>
+        </div>
+        <div>
+          <div class="label">PILLAR · B</div>
+          <div class="body">考え方だけでなく、<br><span class="em">仕組み</span>として実装する。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-banner dark">
+  <div class="marquee-track reverse">
+    <div class="marquee-item">A NEW MANAGEMENT PHILOSOPHY</div>
+    <div class="marquee-item jp">人生を、守る</div>
+    <div class="marquee-item">LIFE-SUPPORT MANAGEMENT</div>
+    <div class="marquee-item jp">経営の中心へ</div>
+    <div class="marquee-item">A NEW MANAGEMENT PHILOSOPHY</div>
+    <div class="marquee-item jp">人生を、守る</div>
+    <div class="marquee-item">LIFE-SUPPORT MANAGEMENT</div>
+    <div class="marquee-item jp">経営の中心へ</div>
+  </div>
+</div>
+
+<!-- ===================================
+     4. DEFINITION (CARDS)
+     =================================== -->
+<section class="section section-definition" id="definition">
+  <div class="container">
+    <div class="section-badge fade-up"><span class="num">03 /</span> DEFINITION</div>
+    <div class="def-header">
+      <div class="def-megaword fade-up">SIX<br>PILLARS</div>
+      <div class="def-body">
+        <div class="ttl fade-up">人生支援経営とは、何か。</div>
+        <p class="fade-up">社員一人ひとりが自分の人生を正しく判断し、<br>安心して生きるための基盤を提供する経営である。</p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card fade-up">
+        <div class="card-badge">01</div>
+        <div class="card-num">01</div>
+        <h3 class="card-title">家計</h3>
+        <p class="card-desc">お金の不安を整理し、判断できる状態へ。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-badge">02</div>
+        <div class="card-num">02</div>
+        <h3 class="card-title">住環境</h3>
+        <p class="card-desc">住まいの選択を、人生設計の視点から考える。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-badge">03</div>
+        <div class="card-num">03</div>
+        <h3 class="card-title">老後対策</h3>
+        <p class="card-desc">未来の生活を、今から準備する。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-badge">04</div>
+        <div class="card-num">04</div>
+        <h3 class="card-title">いざに備える</h3>
+        <p class="card-desc">保険と備えを、後悔しないように。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-badge">05</div>
+        <div class="card-num">05</div>
+        <h3 class="card-title">災害対策</h3>
+        <p class="card-desc">いざという時に、家族を守れる設計へ。</p>
+      </div>
+      <div class="card fade-up">
+        <div class="card-badge">06</div>
+        <div class="card-num">06</div>
+        <h3 class="card-title">健康対策</h3>
+        <p class="card-desc">健康を後回しにしない文化をつくる。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     5. STEPS
+     =================================== -->
+<section class="section section-steps" id="steps">
+  <div class="container">
+    <div class="section-badge fade-up"><span class="num">04 /</span> PROCESS</div>
+    <div class="steps-header">
+      <div class="steps-megaword fade-up">5<br><span class="gold">STEPS</span></div>
+      <div class="benefits-jp fade-up" style="max-width: 460px;">
+        理念で終わらせない。<br>
+        <span class="marker">仕組みとして実装する。</span><br>
+        日常の行動に落とし込んでこそ、意味がある。
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-item fade-up">
+        <div class="step-step">STEP <span class="big">01</span></div>
+        <div class="step-info">
+          <div class="step-title">教育</div>
+          <div class="step-desc">判断軸をつくる。</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-step">STEP <span class="big">02</span></div>
+        <div class="step-info">
+          <div class="step-title">診断</div>
+          <div class="step-desc">現状を見える化する。</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-step">STEP <span class="big">03</span></div>
+        <div class="step-info">
+          <div class="step-title">AI伴走</div>
+          <div class="step-desc">日常的に支援する。</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-step">STEP <span class="big">04</span></div>
+        <div class="step-info">
+          <div class="step-title">専門家相談</div>
+          <div class="step-desc">最適解へ導く。</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-step">STEP <span class="big">05</span></div>
+        <div class="step-info">
+          <div class="step-title">実行</div>
+          <div class="step-desc">人生を変える。</div>
+        </div>
+        <div class="step-arrow">→</div>
+      </div>
+    </div>
+
+    <div class="steps-emphasis fade-up">
+      <p class="steps-emphasis-line">
+        <span>教育で終わるな。</span>
+        <span><span class="marker">人生まで変えろ。</span></span>
+      </p>
+      <div class="steps-emphasis-en">DON'T STOP AT EDUCATION · CHANGE THEIR LIVES</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     6. BENEFITS
+     =================================== -->
+<section class="section section-benefits" id="benefits">
+  <div class="container">
+    <div class="section-badge fade-up"><span class="num">05 /</span> BENEFITS</div>
+    <div class="benefits-grid">
+      <div>
+        <h2 class="benefits-mega fade-up"><span class="gold">CHANGE</span></h2>
+        <p class="benefits-jp fade-up">
+          社員一人ひとりの人生が整った時、<br>
+          <span class="marker">企業そのもの</span>が、変わり始める。
+        </p>
+      </div>
+      <div>
+        <ul class="benefits-list">
+          <li class="fade-up"><span class="benefit-num">01</span>社員の不安がなくなる。</li>
+          <li class="fade-up"><span class="benefit-num">02</span>離職の理由がなくなる。</li>
+          <li class="fade-up"><span class="benefit-num">03</span>採用時の訴求力が高まる。</li>
+          <li class="fade-up"><span class="benefit-num">04</span>企業全体の生産性が高まる。</li>
+        </ul>
+        <div class="benefits-summary fade-up">
+          <p>そして、従業員が「守られている」と<br>実感する会社になる。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     7. MISSION
+     =================================== -->
+<section class="section section-mission" id="mission">
+  <div class="mission-bg-text">MISSION</div>
+  <div class="container">
+    <div class="mission-content">
+      <div class="section-badge fade-up" style="justify-content:center;"><span class="num">06 /</span> MISSION</div>
+      <p class="mission-line lead fade-up">なぜ、私たちはこれをやるのか。</p>
+      <p class="mission-line fade-up">私たちは知っている。<br>救われたはずの人生が、<br><span class="underline">知識不足のまま失われている</span>現実を。</p>
+      <div class="mission-stack fade-up">
+        <p class="mission-stack-line"><span class="marker">住宅ローンが通らない。</span></p>
+        <p class="mission-stack-line"><span class="marker">老後の資金が足りない。</span></p>
+        <p class="mission-stack-line"><span class="marker">家族を守れない。</span></p>
+      </div>
+      <p class="mission-line fade-up">その多くは、<br>「<span class="marker">知らなかった</span>」だけで起きている。</p>
+      <p class="mission-final fade-up">
+        だからこそ私たちは、<br>
+        人生を守る知識を届ける。<br>
+        判断できる人を増やす。<br>
+        そして、実行まで伴走する。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     8. DECLARATION
+     =================================== -->
+<section class="section section-declaration" id="declaration">
+  <div class="declaration-mega">DECLARE</div>
+  <div class="container">
+    <div class="declaration-eyebrow">DECLARATION · 宣言</div>
+    <p class="declaration-line fade-up">企業は、変わらなくてはいけない。</p>
+    <p class="declaration-line fade-up">福利厚生の時代は、終わった。</p>
+    <p class="declaration-line fade-up">これからは、<br><span class="marker">人生支援経営</span>の時代である。</p>
+    <p class="declaration-line gold fade-up">
+      社員の人生を守ることが、<br>
+      企業の責任であり、<br>
+      価値であり、未来である。
+    </p>
+  </div>
+</section>
+
+<!-- ===================================
+     9. CLOSING
+     =================================== -->
+<section class="section-closing">
+  <div class="container">
+    <h2 class="closing-mega fade-up">CHANGE<br>THEIR LIVES</h2>
+    <div class="closing-emphasis fade-up">
+      <span>教育で終わるな。</span>
+      <span><span class="marker">人生まで変えろ。</span></span>
+    </div>
+    <p class="closing-sub fade-up">
+      社員の未来に、<br>
+      企業が本気で向き合う時代へ。
+    </p>
+  </div>
+</section>
+
+<!-- ===================================
+     FAMILY — bottom emotional anchor
+     =================================== -->
+<section class="section-family" id="family">
+  <div class="family-photo"></div>
+  <div class="family-content">
+    <div class="family-eyebrow fade-up">FOR THE FAMILY</div>
+    <h2 class="family-headline fade-up">
+      その背中の先に、<br>
+      <span class="gold">守るべき人生</span>がある。
+    </h2>
+    <p class="family-sub fade-up">
+      社員一人ひとりの人生は、<br>
+      その家族の人生と、まっすぐ繋がっている。<br>
+      私たちが守るのは、社員の今日と、家族の明日です。
+    </p>
+  </div>
+  <div class="family-mega">FAMILY</div>
+</section>
+
+<!-- ===================================
+     10. CTA — STEP 1 ENTER
+     =================================== -->
+<section class="section-cta" id="cta">
+  <div class="container">
+    <div class="section-badge fade-up"><span class="num">09 /</span> CONTACT</div>
+    <h2 class="cta-mega fade-up">CONTACT</h2>
+    <div class="cta-jp-tag fade-up">お問い合わせ</div>
+
+    <div class="cta-step-grid">
+      <div class="fade-up">
+        <div class="cta-step-label">STEP · 01</div>
+        <div class="cta-step-big">ENTER<span class="pointer">▶</span></div>
+        <div class="cta-step-jp">フォームの記入</div>
+      </div>
+      <form class="cta-form-card fade-up" onsubmit="event.preventDefault(); alert('送信ありがとうございます。担当者よりご連絡いたします。'); this.reset();">
+        <div class="cta-form-row">
+          <label class="cta-form-label" for="form-name">お名前</label>
+          <input class="cta-form-input" id="form-name" name="name" type="text" placeholder="山田 太郎" required />
+        </div>
+        <div class="cta-form-row">
+          <label class="cta-form-label" for="form-tel">電話番号</label>
+          <input class="cta-form-input" id="form-tel" name="tel" type="tel" placeholder="電話番号(ハイフンなし)" inputmode="numeric" />
+        </div>
+        <div class="cta-form-row">
+          <label class="cta-form-label" for="form-email">メールアドレス</label>
+          <input class="cta-form-input" id="form-email" name="email" type="email" placeholder="your@email.com" required />
+        </div>
+        <div class="cta-form-row">
+          <label class="cta-form-label" for="form-company">会社名</label>
+          <input class="cta-form-input" id="form-company" name="company" type="text" placeholder="株式会社○○" />
+        </div>
+        <div class="cta-form-row textarea-row">
+          <label class="cta-form-label" for="form-message">お問い合わせ内容</label>
+          <textarea class="cta-form-textarea" id="form-message" name="message" placeholder="ご相談、ご質問などをご記入ください。" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary cta-form-submit"><span class="btn-pointer">▶</span> 送信する <span class="btn-arrow">→</span></button>
+      </form>
+    </div>
+
+    <div class="cta-step-grid" style="margin-top:80px">
+      <div class="fade-up">
+        <div class="cta-step-label">STEP · 02</div>
+        <div class="cta-step-big">SEND<span class="pointer">▶</span></div>
+        <div class="cta-step-jp">資料を受け取る</div>
+      </div>
+      <div class="cta-wrap fade-up" style="align-items:flex-start; flex-direction:column">
+        <a href="#" class="btn btn-primary"><span class="btn-pointer">▶</span> 人生支援経営を導入する <span class="btn-arrow">→</span></a>
+        <a href="#" class="btn btn-primary btn-light"><span class="btn-pointer">▶</span> 資料請求する <span class="btn-arrow">→</span></a>
+        <a href="#" class="btn btn-secondary"><span class="btn-pointer">▶</span> 導入相談をする <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================
+     FOOTER
+     =================================== -->
+<footer>
+  <div class="container">
+    <div class="footer-mega">JINSEI</div>
+    <div class="footer-content">
+      <div class="footer-divider"></div>
+      <p class="footer-quote fade-up">
+        人生支援経営は、<br>
+        社員の人生を守るための、<br>
+        新しい経営思想です。
+      </p>
+      <div class="footer-logo-row">
+        <div class="footer-logo-text">一社）人生支援経営推進協会 · 2026</div>
+      </div>
+      <p class="footer-copy">© 2026 LIFE-SUPPORT MANAGEMENT</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // LOADER is dismissed by the inline script at the top of <body>.
+
+  // CUSTOM CURSOR
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursorDot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    cursorRing.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .card, .step-item, .nav-cta, .pillar-circle').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+  });
+
+  // NAV + PROGRESS
+  const nav = document.getElementById('nav');
+  const progress = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY;
+    const t = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (s / t) * 100 + '%';
+    nav.classList.toggle('scrolled', s > 60);
+  });
+
+  // OBSERVER
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.fade-up, .reveal-mask, .marker, .underline').forEach(el => obs.observe(el));
+
+  // CARD STAGGER
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = Array.from(document.querySelectorAll('.card')).indexOf(e.target);
+        e.target.style.transitionDelay = (idx % 6) * 0.12 + 's';
+        e.target.classList.add('in');
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.card').forEach(el => cardObs.observe(el));
+
+  // STEP STAGGER
+  const stepObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const items = Array.from(document.querySelectorAll('.step-item'));
+        const idx = items.indexOf(e.target);
+        e.target.style.transitionDelay = idx * 0.18 + 's';
+        e.target.classList.add('in');
+        stepObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.step-item').forEach(el => stepObs.observe(el));
+
+  // BENEFITS STAGGER
+  const benObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const items = Array.from(document.querySelectorAll('.benefits-list li'));
+        const idx = items.indexOf(e.target);
+        e.target.style.transitionDelay = idx * 0.18 + 's';
+        e.target.classList.add('in');
+        benObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.benefits-list li').forEach(el => benObs.observe(el));
+
+  // PARALLAX ON SCROLL
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY;
+    document.querySelectorAll('.floating-orb').forEach((orb, i) => {
+      orb.style.transform = `translateY(${s * (0.1 + i * 0.05)}px)`;
+    });
+    const dec = document.querySelector('.declaration-mega');
+    if (dec) {
+      const r = dec.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        const off = (window.innerHeight - r.top) * 0.1;
+        dec.style.transform = `translate(-50%, calc(-50% + ${off}px))`;
+      }
+    }
+    const probMega = document.querySelector('.problem-mega-bg');
+    if (probMega) {
+      const r = probMega.parentElement.getBoundingClientRect();
+      probMega.style.transform = `translateX(${(window.innerHeight - r.top) * 0.05}px)`;
+    }
+  });
+
+  // MAGNETIC BUTTONS
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${x * 0.12}px, ${y * 0.2}px)`;
+    });
+    btn.addEventListener('mouseleave', () => btn.style.transform = '');
+  });
+
+  // SIDE INDICATOR
+  const sections = document.querySelectorAll('section[id]');
+  const dots = document.querySelectorAll('.side-dot');
+  const secObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        dots.forEach(d => d.classList.toggle('active', d.dataset.target === id));
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => secObs.observe(s));
+  dots.forEach(d => d.addEventListener('click', () => {
+    const t = document.getElementById(d.dataset.target);
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  }));
+</script>
+</body>
+</html>
