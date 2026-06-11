@@ -90,6 +90,7 @@
     overflow: hidden;
   }
   .avatar svg { width: 100%; height: 100%; display: block; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .title { line-height: 1.25; }
   .title h1 { font-size: 19px; font-weight: 800; letter-spacing: .02em; }
   .title p { font-size: 11px; opacity: .92; font-weight: 500; }
@@ -235,7 +236,8 @@
     <button id="send">送信☆</button>
   </div>
 
-  <footer>※このAIはファンメイドのパロディです。中川翔子さん本人・所属事務所とは関係ありません。</footer>
+  <footer>※このAIはファンメイドのパロディです。中川翔子さん本人・所属事務所とは関係ありません。<br>
+  アイコン写真: <a href="https://commons.wikimedia.org/wiki/File:Nakagawa_Shoko_DEC_2016.jpg" target="_blank" rel="noopener">Dick Thomas Johnson 撮影（Wikimedia Commons）</a> / <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a></footer>
 </div>
 
 <script>
@@ -276,7 +278,26 @@ const AVATAR_SVG = `
     <path d="M0 0 L11 -6 L9 5 Z" fill="#ff79b8"/>
   </g>
 </svg>`;
-document.getElementById('header-avatar').innerHTML = AVATAR_SVG;
+/* ---- アバター画像（本人写真）----
+   1. リポジトリ内の shokotan.jpg（GitHub Actionsで取得）
+   2. ダメなら Wikimedia Commons をホットリンク
+   3. それもダメなら予備のSVGアバター
+   写真: Dick Thomas Johnson (CC BY 2.0) via Wikimedia Commons */
+const PHOTO_LOCAL = 'shokotan.jpg';
+const PHOTO_COMMONS = 'https://commons.wikimedia.org/wiki/Special:FilePath/Nakagawa_Shoko_DEC_2016.jpg?width=300';
+function avatarHTML() {
+  return `<img src="${PHOTO_LOCAL}" alt="しょこたん" onerror="avFallback(this)">`;
+}
+function avFallback(el) {
+  if (!el.dataset.step) {
+    el.dataset.step = '1';
+    el.src = PHOTO_COMMONS;
+  } else {
+    el.onerror = null;
+    el.parentElement.innerHTML = AVATAR_SVG;
+  }
+}
+document.getElementById('header-avatar').innerHTML = avatarHTML();
 
 /* ---- しょこたん返答エンジン（ルールベース） ---- */
 const QUOTES = [
@@ -360,7 +381,7 @@ const input = document.getElementById('input');
 function addRow(who, html, isTyping = false) {
   const row = document.createElement('div');
   row.className = 'row ' + who;
-  const av = who === 'ai' ? `<div class="avatar">${AVATAR_SVG}</div>` : '';
+  const av = who === 'ai' ? `<div class="avatar">${avatarHTML()}</div>` : '';
   const tag = who === 'ai' ? '<div class="name-tag">しょこたんAI</div>' : '';
   row.innerHTML = `${av}<div><${'div'} class="bubble">${tag}${html}</div></div>`;
   if (isTyping) row.dataset.typing = '1';
