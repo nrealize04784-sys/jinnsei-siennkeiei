@@ -2,6 +2,8 @@ name: Fetch Shokotan photo (CC BY 2.0)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "claude/shoko-tan-ai-chatbot-cnc2r3" ]
 
 permissions:
   contents: write
@@ -12,17 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Wikimedia Commons のフリーライセンス写真を取得
+      # Wikimedia Commons のフリーライセンス写真を取得して同ブランチにコミット
       # File:Nakagawa Shoko DEC 2016.jpg / Dick Thomas Johnson / CC BY 2.0
-      - name: Download photo from Wikimedia Commons
+      - name: Download photo and commit
         run: |
+          if [ -s shokotan-ai/shokotan.jpg ]; then
+            echo "Photo already present, skipping."
+            exit 0
+          fi
           curl -fL --retry 3 -A "shokotan-ai-fan-project/1.0 (github fan project)" \
             "https://commons.wikimedia.org/wiki/Special:FilePath/Nakagawa_Shoko_DEC_2016.jpg?width=600" \
             -o shokotan-ai/shokotan.jpg
           file shokotan-ai/shokotan.jpg | grep -i image
-
-      - name: Commit and push
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add shokotan-ai/shokotan.jpg
