@@ -107,6 +107,36 @@
     display: flex; flex-direction: column; gap: 14px;
     scroll-behavior: smooth;
   }
+  /* ----- profile card ----- */
+  .profile-card {
+    align-self: center;
+    text-align: center;
+    background: rgba(255,255,255,.88);
+    border: 2.5px solid var(--pink);
+    border-radius: 24px;
+    padding: 18px 34px 14px;
+    box-shadow: 0 6px 20px rgba(255,121,184,.25);
+    animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .profile-photo {
+    width: 112px; height: 112px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 4px var(--sky), 0 6px 16px rgba(90,184,240,.45);
+    background: #fff;
+  }
+  .profile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .profile-photo svg { width: 100%; height: 100%; display: block; }
+  .profile-card h2 {
+    font-size: 17px; font-weight: 800;
+    background: linear-gradient(90deg, var(--sky-deep), var(--pink-hot));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .profile-card p { font-size: 11px; color: #8a7f95; font-weight: 500; }
+
   .row { display: flex; gap: 10px; align-items: flex-end; }
   .row.user { flex-direction: row-reverse; }
   .row .avatar { width: 38px; height: 38px; border-width: 2px; }
@@ -222,7 +252,13 @@
     </div>
   </header>
 
-  <div class="chat" id="chat"></div>
+  <div class="chat" id="chat">
+    <div class="profile-card">
+      <div class="profile-photo"><img src="shokotan.jpg" alt="しょこたん" onerror="avFallback(this)"></div>
+      <h2>しょこたんAI</h2>
+      <p>ギザカワユスな毎日を、貪欲に☆</p>
+    </div>
+  </div>
 
   <div class="chips" id="chips">
     <button class="chip">名言ちょうだい！</button>
