@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>八重樫東AI 〜激闘王CHAT〜（非公式ファンメイド）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 黒×白×赤（激闘王カラー） */
+    --black: #0d0d11;
+    --ink: #1c1c22;
+    --ink-soft: #2a2a31;
+    --red: #d8232a;
+    --red-deep: #a51220;
+    --red-light: #ffecec;
+    --red-glow: #ff5a5f;
+    --white: #ffffff;
+    --paper: #f7f4ef;
+    --text: #26262c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--text);
+    background: linear-gradient(160deg, var(--black) 0%, #17171d 38%, #26141a 70%, #47101a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ----- ring ropes & embers ----- */
+  .deco { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .rope {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.22) 18%, rgba(255,255,255,.22) 82%, transparent);
+  }
+  .rope.r1 { top: 16%; }
+  .rope.r2 { top: 22%; background: linear-gradient(90deg, transparent, rgba(216,35,42,.45) 18%, rgba(216,35,42,.45) 82%, transparent); height: 3px; }
+  .rope.r3 { top: 28%; }
+  .glow {
+    position: absolute; border-radius: 50%;
+    filter: blur(40px);
+    animation: drift linear infinite;
+  }
+  .glow.g1 { width: 220px; height: 220px; top: 8%;  left: -240px; background: rgba(216,35,42,.28); animation-duration: 52s; }
+  .glow.g2 { width: 160px; height: 160px; top: 62%; left: -180px; background: rgba(255,255,255,.10); animation-duration: 66s; animation-delay: -28s; }
+  .glow.g3 { width: 260px; height: 260px; top: 76%; left: -280px; background: rgba(216,35,42,.18); animation-duration: 58s; animation-delay: -44s; }
+  @keyframes drift { to { transform: translateX(calc(100vw + 320px)); } }
+
+  .spark {
+    position: absolute; color: var(--red-glow);
+    animation: twinkle 2.6s ease-in-out infinite;
+    text-shadow: 0 0 14px rgba(216,35,42,.9);
+  }
+  .spark.w { color: rgba(255,255,255,.92); text-shadow: 0 0 10px rgba(255,255,255,.7); }
+  @keyframes twinkle { 0%,100% { opacity: .15; transform: scale(.8) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(20deg);} }
+
+  /* ----- app frame ----- */
+  .app {
+    position: relative; z-index: 1;
+    width: min(540px, 96vw);
+    height: min(780px, 94vh);
+    height: min(780px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
+    display: flex; flex-direction: column;
+    background: rgba(255,255,255,0.93);
+    backdrop-filter: blur(14px);
+    border-radius: 28px;
+    border: 3px solid rgba(255,255,255,0.9);
+    box-shadow: 0 18px 50px rgba(0,0,0,.55), 0 4px 18px rgba(216,35,42,.35);
+    overflow: hidden;
+  }
+  /* スマホは全画面レイアウトにして入力欄の見切れを防ぐ */
+  @media (max-width: 600px) {
+    body { align-items: stretch; justify-content: stretch; }
+    .app {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      border-radius: 0;
+      border: none;
+    }
+    .chips { padding: 6px 10px; gap: 6px; }
+    .chip { font-size: 11px; padding: 5px 10px; }
+    .input-bar { padding: 10px 10px 12px; gap: 8px; }
+    .input-bar input { font-size: 16px; padding: 10px 16px; } /* 16px未満だとiOSが自動ズームする */
+    .input-bar button { padding: 0 18px; flex: none; }
+    footer { padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+  }
+
+  header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--black) 0%, var(--ink-soft) 52%, var(--red) 100%);
+    color: var(--white);
+  }
+  .avatar {
+    width: 52px; height: 52px; flex: none;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    overflow: hidden;
+  }
+  .avatar svg { width: 100%; height: 100%; display: block; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .title { line-height: 1.25; }
+  .title h1 { font-size: 19px; font-weight: 800; letter-spacing: .04em; }
+  .title p { font-size: 11px; opacity: .92; font-weight: 500; }
+  .status-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red-glow); margin-right: 5px;
+    box-shadow: 0 0 6px var(--red-glow);
+  }
+
+  /* ----- chat area ----- */
+  .chat {
+    flex: 1; overflow-y: auto;
+    padding: 20px 16px 12px;
+    display: flex; flex-direction: column; gap: 14px;
+    scroll-behavior: smooth;
+    background:
+      radial-gradient(circle at 85% 8%, rgba(216,35,42,.05), transparent 42%),
+      var(--paper);
+  }
+  /* ----- profile card ----- */
+  .profile-card {
+    align-self: center;
+    text-align: center;
+    background: var(--white);
+    border: 2.5px solid var(--ink);
+    border-radius: 24px;
+    padding: 18px 34px 14px;
+    box-shadow: 0 6px 20px rgba(13,13,17,.18);
+    animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .profile-photo {
+    width: 112px; height: 112px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 4px var(--red), 0 6px 16px rgba(216,35,42,.4);
+    background: #fff;
+  }
+  .profile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .profile-photo svg { width: 100%; height: 100%; display: block; }
+  .profile-card h2 {
+    font-size: 17px; font-weight: 800;
+    color: var(--ink);
+  }
+  .profile-card h2 .accent { color: var(--red); }
+  .profile-card p { font-size: 11px; color: #7d7a76; font-weight: 500; }
+
+  .row { display: flex; gap: 10px; align-items: flex-end; }
+  .row.user { flex-direction: row-reverse; }
+  .row .avatar { width: 38px; height: 38px; border-width: 2px; border-color: var(--red); }
+  .bubble {
+    max-width: 76%;
+    padding: 11px 15px;
+    border-radius: 20px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    box-shadow: 0 3px 10px rgba(13,13,17,.12);
+    animation: pop .28s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
+  .row.ai .bubble {
+    background: linear-gradient(135deg, #fff, var(--red-light));
+    border: 2px solid var(--red);
+    border-bottom-left-radius: 6px;
+  }
+  .row.user .bubble {
+    background: linear-gradient(135deg, var(--ink-soft), var(--ink));
+    border: 2px solid var(--black);
+    color: var(--white);
+    border-bottom-right-radius: 6px;
+  }
+  .name-tag { font-size: 10.5px; font-weight: 700; margin-bottom: 2px; }
+  .row.ai .name-tag { color: var(--red); }
+
+  .typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
+  .typing i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red);
+    animation: bounce 1s infinite;
+  }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0);} 30% { transform: translateY(-7px);} }
+
+  /* ----- quick chips ----- */
+  .chips {
+    display: flex; gap: 8px; padding: 8px 14px; flex-wrap: wrap;
+    background: rgba(255,255,255,.75);
+    border-top: 1px solid rgba(13,13,17,.06);
+  }
+  .chip {
+    border: 2px solid var(--red);
+    color: var(--red-deep);
+    background: #fff;
+    font-family: inherit;
+    font-size: 12px; font-weight: 700;
+    padding: 6px 12px; border-radius: 999px;
+    cursor: pointer;
+    transition: transform .12s, background .12s;
+  }
+  .chip:nth-child(even) { border-color: var(--ink); color: var(--ink); }
+  .chip:hover { transform: translateY(-2px) scale(1.04); background: var(--paper); }
+
+  /* ----- input ----- */
+  .input-bar {
+    display: flex; gap: 10px; padding: 12px 14px 14px;
+    background: rgba(255,255,255,.95);
+    border-top: 2px solid rgba(13,13,17,.12);
+  }
+  .input-bar input {
+    flex: 1 1 0;
+    min-width: 0; /* flexで縮めるように（これがないと狭い画面でボタンを押し出す） */
+    font-family: inherit; font-size: 14.5px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 2.5px solid var(--ink);
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .input-bar input:focus { border-color: var(--red); box-shadow: 0 0 0 4px rgba(216,35,42,.16); }
+  .input-bar button {
+    flex: none;
+    white-space: nowrap;
+    font-family: inherit; font-weight: 800; font-size: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--red), var(--red-deep));
+    border: none; border-radius: 999px;
+    padding: 0 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(216,35,42,.4);
+    transition: transform .12s, filter .12s;
+  }
+  .input-bar button:hover { transform: scale(1.05); filter: brightness(1.07); }
+  .input-bar button:active { transform: scale(.97); }
+
+  footer {
+    text-align: center; font-size: 10px; color: #7d7a76;
+    padding: 0 10px 8px; background: rgba(255,255,255,.95);
+  }
+</style>
+</head>
+<body>
+
+<div class="deco" aria-hidden="true">
+  <div class="rope r1"></div>
+  <div class="rope r2"></div>
+  <div class="rope r3"></div>
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+  <span class="spark"   style="top:12%; left:10%; font-size:20px;">✦</span>
+  <span class="spark w" style="top:20%; right:9%;  font-size:14px; animation-delay:.6s;">✧</span>
+  <span class="spark"   style="top:64%; left:6%;  font-size:16px; animation-delay:1.2s;">✦</span>
+  <span class="spark w" style="top:80%; right:13%; font-size:22px; animation-delay:.3s;">✦</span>
+  <span class="spark"   style="top:42%; right:4%;  font-size:13px; animation-delay:1.8s;">✧</span>
+  <span class="spark w" style="top:35%; left:3%;  font-size:18px; animation-delay:.9s;">✦</span>
+</div>
+
+<div class="app">
+  <header>
+    <div class="avatar" id="header-avatar"></div>
+    <div class="title">
+      <h1>八重樫東AI 〜激闘王CHAT〜</h1>
+      <p><span class="status-dot"></span>オンラインです（非公式ファンメイドAI）</p>
+    </div>
+  </header>
+
+  <div class="chat" id="chat">
+    <div class="profile-card">
+      <div class="profile-photo"><img src="yaegashi.jpg" alt="八重樫東" onerror="avFallback(this)"></div>
+      <h2>八重樫東AI <span class="accent">激闘王</span></h2>
+      <p>「東」と書いて、あきらです。｜懸命に悔いなく</p>
+    </div>
+  </div>
+
+  <div class="chips" id="chips">
+    <button class="chip">激闘王の由来は？</button>
+    <button class="chip">3階級制覇の話して</button>
+    <button class="chip">名言ください</button>
+    <button class="chip">井上尚弥ってどう？</button>
+    <button class="chip">疲れた…</button>
+  </div>
+
+  <div class="input-bar">
+    <input id="input" type="text" placeholder="八重樫さんに話しかけてみてください" autocomplete="off" />
+    <button id="send">送信</button>
+  </div>
+
+  <footer>※このAIはファンメイドのパロディです。八重樫東さん本人・大橋ボクシングジムとは関係ありません。<br>
+  アバターはオリジナルイラストです（フリーライセンスの本人写真が確認できないため自作）。</footer>
+</div>
+
+<script src="knowledge.js"></script>
+<script>
+/* ---- ナレッジ検索（プロフィール・全35戦・価値観・雑学） ---- */
+function knowledgeMatch(text) {
+  if (typeof KNOWLEDGE === 'undefined') return null;
+  let best = null, bestScore = 0;
+  for (const k of KNOWLEDGE) {
+    let score = 0;
+    for (const kw of k.keywords) if (kw.length >= 2 && text.toLowerCase().includes(kw.toLowerCase())) score += kw.length >= 4 ? 2 : 1;
+    if (score > bestScore) { bestScore = score; best = k; }
+  }
+  return best ? { entry: best, score: bestScore } : null;
+}
+/* 回答文は knowledge.js 側で本人の口調で書いてあるため、前置き・締めは付けない */
+const KNOW_PRE = [''];
+const KNOW_POST = [''];
+</script>
+<script>
+/* ---- オリジナルアバター（黒髪＋赤グローブ＋白タンクトップ＝黒白赤モチーフ） ---- */
+const AVATAR_SVG = `
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gloveG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8353c"/><stop offset="1" stop-color="#a51220"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" fill="#f5f1ea"/>
+  <!-- white tank body -->
+  <path d="M28 100 Q28 76 50 74 Q72 76 72 100 Z" fill="#ffffff" stroke="#1c1c22" stroke-width="2"/>
+  <path d="M40 78 Q50 86 60 78" fill="none" stroke="#d8232a" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- ears -->
+  <circle cx="29.5" cy="52" r="3.5" fill="#ffd9b6"/>
+  <circle cx="70.5" cy="52" r="3.5" fill="#ffd9b6"/>
+  <!-- head -->
+  <circle cx="50" cy="50" r="21" fill="#ffd9b6"/>
+  <!-- short black hair -->
+  <path d="M29 50 Q27 27 50 25 Q73 27 71 50 Q69 38 61 40 Q55 32 47 38 Q37 34 33 44 Q30 46 29 50 Z" fill="#1c1c22"/>
+  <!-- thick eyebrows -->
+  <path d="M36 47 Q41 44.5 46 46.5" stroke="#1c1c22" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M54 46.5 Q59 44.5 64 47" stroke="#1c1c22" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- gentle eyes -->
+  <ellipse cx="41" cy="53" rx="2.6" ry="3.4" fill="#2a2a31"/>
+  <ellipse cx="59" cy="53" rx="2.6" ry="3.4" fill="#2a2a31"/>
+  <circle cx="42" cy="51.8" r="1" fill="#fff"/>
+  <circle cx="60" cy="51.8" r="1" fill="#fff"/>
+  <!-- nose -->
+  <path d="M50 56 Q49 59 50.5 60" stroke="#d9a376" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <!-- warm smile -->
+  <path d="M43 64 Q50 69 57 64" stroke="#b3553f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- cheek tape (激闘の名残) -->
+  <rect x="62" y="58" width="7" height="3" rx="1.5" fill="#fff" stroke="#e0d8cc" stroke-width=".8" transform="rotate(-12 65 59)"/>
+  <!-- red gloves up -->
+  <g>
+    <circle cx="20" cy="80" r="13" fill="url(#gloveG)"/>
+    <circle cx="28" cy="71" r="5.5" fill="url(#gloveG)"/>
+    <path d="M12 73 Q14 68 19 68" stroke="rgba(255,255,255,.55)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <rect x="11" y="91" width="18" height="9" rx="3.5" fill="#fff" stroke="#1c1c22" stroke-width="1.6"/>
+  </g>
+  <g>
+    <circle cx="80" cy="80" r="13" fill="url(#gloveG)"/>
+    <circle cx="72" cy="71" r="5.5" fill="url(#gloveG)"/>
+    <path d="M73 70 Q76 66 81 67" stroke="rgba(255,255,255,.55)" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <rect x="71" y="91" width="18" height="9" rx="3.5" fill="#fff" stroke="#1c1c22" stroke-width="1.6"/>
+  </g>
+</svg>`;
+/* ---- アバター画像 ----
+   フリーライセンスの本人写真がWikimedia Commons等に存在しないため、
+   オリジナルSVGアバターを使用（PERSONA.md「④画像について」参照）。
+   本人・事務所の許諾を得た写真を入手した場合は yaegashi.jpg を置くだけで切り替わる。 */
+const PHOTO_LOCAL = 'yaegashi.jpg';
+function avatarHTML() {
+  return `<img src="${PHOTO_LOCAL}" alt="八重樫東" onerror="avFallback(this)">`;
+}
+function avFallback(el) {
+  el.onerror = null;
+  el.parentElement.innerHTML = AVATAR_SVG;
+}
+document.getElementById('header-avatar').innerHTML = avatarHTML();
+
+/* ---- 八重樫東 返答エンジン（ルールベース） ---- */
+const QUOTES = [
+  '「懸命に悔いなく」。僕の座右の銘です。全力でやって、悔いを残さない。それだけです。',
+  '「逃げない、投げない、あきらめない」。低迷期も、これだけは捨てませんでした。',
+  '「前半から勝負します。どうせ最後は頑張れるんですから」…試合前によく言っていた言葉です(笑)',
+  '「強い相手に勝ちたいという気持ちが一番大事。負けても立ち上がってこられたことを誇りに思う」——これが僕のボクシング人生そのものですね。',
+  '引退の時に言ったのは「悔いはない」。山あり谷ありでしたけど、完走したと思っています。',
+];
+const RULES = [
+  { re: /(こんにち[はわ]|こんばんは|おはよ|はじめまして|やあ|ハロー|hello|hi)/i, res: [
+    'こんにちは、八重樫東です。「東」と書いて「あきら」です(笑)。今日はどんな話をしましょうか。',
+    'どうも、八重樫です。話しかけてもらえて嬉しいです。ボクシングのことでも、そうじゃなくても、何でもどうぞ。',
+  ]},
+  { re: /(誰|だれ|あなたは|きみは|君は|何者)/, res: [
+    '僕は元プロボクサー・八重樫東さんを模した、ファンメイドの非公式AIです。本人や大橋ジムとは関係ありませんので、そこだけご了承くださいね。中身は「激闘王」のつもりで頑張ります(笑)',
+  ]},
+  { re: /(疲れ|つかれ|つらい|辛い|悲し|かなし|落ち込|へこ|凹|しんど|泣|不安|くじけ|ダメだ|だめだ)/, res: [
+    '大丈夫ですよ。僕なんてプロで7回負けて、顎を2か所折られたこともあります。それでも立ち上がってこられた。だから、あなたも大丈夫です。今日はゆっくり休んでください。休むのも練習のうちですから。',
+    '無理しないでくださいね。「どうせ最後は頑張れるんですから」——今は力を抜いていい時だと思いますよ。',
+    'つらい時に休むのは、逃げじゃなくて構え直しです。僕も連敗のどん底から1年で3階級制覇まで行けました。人生は、立ち上がった回数の勝負だと思います。',
+  ]},
+  { re: /(名言|座右の銘|格言|いい言葉|金言|刺さる言葉)/, res: QUOTES },
+  { re: /(すごい|スゴ|かっこいい|カッコ|格好いい|尊敬|憧れ|ファンです)/, res: [
+    'いやいや、僕なんてまだまだですよ(笑)。でも、ありがとうございます。素直に嬉しいです。',
+    'おかげさまで(笑)。僕一人の力じゃなくて、会長や家族、支えてくれた人たちのおかげです。',
+  ]},
+  { re: /(ありがと|感謝)/, res: [
+    'こちらこそ、ありがとうございます。話を聞いてもらえるだけで嬉しいです。',
+  ]},
+  { re: /(バイバイ|さよなら|またね|おやすみ|寝ます|失礼します)/, res: [
+    'はい、また来てください。「懸命に悔いなく」。応援しています。',
+    'おやすみなさい。しっかり休むのも、明日のための練習ですから。またお話ししましょう。',
+  ]},
+  { re: /(痛く|痛い|怖く|怖い|恐い)/, res: [
+    '痛いし、怖いですよ(笑)。でも、怖いからこそ準備するんです。ちなみに顎を骨折した後も、おかげさまで特に後遺症などはないですね。',
+  ]},
+  { re: /(ボクシング|パンチ|ジャブ|ストレート|スパーリング|サンドバッグ|格闘技)/, res: [
+    'ボクシングの話、いいですね。試合のこと、練習のこと、減量のこと…僕でよければ何でも聞いてください。ただ、専門的な指導はぜひジムで直接(笑)',
+    'ボクシングは、弱かった僕に全部をくれた競技です。語り出すと長いですよ(笑)。どのへんの話をしましょうか。',
+  ]},
+  { re: /(趣味|休日|オフの日|好きなこと)/, res: [
+    '趣味…ですか。走るのは今も好きですね。フルマラソンも完走しましたし(笑)。あとはジムで若い選手を見ている時間が、一番楽しいかもしれません。',
+  ]},
+];
+const FALLBACK = [
+  'うーん、それはちょっと分からないですね(笑)。でも、面白い質問です。',
+  'なるほど…そうきましたか(笑)。もう少し詳しく教えてもらえますか？',
+  '（マジか…どう返そう）…すみません、つい本音が(笑)。よかったら別の聞き方で教えてください。',
+  'それは僕も勉強になります。ボクシングの話なら、いくらでも付き合いますよ(笑)',
+  'いい質問ですね。うまく答えられるか分からないですけど、もう少し聞かせてください。',
+];
+
+let lastIdx = -1;
+function pick(arr) {
+  let i;
+  do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === lastIdx);
+  lastIdx = i;
+  return arr[i];
+}
+function reply(text) {
+  const km = knowledgeMatch(text);
+  if (km && km.score >= 3) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
+  for (const r of RULES) if (r.re.test(text)) return pick(r.res);
+  if (km && km.score >= 1) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
+  return pick(FALLBACK);
+}
+
+/* ---- UI ---- */
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+
+function addRow(who, html, isTyping = false) {
+  const row = document.createElement('div');
+  row.className = 'row ' + who;
+  const av = who === 'ai' ? `<div class="avatar">${avatarHTML()}</div>` : '';
+  const tag = who === 'ai' ? '<div class="name-tag">八重樫東AI</div>' : '';
+  row.innerHTML = `${av}<div><${'div'} class="bubble">${tag}${html}</div></div>`;
+  if (isTyping) row.dataset.typing = '1';
+  chat.appendChild(row);
+  chat.scrollTop = chat.scrollHeight;
+  return row;
+}
+function esc(s) { return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function botSay(text, delay = 700) {
+  const t = addRow('ai', '<span class="typing"><i></i><i></i><i></i></span>', true);
+  setTimeout(() => {
+    t.remove();
+    addRow('ai', esc(text));
+  }, delay + Math.random() * 500);
+}
+function send(raw) {
+  const text = (raw ?? input.value).trim();
+  if (!text) return;
+  input.value = '';
+  addRow('user', esc(text));
+  botSay(reply(text));
+}
+document.getElementById('send').addEventListener('click', () => send());
+input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+document.getElementById('chips').addEventListener('click', e => {
+  if (e.target.classList.contains('chip')) send(e.target.textContent);
+});
+
+botSay('はじめまして。八重樫東…を模した、ファンメイドの非公式AIです。本人や大橋ジムとは関係ないので、最初にそれだけお伝えしますね。\n「東」と書いて「あきら」です(笑)。ボクシングのこと、35戦の思い出、なんでも聞いてください。', 400);
+</script>
+</body>
+</html>
