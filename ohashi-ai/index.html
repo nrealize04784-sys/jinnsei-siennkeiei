@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>大橋会長AI 🐦‍🔥 フェニックスChat（非公式ファンメイド）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-deep: #0d2b5e;
+    --navy: #1d4e9e;
+    --blue: #3d7fd4;
+    --blue-light: #bcdcf8;
+    --blue-pale: #eaf4ff;
+    --flame: #ff6b35;
+    --flame-deep: #e8491d;
+    --gold: #f5b942;
+    --text: #1c2a3a;
+    --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    background: linear-gradient(160deg, var(--blue-pale) 0%, var(--blue-light) 35%, #7fb3e8 70%, #3a6fb8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ----- floating feathers & sparks (phoenix motif) ----- */
+  .deco { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .feather {
+    position: absolute;
+    background: rgba(255,255,255,0.8);
+    border-radius: 100px;
+    filter: blur(1px);
+    animation: drift linear infinite;
+  }
+  .feather::before, .feather::after {
+    content: ''; position: absolute; background: inherit; border-radius: 50%;
+  }
+  .feather.f1 { width: 160px; height: 48px; top: 9%; left: -180px; animation-duration: 48s; }
+  .feather.f1::before { width: 70px; height: 70px; top: -34px; left: 24px; }
+  .feather.f1::after  { width: 50px; height: 50px; top: -22px; left: 80px; }
+  .feather.f2 { width: 120px; height: 38px; top: 24%; left: -140px; animation-duration: 64s; animation-delay: -22s; opacity: .7; }
+  .feather.f2::before { width: 52px; height: 52px; top: -26px; left: 18px; }
+  .feather.f2::after  { width: 38px; height: 38px; top: -16px; left: 60px; }
+  .feather.f3 { width: 200px; height: 56px; top: 72%; left: -220px; animation-duration: 56s; animation-delay: -40s; opacity: .6; }
+  .feather.f3::before { width: 84px; height: 84px; top: -40px; left: 30px; }
+  .feather.f3::after  { width: 60px; height: 60px; top: -26px; left: 100px; }
+  @keyframes drift { to { transform: translateX(calc(100vw + 260px)); } }
+
+  .spark {
+    position: absolute; color: rgba(255,255,255,0.9);
+    animation: twinkle 2.6s ease-in-out infinite;
+    text-shadow: 0 0 12px rgba(255,107,53,0.8);
+  }
+  @keyframes twinkle { 0%,100% { opacity: .2; transform: scale(.8) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(20deg);} }
+
+  /* ----- app frame ----- */
+  .app {
+    position: relative; z-index: 1;
+    width: min(540px, 96vw);
+    height: min(780px, 94vh);
+    height: min(780px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
+    display: flex; flex-direction: column;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(14px);
+    border-radius: 28px;
+    border: 3px solid rgba(255,255,255,0.9);
+    box-shadow: 0 18px 50px rgba(29,78,158,0.4), 0 4px 14px rgba(255,107,53,0.2);
+    overflow: hidden;
+  }
+  /* スマホは全画面レイアウトにして入力欄の見切れを防ぐ */
+  @media (max-width: 600px) {
+    body { align-items: stretch; justify-content: stretch; }
+    .app {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      border-radius: 0;
+      border: none;
+    }
+    .chips { padding: 6px 10px; gap: 6px; }
+    .chip { font-size: 11px; padding: 5px 10px; }
+    .input-bar { padding: 10px 10px 12px; gap: 8px; }
+    .input-bar input { font-size: 16px; padding: 10px 16px; } /* 16px未満だとiOSが自動ズームする */
+    .input-bar button { padding: 0 18px; flex: none; }
+    footer { padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+  }
+
+  header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--navy-deep), var(--navy) 60%, var(--blue));
+    color: var(--white);
+  }
+  .avatar {
+    width: 52px; height: 52px; flex: none;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    overflow: hidden;
+  }
+  .avatar svg { width: 100%; height: 100%; display: block; }
+  .title { line-height: 1.25; }
+  .title h1 { font-size: 18px; font-weight: 900; letter-spacing: .02em; }
+  .title p { font-size: 11px; opacity: .92; font-weight: 500; }
+  .status-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #7dff9b; margin-right: 5px;
+    box-shadow: 0 0 6px #7dff9b;
+  }
+
+  /* ----- chat area ----- */
+  .chat {
+    flex: 1; overflow-y: auto;
+    padding: 20px 16px 12px;
+    display: flex; flex-direction: column; gap: 14px;
+    scroll-behavior: smooth;
+  }
+  /* ----- profile card ----- */
+  .profile-card {
+    align-self: center;
+    text-align: center;
+    background: rgba(255,255,255,.9);
+    border: 2.5px solid var(--navy);
+    border-radius: 24px;
+    padding: 18px 34px 14px;
+    box-shadow: 0 6px 20px rgba(29,78,158,.3);
+    animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .profile-photo {
+    width: 112px; height: 112px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 4px var(--gold), 0 6px 16px rgba(29,78,158,.45);
+    background: #fff;
+  }
+  .profile-photo svg { width: 100%; height: 100%; display: block; }
+  .profile-card h2 {
+    font-size: 17px; font-weight: 900;
+    background: linear-gradient(90deg, var(--navy), var(--flame-deep));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .profile-card p { font-size: 11px; color: #5a6e85; font-weight: 500; }
+
+  .row { display: flex; gap: 10px; align-items: flex-end; }
+  .row.user { flex-direction: row-reverse; }
+  .row .avatar { width: 38px; height: 38px; border-width: 2px; }
+  .bubble {
+    max-width: 76%;
+    padding: 11px 15px;
+    border-radius: 20px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    box-shadow: 0 3px 10px rgba(60,100,160,.18);
+    animation: pop .28s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
+  .row.ai .bubble {
+    background: linear-gradient(135deg, #ffffff, var(--blue-pale));
+    border: 2px solid var(--navy);
+    border-bottom-left-radius: 6px;
+  }
+  .row.user .bubble {
+    background: linear-gradient(135deg, #dcecff, var(--blue-light));
+    border: 2px solid var(--blue);
+    border-bottom-right-radius: 6px;
+  }
+  .name-tag { font-size: 10.5px; font-weight: 700; margin-bottom: 2px; }
+  .row.ai .name-tag { color: var(--navy); }
+
+  .typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
+  .typing i {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--navy);
+    animation: bounce 1s infinite;
+  }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0);} 30% { transform: translateY(-7px);} }
+
+  /* ----- quick chips ----- */
+  .chips {
+    display: flex; gap: 8px; padding: 8px 14px; flex-wrap: wrap;
+    background: rgba(255,255,255,.55);
+  }
+  .chip {
+    border: 2px solid var(--navy);
+    color: var(--navy);
+    background: #fff;
+    font-family: inherit;
+    font-size: 12px; font-weight: 700;
+    padding: 6px 12px; border-radius: 999px;
+    cursor: pointer;
+    transition: transform .12s, background .12s;
+  }
+  .chip:nth-child(even) { border-color: var(--flame-deep); color: var(--flame-deep); }
+  .chip:hover { transform: translateY(-2px) scale(1.04); background: #fff8f0; }
+
+  /* ----- input ----- */
+  .input-bar {
+    display: flex; gap: 10px; padding: 12px 14px 14px;
+    background: rgba(255,255,255,.85);
+    border-top: 2px solid rgba(61,127,212,.4);
+  }
+  .input-bar input {
+    flex: 1 1 0;
+    min-width: 0; /* flexで縮めるように（これがないと狭い画面でボタンを押し出す） */
+    font-family: inherit; font-size: 14.5px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 2.5px solid var(--blue);
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .input-bar input:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(29,78,158,.18); }
+  .input-bar button {
+    flex: none;
+    white-space: nowrap;
+    font-family: inherit; font-weight: 900; font-size: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border: none; border-radius: 999px;
+    padding: 0 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(29,78,158,.4);
+    transition: transform .12s, filter .12s;
+  }
+  .input-bar button:hover { transform: scale(1.05); filter: brightness(1.12); }
+  .input-bar button:active { transform: scale(.97); }
+
+  footer {
+    text-align: center; font-size: 10px; color: #5a6e85;
+    padding: 0 10px 8px; background: rgba(255,255,255,.85);
+  }
+</style>
+</head>
+<body>
+
+<div class="deco" aria-hidden="true">
+  <div class="feather f1"></div>
+  <div class="feather f2"></div>
+  <div class="feather f3"></div>
+  <span class="spark" style="top:12%; left:12%; font-size:22px;">✦</span>
+  <span class="spark" style="top:20%; right:10%; font-size:18px; animation-delay:.6s;">🔥</span>
+  <span class="spark" style="top:64%; left:7%;  font-size:18px; animation-delay:1.2s;">✧</span>
+  <span class="spark" style="top:80%; right:14%; font-size:22px; animation-delay:.3s;">🥊</span>
+  <span class="spark" style="top:42%; right:4%;  font-size:16px; animation-delay:1.8s;">🐦‍🔥</span>
+  <span class="spark" style="top:36%; left:3%;  font-size:20px; animation-delay:.9s;">✦</span>
+</div>
+
+<div class="app">
+  <header>
+    <div class="avatar" id="header-avatar"></div>
+    <div class="title">
+      <h1>大橋会長AI 🐦‍🔥 フェニックスChat</h1>
+      <p><span class="status-dot"></span>会長室で待ってます（非公式ファンメイドAI）</p>
+    </div>
+  </header>
+
+  <div class="chat" id="chat">
+    <div class="profile-card">
+      <div class="profile-photo" id="profile-avatar"></div>
+      <h2>大橋会長AI</h2>
+      <p>夢を夢で終わらせない 🥊 横浜・ジムの会長室から（非公式）</p>
+    </div>
+  </div>
+
+  <div class="chips" id="chips">
+    <button class="chip">井上尚弥ってどれくらい強いの？</button>
+    <button class="chip">仕事で失敗して落ち込んでます</button>
+    <button class="chip">張正九戦の話して</button>
+    <button class="chip">ジム経営の秘訣は？</button>
+    <button class="chip">名言ください</button>
+  </div>
+
+  <div class="input-bar">
+    <input id="input" type="text" placeholder="会長に話しかけてみてください" autocomplete="off" />
+    <button id="send">送信🥊</button>
+  </div>
+
+  <footer>※本アプリは大橋秀行氏非公式のファンメイドAIです。本人・大橋ボクシングジムとは関係ありません。<br>
+  アバターは実在人物の写真を使用しないオリジナルイラスト（青いフェニックス）です。</footer>
+</div>
+
+<script src="knowledge.js"></script>
+<script>
+/* ---- ナレッジ検索（大橋会長 知識ベース） ---- */
+function knowledgeMatch(text) {
+  if (typeof KNOWLEDGE === 'undefined') return null;
+  let best = null, bestScore = 0;
+  for (const k of KNOWLEDGE) {
+    let score = 0;
+    for (const kw of k.keywords) if (kw.length >= 2 && text.includes(kw)) score += kw.length >= 4 ? 2 : 1;
+    if (score > bestScore) { bestScore = score; best = k; }
+  }
+  return best ? { entry: best, score: bestScore } : null;
+}
+const KNOW_PRE = [
+  'ああ、その話ですか。よく聞かれるんですよ（笑）\n\n',
+  'いい質問ですねえ。それはちょっと熱く語っちゃいますよ。\n\n',
+  'その話になると、つい長くなっちゃうんですけどね。\n\n',
+];
+const KNOW_POST = [
+  '\n\n…とまあ、そういうことなんですよ（笑）',
+  '\n\nこういう話、いくらでもできますから。また聞いてください。',
+  '\n\nボクシングも人生も、結局は這い上がる力なんですよね。',
+];
+</script>
+<script>
+/* ---- オリジナルアバター（青いフェニックス×ゴールドのリング） ---- */
+const AVATAR_SVG = `
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d2b5e"/><stop offset="1" stop-color="#1d4e9e"/>
+    </linearGradient>
+    <linearGradient id="wingG" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3d7fd4"/><stop offset="1" stop-color="#bfe3ff"/>
+    </linearGradient>
+    <linearGradient id="flameG" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#e8491d"/><stop offset="1" stop-color="#f5b942"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" fill="url(#bgG)"/>
+  <!-- champion-belt gold ring (and the initial O) -->
+  <circle cx="50" cy="52" r="36" fill="none" stroke="#f5b942" stroke-width="2.5" opacity=".6"/>
+  <!-- left wing -->
+  <path d="M50 62 Q28 58 14 36 Q29 44 36 40 Q24 33 20 20 Q35 31 42 29 Q35 21 35 12 Q48 26 50 44 Z" fill="url(#wingG)"/>
+  <!-- right wing -->
+  <path d="M50 62 Q72 58 86 36 Q71 44 64 40 Q76 33 80 20 Q65 31 58 29 Q65 21 65 12 Q52 26 50 44 Z" fill="url(#wingG)"/>
+  <!-- tail flame -->
+  <path d="M50 60 Q43 74 49 90 Q51 79 57 74 Q52 69 53 62 Z" fill="url(#flameG)"/>
+  <!-- body -->
+  <ellipse cx="50" cy="52" rx="9.5" ry="13" fill="#e8f4ff"/>
+  <!-- head -->
+  <circle cx="50" cy="35" r="7" fill="#e8f4ff"/>
+  <!-- flame crest -->
+  <path d="M46 29 Q45 22 50 17 Q50 23 54 25 Q56 20 60 19 Q56 25 56 30 Z" fill="url(#flameG)"/>
+  <!-- beak -->
+  <polygon points="50,37 45,40 50,42" fill="#f5b942"/>
+  <!-- eye -->
+  <circle cx="48" cy="34" r="1.4" fill="#0d2b5e"/>
+</svg>`;
+function avatarHTML() { return AVATAR_SVG; }
+document.getElementById('header-avatar').innerHTML = avatarHTML();
+document.getElementById('profile-avatar').innerHTML = avatarHTML();
+
+/* ---- 大橋会長 返答エンジン（ルールベース） ---- */
+const QUOTES = [
+  '「夢を夢で終わらせない」。目標は紙に書き出して、口に出す。言っちゃえば、やるしかなくなりますから（笑）',
+  '「強いヤツとしかやらない」。現役時代もプロモーターになってからも、これだけは変わらない信条なんですよ。',
+  '「這い上がる力」。負けても挑戦し続ける。逆境はプラスにもなる、が私の持論です。',
+  '「悪い噂はバーッとすぐ広がる」。だからリングの外での品行と謙虚さ、これを選手には徹底させるんですよ。',
+];
+const RULES = [
+  { re: /(本物|本人|ほんもの|AI|ロボット|偽物|にせもの|なりすまし)/i, res: [
+    '正直に言いますとね、私は大橋秀行会長をモデルにした非公式のファンメイドAIなんですよ。本人ではないんです。でもまあ、会長室で話してるつもりで、気楽にどうぞ（笑）',
+    '私はAIです。本物の大橋会長ではなくて、公開情報をもとにファンが作った非公式のチャットボットなんですよ。そこは正直にお伝えしないとね。帝王学ですから（笑）',
+  ]},
+  { re: /(こんにち[はわ]|こんばんは|おはよ|はじめまして|やあ|どうも|hello|hi)/i, res: [
+    'どうも、大橋です。よくいらっしゃいました。ここ、パワースポットなんですよ（笑）今日はどんな話をしましょうか。',
+    'はい、どうも。横浜のジムへようこそ。ボクシングの話でも人生相談でも、何でもどうぞ。',
+  ]},
+  { re: /(誰|だれ|あなたの名前|お名前)/, res: [
+    '大橋ボクシングジムの大橋秀行会長をモデルにした、非公式ファンメイドのAIです。本人じゃないんですけどね、会長の「這い上がる力」のスピリットは目一杯インストールしてありますよ（笑）',
+  ]},
+  { re: /(疲れ|つかれ|つらい|辛い|悲し|かなし|落ち込|へこ|凹|しんど|泣|失敗|うまくいかない|ダメだ|だめだ)/, res: [
+    'そうですか…。でもね、私は世界王者の張正九に2度挑戦して、2度ともKOで負けてるんですよ。それでも諦めなかったから、3度目で世界を獲れた。負けは終わりじゃないんです。這い上がる力、これですよ。',
+    '落ち込む気持ちは分かりますよ。私なんかロペス戦は当日38度の高熱でね、5回TKO負け。悔しかったですよ。でも「逆境はプラスにもなる」が私の持論なんです。今日はゆっくり休んで、また明日から行きましょう。',
+    '私は五輪も逃して、世界戦も2度失敗して、ジムの最初の興行は5人全敗ですよ（笑）それでも辞めなかったから今がある。大丈夫、あなたもここから這い上がれますよ。',
+  ]},
+  { re: /(名言|座右の銘|格言|いい言葉|金言)/, res: QUOTES },
+  { re: /(経営|ビジネス|マネジメント|秘訣|リーダー|社長|起業|商売)/, res: [
+    '経営で大事なのはね、素質の見抜き方と適材適所、それと信頼関係なんですよ。選手も社員も同じで、一人ひとり育て方を変える。川嶋は努力型、井上は天才型、清水は転向組。全部やり方が違うんです。',
+    'ジム経営はね、最初の興行が5人全敗からのスタートですよ（笑）まず経営の安定を優先する、勝負どころでは強気に出る。このメリハリなんですよね。あとは「悪い噂はバーッと広がる」んで、信用を大事にすることです。',
+  ]},
+  { re: /(カウンター|ボディ|距離|ジャブ|フットワーク|ディフェンス|パンチ|スパー|技術)/, res: [
+    'おっ、技術の話ですか。いいですねえ（笑）カウンターはね、「当てる」んじゃなくて「当たる位置に先にいる」感覚なんですよ。私は現役時代、カウンターとボディブローで生きてきましたから、この話は長いですよ。',
+    '距離のとり方っていうのはボクシングの肝でしてね。半歩の出入りで世界が変わるんですよ。井上はそこが十点満点。点数をつけたがるのは私の癖なんですけどね（笑）',
+  ]},
+  { re: /(横浜|地元|ハマ)/, res: [
+    '横浜生まれ横浜育ちなんで、ジムをつくるなら横浜と決めてたんですよ。今は鶴屋町、横浜駅から歩けるところです。ここはパワースポットなんですよね（笑）',
+  ]},
+  { re: /(夢|目標|挑戦|チャレンジ)/, res: [
+    '夢を夢で終わらせない。そのためにはまず、目標を紙に書き出して、人に口に出して言うことなんですよ。言っちゃえば、やるしかなくなりますから（笑）',
+    '挑戦に遅すぎるってことはないですよ。私だって2度KO負けした相手の系譜に挑み続けて世界を獲ったんですから。「這い上がる力」、これがあれば大丈夫です。',
+  ]},
+  { re: /(発表|ニュース|最近どう|近況)/, res: [
+    'ふふ、まだ言えないんですけどね、近々大きな発表ができると思いますよ。楽しみにしててください（笑）',
+  ]},
+  { re: /(ありがと|感謝)/, res: [
+    'いえいえ、こちらこそありがとうございます。私はヨネクラジムに育ててもらった恩と、ファンの皆さんへの感謝を忘れたことがないんですよ。応援してもらえるから、選手も私も頑張れるんです。',
+  ]},
+  { re: /(バイバイ|さよなら|またね|おやすみ|失礼します|帰ります|寝る)/, res: [
+    'はい、今日はありがとうございました。またいつでもいらしてください。ここはパワースポットですから（笑）気をつけてお帰りくださいね。',
+  ]},
+  { re: /(ボクシング|試合|観戦|チケット)/, res: [
+    'ボクシングはいいですよ。殴り合いに見えて、実は一番アタマを使うスポーツなんです。人生に必要なものが全部詰まってますよ。よかったらフェニックスバトル、観に来てください（笑）',
+  ]},
+  { re: /(好き|趣味|楽しい)/, res: [
+    '私はもう、ボクシング一筋ですからね（笑）還暦を過ぎても頭の中は小中学生と変わらないんですよ。プロモーターとして、こんなに楽しいことはないです。',
+  ]},
+];
+const FALLBACK = [
+  'ほう、なるほどねえ。それで、どうなったんですか？',
+  'いやあ、面白い話ですね。もうちょっと聞かせてくださいよ。',
+  'うーん、それはちょっと、ここでは言えないですね（笑）でも別の話なら何でもどうぞ。',
+  'なるほどなるほど。還暦過ぎても頭の中は小中学生と変わらないんで、何の話でも食いつきますよ（笑）',
+  'それは興味深いですねえ。ボクシングで言えば、いいジャブみたいな話です（笑）続きをどうぞ。',
+];
+
+let lastIdx = -1;
+function pick(arr) {
+  let i;
+  do { i = Math.floor(Math.random() * arr.length); } while (arr.length > 1 && i === lastIdx);
+  lastIdx = i;
+  return arr[i];
+}
+function reply(text) {
+  const km = knowledgeMatch(text);
+  if (km && km.score >= 3) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
+  for (const r of RULES) if (r.re.test(text)) return pick(r.res);
+  if (km && km.score >= 1) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
+  return pick(FALLBACK);
+}
+
+/* ---- UI ---- */
+const chat = document.getElementById('chat');
+const input = document.getElementById('input');
+
+function addRow(who, html, isTyping = false) {
+  const row = document.createElement('div');
+  row.className = 'row ' + who;
+  const av = who === 'ai' ? `<div class="avatar">${avatarHTML()}</div>` : '';
+  const tag = who === 'ai' ? '<div class="name-tag">大橋会長AI</div>' : '';
+  row.innerHTML = `${av}<div><${'div'} class="bubble">${tag}${html}</div></div>`;
+  if (isTyping) row.dataset.typing = '1';
+  chat.appendChild(row);
+  chat.scrollTop = chat.scrollHeight;
+  return row;
+}
+function esc(s) { return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function botSay(text, delay = 700) {
+  const t = addRow('ai', '<span class="typing"><i></i><i></i><i></i></span>', true);
+  setTimeout(() => {
+    t.remove();
+    addRow('ai', esc(text));
+  }, delay + Math.random() * 500);
+}
+function send(raw) {
+  const text = (raw ?? input.value).trim();
+  if (!text) return;
+  input.value = '';
+  addRow('user', esc(text));
+  botSay(reply(text));
+}
+document.getElementById('send').addEventListener('click', () => send());
+input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+document.getElementById('chips').addEventListener('click', e => {
+  if (e.target.classList.contains('chip')) send(e.target.textContent);
+});
+
+botSay('どうも、大橋です。今日はどんな話をしましょうか。ボクシングのことでも、人生相談でも、何でもどうぞ（笑）\n※私は大橋会長をモデルにした非公式ファンメイドAIです', 400);
+</script>
+</body>
+</html>
