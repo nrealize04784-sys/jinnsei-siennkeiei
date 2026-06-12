@@ -263,7 +263,8 @@
   <div class="chips" id="chips">
     <button class="chip">名言ちょうだい！</button>
     <button class="chip">ぬこの話して🐱</button>
-    <button class="chip">ポケモン好き？</button>
+    <button class="chip">人生診断って何？</button>
+    <button class="chip">人生100年時代とは？</button>
     <button class="chip">元気が出ない…</button>
   </div>
 
@@ -276,6 +277,30 @@
   アイコン写真: <a href="https://commons.wikimedia.org/wiki/File:Nakagawa_Shoko_DEC_2016.jpg" target="_blank" rel="noopener">Dick Thomas Johnson 撮影（Wikimedia Commons）</a> / <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a></footer>
 </div>
 
+<script src="knowledge.js"></script>
+<script>
+/* ---- ナレッジ検索（人生支援経営・人生診断・人生100年時代の教科書） ---- */
+function knowledgeMatch(text) {
+  if (typeof KNOWLEDGE === 'undefined') return null;
+  let best = null, bestScore = 0;
+  for (const k of KNOWLEDGE) {
+    let score = 0;
+    for (const kw of k.keywords) if (kw.length >= 2 && text.includes(kw)) score += kw.length >= 4 ? 2 : 1;
+    if (score > bestScore) { bestScore = score; best = k; }
+  }
+  return best ? { entry: best, score: bestScore } : null;
+}
+const KNOW_PRE = [
+  'おっ、それは「人生支援経営」関係の話だヲ！しょこたん、ちゃんと勉強したから任せるヲ！✨\n\n',
+  'キタコレ！その質問、ギザいいところ突いてるヲ！📖\n\n',
+  'ふむふむ…それならしょこたんが学んだことを共有するヲ！\n\n',
+];
+const KNOW_POST = [
+  '\n\n…ってことナリ！ギザ深いヲ！',
+  '\n\nもっと知りたかったらkwsk聞いてヲ！✨',
+  '\n\n人生も推し活も、貪欲に設計していくのが大事ってことだヲ！',
+];
+</script>
 <script>
 /* ---- オリジナルアバター（水色髪＋猫耳＋ピンクリボン） ---- */
 const AVATAR_SVG = `
@@ -406,7 +431,10 @@ function pick(arr) {
   return arr[i];
 }
 function reply(text) {
+  const km = knowledgeMatch(text);
+  if (km && km.score >= 3) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
   for (const r of RULES) if (r.re.test(text)) return pick(r.res);
+  if (km && km.score >= 1) return pick(KNOW_PRE) + km.entry.answer + pick(KNOW_POST);
   return pick(FALLBACK);
 }
 
