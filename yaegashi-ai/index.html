@@ -6,51 +6,57 @@
 <title>八重樫東AI 〜激闘王CHAT〜（非公式ファンメイド）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Reggae+One&display=swap" rel="stylesheet">
 <style>
   :root {
     /* 黒×白×赤（激闘王カラー） */
-    --black: #0d0d11;
-    --ink: #1c1c22;
-    --ink-soft: #2a2a31;
+    --black: #0a0a0e;
+    --ink: #15151a;
+    --ink-soft: #26262c;
     --red: #d8232a;
     --red-deep: #a51220;
-    --red-light: #ffecec;
-    --red-glow: #ff5a5f;
+    --red-glow: #ff4b52;
     --white: #ffffff;
-    --paper: #f7f4ef;
-    --text: #26262c;
+    --paper: #f6f3ee;
+    --text: #15151a;
+    --fight-font: 'Reggae One', 'M PLUS Rounded 1c', sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; }
   body {
     font-family: 'M PLUS Rounded 1c', sans-serif;
     color: var(--text);
-    background: linear-gradient(160deg, var(--black) 0%, #17171d 38%, #26141a 70%, #47101a 100%);
+    /* リングの上から差すスポットライト＋赤いコーナーの照り返し */
+    background:
+      radial-gradient(ellipse 62% 42% at 50% -6%, rgba(255,255,255,.16), transparent 62%),
+      radial-gradient(ellipse 55% 38% at 50% 106%, rgba(216,35,42,.30), transparent 66%),
+      linear-gradient(160deg, var(--black) 0%, #14141a 45%, #220e13 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
   }
 
-  /* ----- ring ropes & embers ----- */
+  /* ----- ring ropes / corner pads / embers ----- */
   .deco { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
   .rope {
-    position: absolute; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.22) 18%, rgba(255,255,255,.22) 82%, transparent);
+    position: absolute; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.30) 15%, rgba(255,255,255,.30) 85%, transparent);
+    box-shadow: 0 2px 6px rgba(0,0,0,.4);
   }
-  .rope.r1 { top: 16%; }
-  .rope.r2 { top: 22%; background: linear-gradient(90deg, transparent, rgba(216,35,42,.45) 18%, rgba(216,35,42,.45) 82%, transparent); height: 3px; }
-  .rope.r3 { top: 28%; }
-  .glow {
-    position: absolute; border-radius: 50%;
-    filter: blur(40px);
-    animation: drift linear infinite;
+  .rope.red { background: linear-gradient(90deg, transparent, rgba(216,35,42,.7) 15%, rgba(216,35,42,.7) 85%, transparent); height: 4px; }
+  .rope.t1 { top: 9%; }  .rope.t2 { top: 14%; } .rope.t3 { top: 19%; }
+  .rope.b1 { bottom: 9%; } .rope.b2 { bottom: 14%; } .rope.b3 { bottom: 19%; }
+  .corner {
+    position: absolute; width: 130px; height: 16px;
+    background: linear-gradient(90deg, var(--red), var(--red-deep));
+    border-radius: 999px;
+    box-shadow: 0 0 22px rgba(216,35,42,.55);
   }
-  .glow.g1 { width: 220px; height: 220px; top: 8%;  left: -240px; background: rgba(216,35,42,.28); animation-duration: 52s; }
-  .glow.g2 { width: 160px; height: 160px; top: 62%; left: -180px; background: rgba(255,255,255,.10); animation-duration: 66s; animation-delay: -28s; }
-  .glow.g3 { width: 260px; height: 260px; top: 76%; left: -280px; background: rgba(216,35,42,.18); animation-duration: 58s; animation-delay: -44s; }
-  @keyframes drift { to { transform: translateX(calc(100vw + 320px)); } }
+  .corner.tl { top: 26px; left: -34px;  transform: rotate(45deg); }
+  .corner.tr { top: 26px; right: -34px; transform: rotate(-45deg); }
+  .corner.bl { bottom: 26px; left: -34px;  transform: rotate(-45deg); }
+  .corner.br { bottom: 26px; right: -34px; transform: rotate(45deg); }
 
   .spark {
     position: absolute; color: var(--red-glow);
@@ -64,14 +70,13 @@
   .app {
     position: relative; z-index: 1;
     width: min(540px, 96vw);
-    height: min(780px, 94vh);
-    height: min(780px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
+    height: min(800px, 94vh);
+    height: min(800px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
     display: flex; flex-direction: column;
-    background: rgba(255,255,255,0.93);
-    backdrop-filter: blur(14px);
-    border-radius: 28px;
-    border: 3px solid rgba(255,255,255,0.9);
-    box-shadow: 0 18px 50px rgba(0,0,0,.55), 0 4px 18px rgba(216,35,42,.35);
+    background: var(--white);
+    border-radius: 24px;
+    border: 3px solid var(--ink);
+    box-shadow: 0 0 0 6px rgba(216,35,42,.55), 0 24px 60px rgba(0,0,0,.7);
     overflow: hidden;
   }
   /* スマホは全画面レイアウトにして入力欄の見切れを防ぐ */
@@ -83,110 +88,187 @@
       height: 100dvh;
       border-radius: 0;
       border: none;
+      box-shadow: none;
     }
+    .record { font-size: 10.5px; letter-spacing: .05em; }
     .chips { padding: 6px 10px; gap: 6px; }
-    .chip { font-size: 11px; padding: 5px 10px; }
+    .chip { font-size: 12px; padding: 6px 10px; }
     .input-bar { padding: 10px 10px 12px; gap: 8px; }
-    .input-bar input { font-size: 16px; padding: 10px 16px; } /* 16px未満だとiOSが自動ズームする */
+    .input-bar input { font-size: 16px; padding: 11px 16px; } /* 16px未満だとiOSが自動ズームする */
     .input-bar button { padding: 0 18px; flex: none; }
-    footer { padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+    footer { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
   }
 
+  /* ----- header（黒のコーナーマット＋赤ライン） ----- */
   header {
     display: flex; align-items: center; gap: 14px;
-    padding: 14px 20px;
-    background: linear-gradient(90deg, var(--black) 0%, var(--ink-soft) 52%, var(--red) 100%);
+    padding: 14px 20px 12px;
+    background:
+      repeating-linear-gradient(135deg, var(--black) 0 14px, var(--ink) 14px 28px);
     color: var(--white);
+    border-bottom: 4px solid var(--red);
   }
   .avatar {
-    width: 52px; height: 52px; flex: none;
+    width: 54px; height: 54px; flex: none;
     border-radius: 50%;
     background: #fff;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    border: 3px solid var(--red);
+    box-shadow: 0 0 10px rgba(216,35,42,.6);
     overflow: hidden;
   }
   .avatar svg { width: 100%; height: 100%; display: block; }
   .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
-  .title { line-height: 1.25; }
-  .title h1 { font-size: 19px; font-weight: 800; letter-spacing: .04em; }
-  .title p { font-size: 11px; opacity: .92; font-weight: 500; }
+  .title { line-height: 1.3; }
+  .title h1 {
+    font-family: var(--fight-font);
+    font-weight: 400;
+    font-size: 23px;
+    letter-spacing: .05em;
+    text-shadow: 2px 2px 0 var(--red-deep);
+  }
+  .title h1 .ai { color: var(--red-glow); }
+  .title p { font-size: 11.5px; font-weight: 700; color: #f2efea; }
   .status-dot {
     display: inline-block; width: 8px; height: 8px; border-radius: 50%;
     background: var(--red-glow); margin-right: 5px;
-    box-shadow: 0 0 6px var(--red-glow);
+    box-shadow: 0 0 8px var(--red-glow);
+    animation: pulse 1.6s ease-in-out infinite;
   }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  /* ----- 戦績ストリップ ----- */
+  .record {
+    background: var(--ink);
+    color: var(--white);
+    text-align: center;
+    font-size: 12px; font-weight: 800;
+    letter-spacing: .12em;
+    padding: 6px 8px 7px;
+    border-bottom: 3px solid var(--red);
+  }
+  .record b { color: var(--red-glow); }
 
   /* ----- chat area ----- */
   .chat {
     flex: 1; overflow-y: auto;
-    padding: 20px 16px 12px;
+    padding: 18px 16px 12px;
     display: flex; flex-direction: column; gap: 14px;
     scroll-behavior: smooth;
-    background:
-      radial-gradient(circle at 85% 8%, rgba(216,35,42,.05), transparent 42%),
-      var(--paper);
+    background: var(--paper);
   }
-  /* ----- profile card ----- */
+
+  /* ----- profile card（ファイトポスター風） ----- */
   .profile-card {
     align-self: center;
     text-align: center;
     background: var(--white);
-    border: 2.5px solid var(--ink);
-    border-radius: 24px;
-    padding: 18px 34px 14px;
-    box-shadow: 0 6px 20px rgba(13,13,17,.18);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 18px 30px 16px;
+    box-shadow: 6px 6px 0 var(--red);
     animation: pop .4s cubic-bezier(.34,1.56,.64,1);
   }
+  .kanji-badge {
+    font-family: var(--fight-font);
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-size: 13px;
+    letter-spacing: .3em;
+    padding: 3px 12px 4px 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
   .profile-photo {
-    width: 112px; height: 112px;
+    width: 116px; height: 116px;
     border-radius: 50%;
     overflow: hidden;
     margin: 0 auto 10px;
-    border: 4px solid #fff;
-    box-shadow: 0 0 0 4px var(--red), 0 6px 16px rgba(216,35,42,.4);
+    border: 4px solid var(--white);
+    box-shadow: 0 0 0 4px var(--ink), 0 0 0 8px var(--red), 0 10px 22px rgba(165,18,32,.4);
     background: #fff;
   }
   .profile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .profile-photo svg { width: 100%; height: 100%; display: block; }
   .profile-card h2 {
-    font-size: 17px; font-weight: 800;
+    font-family: var(--fight-font);
+    font-weight: 400;
+    font-size: 22px;
     color: var(--ink);
+    letter-spacing: .08em;
+    margin-top: 4px;
   }
-  .profile-card h2 .accent { color: var(--red); }
-  .profile-card p { font-size: 11px; color: #7d7a76; font-weight: 500; }
+  .profile-card h2 .ai { color: var(--red); }
+  .profile-card .yomi { font-size: 12px; color: #55504b; font-weight: 700; margin-top: 2px; }
+  .belts { display: flex; gap: 6px; justify-content: center; margin: 10px 0 2px; flex-wrap: wrap; }
+  .belts span {
+    background: var(--ink); color: var(--white);
+    border: 2px solid var(--red);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 800;
+    padding: 3px 11px;
+    letter-spacing: .06em;
+  }
+  .motto {
+    font-family: var(--fight-font);
+    color: var(--red-deep);
+    font-size: 14px;
+    letter-spacing: .22em;
+    margin-top: 8px;
+  }
+
+  /* ----- ROUND仕切り ----- */
+  .round-divider {
+    display: flex; align-items: center; gap: 12px;
+    color: #6d6862;
+    font-size: 11.5px; font-weight: 800; letter-spacing: .22em;
+  }
+  .round-divider::before, .round-divider::after {
+    content: ''; flex: 1; height: 2px;
+    background: linear-gradient(90deg, transparent, #c4bcb2);
+  }
+  .round-divider::after { background: linear-gradient(90deg, #c4bcb2, transparent); }
+  .round-divider .r { color: var(--red); }
 
   .row { display: flex; gap: 10px; align-items: flex-end; }
   .row.user { flex-direction: row-reverse; }
-  .row .avatar { width: 38px; height: 38px; border-width: 2px; border-color: var(--red); }
+  .row .avatar { width: 40px; height: 40px; border-width: 2.5px; }
   .bubble {
-    max-width: 76%;
-    padding: 11px 15px;
-    border-radius: 20px;
-    font-size: 14.5px;
-    line-height: 1.7;
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.85;
     white-space: pre-wrap;
-    box-shadow: 0 3px 10px rgba(13,13,17,.12);
     animation: pop .28s cubic-bezier(.34,1.56,.64,1);
   }
   @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
   .row.ai .bubble {
-    background: linear-gradient(135deg, #fff, var(--red-light));
-    border: 2px solid var(--red);
+    background: var(--white);
+    border: 2.5px solid var(--red);
+    color: var(--text);
     border-bottom-left-radius: 6px;
+    box-shadow: 3px 3px 0 rgba(216,35,42,.25);
   }
   .row.user .bubble {
-    background: linear-gradient(135deg, var(--ink-soft), var(--ink));
-    border: 2px solid var(--black);
+    background: var(--ink);
+    border: 2.5px solid var(--black);
     color: var(--white);
     border-bottom-right-radius: 6px;
+    box-shadow: 3px 3px 0 rgba(10,10,14,.25);
   }
-  .name-tag { font-size: 10.5px; font-weight: 700; margin-bottom: 2px; }
+  .name-tag {
+    font-family: var(--fight-font);
+    font-size: 11.5px; font-weight: 400; margin-bottom: 3px;
+    letter-spacing: .08em;
+  }
   .row.ai .name-tag { color: var(--red); }
 
   .typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
   .typing i {
-    width: 8px; height: 8px; border-radius: 50%;
+    width: 9px; height: 9px; border-radius: 50%;
     background: var(--red);
     animation: bounce 1s infinite;
   }
@@ -196,76 +278,82 @@
 
   /* ----- quick chips ----- */
   .chips {
-    display: flex; gap: 8px; padding: 8px 14px; flex-wrap: wrap;
-    background: rgba(255,255,255,.75);
-    border-top: 1px solid rgba(13,13,17,.06);
+    display: flex; gap: 8px; padding: 9px 14px; flex-wrap: wrap;
+    background: var(--white);
+    border-top: 2px solid #e8e2da;
   }
   .chip {
-    border: 2px solid var(--red);
+    border: 2.5px solid var(--red);
     color: var(--red-deep);
-    background: #fff;
+    background: var(--white);
     font-family: inherit;
-    font-size: 12px; font-weight: 700;
-    padding: 6px 12px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 800;
+    padding: 6px 13px; border-radius: 999px;
     cursor: pointer;
-    transition: transform .12s, background .12s;
+    transition: transform .12s, background .12s, color .12s;
   }
   .chip:nth-child(even) { border-color: var(--ink); color: var(--ink); }
-  .chip:hover { transform: translateY(-2px) scale(1.04); background: var(--paper); }
+  .chip:hover { transform: translateY(-2px) scale(1.04); background: var(--red); color: #fff; border-color: var(--red); }
 
-  /* ----- input ----- */
+  /* ----- input（黒コーナー） ----- */
   .input-bar {
-    display: flex; gap: 10px; padding: 12px 14px 14px;
-    background: rgba(255,255,255,.95);
-    border-top: 2px solid rgba(13,13,17,.12);
+    display: flex; gap: 10px; padding: 12px 14px;
+    background: var(--ink);
+    border-top: 4px solid var(--red);
   }
   .input-bar input {
     flex: 1 1 0;
     min-width: 0; /* flexで縮めるように（これがないと狭い画面でボタンを押し出す） */
-    font-family: inherit; font-size: 14.5px;
+    font-family: inherit; font-size: 15px; font-weight: 500;
     padding: 12px 18px;
     border-radius: 999px;
-    border: 2.5px solid var(--ink);
+    border: 2.5px solid var(--white);
     outline: none;
-    background: #fff;
+    background: var(--white);
     color: var(--text);
     transition: border-color .15s, box-shadow .15s;
   }
-  .input-bar input:focus { border-color: var(--red); box-shadow: 0 0 0 4px rgba(216,35,42,.16); }
+  .input-bar input::placeholder { color: #8a847d; }
+  .input-bar input:focus { border-color: var(--red-glow); box-shadow: 0 0 0 4px rgba(216,35,42,.35); }
   .input-bar button {
     flex: none;
     white-space: nowrap;
-    font-family: inherit; font-weight: 800; font-size: 14px;
+    font-family: inherit; font-weight: 800; font-size: 14.5px;
     color: #fff;
     background: linear-gradient(135deg, var(--red), var(--red-deep));
-    border: none; border-radius: 999px;
-    padding: 0 24px;
+    border: 2px solid rgba(255,255,255,.85); border-radius: 999px;
+    padding: 0 22px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(216,35,42,.4);
+    box-shadow: 0 0 14px rgba(216,35,42,.5);
     transition: transform .12s, filter .12s;
   }
-  .input-bar button:hover { transform: scale(1.05); filter: brightness(1.07); }
-  .input-bar button:active { transform: scale(.97); }
+  .input-bar button:hover { transform: scale(1.05); filter: brightness(1.1); }
+  .input-bar button:active { transform: scale(.94); }
 
   footer {
-    text-align: center; font-size: 10px; color: #7d7a76;
-    padding: 0 10px 8px; background: rgba(255,255,255,.95);
+    text-align: center; font-size: 10.5px; font-weight: 500; color: #b9b3ac;
+    padding: 6px 10px 9px; background: var(--ink);
+    line-height: 1.6;
   }
 </style>
 </head>
 <body>
 
 <div class="deco" aria-hidden="true">
-  <div class="rope r1"></div>
-  <div class="rope r2"></div>
-  <div class="rope r3"></div>
-  <div class="glow g1"></div>
-  <div class="glow g2"></div>
-  <div class="glow g3"></div>
+  <div class="rope t1"></div>
+  <div class="rope red t2"></div>
+  <div class="rope t3"></div>
+  <div class="rope b1"></div>
+  <div class="rope red b2"></div>
+  <div class="rope b3"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
   <span class="spark"   style="top:12%; left:10%; font-size:20px;">✦</span>
-  <span class="spark w" style="top:20%; right:9%;  font-size:14px; animation-delay:.6s;">✧</span>
+  <span class="spark w" style="top:22%; right:9%;  font-size:14px; animation-delay:.6s;">✧</span>
   <span class="spark"   style="top:64%; left:6%;  font-size:16px; animation-delay:1.2s;">✦</span>
-  <span class="spark w" style="top:80%; right:13%; font-size:22px; animation-delay:.3s;">✦</span>
+  <span class="spark w" style="top:78%; right:13%; font-size:22px; animation-delay:.3s;">✦</span>
   <span class="spark"   style="top:42%; right:4%;  font-size:13px; animation-delay:1.8s;">✧</span>
   <span class="spark w" style="top:35%; left:3%;  font-size:18px; animation-delay:.9s;">✦</span>
 </div>
@@ -274,17 +362,23 @@
   <header>
     <div class="avatar" id="header-avatar"></div>
     <div class="title">
-      <h1>八重樫東AI 〜激闘王CHAT〜</h1>
-      <p><span class="status-dot"></span>オンラインです（非公式ファンメイドAI）</p>
+      <h1>八重樫東<span class="ai">AI</span> 🥊</h1>
+      <p><span class="status-dot"></span>激闘王CHAT・オンライン（非公式ファンメイドAI）</p>
     </div>
   </header>
 
+  <div class="record">35戦 <b>28勝〈16KO〉</b>7敗 ── WBA・WBC・IBF <b>世界3階級制覇</b></div>
+
   <div class="chat" id="chat">
     <div class="profile-card">
+      <span class="kanji-badge">激闘王</span>
       <div class="profile-photo"><img src="yaegashi.jpg" alt="八重樫東" onerror="avFallback(this)"></div>
-      <h2>八重樫東AI <span class="accent">激闘王</span></h2>
-      <p>「東」と書いて、あきらです。｜懸命に悔いなく</p>
+      <h2>八重樫 東<span class="ai">AI</span></h2>
+      <p class="yomi">「東」と書いて、あきらです。</p>
+      <div class="belts"><span>WBA ミニマム級</span><span>WBC フライ級</span><span>IBF Lフライ級</span></div>
+      <div class="motto">─ 懸命に悔いなく ─</div>
     </div>
+    <div class="round-divider"><span>🔔 <span class="r">ROUND 1</span> FIGHT!</span></div>
   </div>
 
   <div class="chips" id="chips">
@@ -297,7 +391,7 @@
 
   <div class="input-bar">
     <input id="input" type="text" placeholder="八重樫さんに話しかけてみてください" autocomplete="off" />
-    <button id="send">送信</button>
+    <button id="send">送信 🥊</button>
   </div>
 
   <footer>※このAIはファンメイドのパロディです。八重樫東さん本人・大橋ボクシングジムとは関係ありません。<br>
