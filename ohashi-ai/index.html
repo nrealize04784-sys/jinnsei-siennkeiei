@@ -9,15 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy-deep: #0d2b5e;
-    --navy: #1d4e9e;
-    --blue: #3d7fd4;
-    --blue-light: #bcdcf8;
-    --blue-pale: #eaf4ff;
+    --crimson-deep: #6e0b18;
+    --crimson: #a8182b;
+    --red: #d9442f;
+    --red-light: #ffc9b8;
+    --red-pale: #fff1ea;
     --flame: #ff6b35;
     --flame-deep: #e8491d;
     --gold: #f5b942;
-    --text: #1c2a3a;
+    --text: #3a1c1c;
     --white: #ffffff;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,35 +25,54 @@
   body {
     font-family: 'Noto Sans JP', sans-serif;
     color: var(--text);
-    background: linear-gradient(160deg, var(--blue-pale) 0%, var(--blue-light) 35%, #7fb3e8 70%, #3a6fb8 100%);
+    background: linear-gradient(160deg, #fff3ec 0%, #ffc9b0 30%, #e06548 62%, #8b1722 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
   }
 
-  /* ----- floating feathers & sparks (phoenix motif) ----- */
+  /* ----- boxing ring (ropes & corner pads) ----- */
   .deco { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .feather {
-    position: absolute;
-    background: rgba(255,255,255,0.8);
-    border-radius: 100px;
-    filter: blur(1px);
-    animation: drift linear infinite;
+  .ropes { position: absolute; left: 0; right: 0; height: 58px; }
+  .ropes.top { top: 9%; }
+  .ropes.bottom { bottom: 10%; }
+  .rope {
+    position: absolute; left: 0; right: 0; height: 5px; border-radius: 3px;
+    background: linear-gradient(180deg, #ffffff, #ffd9cf 55%, #d98c7a);
+    box-shadow: 0 2px 6px rgba(90,10,10,.35);
+    opacity: .75;
   }
-  .feather::before, .feather::after {
-    content: ''; position: absolute; background: inherit; border-radius: 50%;
+  .pad {
+    position: absolute; width: 20px; height: 86px; border-radius: 12px;
+    background: linear-gradient(180deg, var(--gold), var(--crimson));
+    border: 2px solid rgba(255,255,255,.9);
+    box-shadow: 0 4px 10px rgba(90,10,10,.4);
+    opacity: .9;
   }
-  .feather.f1 { width: 160px; height: 48px; top: 9%; left: -180px; animation-duration: 48s; }
-  .feather.f1::before { width: 70px; height: 70px; top: -34px; left: 24px; }
-  .feather.f1::after  { width: 50px; height: 50px; top: -22px; left: 80px; }
-  .feather.f2 { width: 120px; height: 38px; top: 24%; left: -140px; animation-duration: 64s; animation-delay: -22s; opacity: .7; }
-  .feather.f2::before { width: 52px; height: 52px; top: -26px; left: 18px; }
-  .feather.f2::after  { width: 38px; height: 38px; top: -16px; left: 60px; }
-  .feather.f3 { width: 200px; height: 56px; top: 72%; left: -220px; animation-duration: 56s; animation-delay: -40s; opacity: .6; }
-  .feather.f3::before { width: 84px; height: 84px; top: -40px; left: 30px; }
-  .feather.f3::after  { width: 60px; height: 60px; top: -26px; left: 100px; }
-  @keyframes drift { to { transform: translateX(calc(100vw + 260px)); } }
+  .pad.tl { left: 8px;  top: calc(9% - 14px); }
+  .pad.tr { right: 8px; top: calc(9% - 14px); }
+  .pad.bl { left: 8px;  bottom: calc(10% - 14px); }
+  .pad.br { right: 8px; bottom: calc(10% - 14px); }
+
+  /* ----- rising phoenix embers ----- */
+  .ember {
+    position: absolute; bottom: -24px;
+    width: 10px; height: 10px;
+    border-radius: 50% 50% 50% 0;
+    background: radial-gradient(circle at 40% 40%, #ffd27a, var(--flame) 60%, rgba(232,73,29,0));
+    filter: blur(.5px);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    from { transform: translateY(0) rotate(-45deg) scale(1); opacity: .9; }
+    to   { transform: translateY(-115vh) rotate(-45deg) scale(.35); opacity: 0; }
+  }
+  .ember.e1 { left: 8%;  animation-duration: 11s; }
+  .ember.e2 { left: 22%; animation-duration: 14s; animation-delay: -6s; width: 7px; height: 7px; }
+  .ember.e3 { right: 18%; animation-duration: 12s; animation-delay: -3s; }
+  .ember.e4 { right: 6%; animation-duration: 16s; animation-delay: -9s; width: 8px; height: 8px; }
+  .ember.e5 { left: 48%; animation-duration: 13s; animation-delay: -5s; width: 6px; height: 6px; }
 
   .spark {
     position: absolute; color: rgba(255,255,255,0.9);
@@ -69,11 +88,11 @@
     height: min(780px, 94vh);
     height: min(780px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
     display: flex; flex-direction: column;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.72);
     backdrop-filter: blur(14px);
     border-radius: 28px;
     border: 3px solid rgba(255,255,255,0.9);
-    box-shadow: 0 18px 50px rgba(29,78,158,0.4), 0 4px 14px rgba(255,107,53,0.2);
+    box-shadow: 0 18px 50px rgba(110,11,24,0.45), 0 4px 14px rgba(255,107,53,0.25);
     overflow: hidden;
   }
   /* スマホは全画面レイアウトにして入力欄の見切れを防ぐ */
@@ -97,7 +116,7 @@
   header {
     display: flex; align-items: center; gap: 14px;
     padding: 14px 20px;
-    background: linear-gradient(90deg, var(--navy-deep), var(--navy) 60%, var(--blue));
+    background: linear-gradient(90deg, var(--crimson-deep), var(--crimson) 60%, var(--red));
     color: var(--white);
   }
   .avatar {
@@ -130,10 +149,10 @@
     align-self: center;
     text-align: center;
     background: rgba(255,255,255,.9);
-    border: 2.5px solid var(--navy);
+    border: 2.5px solid var(--crimson);
     border-radius: 24px;
     padding: 18px 34px 14px;
-    box-shadow: 0 6px 20px rgba(29,78,158,.3);
+    box-shadow: 0 6px 20px rgba(168,24,43,.3);
     animation: pop .4s cubic-bezier(.34,1.56,.64,1);
   }
   .profile-photo {
@@ -142,17 +161,17 @@
     overflow: hidden;
     margin: 0 auto 10px;
     border: 4px solid #fff;
-    box-shadow: 0 0 0 4px var(--gold), 0 6px 16px rgba(29,78,158,.45);
+    box-shadow: 0 0 0 4px var(--gold), 0 6px 16px rgba(110,11,24,.45);
     background: #fff;
   }
   .profile-photo svg { width: 100%; height: 100%; display: block; }
   .profile-card h2 {
     font-size: 17px; font-weight: 900;
-    background: linear-gradient(90deg, var(--navy), var(--flame-deep));
+    background: linear-gradient(90deg, var(--crimson), var(--flame-deep) 70%, var(--gold));
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .profile-card p { font-size: 11px; color: #5a6e85; font-weight: 500; }
+  .profile-card p { font-size: 11px; color: #8a5a55; font-weight: 500; }
 
   .row { display: flex; gap: 10px; align-items: flex-end; }
   .row.user { flex-direction: row-reverse; }
@@ -164,27 +183,27 @@
     font-size: 14.5px;
     line-height: 1.7;
     white-space: pre-wrap;
-    box-shadow: 0 3px 10px rgba(60,100,160,.18);
+    box-shadow: 0 3px 10px rgba(160,80,70,.18);
     animation: pop .28s cubic-bezier(.34,1.56,.64,1);
   }
   @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
   .row.ai .bubble {
-    background: linear-gradient(135deg, #ffffff, var(--blue-pale));
-    border: 2px solid var(--navy);
+    background: linear-gradient(135deg, #ffffff, var(--red-pale));
+    border: 2px solid var(--crimson);
     border-bottom-left-radius: 6px;
   }
   .row.user .bubble {
-    background: linear-gradient(135deg, #dcecff, var(--blue-light));
-    border: 2px solid var(--blue);
+    background: linear-gradient(135deg, #ffe3d6, var(--red-light));
+    border: 2px solid var(--red);
     border-bottom-right-radius: 6px;
   }
   .name-tag { font-size: 10.5px; font-weight: 700; margin-bottom: 2px; }
-  .row.ai .name-tag { color: var(--navy); }
+  .row.ai .name-tag { color: var(--crimson); }
 
   .typing { display: inline-flex; gap: 5px; padding: 6px 2px; }
   .typing i {
     width: 8px; height: 8px; border-radius: 50%;
-    background: var(--navy);
+    background: var(--crimson);
     animation: bounce 1s infinite;
   }
   .typing i:nth-child(2) { animation-delay: .15s; }
@@ -197,8 +216,8 @@
     background: rgba(255,255,255,.55);
   }
   .chip {
-    border: 2px solid var(--navy);
-    color: var(--navy);
+    border: 2px solid var(--crimson);
+    color: var(--crimson);
     background: #fff;
     font-family: inherit;
     font-size: 12px; font-weight: 700;
@@ -206,14 +225,14 @@
     cursor: pointer;
     transition: transform .12s, background .12s;
   }
-  .chip:nth-child(even) { border-color: var(--flame-deep); color: var(--flame-deep); }
+  .chip:nth-child(even) { border-color: #c9921b; color: #a8770e; }
   .chip:hover { transform: translateY(-2px) scale(1.04); background: #fff8f0; }
 
   /* ----- input ----- */
   .input-bar {
     display: flex; gap: 10px; padding: 12px 14px 14px;
     background: rgba(255,255,255,.85);
-    border-top: 2px solid rgba(61,127,212,.4);
+    border-top: 2px solid rgba(217,68,47,.4);
   }
   .input-bar input {
     flex: 1 1 0;
@@ -221,30 +240,30 @@
     font-family: inherit; font-size: 14.5px;
     padding: 12px 18px;
     border-radius: 999px;
-    border: 2.5px solid var(--blue);
+    border: 2.5px solid var(--red);
     outline: none;
     background: #fff;
     color: var(--text);
     transition: border-color .15s, box-shadow .15s;
   }
-  .input-bar input:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(29,78,158,.18); }
+  .input-bar input:focus { border-color: var(--crimson); box-shadow: 0 0 0 4px rgba(168,24,43,.18); }
   .input-bar button {
     flex: none;
     white-space: nowrap;
     font-family: inherit; font-weight: 900; font-size: 14px;
     color: #fff;
-    background: linear-gradient(135deg, var(--navy), var(--blue));
+    background: linear-gradient(135deg, var(--crimson), var(--flame-deep));
     border: none; border-radius: 999px;
     padding: 0 24px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(29,78,158,.4);
+    box-shadow: 0 4px 12px rgba(168,24,43,.4);
     transition: transform .12s, filter .12s;
   }
   .input-bar button:hover { transform: scale(1.05); filter: brightness(1.12); }
   .input-bar button:active { transform: scale(.97); }
 
   footer {
-    text-align: center; font-size: 10px; color: #5a6e85;
+    text-align: center; font-size: 10px; color: #8a5a55;
     padding: 0 10px 8px; background: rgba(255,255,255,.85);
   }
 </style>
@@ -252,15 +271,31 @@
 <body>
 
 <div class="deco" aria-hidden="true">
-  <div class="feather f1"></div>
-  <div class="feather f2"></div>
-  <div class="feather f3"></div>
-  <span class="spark" style="top:12%; left:12%; font-size:22px;">✦</span>
-  <span class="spark" style="top:20%; right:10%; font-size:18px; animation-delay:.6s;">🔥</span>
-  <span class="spark" style="top:64%; left:7%;  font-size:18px; animation-delay:1.2s;">✧</span>
+  <div class="ropes top">
+    <div class="rope" style="top:0"></div>
+    <div class="rope" style="top:26px"></div>
+    <div class="rope" style="top:52px"></div>
+  </div>
+  <div class="ropes bottom">
+    <div class="rope" style="top:0"></div>
+    <div class="rope" style="top:26px"></div>
+    <div class="rope" style="top:52px"></div>
+  </div>
+  <div class="pad tl"></div>
+  <div class="pad tr"></div>
+  <div class="pad bl"></div>
+  <div class="pad br"></div>
+  <div class="ember e1"></div>
+  <div class="ember e2"></div>
+  <div class="ember e3"></div>
+  <div class="ember e4"></div>
+  <div class="ember e5"></div>
+  <span class="spark" style="top:12%; left:12%; font-size:22px;">🔥</span>
+  <span class="spark" style="top:20%; right:10%; font-size:18px; animation-delay:.6s;">✦</span>
+  <span class="spark" style="top:64%; left:7%;  font-size:18px; animation-delay:1.2s;">🐦‍🔥</span>
   <span class="spark" style="top:80%; right:14%; font-size:22px; animation-delay:.3s;">🥊</span>
-  <span class="spark" style="top:42%; right:4%;  font-size:16px; animation-delay:1.8s;">🐦‍🔥</span>
-  <span class="spark" style="top:36%; left:3%;  font-size:20px; animation-delay:.9s;">✦</span>
+  <span class="spark" style="top:42%; right:4%;  font-size:16px; animation-delay:1.8s;">🔥</span>
+  <span class="spark" style="top:36%; left:3%;  font-size:20px; animation-delay:.9s;">✧</span>
 </div>
 
 <div class="app">
@@ -268,7 +303,7 @@
     <div class="avatar" id="header-avatar"></div>
     <div class="title">
       <h1>大橋会長AI 🐦‍🔥 フェニックスChat</h1>
-      <p><span class="status-dot"></span>会長室で待ってます（非公式ファンメイドAI）</p>
+      <p><span class="status-dot"></span>リングサイドで待ってます（非公式ファンメイドAI）</p>
     </div>
   </header>
 
@@ -294,7 +329,7 @@
   </div>
 
   <footer>※本アプリは大橋秀行氏非公式のファンメイドAIです。本人・大橋ボクシングジムとは関係ありません。<br>
-  アバターは実在人物の写真を使用しないオリジナルイラスト（青いフェニックス）です。</footer>
+  アバターは実在人物の写真を使用しないオリジナルイラスト（赤いフェニックス）です。</footer>
 </div>
 
 <script src="knowledge.js"></script>
@@ -322,15 +357,15 @@ const KNOW_POST = [
 ];
 </script>
 <script>
-/* ---- オリジナルアバター（青いフェニックス×ゴールドのリング） ---- */
+/* ---- オリジナルアバター（赤いフェニックス×ゴールドのリング） ---- */
 const AVATAR_SVG = `
 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgG" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0d2b5e"/><stop offset="1" stop-color="#1d4e9e"/>
+      <stop offset="0" stop-color="#4a0a12"/><stop offset="1" stop-color="#8b1722"/>
     </linearGradient>
     <linearGradient id="wingG" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0" stop-color="#3d7fd4"/><stop offset="1" stop-color="#bfe3ff"/>
+      <stop offset="0" stop-color="#c22a1c"/><stop offset="1" stop-color="#ffcf7a"/>
     </linearGradient>
     <linearGradient id="flameG" x1="0" y1="1" x2="0" y2="0">
       <stop offset="0" stop-color="#e8491d"/><stop offset="1" stop-color="#f5b942"/>
@@ -346,15 +381,15 @@ const AVATAR_SVG = `
   <!-- tail flame -->
   <path d="M50 60 Q43 74 49 90 Q51 79 57 74 Q52 69 53 62 Z" fill="url(#flameG)"/>
   <!-- body -->
-  <ellipse cx="50" cy="52" rx="9.5" ry="13" fill="#e8f4ff"/>
+  <ellipse cx="50" cy="52" rx="9.5" ry="13" fill="#fff3e4"/>
   <!-- head -->
-  <circle cx="50" cy="35" r="7" fill="#e8f4ff"/>
+  <circle cx="50" cy="35" r="7" fill="#fff3e4"/>
   <!-- flame crest -->
   <path d="M46 29 Q45 22 50 17 Q50 23 54 25 Q56 20 60 19 Q56 25 56 30 Z" fill="url(#flameG)"/>
   <!-- beak -->
   <polygon points="50,37 45,40 50,42" fill="#f5b942"/>
   <!-- eye -->
-  <circle cx="48" cy="34" r="1.4" fill="#0d2b5e"/>
+  <circle cx="48" cy="34" r="1.4" fill="#4a0a12"/>
 </svg>`;
 function avatarHTML() { return AVATAR_SVG; }
 document.getElementById('header-avatar').innerHTML = avatarHTML();
