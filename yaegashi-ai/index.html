@@ -37,27 +37,8 @@
     overflow: hidden;
   }
 
-  /* ----- ring ropes / corner pads / embers ----- */
+  /* ----- embers ----- */
   .deco { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .rope {
-    position: absolute; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.30) 15%, rgba(255,255,255,.30) 85%, transparent);
-    box-shadow: 0 2px 6px rgba(0,0,0,.4);
-  }
-  .rope.red { background: linear-gradient(90deg, transparent, rgba(216,35,42,.7) 15%, rgba(216,35,42,.7) 85%, transparent); height: 4px; }
-  .rope.t1 { top: 9%; }  .rope.t2 { top: 14%; } .rope.t3 { top: 19%; }
-  .rope.b1 { bottom: 9%; } .rope.b2 { bottom: 14%; } .rope.b3 { bottom: 19%; }
-  .corner {
-    position: absolute; width: 130px; height: 16px;
-    background: linear-gradient(90deg, var(--red), var(--red-deep));
-    border-radius: 999px;
-    box-shadow: 0 0 22px rgba(216,35,42,.55);
-  }
-  .corner.tl { top: 26px; left: -34px;  transform: rotate(45deg); }
-  .corner.tr { top: 26px; right: -34px; transform: rotate(-45deg); }
-  .corner.bl { bottom: 26px; left: -34px;  transform: rotate(-45deg); }
-  .corner.br { bottom: 26px; right: -34px; transform: rotate(45deg); }
-
   .spark {
     position: absolute; color: var(--red-glow);
     animation: twinkle 2.6s ease-in-out infinite;
@@ -66,30 +47,69 @@
   .spark.w { color: rgba(255,255,255,.92); text-shadow: 0 0 10px rgba(255,255,255,.7); }
   @keyframes twinkle { 0%,100% { opacity: .15; transform: scale(.8) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(20deg);} }
 
-  /* ----- app frame ----- */
+  /* ----- boxing ring frame（チャットを囲むリング） ----- */
+  .ring-wrap {
+    position: relative; z-index: 1;
+    width: min(625px, 98vw);
+    height: min(885px, 96vh);
+    height: min(885px, 96dvh); /* モバイルのアドレスバー分を除いた実表示域 */
+    padding: 38px;
+  }
+  /* 三段ロープ（赤・白・赤） */
+  .rope-line { position: absolute; pointer-events: none; border-radius: 12px; z-index: 2; }
+  .rope-line.f1 { inset: 5px;  border: 4px solid var(--red);  box-shadow: 0 0 16px rgba(216,35,42,.55); }
+  .rope-line.f2 { inset: 17px; border: 4px solid #f2efea;     box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+  .rope-line.f3 { inset: 29px; border: 4px solid var(--red); }
+  /* コーナーポスト（ターンバックルパッド） */
+  .post {
+    position: absolute; width: 54px; height: 54px; z-index: 3;
+    background: radial-gradient(circle at 35% 30%, #ff6b70, var(--red) 55%, var(--red-deep));
+    border: 4px solid #fff;
+    border-radius: 15px;
+    transform: rotate(45deg);
+    box-shadow: 0 4px 14px rgba(0,0,0,.55), 0 0 20px rgba(216,35,42,.45);
+  }
+  .post::after {
+    content: ''; position: absolute; inset: 9px;
+    border: 2px dashed rgba(255,255,255,.65);
+    border-radius: 8px;
+  }
+  .post.tl { top: -11px; left: -11px; }
+  .post.tr { top: -11px; right: -11px; }
+  .post.bl { bottom: -11px; left: -11px; }
+  .post.br { bottom: -11px; right: -11px; }
+
+  /* ----- app frame（リングのキャンバス） ----- */
   .app {
     position: relative; z-index: 1;
-    width: min(540px, 96vw);
-    height: min(800px, 94vh);
-    height: min(800px, 94dvh); /* モバイルのアドレスバー分を除いた実表示域 */
+    width: 100%;
+    height: 100%;
     display: flex; flex-direction: column;
     background: var(--white);
-    border-radius: 24px;
+    border-radius: 18px;
     border: 3px solid var(--ink);
-    box-shadow: 0 0 0 6px rgba(216,35,42,.55), 0 24px 60px rgba(0,0,0,.7);
+    box-shadow: 0 24px 60px rgba(0,0,0,.7);
     overflow: hidden;
   }
-  /* スマホは全画面レイアウトにして入力欄の見切れを防ぐ */
+  /* スマホもリング枠を維持しつつ全画面レイアウト */
   @media (max-width: 600px) {
     body { align-items: stretch; justify-content: stretch; }
-    .app {
+    .ring-wrap {
       width: 100vw;
       height: 100vh;
       height: 100dvh;
-      border-radius: 0;
-      border: none;
-      box-shadow: none;
+      padding: 22px 14px;
     }
+    .rope-line.f1 { inset: 3px;  border-width: 3px; }
+    .rope-line.f2 { inset: 10px; border-width: 3px; }
+    .rope-line.f3 { inset: 17px; border-width: 3px; }
+    .post { width: 36px; height: 36px; border-width: 3px; border-radius: 10px; }
+    .post::after { inset: 6px; border-radius: 5px; }
+    .post.tl { top: -8px; left: -8px; }
+    .post.tr { top: -8px; right: -8px; }
+    .post.bl { bottom: -8px; left: -8px; }
+    .post.br { bottom: -8px; right: -8px; }
+    .app { border-radius: 12px; border-width: 2.5px; box-shadow: none; }
     .record { font-size: 10.5px; letter-spacing: .05em; }
     .chips { padding: 6px 10px; gap: 6px; }
     .chip { font-size: 12px; padding: 6px 10px; }
@@ -340,16 +360,6 @@
 <body>
 
 <div class="deco" aria-hidden="true">
-  <div class="rope t1"></div>
-  <div class="rope red t2"></div>
-  <div class="rope t3"></div>
-  <div class="rope b1"></div>
-  <div class="rope red b2"></div>
-  <div class="rope b3"></div>
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
   <span class="spark"   style="top:12%; left:10%; font-size:20px;">✦</span>
   <span class="spark w" style="top:22%; right:9%;  font-size:14px; animation-delay:.6s;">✧</span>
   <span class="spark"   style="top:64%; left:6%;  font-size:16px; animation-delay:1.2s;">✦</span>
@@ -357,6 +367,15 @@
   <span class="spark"   style="top:42%; right:4%;  font-size:13px; animation-delay:1.8s;">✧</span>
   <span class="spark w" style="top:35%; left:3%;  font-size:18px; animation-delay:.9s;">✦</span>
 </div>
+
+<div class="ring-wrap">
+  <div class="rope-line f1" aria-hidden="true"></div>
+  <div class="rope-line f2" aria-hidden="true"></div>
+  <div class="rope-line f3" aria-hidden="true"></div>
+  <div class="post tl" aria-hidden="true"></div>
+  <div class="post tr" aria-hidden="true"></div>
+  <div class="post bl" aria-hidden="true"></div>
+  <div class="post br" aria-hidden="true"></div>
 
 <div class="app">
   <header>
@@ -396,6 +415,7 @@
 
   <footer>※このAIはファンメイドのパロディです。八重樫東さん本人・大橋ボクシングジムとは関係ありません。<br>
   アバターはオリジナルイラストです（フリーライセンスの本人写真が確認できないため自作）。</footer>
+</div>
 </div>
 
 <script src="knowledge.js"></script>
