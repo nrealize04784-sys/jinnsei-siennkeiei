@@ -81,6 +81,34 @@
   }
   @keyframes twinkle { 0%,100% { opacity: .2; transform: scale(.8) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(20deg);} }
 
+  /* ----- side photo panels (chat外の人物ビジュアル / デスクトップのみ) ----- */
+  .side-figs { display: none; }
+  @media (min-width: 1040px) {
+    .side-figs {
+      position: fixed; z-index: 1;
+      top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 18px;
+      width: min(300px, 24vw);
+    }
+    .side-figs.left  { left: max(16px, calc(50% - 270px - min(300px, 24vw) - 28px)); }
+    .side-figs.right { right: max(16px, calc(50% - 270px - min(300px, 24vw) - 28px)); }
+    .fig {
+      margin: 0;
+      background: rgba(255,255,255,.82);
+      border: 3px solid rgba(255,255,255,.95);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 14px 38px rgba(110,11,24,.4), 0 3px 10px rgba(255,107,53,.25);
+    }
+    .fig img { width: 100%; display: block; }
+    .fig figcaption {
+      text-align: center; font-size: 12px; font-weight: 700;
+      color: var(--white);
+      padding: 7px 8px;
+      background: linear-gradient(90deg, var(--crimson-deep), var(--crimson) 70%, var(--flame-deep));
+    }
+  }
+
   /* ----- app frame ----- */
   .app {
     position: relative; z-index: 1;
@@ -128,6 +156,7 @@
     overflow: hidden;
   }
   .avatar svg { width: 100%; height: 100%; display: block; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
   .title { line-height: 1.25; }
   .title h1 { font-size: 18px; font-weight: 900; letter-spacing: .02em; }
   .title p { font-size: 11px; opacity: .92; font-weight: 500; }
@@ -165,6 +194,7 @@
     background: #fff;
   }
   .profile-photo svg { width: 100%; height: 100%; display: block; }
+  .profile-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
   .profile-card h2 {
     font-size: 17px; font-weight: 900;
     background: linear-gradient(90deg, var(--crimson), var(--flame-deep) 70%, var(--gold));
@@ -267,6 +297,14 @@
     padding: 0 10px 8px; background: rgba(255,255,255,.85);
   }
 </style>
+<script>
+  /* 静的<img>のonerrorはパース中に発火し得るので、フォールバックを早期定義しておく */
+  function figFallback(el) {
+    el.onerror = null;
+    var aside = el.closest('.side-figs');
+    if (aside) aside.style.display = 'none';
+  }
+</script>
 </head>
 <body>
 
@@ -298,6 +336,19 @@
   <span class="spark" style="top:36%; left:3%;  font-size:20px; animation-delay:.9s;">✧</span>
 </div>
 
+<aside class="side-figs left" aria-hidden="true">
+  <figure class="fig">
+    <img src="inoue-ohashi.jpg" alt="井上尚弥選手と大橋会長" onerror="figFallback(this)">
+    <figcaption>井上尚弥 &amp; 大橋会長</figcaption>
+  </figure>
+</aside>
+<aside class="side-figs right" aria-hidden="true">
+  <figure class="fig">
+    <img src="ohashi.jpg" alt="大橋秀行 会長" onerror="figFallback(this)">
+    <figcaption>大橋秀行 会長</figcaption>
+  </figure>
+</aside>
+
 <div class="app">
   <header>
     <div class="avatar" id="header-avatar"></div>
@@ -328,8 +379,8 @@
     <button id="send">送信🥊</button>
   </div>
 
-  <footer>※本アプリは大橋秀行氏非公式のファンメイドAIです。本人・大橋ボクシングジムとは関係ありません。<br>
-  アバターは実在人物の写真を使用しないオリジナルイラスト（赤いフェニックス）です。</footer>
+  <footer>※本アプリは大橋秀行氏非公式のファンメイドAIです。会話内容は本人の発言ではありません。<br>
+  掲載写真は許諾を得て使用しています。</footer>
 </div>
 
 <script src="knowledge.js"></script>
@@ -391,7 +442,15 @@ const AVATAR_SVG = `
   <!-- eye -->
   <circle cx="48" cy="34" r="1.4" fill="#4a0a12"/>
 </svg>`;
-function avatarHTML() { return AVATAR_SVG; }
+/* アバターは ①リポジトリ内の会長写真(ohashi.jpg) → ②失敗時はフェニックスSVG にフォールバック */
+const PHOTO_LOCAL = 'ohashi.jpg';
+function avatarHTML() {
+  return `<img src="${PHOTO_LOCAL}" alt="大橋会長" onerror="avFallback(this)">`;
+}
+function avFallback(el) {
+  el.onerror = null;
+  el.parentElement.innerHTML = AVATAR_SVG;
+}
 document.getElementById('header-avatar').innerHTML = avatarHTML();
 document.getElementById('profile-avatar').innerHTML = avatarHTML();
 
