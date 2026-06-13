@@ -47,6 +47,20 @@
   .spark.w { color: rgba(255,255,255,.92); text-shadow: 0 0 10px rgba(255,255,255,.7); }
   @keyframes twinkle { 0%,100% { opacity: .15; transform: scale(.8) rotate(0deg);} 50% { opacity: 1; transform: scale(1.15) rotate(20deg);} }
 
+  /* ----- リング左右の本人写真（デスクトップのみ・背景切り抜きPNG前提） ----- */
+  .ring-side {
+    position: fixed; top: 50%; z-index: 0;
+    transform: translateY(-50%);
+    max-height: 76vh;
+    max-width: 24vw;
+    pointer-events: none;
+    filter: drop-shadow(0 22px 34px rgba(0,0,0,.7)) drop-shadow(0 0 26px rgba(216,35,42,.25));
+  }
+  .ring-side.left  { right: calc(50% + 292px); transform: translateY(-50%) rotate(-2.5deg); }
+  .ring-side.right { left:  calc(50% + 292px); transform: translateY(-50%) rotate(2.5deg); }
+  /* スマホ・狭い画面ではリングとその内側のチャットだけを表示 */
+  @media (max-width: 1120px) { .ring-side { display: none; } }
+
   /* ----- boxing ring frame（チャットを囲むリング） ----- */
   .ring-wrap {
     position: relative; z-index: 1;
@@ -368,6 +382,9 @@
   <span class="spark w" style="top:35%; left:3%;  font-size:18px; animation-delay:.9s;">✦</span>
 </div>
 
+<img class="ring-side left"  src="side-left.png"  alt="" aria-hidden="true" onerror="this.style.display='none'">
+<img class="ring-side right" src="side-right.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+
 <div class="ring-wrap">
   <div class="rope-line f1" aria-hidden="true"></div>
   <div class="rope-line f2" aria-hidden="true"></div>
@@ -414,7 +431,7 @@
   </div>
 
   <footer>※このAIはファンメイドのパロディです。八重樫東さん本人・大橋ボクシングジムとは関係ありません。<br>
-  アバターはオリジナルイラストです（フリーライセンスの本人写真が確認できないため自作）。</footer>
+  アバター・リング横の写真は運営者提供の素材です（写真未設定時はオリジナルイラストを表示）。</footer>
 </div>
 </div>
 
