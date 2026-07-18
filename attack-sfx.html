@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成したRPG攻撃効果音8種（味方4・敵4）。必殺技は5幕構成、リングモッド・歪みパワーコード・エコー搭載。" />
+<meta name="description" content="Web Audioでリアルタイム合成したRPG攻撃効果音8種（味方4・敵4）。敵は貯め→超重低音着弾のボス級SE。" />
 <title>攻撃の効果音 | Battle SFX</title>
 </head>
 <body>
@@ -170,9 +170,13 @@
     if(cutTo)f.frequency.exponentialRampToValueAtTime(Math.max(cutTo,20),t+dur);
     f.Q.value=q;
     const e=ctx.createGain();
-    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a);
-    if(env==='hold'){ e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
-    else e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    e.gain.setValueAtTime(.0001,t);
+    if(env==='swell'){ e.gain.linearRampToValueAtTime(g,t+dur*.85); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else {
+      e.gain.exponentialRampToValueAtTime(g,t+a);
+      if(env==='hold'){ e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+      else e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    }
     let head=o; if(sat){ const ws=shaper(sat); o.connect(ws); head=ws; }
     head.connect(f); f.connect(e); route(e,{pan,rs,rl,de});
     o.start(t); o.stop(t+dur+.06);
@@ -197,17 +201,24 @@
     ratios.forEach((r,i)=> tone(t,dur*(1-.5*i/ratios.length),
       {wave:'sine',f0:base*r,f1:base*r*.985,g:g/(1+i*.7),det:(Math.random()*2-1)*5,a:.002,cut:12000,...o}));
   }
-  function fm(t,dur,{cf=90,mf=61,idx=250,g=.2,f1=null,cut=900,pan=0,rs=0,rl=0,de=0}={}){
+  function fm(t,dur,{cf=90,mf=61,idx=250,g=.2,f1=null,cut=900,env='perc',pan=0,rs=0,rl=0,de=0}={}){
     const c=ctx.createOscillator(); c.type='sine'; c.frequency.setValueAtTime(cf,t);
     if(f1)c.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
     const m=ctx.createOscillator(); m.type='sine'; m.frequency.setValueAtTime(mf,t);
     const mg=ctx.createGain(); mg.gain.value=idx; m.connect(mg); mg.connect(c.frequency);
     const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut;
     const e=ctx.createGain();
-    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.02);
-    e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    e.gain.setValueAtTime(.0001,t);
+    if(env==='swell'){ e.gain.linearRampToValueAtTime(g,t+dur*.85); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { e.gain.exponentialRampToValueAtTime(g,t+.02); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
     c.connect(f); f.connect(e); route(e,{pan,rs,rl,de});
     c.start(t); m.start(t); c.stop(t+dur+.05); m.stop(t+dur+.05);
+  }
+  // MEGA sub — twin saturated low layers + thump transient. The boss-weight foundation.
+  function megasub(t,f0,f1,dur,g,satA=4){
+    tone(t,dur,{wave:'sine',f0,f1,g,a:.003,cut:1200,sat:satA,rs:.1});
+    tone(t,dur*.8,{wave:'triangle',f0:f0*1.01,f1:f1*1.02,g:g*.5,a:.004,cut:700,sat:satA*.75});
+    nz(t,.03,{type:'lowpass',cut:1400,q:.7,g:g*.5});
   }
   // ring modulation — metallic scream/impact (carrier × sine modulator)
   function rmod(t,dur,{f0=800,f1=120,m0=137,m1=90,g=.3,cut=4200,sat=0,pan=0,rs=0,rl=0,de=0}={}){
@@ -286,56 +297,70 @@
       for(let i=0;i<6;i++) blip(ti+.3+i*rnd(.05,.09), 1800*Math.pow(.72,i), .06);
       fm(ti,.9,{cf:42,mf:28,idx:110,g:.22,cut:280,rl:.3});
     },
-    // 🦷 牙 — vicious double snap → saturated crunch → aggressive growl
+    // 🦷 牙 — 貯め:唸りが膨らみ顎がきしむ → 噛み1 → 本命の噛み2(骨まで砕く重低音)
     e_bite(t){ const v=V();
-      [[0,.5],[.11,.62]].forEach(([o,g])=>{
-        nz(t+o,.03,{type:'bandpass',cut:900*v,q:8,g});
-        nz(t+o+.005,.025,{type:'bandpass',cut:2800*v,q:6,g:g*.7,pan:.1});
-        nz(t+o+.008,.02,{type:'highpass',cut:5200,q:1,g:g*.5});                              // enamel click
-        subhit(t+o,160,68,.09,.32,2.5);
-      });
-      nz(t+.13,.15,{type:'lowpass',cut:1200,cutTo:280,q:.8,g:.45,sat:4,rs:.2});               // crunch
-      fm(t+.13,.26,{cf:92*v,mf:63,idx:350,g:.34,cut:750,rl:.15});                             // growl
+      fm(t,.42,{cf:70*v,mf:48,idx:260,g:.3,cut:500,env:'swell',rl:.2});                        // growl swells
+      tone(t+.05,.35,{wave:'sawtooth',f0:180*v,f1:420,g:.07,sat:2,ftype:'bandpass',cut:900,cutTo:1600,q:3,env:'swell'}); // jaw creaks open
+      nz(t+.3,.13,{type:'lowpass',cut:700,cutTo:1600,q:.8,g:.3});                              // lunge!
+      const t1=t+.46;                                                                           // snap 1
+      nz(t1,.03,{type:'bandpass',cut:850*v,q:8,g:.6}); nz(t1+.005,.025,{type:'bandpass',cut:2700,q:6,g:.4,pan:.1});
+      megasub(t1,150,45,.22,.6,3.5);
+      const t2=t+.62;                                                                           // snap 2 — the kill bite
+      nz(t2,.035,{type:'bandpass',cut:750*v,q:8,g:.8}); nz(t2+.005,.03,{type:'bandpass',cut:2500,q:6,g:.55,pan:-.1});
+      nz(t2+.008,.02,{type:'highpass',cut:5200,q:1,g:.4});
+      megasub(t2,130,28,.5,.95,4.5);                                                            // bone-crushing sub
+      nz(t2+.02,.2,{type:'lowpass',cut:1200,cutTo:250,q:.8,g:.55,sat:4,rs:.25});                // flesh crunch
+      fm(t2+.05,.4,{cf:60,mf:41,idx:300,g:.3,cut:450,rl:.2});                                   // satisfied growl
     },
-    // ☠️ 毒ビーム — spit! → menace drone + beating fall + bubbles + acid sizzle
+    // ☠️ 毒ビーム — 貯め:大釜の泡が加速+喉の奥で毒が煮える → 重い毒砲発射
     e_poison(t){ const v=V();
-      nz(t,.04,{type:'highpass',cut:2600,q:1,g:.42});                                         // spit attack
-      fm(t,.45,{cf:55*v,mf:38,idx:180,g:.2,cut:420,rl:.2});                                   // menace drone
-      nz(t+.02,.4,{type:'bandpass',cut:2400,cutTo:900,q:1,g:.16,rs:.2});                      // spray
-      tone(t+.03,.42,{duty:.5,f0:660*v,f1:160,g:.15,vib:35,vr:8.5,cut:2300,rl:.25});          // sinister fall
-      tone(t+.03,.42,{duty:.5,f0:667*v,f1:165,g:.11,vib:35,vr:7.5,cut:2300,pan:.2,rl:.25});   // beating pair
-      for(let i=0;i<9;i++) blip(t+.06+i*rnd(.03,.05), rnd(260,520), .08);                     // bubbling
-      nz(t+.3,.32,{type:'highpass',cut:5200,cutTo:8500,q:.6,g:.07,rl:.4});                    // acid sizzle
+      fm(t,.5,{cf:48*v,mf:33,idx:200,g:.32,cut:380,env:'swell',rl:.2});                         // menace swells
+      let tt=0; for(let i=0;i<8;i++){ blip(t+tt, rnd(120,260), .1); tt+=.07*Math.pow(.86,i); }  // accelerating gurgle
+      nz(t,.5,{type:'bandpass',cut:500,cutTo:2200,q:2,g:.15});                                  // pressure rising
+      const tf=t+.52;                                                                            // FIRE
+      nz(tf,.05,{type:'highpass',cut:2400,q:1,g:.5});                                            // spit crack
+      megasub(tf,110,38,.45,.8,4);                                                               // heavy launch boom
+      tone(tf,.5,{wave:'sawtooth',f0:300*v,f1:90,g:.22,sat:3,cut:1400,vib:40,vr:7,rl:.3,de:.2}); // toxic cannon (falling, heavy)
+      tone(tf,.5,{duty:.5,f0:604*v,f1:150,g:.12,vib:35,vr:8.5,cut:2200,pan:.2,rl:.25});          // venom whine above
+      nz(tf,.45,{type:'lowpass',cut:1800,cutTo:400,q:.9,g:.3,sat:2,rs:.2});                      // spray body
+      for(let i=0;i<7;i++) blip(tf+.08+i*rnd(.04,.06), rnd(200,420), .09);                       // splatter
+      nz(tf+.35,.35,{type:'highpass',cut:4800,cutTo:8500,q:.6,g:.08,rl:.4});                     // acid burn
     },
-    // 🦶 重い一撃 — air → colossal saturated sub + slam + crack → aftershock → rubble + rumble
+    // 🦶 重い一撃 — 貯め:足が持ち上がり大地が震える → 静寂 → 破滅の着地＋余震×2＋地震
     e_stomp(t){ const v=V();
-      nz(t,.06,{type:'lowpass',cut:500,q:.6,g:.22});                                          // air push
-      const ti=t+.05;
-      subhit(ti,100*v,26,.6,.85,4.5);                                                          // colossal sub
-      rmod(ti,.14,{f0:300*v,f1:60,m0:80,m1:50,g:.3,cut:1800,sat:3});                           // gritty slam tone
-      nz(ti,.13,{type:'lowpass',cut:1000,cutTo:240,q:.7,g:.6,sat:2.5});                        // ground slam
-      nz(ti+.02,.05,{type:'bandpass',cut:3200,q:2,g:.18});                                     // surface crack
-      subhit(ti+.28,140,30,.3,.35,3.5);                                                        // aftershock
-      for(let i=0;i<6;i++) nz(ti+.1+i*rnd(.045,.075),.05,
-        {type:'bandpass',cut:rnd(500,1600),q:4,g:.11*(1-i/8),pan:rnd(-.6,.6),rs:.3});          // rubble
-      fm(ti,.6,{cf:46,mf:30,idx:130,g:.24,cut:300,rl:.3});                                     // earth rumble
+      tone(t,.5,{wave:'sawtooth',f0:60,f1:200*v,g:.12,sat:2,cut:600,cutTo:1400,env:'swell',rl:.2}); // foot rises
+      nz(t,.5,{type:'lowpass',cut:300,cutTo:900,q:1,g:.18});                                     // air gathers
+      fm(t,.5,{cf:40,mf:27,idx:90,g:.22,cut:250,env:'swell'});                                   // ground trembles
+      const ti=t+.58;                                                                             // (80ms hush) → LANDFALL
+      nz(ti,.05,{type:'highpass',cut:3800,q:.8,g:.4});                                            // crack
+      megasub(ti,90*v,22,.75,1.0,5);                                                              // COLOSSAL 22Hz sub
+      rmod(ti,.16,{f0:280*v,f1:50,m0:75,m1:45,g:.4,cut:1600,sat:3.5});                            // gritty slam
+      nz(ti,.16,{type:'lowpass',cut:1000,cutTo:200,q:.7,g:.7,sat:3});                             // ground slam
+      megasub(ti+.3,120,26,.4,.5,4);                                                              // aftershock 1
+      megasub(ti+.55,100,24,.35,.35,4);                                                           // aftershock 2
+      for(let i=0;i<7;i++) nz(ti+.12+i*rnd(.05,.08),.05,
+        {type:'bandpass',cut:rnd(400,1400),q:4,g:.12*(1-i/9),pan:rnd(-.6,.6),rs:.3});             // rubble
+      fm(ti,1.1,{cf:38,mf:25,idx:140,g:.3,cut:240,rl:.35});                                       // long earthquake
     },
-    // 🐲 咆哮 — intake → twin saturated roar + scream layer + chest growl + breath → echoing off
+    // 🐲 咆哮・必殺 — 貯め:深い息吸い+震える大地+踏み込みの一歩 → 地獄の咆哮＋衝撃波×2
     e_roar(t){ const v=V();
-      fm(t,.16,{cf:120*v,mf:83,idx:340,g:.16,cut:900,f1:175});                                 // intake
-      const tr=t+.14;
-      tone(tr,.72,{wave:'sawtooth',f0:135*v,f1:96,g:.16,sat:3.5,ftype:'bandpass',cut:430,cutTo:1000,q:1.5,vib:30,vr:5,rl:.35,de:.25});   // roar A
-      tone(tr,.72,{wave:'sawtooth',f0:137*v,f1:97,g:.13,sat:3.5,ftype:'bandpass',cut:460,cutTo:1050,q:1.5,vib:30,vr:4.2,pan:.15,rl:.35,de:.25}); // roar B
-      tone(tr+.05,.5,{wave:'sawtooth',f0:420*v,f1:250,g:.11,sat:2.5,ftype:'bandpass',cut:1300,cutTo:2500,q:2,vib:40,vr:6,pan:-.1,rl:.35}); // scream layer
-      fm(tr,.72,{cf:76*v,mf:51,idx:280,g:.22,f1:58,cut:620,rl:.3});                            // chest growl
-      nz(tr,.68,{type:'bandpass',cut:420,cutTo:1050,q:1.2,g:.22,sat:2,rl:.35});                // breath rasp
-      subhit(tr+.05,92,40,.55,.42,3);                                                           // sub floor
-      subhit(tr+.55,125,34,.3,.5,3.5);                                                          // final slam
+      nz(t,.4,{type:'bandpass',cut:1400,cutTo:500,q:1.5,g:.2});                                   // deep inhale
+      fm(t,.5,{cf:55,mf:37,idx:200,g:.3,cut:350,env:'swell',rl:.2});                              // earth trembles
+      megasub(t+.42,110,40,.2,.5,3.5);                                                             // step BOOM
+      const tr=t+.58;                                                                              // ROAR
+      tone(tr,.9,{wave:'sawtooth',f0:110*v,f1:78,g:.2,sat:4,ftype:'bandpass',cut:380,cutTo:950,q:1.5,vib:35,vr:4.8,rl:.35,de:.3});   // roar A (deeper)
+      tone(tr,.9,{wave:'sawtooth',f0:112*v,f1:80,g:.16,sat:4,ftype:'bandpass',cut:400,cutTo:1000,q:1.5,vib:35,vr:4,pan:.15,rl:.35,de:.3}); // roar B
+      tone(tr+.06,.6,{wave:'sawtooth',f0:400*v,f1:230,g:.12,sat:2.5,ftype:'bandpass',cut:1300,cutTo:2600,q:2,vib:45,vr:6,pan:-.1,rl:.35}); // scream
+      fm(tr,.9,{cf:62*v,mf:42,idx:320,g:.3,f1:48,cut:520,rl:.3});                                  // chest growl
+      nz(tr,.85,{type:'bandpass',cut:400,cutTo:1000,q:1.2,g:.26,sat:2.5,rl:.35});                  // rasp
+      megasub(tr,80,34,.8,.6,4);                                                                    // sub floor
+      megasub(tr+.42,130,30,.35,.55,4);                                                             // mid-roar shockwave
+      megasub(tr+.85,110,26,.4,.7,4.5);                                                             // final slam
     }
   };
   const POP={a_slash:'⚡',a_punch:'💢',a_beam:'✨',a_special:'💥',e_bite:'🩸',e_poison:'☠️',e_stomp:'💥',e_roar:'💢'};
-  const HEAVY={a_punch:'shake',a_special:'megashake',e_stomp:'megashake',e_roar:'shake',e_bite:'shake'};
-  const DELAY={a_slash:60,a_punch:10,a_beam:210,a_special:620,e_bite:10,e_poison:30,e_stomp:50,e_roar:140};
+  const HEAVY={a_punch:'shake',a_special:'megashake',e_bite:'megashake',e_poison:'shake',e_stomp:'megashake',e_roar:'megashake'};
+  const DELAY={a_slash:60,a_punch:10,a_beam:210,a_special:620,e_bite:620,e_poison:520,e_stomp:580,e_roar:580};
 
   const volEl=document.getElementById('vol');
   const arena=document.getElementById('arena');
