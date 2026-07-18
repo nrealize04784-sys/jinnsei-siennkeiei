@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成したRPG勝利ファンファーレ『戦闘勝利！』。駆け上がる歓喜のランと積み重ねた大団円。ポケモンの精神を継承。" />
+<title>戦闘勝利！ | Victory Fanfare</title>
+</head>
+<body>
+<style>
+  :root{ --gold:#ffd24a; --gold-deep:#c9971e; --ink:#fff8e6; --dim:#b39b62; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(100% 80% at 50% -10%, #3a2f10 0%, transparent 55%),
+      radial-gradient(90% 70% at 50% 120%, #2e1f08 0%, transparent 55%),
+      linear-gradient(180deg,#171208,#0e0b05 60%,#141005);
+    color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:min(560px,100%);text-align:center;position:relative;
+    border:1px solid rgba(255,210,74,.35);border-radius:20px;
+    background:linear-gradient(180deg,rgba(42,33,14,.94),rgba(20,15,6,.97));
+    box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,230,150,.15);
+    padding:34px 28px 32px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;opacity:.9}
+  h1{font-size:clamp(28px,6.5vw,44px);font-weight:800;letter-spacing:.1em;margin:6px 0 2px;
+    background:linear-gradient(180deg,#fff,#ffd24a 60%,#e8a92c);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(255,210,74,.25)}
+  .sub{color:var(--dim);font-size:13px;letter-spacing:.22em;margin-bottom:24px}
+  .stage{position:relative;height:150px;margin-bottom:22px}
+  .trophy{font-size:92px;line-height:1;display:inline-block;margin-top:16px;
+    filter:drop-shadow(0 0 26px rgba(255,210,74,.5));user-select:none}
+  .stage.playing .trophy{animation:bounce .55s cubic-bezier(.3,1.6,.4,1) 2}
+  @keyframes bounce{0%{transform:scale(1)}30%{transform:scale(1.25) rotate(-5deg)}60%{transform:scale(.95) rotate(4deg)}100%{transform:scale(1)}}
+  .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .confetti i{position:absolute;top:-14%;font-style:normal;font-size:18px;opacity:0}
+  .stage.playing .confetti i{animation:fall 2.4s ease-in forwards}
+  @keyframes fall{0%{opacity:0;transform:translateY(0) rotate(0)}12%{opacity:1}100%{opacity:.15;transform:translateY(170px) rotate(300deg)}}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:14px;
+    padding:18px 40px;font-size:17px;font-weight:800;letter-spacing:.12em;color:#241703;
+    background:linear-gradient(180deg,#ffe58a,#f2b93a);
+    box-shadow:0 12px 30px rgba(242,185,58,.45),inset 0 1px 0 rgba(255,255,255,.6);
+    transition:transform .12s,filter .2s}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  button:active{transform:translateY(1px)}
+  .vol{margin-top:20px;color:var(--dim);font-size:12px;display:flex;gap:8px;align-items:center;justify-content:center}
+  input[type=range]{accent-color:var(--gold);width:130px}
+  .hint{margin-top:20px;color:#8a7548;font-size:12px;line-height:1.8}
+</style>
+
+<div class="card">
+  <div class="tag">◆ Victory Fanfare ◆</div>
+  <h1>戦闘勝利！</h1>
+  <div class="sub">VICTORY! &nbsp;—&nbsp; "Triumph"</div>
+
+  <div class="stage" id="stage">
+    <div class="confetti" id="confetti"></div>
+    <span class="trophy">🏆</span>
+  </div>
+
+  <button id="play">▶ 勝利！</button>
+  <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="78"></div>
+
+  <div class="hint">
+    Web Audioでリアルタイム合成した勝利ファンファーレです（音源ファイルなし・約4.5秒）。<br>
+    「タ・タ・タ・ターン！」→ 高らかなフレーズ → 輝く終止和音の3部構成。何度でも鳴らせます。
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, rev;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+
+  const _pw={};
+  function pulseWave(duty){
+    const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16, real=new Float32Array(N), imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
+  }
+  function impulse(dur,decay){
+    const len=Math.max(1,Math.floor(ctx.sampleRate*dur)), buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=buf.getChannelData(c);
+      for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay); }
+    return buf;
+  }
+  function init(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*1.2;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-15; comp.knee.value=22; comp.ratio.value=3.2; comp.attack.value=.004; comp.release.value=.2;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    master.connect(comp); comp.connect(limiter); limiter.connect(ctx.destination);
+    rev=ctx.createConvolver(); rev.buffer=impulse(1.6,2.6);          // concert-hall shine
+    const rOut=ctx.createGain(); rOut.gain.value=.85; rev.connect(rOut); rOut.connect(master);
+  }
+  function route(n,{pan=0,rl=0}={}){
+    let tail=n;
+    if(ctx.createStereoPanner){ const p=ctx.createStereoPanner(); p.pan.value=pan; n.connect(p); tail=p; }
+    tail.connect(master);
+    if(rl){ const s=ctx.createGain(); s.gain.value=rl; n.connect(s); s.connect(rev); }
+  }
+  function tone(t,dur,{wave='square',duty=null,f0=440,f1=null,det=0,vib=0,vr=6,g=.15,a=.006,r=.08,
+                       cut=6000,env='hold',pan=0,rl=0}={}){
+    const o=ctx.createOscillator();
+    if(duty!=null)o.setPeriodicWave(pulseWave(duty)); else o.type=wave;
+    o.frequency.setValueAtTime(Math.max(f0,1),t);
+    if(f1)o.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
+    if(det)o.detune.setValueAtTime(det,t);
+    if(vib){ const l=ctx.createOscillator(),lg=ctx.createGain();
+      l.frequency.value=vr; lg.gain.value=vib; l.connect(lg); lg.connect(o.detune); l.start(t); l.stop(t+dur+.05); }
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=1.1;
+    const e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a);
+    if(env==='hold'){ e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(f); f.connect(e); route(e,{pan,rl});
+    o.start(t); o.stop(t+dur+.06);
+  }
+  function nz(t,dur,{type='highpass',cut=6000,q=.8,g=.2,pan=0,rl=0}={}){
+    const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const e=ctx.createGain(); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(e); route(e,{pan,rl});
+    n.start(t); n.stop(t+dur+.02);
+  }
+  function timpani(t,freq,g=.6){
+    const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08);
+    e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    o.connect(e); route(e,{rl:.2}); o.start(t); o.stop(t+.55);
+  }
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const hz=n=>{ const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);
+    const s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);
+    return 440*Math.pow(2,(12*(+m[3]+1)+s-69)/12); };
+
+  // brass-like lead: 25% pulse + triangle body + faint octave shimmer
+  function brass(t,dur,note,{g=.2,vib=0,pan=0}={}){
+    const f=hz(note);
+    tone(t,dur,{duty:.25,f0:f,g,det:5,vib,vr:5.5,cut:5200,pan,rl:.3});
+    tone(t,dur,{wave:'triangle',f0:f,g:g*.4,cut:2800,pan,rl:.2});
+    tone(t,dur*.96,{duty:.125,f0:f*2,g:g*.16,cut:6500,pan:pan*.5,rl:.35});
+  }
+  function chord(t,dur,notes,{g=.09,duty=.125}={}){
+    notes.forEach((n,i)=> tone(t,dur,{duty,f0:hz(n),g,det:(i-1)*4,cut:4200,pan:(i-(notes.length-1)/2)*.22,rl:.25}));
+  }
+  const bass=(t,dur,note,g=.22)=> tone(t,dur,{wave:'triangle',f0:hz(note),g,cut:1000,rl:.08});
+  const cymbal=(t,g=.22)=> nz(t,.7,{type:'highpass',cut:7000,q:.7,g,rl:.4});
+  const snare=(t,g=.15)=>{ nz(t,.12,{type:'highpass',cut:2200,q:1,g,rl:.15});
+    tone(t,.07,{wave:'triangle',f0:200,g:g*.5,cut:1200,env:'perc'}); };
+
+  // ---------- the fanfare (C major, ~4.6s) ----------
+  const BPM=150, S=60/BPM/4;
+  function playFanfare(){
+    if(!ctx) init();
+    if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*1.2, ctx.currentTime);
+    const t0=ctx.currentTime+0.06;
+    const at=n=>t0+n*S;
+
+    // — 第1部: タ・タ・タ・ターン！(勢いよく叩き込む) —
+    [0,2,4].forEach(p=>{
+      chord(at(p),1.5*S,['G4','C5','E5'],{g:.16});
+      brass(at(p),1.5*S,'G5',{g:.22});
+      brass(at(p),1.5*S,'G4',{g:.1});                            // octave-down power
+      snare(at(p),.2);
+    });
+    // 着地：Cメジャーを豪快に
+    timpani(at(6),hz('C2'),.9); cymbal(at(6),.4);
+    chord(at(6),6*S,['C5','E5','G5','C6'],{g:.14});
+    brass(at(6),6*S,'C6',{g:.3,vib:9});
+    bass(at(6),6*S,'C2',.34); snare(at(6),.22);
+
+    // — 第2部: 駆け上がる歓喜のラン (fast ascending run) —
+    const run=['C5','D5','E5','F5','G5','A5','B5','C6'];
+    run.forEach((n,i)=>{ brass(at(12+i),1.6*S,n,{g:.17+i*.012}); if(i%2===0) snare(at(12+i),.12); });
+    chord(at(12),4*S,['F4','A4','C5'],{g:.09}); chord(at(16),4*S,['G4','B4','D5'],{g:.09});
+    bass(at(12),4*S,'F2',.28); bass(at(16),4*S,'G2',.28);
+
+    // — 第3部: 輝かしい大団円 (big triumphant finale) —
+    timpani(at(20),hz('C2'),1); cymbal(at(20),.5);
+    chord(at(20),18*S,['C5','E5','G5','C6','E6'],{g:.1});         // full stacked chord
+    brass(at(20),18*S,'C6',{g:.34,vib:12});
+    brass(at(20),18*S,'E6',{g:.16,vib:12,pan:.35});              // shining upper harmony
+    brass(at(20),18*S,'G5',{g:.14,vib:10,pan:-.35});
+    bass(at(20),4*S,'C2',.36); bass(at(24),4*S,'G2',.32); bass(at(28),10*S,'C2',.36);
+    for(let i=0;i<12;i++) snare(at(21+i*.9), .07+.018*i);        // building roll
+    timpani(at(30),hz('C2'),.85); cymbal(at(30),.5); snare(at(30),.3);  // final stinger
+    chord(at(30),8*S,['C5','E5','G5','C6'],{g:.13});
+    for(let i=0;i<14;i++) tone(t0+(20+rnd(0,13))*S,.14,          // sparkle burst
+      {wave:'sine',f0:rnd(2400,6200),g:.07,a:.003,env:'perc',cut:9500,pan:rnd(-.7,.7),rl:.5});
+
+    // visuals
+    stage.classList.remove('playing'); void stage.offsetWidth; stage.classList.add('playing');
+    setTimeout(()=>stage.classList.remove('playing'), 2600);
+  }
+
+  // confetti
+  const stage=document.getElementById('stage');
+  const conf=document.getElementById('confetti');
+  const EMO=['🎉','✨','⭐','🎊','💛'];
+  for(let i=0;i<16;i++){ const s=document.createElement('i');
+    s.textContent=EMO[i%EMO.length];
+    s.style.left=(4+(i*6.1)%92)+'%';
+    s.style.animationDelay=(i%8*0.12)+'s';
+    conf.appendChild(s); }
+
+  const volEl=document.getElementById('vol');
+  document.getElementById('play').addEventListener('click', playFanfare);
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*1.2; });
+})();
+</script>
+
+</body>
+</html>
