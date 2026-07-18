@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成する中ボスBGM『石の守護者、目覚める』。和太鼓＋詠唱＋ガムランの儀式トライバル。ポケモンの精神を継承。" />
+<meta name="description" content="Web Audioでリアルタイム合成する中ボスBGM『石の守護者、目覚める』。緊迫感を注入した儀式トライバル（和太鼓＋詠唱＋トレモロ弦＋脈打つ低音）。ポケモンの精神を継承。" />
 <title>石の守護者、目覚める | Dungeon Boss</title>
 </head>
 <body>
@@ -131,6 +131,7 @@
   function chant(t,n,dur,g,pan){ if(REC) REC.push({t,play:b=>_chant(b+t,n,dur,g,pan)}); else _chant(t,n,dur,g,pan); }
   function horn(t,n,dur,g,vib){ if(REC) REC.push({t,play:b=>_horn(b+t,n,dur,g,vib)}); else _horn(t,n,dur,g,vib); }
   function drone(t,n,dur,g){ if(REC) REC.push({t,play:b=>_drone(b+t,n,dur,g)}); else _drone(t,n,dur,g); }
+  function str(t,f,dur,o){ if(REC) REC.push({t,play:b=>_str(f,b+t,dur,o)}); else _str(f,t,dur,o); }
 
   function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
     const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
@@ -189,64 +190,83 @@
     const e=ctx.createGain(); e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.5); e.gain.setValueAtTime(g,t+Math.max(dur-.6,.5)); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
     o1.connect(lp);o2.connect(lp);lp.connect(e); e.connect(master); const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(revL);
     o1.start(t);o2.start(t); o1.stop(t+dur+.05);o2.stop(t+dur+.05); };
+  // generic filtered string/synth voice — for tremolo strings, pulse bass, dissonant clusters (the tension bed)
+  const _str=(freq,t,dur,{g=.05,cut=1500,det=8,a=.02,r=.1,sat=0,q=1,type='sawtooth',pan=0,rl=0}={})=>{
+    const o1=ctx.createOscillator(),o2=ctx.createOscillator(); o1.type=type;o2.type=type; o1.frequency.value=freq;o2.frequency.value=freq;o2.detune.value=det;
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=q;
+    const e=ctx.createGain(); e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a); e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    if(sat){const ws=shaper(sat);o1.connect(ws);o2.connect(ws);ws.connect(f);}else{o1.connect(f);o2.connect(f);}
+    f.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=pan;e.connect(p);p.connect(master);}else e.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;e.connect(x);x.connect(revL);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.03);o2.stop(t+dur+.03); };
 
-  // ---------- composition (A phrygian, ritual tribal, heavy groove) ----------
-  const BPM=112, S=60/BPM/4, BAR=16*S;
+  // ---------- composition (A phrygian ritual tribal — now with driving TENSION) ----------
+  const BPM=130, S=60/BPM/4, BAR=16*S;
   const CH={
-    Am:{lo:'A1', root:'A2', fifth:'E3', gam:['A4','C5','E5','C5']},
-    Bb:{lo:'A#1',root:'A#2',fifth:'F3', gam:['A#4','D5','F5','D5']},   // ♭II
-    Dm:{lo:'D2', root:'D3', fifth:'A3', gam:['D5','F5','A5','F5']}
+    Am:{lo:'A1', root:'A2', fifth:'E3', gam:['A4','C5','E5','C5'], tr:['A4','E4'], clash:'A#4'},
+    Bb:{lo:'A#1',root:'A#2',fifth:'F3', gam:['A#4','D5','F5','D5'], tr:['A#4','F4'], clash:'A4'},   // ♭II
+    Dm:{lo:'D2', root:'D3', fifth:'A3', gam:['D5','F5','A5','F5'], tr:['D5','A4'], clash:'D#5'}
   };
-  const prog=['Am','Am','Bb','Am','Dm','Bb','Am','Am'];
-  // low wailing horn melody (A phrygian: A Bb C D E F G) — enters section B
+  // relentless i↔♭II (Am↔Bb) hammering = the "Jaws" alarm
+  const prog=['Am','Bb','Am','Bb','Dm','Bb','Am','Bb'];
+  // agitated horn — semitone A↔Bb oscillation + rising urgency, ends unresolved on the ♭2
   const melody=[
-    ['A4',8],['C5',4],['A4',4],
-    ['A#4',8],['A4',8],           // ♭2 sigh
-    ['D5',4],['C5',4],['A#4',8],
-    ['A4',4],['G4',4],['A4',8],
-    ['D5',8],['F5',6],['E5',2],
-    ['A#4',4],['D5',4],['C5',8],
-    ['A4',4],['C5',4],['A#4',4],['A4',4],
-    ['A4',8],['E4',8]
+    ['A4',4],['A#4',4],['A4',4],['C5',4],
+    ['A#4',4],['A4',4],['A#4',4],['D5',4],
+    ['C5',4],['A#4',4],['A4',4],['G4',4],
+    ['A4',4],['E4',4],['A4',8],
+    ['D5',4],['F5',4],['E5',4],['D5',4],
+    ['A#4',4],['D5',4],['F5',4],['A#4',4],
+    ['C5',4],['A#4',4],['A4',4],['C5',4],
+    ['A#4',4],['A4',4],['A#4',8]
   ];
 
-  // TAIKO groove (16 steps) — syncopated tribal, intensity 0..2 adds layers
+  // driving taiko — busier, galloping, with 16th fills
   function taikoBar(base, root, lvl){
-    const lo=[0,3,8,11], mid=[4,6,12,14];
-    for(const p of lo)  taiko(base+p*S, 74, 0.85);
-    for(const p of mid) taiko(base+p*S, 132, 0.5);
-    for(let i=0;i<16;i+=2) shake(base+i*S, .1);
-    if(lvl>=1){ taiko(base+7*S,132,.4); taiko(base+15*S,132,.45); for(let i=1;i<16;i+=2) shake(base+i*S,.06); }
-    if(lvl>=2){ for(const p of [2,5,10,13]) taiko(base+p*S, 98, .4); if(Math.random()<.5){ taiko(base+14.5*S,132,.4); taiko(base+15.5*S,150,.5);} } // fills
-    taiko(base, mf(midi(CH[root].lo)), .5); // low pitched accent on the downbeat root
-  }
+    for(const p of [0,3,6,8,11,14]) taiko(base+p*S, 72, .82);        // rolling low booms
+    for(const p of [2,4,10,12])     taiko(base+p*S, 130, .5);        // mid drive
+    for(let i=0;i<16;i++) shake(base+i*S, i%2?.06:.1);              // 16th shakers = urgency
+    taiko(base, mf(midi(CH[root].lo)), .5);
+    if(lvl>=1){ for(const p of [5,13]) taiko(base+p*S,110,.42); }
+    if(lvl>=2){ for(const p of [1,7,9,15]) taiko(base+p*S,150,.4);   // 16th fills
+      taiko(base+14*S,130,.4); taiko(base+14.5*S,150,.5); taiko(base+15*S,170,.6); taiko(base+15.5*S,190,.7); } }
+  // pulsing low ostinato = racing heartbeat (never stops)
+  function pulseBass(root, base){ const f=mf(midi(CH[root].lo)+12);
+    for(let i=0;i<16;i+=2) str(base+i*S, f, 2*S*0.85, {g:.11, cut:520, det:3, a:.004, r:.05, sat:2, type:'sawtooth'}); }
+  // tremolo strings — the cinematic "danger" shimmer (16th tremolo on chord tones)
+  function tremStr(root, base, g){ const c=CH[root].tr;
+    for(let i=0;i<16;i++){ const n=c[i%2]; str(base+i*S, hz(n), S*0.95, {g:g||.03, cut:1900, det:10, a:.004, r:.03, q:1.2, pan:(i%2?.3:-.3), rl:.3}); } }
+  // dissonant minor-2nd cluster grinding underneath (root + ♭II clash)
+  function clusterBar(root, base, g){ str(base, hz(CH[root].root), BAR*0.98, {g:g||.04, cut:1300, det:8, a:.15, r:.4, rl:.5, pan:-.2});
+    str(base, hz(CH[root].clash), BAR*0.98, {g:(g||.04)*.8, cut:1300, det:8, a:.2, r:.4, rl:.5, pan:.2}); }
   function gamelanBar(root, base){ const cell=CH[root].gam;
     for(let i=0;i<16;i++){ if(i%2===0 || i%4===1) gam(base+i*S, cell[i%4], .07, (i%2?.4:-.4)); } }
-  function chantBar(root, base, g){ const c=CH[root];
-    chant(base, c.root, BAR*0.98, g||.06, -.25); chant(base, c.fifth, BAR*0.98, (g||.06)*.8, .25);
-    // ritual accent "hah" on beats 2 & 4
-    chant(base+4*S, c.root, 2*S, (g||.06)*1.4, 0); chant(base+12*S, c.fifth, 2*S, (g||.06)*1.4, 0); }
-  function seqHorn(base){ let acc=0; for(const [n,d] of melody){ horn(base+acc*S, n, d*S*0.94, .17, 14); acc+=d; } }
+  function chantDrone(root, base, g){ const c=CH[root];
+    chant(base, c.root, BAR*0.98, g||.05, -.25); chant(base, c.fifth, BAR*0.98, (g||.05)*.8, .25); }
+  function chantStab(root, base, g){ const c=CH[root];   // aggressive "hah! hah!" rhythmic stabs
+    for(const p of [0,3,6,8,11,14]) chant(base+p*S, c.root, 1.6*S, g||.06, rnd(-.15,.15)); }
+  function seqHorn(base, gg){ let acc=0; for(const [n,d] of melody){ horn(base+acc*S, n, d*S*0.9, gg||.18, 16); acc+=d; } }
 
   function sectionA(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=prog[b];
-    drone(bt, CH[ch].lo, BAR*0.99, .05); taikoBar(bt, ch, 0); gamelanBar(ch, bt); chantBar(ch, bt, .05); }
+    drone(bt, CH[ch].lo, BAR*0.99, .05); pulseBass(ch,bt); taikoBar(bt, ch, 0); tremStr(ch,bt,.026); gamelanBar(ch, bt); chantDrone(ch, bt, .05); }
     gong(base, .4); }
   function sectionB(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=prog[b];
-    drone(bt, CH[ch].lo, BAR*0.99, .06); taikoBar(bt, ch, 1); gamelanBar(ch, bt); chantBar(ch, bt, .06); }
-    gong(base, .45); seqHorn(base); }
+    drone(bt, CH[ch].lo, BAR*0.99, .06); pulseBass(ch,bt); taikoBar(bt, ch, 1); tremStr(ch,bt,.036); clusterBar(ch,bt,.035); gamelanBar(ch, bt); chantStab(ch, bt, .055); }
+    gong(base, .45); seqHorn(base, .18); }
   function sectionC(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=prog[b];
-    drone(bt, CH[ch].lo, BAR*0.99, .06); taikoBar(bt, ch, 2); gamelanBar(ch, bt); chantBar(ch, bt, .075); }
-    gong(base, .55); seqHorn(base); }
+    drone(bt, CH[ch].lo, BAR*0.99, .06); pulseBass(ch,bt); taikoBar(bt, ch, 2); tremStr(ch,bt,.046); clusterBar(ch,bt,.045); gamelanBar(ch, bt); chantStab(ch, bt, .07); }
+    gong(base, .55); seqHorn(base, .2); }
 
   const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
   function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); sectionC(base+16*BAR); }
   function scheduleIntro(base){
-    // the statue awakens: huge gong + rising chant swell + a slow taiko heartbeat building
+    // tense awakening: gong + rising tremolo strings (accelerating) + accelerating taiko + creeping pulse → hit
     gong(base, .6); drone(base, 'A1', 4*BAR*0.98, .06);
-    chant(base, 'A2', 4*BAR*0.97, .05, -.2); chant(base, 'E3', 4*BAR*0.97, .045, .2);
-    for(let b=0;b<4;b++){ taiko(base+b*BAR, 74, .4+b*.15); taiko(base+b*BAR+8*S, 74, .3+b*.12);
-      for(let i=0;i<(b+1)*2;i++) shake(base+b*BAR+i*(BAR/((b+1)*2)), .05+b*.02); }
-    gong(base+3*BAR, .5); taiko(base+4*BAR, 74, .9); taiko(base+4*BAR,132,.6);
+    for(let i=0;i<Math.floor(4*BAR/S);i++){ const t=base+i*S; str(t, hz('A4'), S*0.95, {g:.01+.03*(i/(4*BAR/S)), cut:1700, det:10, a:.004, r:.03, q:1.3, pan:(i%2?.3:-.3), rl:.3}); } // crescendo tremolo
+    chant(base, 'A2', 4*BAR*0.97, .05, -.2); chant(base+2*BAR, 'A#2', 2*BAR*0.97, .05, .2);   // drone shifts up a semitone = unease
+    let acc=0, gap=1.4; for(let b=0;b<4;b++){ for(let k=0;k<(b+1)*2;k++){ taiko(base+acc*S, 72, .35+b*.13); acc+=Math.max(gap*Math.pow(.86,b),0.5); } }  // accelerating taiko
+    for(let i=0;i<8;i++) str(base+3*BAR+i*2*S, hz('A3'), 2*S*0.85, {g:.06, cut:500, det:3, a:.004, r:.05, sat:2}); // pulse creeps in bar4
+    gong(base+3*BAR, .5); taiko(base+4*BAR, 72, .95); taiko(base+4*BAR,150,.7);
     return 4*BAR;
   }
 
