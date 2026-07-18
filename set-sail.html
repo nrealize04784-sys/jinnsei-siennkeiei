@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する出航シーンのBGM『船出、大海原へ』。6/8の波に揺られるロール＋波・風・カモメ・号鐘。ポケモンの精神を継承。" />
+<title>船出、大海原へ | Setting Sail</title>
+</head>
+<body>
+<style>
+  :root{ --sky:#8fd0f0; --sea:#1f6fb0; --sea2:#0d3d66; --gold:#ffcf6b; --foam:#eaf6ff; --ink:#eaf4ff; --dim:#9fb8cc; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(120% 80% at 50% -10%, #ffe6a8 0%, transparent 40%),
+      radial-gradient(100% 70% at 50% 120%, #0a2c4a 0%, transparent 55%),
+      linear-gradient(180deg,#8fd0f0 0%,#bfe6ff 30%,#4f9fd0 55%,#12507f 100%);
+    color:var(--ink);font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .deck{width:min(660px,100%);position:relative;border:1px solid rgba(234,246,255,.5);border-radius:22px;
+    background:linear-gradient(180deg,rgba(240,250,255,.16),rgba(10,50,90,.5));
+    box-shadow:0 30px 70px rgba(10,50,90,.45), inset 0 1px 0 rgba(255,255,255,.4);
+    padding:28px 26px 30px;overflow:hidden;backdrop-filter:blur(3px)}
+  .tag{font-size:11px;letter-spacing:.42em;color:var(--gold);text-transform:uppercase;text-align:center;opacity:.95}
+  h1{text-align:center;font-size:clamp(28px,7vw,46px);font-weight:800;letter-spacing:.08em;margin:4px 0 2px;
+    color:#fff;text-shadow:0 2px 0 rgba(20,80,127,.5),0 0 26px rgba(255,207,107,.35)}
+  .subtitle{text-align:center;color:#d6ecff;font-size:13px;letter-spacing:.22em;margin-bottom:20px}
+  .scene{position:relative;height:200px;border-radius:16px;overflow:hidden;border:1px solid rgba(234,246,255,.4);
+    background:linear-gradient(180deg,#9fd8f5 0%,#cfeaff 42%,#3f8fc0 46%,#0d3d66 100%);margin-bottom:20px}
+  .sun{position:absolute;top:24px;left:50%;transform:translateX(-50%);font-size:44px;filter:drop-shadow(0 0 22px rgba(255,200,90,.8))}
+  .cloud{position:absolute;font-size:32px;opacity:.9;top:20px;left:-60px}
+  .cloud.b{top:44px;font-size:24px;opacity:.75}
+  .scene.playing .cloud{animation:drift 30s linear infinite}
+  .scene.playing .cloud.b{animation:drift 40s linear infinite;animation-delay:-10s}
+  @keyframes drift{from{transform:translateX(-70px)}to{transform:translateX(720px)}}
+  .gull{position:absolute;font-size:16px;opacity:.85;top:34%;left:20%}
+  .gull.b{top:26%;left:64%}
+  .scene.playing .gull{animation:fly 9s ease-in-out infinite}
+  .scene.playing .gull.b{animation:fly 12s ease-in-out infinite;animation-delay:-4s}
+  @keyframes fly{0%{transform:translate(0,0)}50%{transform:translate(60px,-16px)}100%{transform:translate(140px,4px);opacity:0}}
+  .ship{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);font-size:64px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
+  .scene.playing .ship{animation:rock 3s ease-in-out infinite}
+  @keyframes rock{0%,100%{transform:translateX(-50%) rotate(-4deg) translateY(0)}50%{transform:translateX(-52%) rotate(4deg) translateY(-6px)}}
+  .wavesvg{position:absolute;left:0;right:0;bottom:0;height:60px;opacity:.5}
+  .viz{position:absolute;inset:auto 0 0 0;height:38px;display:flex;align-items:flex-end;gap:3px;padding:0 10px;opacity:.5}
+  .viz i{flex:1;background:linear-gradient(180deg,#eaf6ff,#3f8fc0);border-radius:3px 3px 0 0;height:2px;transition:height .1s ease}
+  .controls{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:13px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.1em;
+    color:#0a3555;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#ffe6a8,#f2c04a);box-shadow:0 10px 26px rgba(200,150,40,.35),inset 0 1px 0 rgba(255,255,255,.7)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.05)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#9fd6ff,#3f8fc0);color:#fff}
+  .vol{display:flex;align-items:center;gap:8px;color:#cfe6f5;font-size:12px}
+  input[type=range]{accent-color:var(--gold);width:120px}
+  .status{text-align:center;font-size:12px;color:var(--gold);letter-spacing:.22em;height:16px;margin-top:12px;opacity:0;transition:opacity .3s}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#cfe6f5;font-size:12px;margin-top:16px;letter-spacing:.03em;line-height:1.8}
+</style>
+
+<div class="deck">
+  <div class="tag">◇ Setting Sail ◇</div>
+  <h1>船出、大海原へ</h1>
+  <div class="subtitle">SETTING SAIL &nbsp;—&nbsp; "To the Open Sea"</div>
+
+  <div class="scene" id="scene">
+    <div class="sun">🌅</div>
+    <div class="cloud">☁️</div><div class="cloud b">☁️</div>
+    <div class="gull">🕊️</div><div class="gull b">🕊️</div>
+    <div class="ship">⛵</div>
+    <svg class="wavesvg" viewBox="0 0 660 60" preserveAspectRatio="none"><path d="M0,30 Q55,10 110,30 T220,30 T330,30 T440,30 T550,30 T660,30 V60 H0 Z" fill="#0d3d66"/></svg>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 出航する</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="78"></div>
+  </div>
+  <div class="status" id="status">♪ 錨をあげて ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する出航シーンのBGMです（音源ファイルなし）。<br>
+    6/8の波に揺られるロール＋打ち寄せる波・風・カモメ・号鐘。ニ長調で大海原へ漕ぎ出します。
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.82;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-16; comp.knee.value=26; comp.ratio.value=2.8; comp.attack.value=.006; comp.release.value=.26;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(2.2,2.4); const l=ctx.createGain(); l.gain.value=.85; revL.connect(l); l.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.3; const dOut=ctx.createGain(); dOut.gain.value=.32;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function bell(t,n,g){ if(REC) REC.push({t,play:b=>_bell(b+t,n,g)}); else _bell(t,n,g); }
+  function wave(t,g,pan){ if(REC) REC.push({t,play:b=>_wave(b+t,g,pan)}); else _wave(t,g,pan); }
+  function wind(t,dur,g){ if(REC) REC.push({t,play:b=>_wind(b+t,dur,g)}); else _wind(t,dur,g); }
+  function gull(t){ if(REC) REC.push({t,play:b=>_gull(b+t)}); else _gull(t); }
+  function drum(t,g){ if(REC) REC.push({t,play:b=>_drum(b+t,g)}); else _drum(t,g); }
+
+  function _voice(freq,t,dur,{wave:w='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.18,
+                              cut=3400,ftype='lowpass',q=1,pan=0,rl=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const ww=pulseWave(duty);o1.setPeriodicWave(ww);o2.setPeriodicWave(ww);}else{o1.type=w;o2.type=w;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest,cutTo){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.setValueAtTime(cut,t); if(cutTo)f.frequency.linearRampToValueAtTime(cutTo,t+dur); f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); return {n,gn}; }
+  const _bell=(t,note,g=.12)=>{ const f0=hz(note);
+    [[1,1],[2.76,.4],[5.4,.18]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+1.8*(1-.1*r));
+      o.connect(e); e.connect(master); const x=ctx.createGain(); x.gain.value=.5; e.connect(x); x.connect(revL); const y=ctx.createGain(); y.gain.value=.3; e.connect(y); y.connect(fxIn); o.start(t); o.stop(t+1.9); }); };
+  // WAVE wash — lowpass noise that swells in and rolls out (a wave against the hull)
+  const _wave=(t,g=.12,pan=0)=>{ const dur=2.4; const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*dur),ctx.sampleRate); const dd=buf.getChannelData(0);
+    for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.setValueAtTime(300,t); f.frequency.linearRampToValueAtTime(1400,t+dur*.4); f.frequency.linearRampToValueAtTime(240,t+dur); f.Q.value=.7;
+    const e=ctx.createGain(); e.gain.setValueAtTime(.0001,t); e.gain.linearRampToValueAtTime(g,t+dur*.45); e.gain.linearRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=pan;e.connect(p);p.connect(master);}else e.connect(master);
+    const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(revL); n.start(t); n.stop(t+dur+.05); };
+  // WIND — long airy bed
+  const _wind=(t,dur,g=.03)=>{ const {gn}=_noise(t,dur,'bandpass',700,.6,g); };
+  // GULL — a seabird cry: swoop up then down with a warble
+  const _gull=(t)=>{ const o=ctx.createOscillator(); o.type='triangle'; const f0=rnd(1500,2100);
+    o.frequency.setValueAtTime(f0*.8,t); o.frequency.exponentialRampToValueAtTime(f0*1.4,t+.12); o.frequency.exponentialRampToValueAtTime(f0*.7,t+.4);
+    const lfo=ctx.createOscillator(); lfo.frequency.value=18; const lg=ctx.createGain(); lg.gain.value=40; lfo.connect(lg); lg.connect(o.detune);
+    const e=ctx.createGain(); e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(.05,t+.05); e.gain.setValueAtTime(.05,t+.28); e.gain.exponentialRampToValueAtTime(.0001,t+.45);
+    const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=2000; bp.Q.value=2;
+    o.connect(bp); bp.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=rnd(-.7,.7);e.connect(p);p.connect(master);}else e.connect(master);
+    const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(revL); const y=ctx.createGain(); y.gain.value=.3; e.connect(y); y.connect(fxIn);
+    o.start(t); lfo.start(t); o.stop(t+.5); lfo.stop(t+.5); };
+  // soft hand drum (bodhrán-ish) — warm, no metal
+  const _drum=(t,g=.3)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(120,t); o.frequency.exponentialRampToValueAtTime(70,t+.09);
+    e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.001,t+.16); o.connect(e); e.connect(master); const x=ctx.createGain(); x.gain.value=.2; e.connect(x); x.connect(revL); o.start(t); o.stop(t+.18);
+    _noise(t,.03,'bandpass',900,.8,g*.25); };
+
+  // ---------- composition (D major, rolling 6/8 sea shanty) ----------
+  const DQ=84, S=60/DQ/3, BAR=6*S;   // S = one eighth; bar = 6 eighths (6/8)
+  const CH={
+    D:  {b:'D2',  pad:['D3','F#3','A3'],   arp:['D3','A3','F#4']},
+    A:  {b:'A1',  pad:['A2','C#3','E3'],   arp:['A2','E3','C#4']},
+    Bm: {b:'B1',  pad:['B2','D3','F#3'],   arp:['B2','F#3','D4']},
+    'F#m':{b:'F#1',pad:['F#2','A2','C#3'], arp:['F#2','C#3','A3']},
+    G:  {b:'G1',  pad:['G2','B2','D3'],    arp:['G2','D3','B3']},
+    Em: {b:'E2',  pad:['E3','G3','B3'],    arp:['E3','B3','G4']},
+    B7: {b:'B1',  pad:['B2','D#3','F#3','A3'], arp:['B2','F#3','D#4']}   // V7/ii — the bittersweet farewell
+  };
+  const progA=['D','A','Bm','F#m','G','B7','Em','A'];
+  const progB=['G','A','F#m','Bm','G','A','D','D'];
+
+  // whistle melody (durations in EIGHTHS; bar=6). MELODY is the star.
+  const melA=[
+    ['A4',3],['D5',2],['F#5',1],
+    ['E5',3],['C#5',3],
+    ['D5',2],['F#5',2],['B5',2],
+    ['A5',3],['F#5',3],
+    ['G5',2],['E5',2],['D5',2],
+    ['D#5',3],['B4',3],           // B7 color note (bittersweet)
+    ['E5',2],['G5',2],['B5',2],
+    ['A5',2],['E5',2],['C#5',2]
+  ];
+  const melB=[
+    ['B5',3],['A5',3],
+    ['A5',2],['C#6',2],['E6',2],
+    ['D6',3],['A5',3],
+    ['B5',2],['D6',2],['F#5',2],
+    ['G5',3],['B5',3],
+    ['C#6',3],['A5',3],
+    ['D6',2],['A5',2],['F#5',2],
+    ['D5',6]
+  ];
+
+  function seqMel(list, base, {g=.18, horn=false}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S;
+      voice(hz(n), t, d*S*0.92, {duty:.25, g, cut:4200, det:5, vib:8, vr:5, a:.02, d:.06, s:.85, r:.1, pan:.05, rl:.3, de:.14}); // tin whistle
+      voice(hz(n), t, d*S*0.9,  {wave:'triangle', g:g*.4, cut:2400, det:3, a:.02, s:.8, r:.1, pan:.05}); // body
+      if(horn) voice(mf(midi(n)-12), t, d*S*0.9, {duty:.25, g:g*.45, cut:2600, det:6, a:.03, s:.8, r:.12, pan:-.1, rl:.3}); // horn octave below
+      acc+=d; } }
+  function stringsBar(root, base, g){ for(const n of CH[root].pad){
+    voice(hz(n), base, BAR*0.99, {wave:'sawtooth', g:g||.04, det:11, vib:5, vr:4, cut:1800, a:.12, d:.2, s:.9, r:.25, rl:.5, pan:rnd(-.25,.25)});
+    voice(hz(n), base, BAR*0.99, {wave:'triangle', g:(g||.04)*.7, det:5, cut:2200, a:.12, s:.9, r:.25, rl:.35}); } }
+  function mandoBar(root, base){ const c=CH[root].arp;   // rolling 6/8 arpeggio (wave rocking)
+    for(let beat=0;beat<2;beat++){ for(let k=0;k<3;k++){ const i=beat*3+k;
+      voice(hz(c[k]), base+i*S, S*0.8, {duty:.5, g:.05, cut:2800, det:2, a:.004, d:.05, s:.3, r:.05, pan:(k-1)*.3}); } } }
+  function bassBar(root, base){ const rm=midi(CH[root].b);
+    voice(mf(rm), base, 3*S*0.9, {wave:'triangle', g:.16, cut:900, det:3, a:.01, d:.1, s:.7, r:.12});      // beat 1 root
+    voice(mf(rm+7), base+3*S, 2*S*0.9, {wave:'triangle', g:.12, cut:900, det:3, a:.01, d:.1, s:.6, r:.1}); // beat 2 fifth
+    voice(mf(rm+12), base+5*S, S*0.8, {wave:'triangle', g:.09, cut:900, det:3, a:.01, s:.5, r:.06}); }     // pickup
+  function drumBar(base, soft){ drum(base, soft?.22:.3); drum(base+3*S, soft?.16:.22);
+    _noise(base+3*S, .04, 'highpass', 7000, .7, .04); } // soft shaker on beat 2
+
+  function ambient(base, dense){
+    if(base%(2*BAR)<S) wave(base+rnd(0,3)*S, .12, rnd(-.5,.5));  // a wave every ~2 bars
+    if(Math.random()<(dense?.5:.3)) gull(base+rnd(1,5)*S);
+  }
+
+  function sectionA(base){ wind(base, 8*BAR, .028);
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progA[b];
+      bassBar(ch,bt); stringsBar(ch,bt,.038); mandoBar(ch,bt); drumBar(bt,true); wave(bt+3*S,.09,(b%2?.4:-.4)); if(Math.random()<.3) gull(bt+rnd(1,5)*S); }
+    seqMel(melA, base, {g:.18}); }
+  function sectionB(base){ wind(base, 8*BAR, .03);
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progB[b];
+      bassBar(ch,bt); stringsBar(ch,bt,.05); mandoBar(ch,bt); drumBar(bt,false); wave(bt+3*S,.1,(b%2?.4:-.4)); if(Math.random()<.4) gull(bt+rnd(1,5)*S); }
+    seqMel(melB, base, {g:.19, horn:true}); }
+
+  const BODY_BARS=16, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); }
+  function scheduleIntro(base){
+    // the departure: ship's bell (ding-ding) + wind + a big wave + a horn call to weigh anchor
+    wind(base, 4*BAR, .035);
+    bell(base, 'D5', .16); bell(base+1.2*BAR, 'A5', .14);      // ship's bell
+    wave(base+0.5*BAR, .16, -.3); wave(base+2.2*BAR, .16, .3);
+    gull(base+1.4*BAR); gull(base+2.8*BAR);
+    for(const n of ['D3','F#3','A3','D4']) voice(hz(n), base+2*BAR, 2*BAR*0.95, {wave:'sawtooth', g:.05, det:12, cut:1500, a:.4, s:.9, r:.5, rl:.5}); // string swell
+    // horn "weigh anchor!" call
+    [['A4',3],['D5',3],['F#5',6]].reduce((acc,[n,d])=>{ voice(hz(n), base+2*BAR+acc*S, d*S*0.9, {duty:.25, g:.16, cut:3400, det:6, vib:8, a:.03, s:.85, r:.2, pan:.05, rl:.35, de:.15}); return acc+d; }, 0);
+    drum(base+4*BAR-3*S,.26); drum(base+4*BAR-2*S,.28); drum(base+4*BAR-S,.3);
+    return 4*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.35; let guard=0;
+    while(guard++<5000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.82, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    loopBase=t0+introLen; evIdx=0; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停泊'; playBtn.classList.add('playing');
+    scene.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.4); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.82; },440);
+    playBtn.textContent='▶ 出航する'; playBtn.classList.remove('playing');
+    scene.classList.remove('playing'); statusEl.classList.remove('on');
+    bars.forEach(b=>b.style.height='2px');
+  }
+
+  const scene=document.getElementById('scene');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  const N=40, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*36).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.82; });
+})();
+</script>
+
+</body>
+</html>
