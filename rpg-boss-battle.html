@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成するRPGボス戦BGM『魔王との決戦』。ゲームボーイPSG風の可変デューティ矩形波・アルペジオ・ノイズ打楽器を用いたオリジナル楽曲。" />
+<meta name="description" content="Web Audioでリアルタイム合成するRPGボス戦BGM『魔王との決戦』。GB風の可変デューティ矩形波、ツーファイブ終止、秩序→混沌→大秩序のダイナミクス、独立した鳴き声SFXを実装。" />
 <title>魔王との決戦 | RPG Boss Battle Theme</title>
 </head>
 <body>
@@ -109,6 +109,13 @@
   .hint{text-align:center;color:var(--dim);font-size:12px;margin-top:16px;letter-spacing:.05em;line-height:1.7}
   .status{text-align:center;font-size:12px;color:var(--gold);letter-spacing:.2em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s}
   .status.on{opacity:1}
+  .cries{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .crylabel{font-size:12px;color:var(--cyan);letter-spacing:.12em}
+  .chip{padding:8px 14px;font-size:12px;font-weight:700;letter-spacing:.06em;border-radius:9px;
+    background:rgba(57,230,255,.08);border:1px solid rgba(57,230,255,.35);color:#bff4ff;
+    box-shadow:none;font-variant-numeric:tabular-nums}
+  .chip:hover{transform:translateY(-1px);filter:none;background:rgba(57,230,255,.16)}
+  .chip:active{transform:translateY(1px)}
 </style>
 
 <div class="cabinet">
@@ -135,16 +142,26 @@
   </div>
   <div class="status" id="status">♪ NOW PLAYING ♪</div>
 
+  <div class="cries">
+    <span class="crylabel">🐾 鳴き声SFX</span>
+    <button class="chip" data-cry="17">No.001</button>
+    <button class="chip" data-cry="149">No.025</button>
+    <button class="chip" data-cry="613">No.094</button>
+    <button class="chip" data-cry="888">No.151</button>
+    <button class="chip" id="cryRand">🎲 ランダム</button>
+  </div>
+
   <div class="hint">
     Web Audio API でリアルタイム合成しているオリジナルBGMです（音源ファイルなし）。<br>
-    「戦闘開始」で再生・停止／「こうげき」で魔王のHPを削れます。
+    「戦闘開始」で再生・停止／「こうげき」で魔王のHPを削れます。<br>
+    鳴き声SFXはBGMとは独立して鳴らせます（1つの基本波形をシード違いでピッチ変化）。
   </div>
 </div>
 
 <script>
 (() => {
   // ---------- audio core ----------
-  let ctx, master, comp, analyser, freqData;
+  let ctx, master, bus, comp, analyser, freqData;
   const NOTES = {C:0,D:2,E:4,F:5,G:7,A:9,B:11};
   const midi = n => {
     const m = /^([A-G])(#|b)?(-?\d)$/.exec(n);
@@ -157,13 +174,17 @@
     ctx = new (window.AudioContext||window.webkitAudioContext)();
     master = ctx.createGain();
     master.gain.value = volEl.value/100 * 0.9;
+    // dynamics-arc bus: the BGM routes through here so its level can breathe
+    // (秩序→混沌→大いなる秩序→回帰). Cries bypass it and go straight to master.
+    bus = ctx.createGain();
+    bus.gain.value = 0.8;
     comp = ctx.createDynamicsCompressor();
     comp.threshold.value=-14; comp.knee.value=26; comp.ratio.value=3.4;
     comp.attack.value=.004; comp.release.value=.22;
     analyser = ctx.createAnalyser();
     analyser.fftSize = 128;
     freqData = new Uint8Array(analyser.frequencyBinCount);
-    master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+    bus.connect(master); master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
   }
 
   // Game Boy-style pulse (square) wave with variable duty cycle.
@@ -197,7 +218,7 @@
     g.gain.exponentialRampToValueAtTime(Math.max(sus,0.0001), t+a+d);
     g.gain.setValueAtTime(Math.max(sus,0.0001), t+Math.max(dur-r,a+d));
     g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
-    o1.connect(f); o2.connect(f); f.connect(g); g.connect(master);
+    o1.connect(f); o2.connect(f); f.connect(g); g.connect(bus);
     o1.start(t); o2.start(t); o1.stop(t+dur+.02); o2.stop(t+dur+.02);
   }
 
@@ -206,9 +227,9 @@
     const o=ctx.createOscillator(), g=ctx.createGain();
     o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(45,t+.12);
     g.gain.setValueAtTime(.9,t); g.gain.exponentialRampToValueAtTime(.001,t+.18);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+.2);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t+.2);
   }
-  function noiseBurst(t, dur, cut, q, gain, hp=false){
+  function noiseBurst(t, dur, cut, q, gain, hp=false, dest){
     const n=ctx.createBufferSource();
     const buf=ctx.createBuffer(1, ctx.sampleRate*dur, ctx.sampleRate);
     const dd=buf.getChannelData(0);
@@ -217,27 +238,37 @@
     const f=ctx.createBiquadFilter(); f.type=hp?'highpass':'bandpass'; f.frequency.value=cut; f.Q.value=q;
     const g=ctx.createGain();
     g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
-    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
+    n.connect(f); f.connect(g); g.connect(dest||bus); n.start(t); n.stop(t+dur+.02);
   }
   const snare = t => { noiseBurst(t,.18,1800,1.2,.5,true);
     const o=ctx.createOscillator(),g=ctx.createGain(); o.type='triangle';
     o.frequency.setValueAtTime(190,t); g.gain.setValueAtTime(.3,t); g.gain.exponentialRampToValueAtTime(.001,t+.1);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+.12); };
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t+.12); };
   const hat  = (t,open=false) => noiseBurst(t, open?.12:.04, 9000, .8, open?.22:.28, true);
   function timpani(freq,t){
     const o=ctx.createOscillator(), g=ctx.createGain();
     o.type='sine'; o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08);
     g.gain.setValueAtTime(.7,t); g.gain.exponentialRampToValueAtTime(.001,t+.5);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+.55);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t+.55);
   }
 
   // ---------- composition ----------
   const BPM=152, S=60/BPM/4;           // one sixteenth in seconds
   const BAR=16*S;
-  // progression: Dm - Bb - C - A(maj/harmonic)  (i VI VII V)
-  const bassRoots=['D2','A#1','C2','A1'];
-  const padChords=[['D3','F3','A3'],['A#2','D3','F3'],['C3','E3','G3'],['A2','C#3','E3']];
-  const arpCells =[['D3','F3','A3','D4'],['A#2','D3','F3','A#3'],['C3','E3','G3','C4'],['A2','C#3','E3','A3']];
+  // chord dictionary — bass root, pad voicing, and 4-note arpeggio cell per chord
+  const CH = {
+    Dm:    {bass:'D2',  pad:['D3','F3','A3'],       arp:['D3','F3','A3','D4']},
+    Bb:    {bass:'A#1', pad:['A#2','D3','F3'],      arp:['A#2','D3','F3','A#3']},
+    C:     {bass:'C2',  pad:['C3','E3','G3'],       arp:['C3','E3','G3','C4']},
+    A:     {bass:'A1',  pad:['A2','C#3','E3'],      arp:['A2','C#3','E3','A3']},
+    // two-five turnaround chords (B-section): ii°7 and dominant-7 of D minor
+    Em7b5: {bass:'E2',  pad:['E3','G3','A#3','D4'], arp:['E3','G3','A#3','D4']},
+    A7:    {bass:'A1',  pad:['A2','C#3','E3','G3'], arp:['A2','C#3','E3','G3']}
+  };
+  // A-section: i–VI–VII–V (smooth, shared-note movement)
+  const progA=['Dm','Bb','C','A'];
+  // B-section: i–VI–ii°–V (classic two-five cadence for a strong resolution into the loop)
+  const progB=['Dm','Bb','Em7b5','A7'];
 
   // lead melody A — driving run (each entry: note & duration in 16ths), 4 bars = 64 sixteenths
   const leadA=[
@@ -246,12 +277,14 @@
     ['E5',2],['G5',2],['C6',2],['E6',2],['D6',2],['C6',2],['A#5',2],['G5',2],
     ['E5',2],['A5',2],['C#6',2],['E6',2],['D6',4],['C#6',4]
   ];
-  // lead melody B — heroic / sustained, 4 bars
+  // lead melody B — heroic / sustained, 4 bars.
+  // bar3 outlines Em7b5 (E G Bb=A#), bar4 outlines A7 with the 7th (G) that
+  // resolves down to F on the Dm loop point — the two-five's pull.
   const leadB=[
     ['F5',8],['E5',4],['D5',4],
     ['D5',8],['C5',4],['A#4',4],
-    ['E5',4],['G5',4],['C6',8],
-    ['C#6',8],['A5',6],['A5',2]
+    ['E5',4],['G5',4],['A#5',8],
+    ['C#6',8],['A5',4],['G5',4]
   ];
 
   function seqLead(list, base){
@@ -298,30 +331,39 @@
     if(fill){ snare(base+13*S); snare(base+13.5*S); snare(base+15*S); }
   }
 
-  // schedule 4-bar section
-  function section(base, {lead, arp, pad=true, fillLast=false, heavyBass=false, walkLast=false}){
+  // schedule 4-bar section over a chord progression (array of CH keys)
+  function section(base, prog, {lead, arp, pad=true, fillLast=false, heavyBass=false, walkLast=false}){
     for(let b=0;b<4;b++){
-      const bt=base+b*BAR;
-      if(walkLast && b===3) bassWalk(bt); else bassBar(bassRoots[b], bt, heavyBass);
-      if(pad) padBar(padChords[b], bt);
-      if(arp) arpBar(arpCells[b], bt);
+      const bt=base+b*BAR, ch=CH[prog[b]];
+      if(walkLast && b===3) bassWalk(bt); else bassBar(ch.bass, bt, heavyBass);
+      if(pad) padBar(ch.pad, bt);
+      if(arp) arpBar(ch.arp, bt);
       drumBar(bt, fillLast && b===3);
     }
     if(lead==='A') seqLead(leadA, base);
     if(lead==='B') seqLead(leadB, base);
   }
 
-  // full loop body = 16 bars (A, A+arp, B, B-full)
+  // full loop body = 16 bars, shaped as an emotional arc:
+  //   秩序(thin) → 動き出す → 混沌(full) → 大いなる秩序(climax) → 回帰(reset to thin)
   const BODY_BARS=16, bodyLen=BODY_BARS*BAR;
   function scheduleBody(base){
-    section(base+0*4*BAR, {lead:'A', arp:false, heavyBass:true});
-    section(base+1*4*BAR, {lead:'A', arp:true,  heavyBass:true, fillLast:true});
-    section(base+2*4*BAR, {lead:'B', arp:true});
-    section(base+3*4*BAR, {lead:'B', arp:true,  fillLast:true, heavyBass:true, walkLast:true});
+    // dynamics-arc automation on the BGM bus — swells across the body, snaps back at the loop
+    const g=bus.gain;
+    g.setValueAtTime(0.62, base);                        // 秩序：静かに
+    g.linearRampToValueAtTime(0.82, base+4*BAR);         // 動き出す
+    g.linearRampToValueAtTime(1.02, base+8*BAR);         // 混沌：全部乗せ
+    g.linearRampToValueAtTime(1.22, base+12*BAR);        // 大いなる秩序：最大音圧へ
+    g.linearRampToValueAtTime(1.26, base+16*BAR);        // ループ点で頂点
+    // A (order, thin: no pad, light bass) → A (building, full) → B (chaos) → B (climax + two-five turnaround)
+    section(base+0*4*BAR, progA, {lead:'A', arp:false, pad:false, heavyBass:false});
+    section(base+1*4*BAR, progA, {lead:'A', arp:true,  heavyBass:true, fillLast:true});
+    section(base+2*4*BAR, progB, {lead:'B', arp:true});
+    section(base+3*4*BAR, progB, {lead:'B', arp:true,  fillLast:true, heavyBass:true, walkLast:true});
   }
   function scheduleIntro(base){
     // 2-bar ominous build
-    for(const n of padChords[0]) voice(hz(n), base, 2*BAR*0.97, {type:'triangle',gain:.07,cut:1400,a:.4,d:.4,s:.8,r:.5});
+    for(const n of CH.Dm.pad) voice(hz(n), base, 2*BAR*0.97, {type:'triangle',gain:.07,cut:1400,a:.4,d:.4,s:.8,r:.5});
     timpani(hz('D2'), base); timpani(hz('D2'), base+2*S);
     timpani(hz('D2'), base+BAR); timpani(hz('A2'), base+BAR+8*S);
     for(let i=0;i<8;i++) noiseBurst(base+BAR+ i*(BAR/8), .1, 6000, .7, .08+i*0.03, true); // rising snare roll
@@ -334,6 +376,8 @@
   function start(){
     if(!ctx) initAudio();
     if(ctx.state==='suspended') ctx.resume();
+    if(master) master.gain.setValueAtTime(volEl.value/100*0.9, ctx.currentTime);
+    if(bus){ bus.gain.cancelScheduledValues(ctx.currentTime); bus.gain.setValueAtTime(0.8, ctx.currentTime); }
     playing=true;
     const t0=ctx.currentTime+0.12;
     const introLen=scheduleIntro(t0);
@@ -361,6 +405,39 @@
     bars.forEach(b=>b.style.height='2px');
   }
 
+  // ---------- cries (independent SFX) ----------
+  // Procedural creature cry: a variable-duty pulse with a stepped, jagged pitch
+  // contour + an attack noise chirp — the Gen-1 recipe (one base shape, pitch-varied
+  // per seed to yield many distinct cries). Routed straight to master so it plays
+  // whether or not the battle theme is running.
+  function playCry(seed){
+    if(!ctx) initAudio();
+    if(ctx.state==='suspended') ctx.resume();
+    if(!playing && master) master.gain.setValueAtTime(volEl.value/100*0.9, ctx.currentTime);
+    let s=(Math.abs(seed|0)%9973)+7;
+    const rnd=()=>{ s=(s*9301+49297)%233280; return s/233280; };
+    const t0=ctx.currentTime+0.03;
+    const duty=[.125,.25,.5][Math.floor(rnd()*3)];
+    const g=ctx.createGain(); g.gain.value=0.0001;
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1700+rnd()*2000; f.Q.value=3;
+    const o=ctx.createOscillator(); o.setPeriodicWave(pulseWave(duty));
+    o.connect(f); f.connect(g); g.connect(master);
+    const segs=2+Math.floor(rnd()*3);
+    let t=t0; o.frequency.setValueAtTime(140+rnd()*300, t);
+    for(let i=0;i<segs;i++){
+      const dur=0.06+rnd()*0.13;
+      o.frequency.exponentialRampToValueAtTime(110+rnd()*520, t+dur);
+      t+=dur;
+    }
+    const total=t-t0;
+    g.gain.setValueAtTime(0.0001,t0);
+    g.gain.exponentialRampToValueAtTime(0.3, t0+0.015);
+    g.gain.setValueAtTime(0.3, t0+Math.max(total-0.05,0.05));
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+total+0.02);
+    o.start(t0); o.stop(t0+total+0.05);
+    noiseBurst(t0, 0.06, 2000+rnd()*2000, 1.2, 0.16, true, master); // attack chirp
+  }
+
   // ---------- visuals ----------
   const stage=document.getElementById('stage');
   const vizEl=document.getElementById('viz');
@@ -380,6 +457,11 @@
   }
   playBtn.addEventListener('click', ()=> playing?stop():start());
   volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.9; });
+
+  // cry SFX buttons (fixed seeds = reproducible cries; 🎲 = random)
+  document.querySelectorAll('.chip[data-cry]').forEach(b=>
+    b.addEventListener('click', ()=> playCry(+b.dataset.cry)));
+  document.getElementById('cryRand').addEventListener('click', ()=> playCry(Math.floor(Math.random()*99999)+1));
 
   // ---------- HP mini-game ----------
   const hpEl=document.getElementById('hp'), hpNum=document.getElementById('hpnum');
