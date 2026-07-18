@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』。ポケモンの精神を継承（PSG矩形波・快適な音域・リミッターで歪みなし）。" />
+<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』。ポケモンの精神を継承（PSG矩形波・快適な音域・リミッター/小分けスケジューラで歪みなし）。" />
 <title>ひだまりの村 | Daytime Village Theme</title>
 </head>
 <body>
@@ -105,7 +105,7 @@
   const _pw={};
   function pulseWave(duty){
     const k=duty.toFixed(3); if(_pw[k])return _pw[k];
-    const N=32, real=new Float32Array(N), imag=new Float32Array(N);
+    const N=16, real=new Float32Array(N), imag=new Float32Array(N); // 16 harmonics: no aliasing buzz in our register
     for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
     return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
   }
@@ -136,8 +136,19 @@
     const rWet=ctx.createGain(); rWet.gain.value=0.26;
     fxIn.connect(rv); rv.connect(rWet); rWet.connect(master);
   }
+  // --- dual-mode sound layer ---
+  // When REC is an array, the composition records events instead of playing them,
+  // so a chunked look-ahead scheduler can emit them a little at a time (no big
+  // synchronous burst at loop boundaries = no glitch). When REC is null, play now.
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function kick(t){ if(REC) REC.push({t,play:b=>_kick(b+t)}); else _kick(t); }
+  function clap(t){ if(REC) REC.push({t,play:b=>_clap(b+t)}); else _clap(t); }
+  function hat(t,open){ if(REC) REC.push({t,play:b=>_hat(b+t,open)}); else _hat(t,open); }
+  function shaker(t){ if(REC) REC.push({t,play:b=>_shaker(b+t)}); else _shaker(t); }
+
   // voice: detuned pair, lowpass, ADSR; `fx` (0..1) sends to delay+reverb
-  function voice(freq,t,dur,{type='triangle',duty=null,gain=.2,detune=5,cut=3000,a=.008,d=.08,s=.7,r=.12,fx=0}={}){
+  function _voice(freq,t,dur,{type='triangle',duty=null,gain=.2,detune=5,cut=3000,a=.008,d=.08,s=.7,r=.12,fx=0}={}){
     const g=ctx.createGain(), f=ctx.createBiquadFilter();
     f.type='lowpass'; f.frequency.value=cut; f.Q.value=1.4;
     const o1=ctx.createOscillator(), o2=ctx.createOscillator();
@@ -153,7 +164,7 @@
     if(fx>0){ const sg=ctx.createGain(); sg.gain.value=fx; g.connect(sg); sg.connect(fxIn); }
     o1.start(t); o2.start(t); o1.stop(t+dur+.03); o2.stop(t+dur+.03);
   }
-  function noise(t,dur,type,cut,q,gain){
+  function _noise(t,dur,type,cut,q,gain){
     const n=ctx.createBufferSource();
     const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
     const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1;
@@ -162,14 +173,14 @@
     const g=ctx.createGain(); g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
     n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
   }
-  const kick=t=>{ const o=ctx.createOscillator(),g=ctx.createGain();
+  const _kick=t=>{ const o=ctx.createOscillator(),g=ctx.createGain();
     o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(48,t+.09);
     g.gain.setValueAtTime(.4,t); g.gain.exponentialRampToValueAtTime(.001,t+.15);
     o.connect(g); g.connect(master); o.start(t); o.stop(t+.17); };
-  const clap=t=>{ // layered short noise bursts = a soft handclap on the backbeat
-    for(const off of [0,0.012,0.024]) noise(t+off,.09,'bandpass',1700,1.6,.12); };
-  const hat=(t,open)=> noise(t, open?.1:.035,'highpass',8500,.8, open?.14:.1);
-  const shaker=t=> noise(t,.028,'highpass',6500,.7,.05);
+  const _clap=t=>{ // layered short noise bursts = a soft handclap on the backbeat
+    for(const off of [0,0.012,0.024]) _noise(t+off,.09,'bandpass',1700,1.6,.12); };
+  const _hat=(t,open)=> _noise(t, open?.1:.035,'highpass',8500,.8, open?.14:.1);
+  const _shaker=t=> _noise(t,.028,'highpass',6500,.7,.05);
 
   // ---------- composition (G major, swung walking pace) ----------
   const BPM=126, S=60/BPM/4, BAR=16*S, SW=0.34*S;   // SW = swing offset for off-eighths
@@ -278,19 +289,35 @@
     return 2*BAR;
   }
 
-  // transport
-  let playing=false, timer=null, nextBody=0, rafId=null;
+  // build the whole body once as a sorted event list (relative times)
+  function buildEvents(){
+    REC=[]; scheduleBody(0); const ev=REC; REC=null;
+    ev.sort((a,b)=>a.t-b.t); return ev;
+  }
+
+  // transport — chunked look-ahead scheduler (emits only ~0.3s of events per 25ms tick)
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0;
+  function pump(){
+    if(!playing) return;
+    const horizon=ctx.currentTime+0.3;
+    let guard=0;
+    while(guard++<3000){
+      if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }   // seamless loop
+      const e=EVENTS[evIdx];
+      if(loopBase+e.t > horizon) break;
+      e.play(loopBase); evIdx++;
+    }
+  }
   function start(){
     if(!ctx) initAudio();
     if(ctx.state==='suspended') ctx.resume();
     master.gain.setValueAtTime(volEl.value/100*0.68, ctx.currentTime);
     playing=true;
-    const t0=ctx.currentTime+0.15;
-    const introLen=scheduleIntro(t0);
-    let bodyStart=t0+introLen;
-    scheduleBody(bodyStart);
-    nextBody=bodyStart+bodyLen;
-    timer=setInterval(()=>{ if(!playing)return; if(ctx.currentTime>nextBody-3){scheduleBody(nextBody);nextBody+=bodyLen;} },400);
+    EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2;
+    const introLen=scheduleIntro(t0);   // intro plays once, directly
+    loopBase=t0+introLen; evIdx=0;
+    timer=setInterval(pump,25);
     playBtn.textContent='■ 村を出る'; playBtn.classList.add('playing');
     scene.classList.add('playing'); statusEl.classList.add('on');
     drawViz();
