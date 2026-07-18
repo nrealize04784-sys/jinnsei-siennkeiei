@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audio APIでリアルタイム合成するRPGボス戦BGM『魔王との決戦』。音源ファイルを一切使わず、ブラウザ上でオリジナル楽曲を演奏します。" />
+<title>魔王との決戦 | RPG Boss Battle Theme</title>
+</head>
+<body>
+<style>
+  :root{
+    --bg0:#05060a; --bg1:#0b0f1a; --edge:#1c2740;
+    --red:#ff3b57; --red-deep:#8a0f22;
+    --gold:#ffcf6b; --purple:#7c5cff; --cyan:#39e6ff;
+    --ink:#f4f1e8; --dim:#8b93a7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(120% 90% at 50% -10%, #241028 0%, transparent 55%),
+      radial-gradient(90% 70% at 50% 120%, #2a0a13 0%, transparent 55%),
+      linear-gradient(180deg,#07070d,#05060a 60%,#0a0510);
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
+    min-height:100%;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;overflow-x:hidden;
+  }
+  .cabinet{
+    width:min(680px,100%);
+    position:relative;
+    border:1px solid var(--edge);
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(16,20,34,.92),rgba(8,10,18,.96));
+    box-shadow:0 0 0 1px rgba(124,92,255,.08), 0 30px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
+    padding:26px 26px 30px;
+    overflow:hidden;
+  }
+  .cabinet::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px);
+    mix-blend-mode:overlay;opacity:.5;
+  }
+  .tag{
+    font-size:11px;letter-spacing:.42em;color:var(--gold);
+    text-transform:uppercase;text-align:center;margin-bottom:6px;opacity:.85;
+  }
+  h1{
+    text-align:center;font-size:clamp(26px,6vw,42px);font-weight:800;letter-spacing:.06em;
+    line-height:1.1;margin-bottom:2px;
+    background:linear-gradient(180deg,#fff,#ffcf6b 55%,#ff6b8a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(255,90,120,.25);
+  }
+  .subtitle{text-align:center;color:var(--dim);font-size:13px;letter-spacing:.2em;margin-bottom:18px}
+
+  /* boss stage */
+  .stage{
+    position:relative;height:170px;border-radius:12px;overflow:hidden;
+    border:1px solid var(--edge);
+    background:radial-gradient(80% 120% at 50% 120%,#3a0d1c,#120612 60%,#0a0510);
+    margin-bottom:16px;
+  }
+  .boss{
+    position:absolute;left:50%;bottom:16px;transform:translateX(-50%);
+    font-size:84px;filter:drop-shadow(0 0 22px rgba(255,60,90,.5));
+    animation:hover 2.4s ease-in-out infinite;
+  }
+  @keyframes hover{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+  .stage.rage .boss{animation:shake .12s linear infinite}
+  @keyframes shake{0%{transform:translateX(-50%) translateY(0) rotate(-2deg)}50%{transform:translateX(-52%) translateY(-4px) rotate(2deg)}100%{transform:translateX(-48%) translateY(0) rotate(-1deg)}}
+  .aura{
+    position:absolute;left:50%;bottom:0;width:220px;height:220px;transform:translate(-50%,40%);
+    background:radial-gradient(circle,rgba(255,60,90,.35),transparent 65%);
+    opacity:0;transition:opacity .4s;
+  }
+  .stage.playing .aura{opacity:1;animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
+  .viz{position:absolute;inset:auto 0 0 0;height:56px;display:flex;align-items:flex-end;gap:2px;padding:0 6px;opacity:.9}
+  .viz i{flex:1;background:linear-gradient(180deg,var(--red),var(--purple));border-radius:2px 2px 0 0;height:2px;transition:height .05s linear}
+
+  /* hp */
+  .hpwrap{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .hpname{font-size:13px;font-weight:700;letter-spacing:.15em;white-space:nowrap;color:#ffb0bd}
+  .hpbar{flex:1;height:14px;border-radius:8px;background:#1a0e14;border:1px solid #3a1622;overflow:hidden;position:relative}
+  .hpfill{height:100%;width:100%;border-radius:8px;
+    background:linear-gradient(90deg,#ff3b57,#ff8a5c,#ffd166);
+    box-shadow:0 0 12px rgba(255,60,90,.6) inset;transition:width .3s ease}
+  .hpnum{font-variant-numeric:tabular-nums;font-size:12px;color:var(--dim);width:74px;text-align:right}
+
+  /* controls */
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{
+    font-family:inherit;cursor:pointer;border:none;
+    border-radius:12px;padding:14px 26px;font-size:15px;font-weight:800;letter-spacing:.08em;
+    color:#1a0510;transition:transform .12s ease,box-shadow .2s ease,filter .2s;
+    background:linear-gradient(180deg,#ffe08a,#ffb03a);
+    box-shadow:0 8px 24px rgba(255,160,60,.35),inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#ff8a9d,#ff3b57);color:#fff;
+    box-shadow:0 8px 24px rgba(255,60,90,.45),inset 0 1px 0 rgba(255,255,255,.3)}
+  .ghost{background:transparent;color:var(--dim);box-shadow:none;border:1px solid var(--edge);font-weight:600;letter-spacing:.12em}
+  .ghost:hover{color:var(--ink);filter:none}
+  .vol{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:12px}
+  input[type=range]{accent-color:var(--gold);width:110px}
+  .hint{text-align:center;color:var(--dim);font-size:12px;margin-top:16px;letter-spacing:.05em;line-height:1.7}
+  .status{text-align:center;font-size:12px;color:var(--gold);letter-spacing:.2em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s}
+  .status.on{opacity:1}
+</style>
+
+<div class="cabinet">
+  <div class="tag">◆ Battle Theme ◆</div>
+  <h1>魔王との決戦</h1>
+  <div class="subtitle">FINAL BOSS &nbsp;—&nbsp; "Sovereign of Ruin"</div>
+
+  <div class="stage" id="stage">
+    <div class="aura"></div>
+    <div class="boss" id="bossEmoji">👹</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="hpwrap">
+    <span class="hpname">👑 魔王</span>
+    <div class="hpbar"><div class="hpfill" id="hp"></div></div>
+    <span class="hpnum" id="hpnum">99999/99999</span>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 戦闘開始</button>
+    <button class="ghost" id="attack">⚔ こうげき</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="70"></div>
+  </div>
+  <div class="status" id="status">♪ NOW PLAYING ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成しているオリジナルBGMです（音源ファイルなし）。<br>
+    「戦闘開始」で再生・停止／「こうげき」で魔王のHPを削れます。
+  </div>
+</div>
+
+<script>
+(() => {
+  // ---------- audio core ----------
+  let ctx, master, comp, analyser, freqData;
+  const NOTES = {C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi = n => {
+    const m = /^([A-G])(#|b)?(-?\d)$/.exec(n);
+    let s = NOTES[m[1]] + (m[2]==='#'?1:m[2]==='b'?-1:0);
+    return 12*(+m[3]+1) + s;
+  };
+  const hz = n => 440 * Math.pow(2,(midi(n)-69)/12);
+
+  function initAudio(){
+    ctx = new (window.AudioContext||window.webkitAudioContext)();
+    master = ctx.createGain();
+    master.gain.value = volEl.value/100 * 0.9;
+    comp = ctx.createDynamicsCompressor();
+    comp.threshold.value=-14; comp.knee.value=26; comp.ratio.value=3.4;
+    comp.attack.value=.004; comp.release.value=.22;
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 128;
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+  }
+
+  // pitched synth voice: two detuned oscillators + lowpass + ADSR
+  function voice(freq, t, dur, {type='sawtooth', gain=.3, detune=6, cut=4200, a=.008, d=.06, s=.6, r=.14, glide=0}={}){
+    const g = ctx.createGain();
+    const f = ctx.createBiquadFilter();
+    f.type='lowpass'; f.frequency.value=cut; f.Q.value=6;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    o1.type=type; o2.type=type;
+    o1.frequency.setValueAtTime(freq, t); o2.frequency.setValueAtTime(freq, t);
+    o2.detune.value = detune;
+    if(glide){ o1.frequency.setValueAtTime(freq*0.5,t); o1.frequency.exponentialRampToValueAtTime(freq,t+glide);
+               o2.frequency.setValueAtTime(freq*0.5,t); o2.frequency.exponentialRampToValueAtTime(freq,t+glide); }
+    const peak=gain, sus=gain*s;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(peak, t+a);
+    g.gain.exponentialRampToValueAtTime(Math.max(sus,0.0001), t+a+d);
+    g.gain.setValueAtTime(Math.max(sus,0.0001), t+Math.max(dur-r,a+d));
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o1.connect(f); o2.connect(f); f.connect(g); g.connect(master);
+    o1.start(t); o2.start(t); o1.stop(t+dur+.02); o2.stop(t+dur+.02);
+  }
+
+  // percussion
+  function kick(t){
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(45,t+.12);
+    g.gain.setValueAtTime(.9,t); g.gain.exponentialRampToValueAtTime(.001,t+.18);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+.2);
+  }
+  function noiseBurst(t, dur, cut, q, gain, hp=false){
+    const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1, ctx.sampleRate*dur, ctx.sampleRate);
+    const dd=buf.getChannelData(0);
+    for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1;
+    n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=hp?'highpass':'bandpass'; f.frequency.value=cut; f.Q.value=q;
+    const g=ctx.createGain();
+    g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
+  }
+  const snare = t => { noiseBurst(t,.18,1800,1.2,.5,true);
+    const o=ctx.createOscillator(),g=ctx.createGain(); o.type='triangle';
+    o.frequency.setValueAtTime(190,t); g.gain.setValueAtTime(.3,t); g.gain.exponentialRampToValueAtTime(.001,t+.1);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+.12); };
+  const hat  = (t,open=false) => noiseBurst(t, open?.12:.04, 9000, .8, open?.22:.28, true);
+  function timpani(freq,t){
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08);
+    g.gain.setValueAtTime(.7,t); g.gain.exponentialRampToValueAtTime(.001,t+.5);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+.55);
+  }
+
+  // ---------- composition ----------
+  const BPM=152, S=60/BPM/4;           // one sixteenth in seconds
+  const BAR=16*S;
+  // progression: Dm - Bb - C - A(maj/harmonic)  (i VI VII V)
+  const bassRoots=['D2','A#1','C2','A1'];
+  const padChords=[['D3','F3','A3'],['A#2','D3','F3'],['C3','E3','G3'],['A2','C#3','E3']];
+  const arpCells =[['D3','F3','A3','D4'],['A#2','D3','F3','A#3'],['C3','E3','G3','C4'],['A2','C#3','E3','A3']];
+
+  // lead melody A — driving run (each entry: note & duration in 16ths), 4 bars = 64 sixteenths
+  const leadA=[
+    ['A4',2],['D5',2],['F5',2],['A5',2],['G5',2],['F5',2],['E5',2],['D5',2],
+    ['D5',2],['F5',2],['A#5',2],['D6',2],['C6',2],['A#5',2],['A5',2],['F5',2],
+    ['E5',2],['G5',2],['C6',2],['E6',2],['D6',2],['C6',2],['A#5',2],['G5',2],
+    ['E5',2],['A5',2],['C#6',2],['E6',2],['D6',4],['C#6',4]
+  ];
+  // lead melody B — heroic / sustained, 4 bars
+  const leadB=[
+    ['F5',8],['E5',4],['D5',4],
+    ['D5',8],['C5',4],['A#4',4],
+    ['E5',4],['G5',4],['C6',8],
+    ['C#6',8],['A5',6],['A5',2]
+  ];
+
+  function seqLead(list, base){
+    let t=base;
+    for(const [n,d] of list){
+      voice(hz(n), t, d*S*0.96, {type:'sawtooth', gain:.26, cut:5200, detune:9, a:.006, d:.05, s:.75, r:.08});
+      voice(hz(n)*2, t, d*S*0.9, {type:'square', gain:.05, cut:6000, detune:4, a:.006, d:.04, s:.5, r:.06}); // octave sparkle
+      t += d*S;
+    }
+  }
+  function bassBar(root, base, heavy){
+    const f=hz(root);
+    // galloping eighths with octave accents
+    const pat=[0,2,3,4,6,8,10,11,12,14];   // sixteenth positions
+    for(const p of pat){
+      const up = (p===3||p===11);
+      voice(up?f*2:f, base+p*S, (p%2?1:1.4)*S, {type:'sawtooth', gain:heavy?.34:.28, cut:heavy?2600:2100, detune:5, a:.004, d:.03, s:.7, r:.05});
+    }
+  }
+  function padBar(chord, base){
+    for(const n of chord)
+      voice(hz(n), base, BAR*0.98, {type:'triangle', gain:.06, cut:2200, detune:8, a:.12, d:.2, s:.85, r:.3});
+  }
+  function arpBar(cell, base){
+    for(let i=0;i<16;i++){
+      const n=cell[i%4];
+      voice(hz(n), base+i*S, S*0.9, {type:'square', gain:.07, cut:3600, detune:3, a:.003, d:.02, s:.4, r:.03});
+    }
+  }
+  function drumBar(base, fill){
+    for(let i=0;i<16;i++){
+      const t=base+i*S;
+      if(i===0||i===4||i===6||i===8||i===12||i===14) kick(t);
+      if(i===4||i===12) snare(t);
+      hat(t, i===7||i===15);
+    }
+    if(fill){ snare(base+13*S); snare(base+13.5*S); snare(base+15*S); }
+  }
+
+  // schedule 4-bar section
+  function section(base, {lead, arp, pad=true, fillLast=false, heavyBass=false}){
+    for(let b=0;b<4;b++){
+      const bt=base+b*BAR;
+      bassBar(bassRoots[b], bt, heavyBass);
+      if(pad) padBar(padChords[b], bt);
+      if(arp) arpBar(arpCells[b], bt);
+      drumBar(bt, fillLast && b===3);
+    }
+    if(lead==='A') seqLead(leadA, base);
+    if(lead==='B') seqLead(leadB, base);
+  }
+
+  // full loop body = 16 bars (A, A+arp, B, B-full)
+  const BODY_BARS=16, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){
+    section(base+0*4*BAR, {lead:'A', arp:false, heavyBass:true});
+    section(base+1*4*BAR, {lead:'A', arp:true,  heavyBass:true, fillLast:true});
+    section(base+2*4*BAR, {lead:'B', arp:true});
+    section(base+3*4*BAR, {lead:'B', arp:true,  fillLast:true, heavyBass:true});
+  }
+  function scheduleIntro(base){
+    // 2-bar ominous build
+    for(const n of padChords[0]) voice(hz(n), base, 2*BAR*0.97, {type:'triangle',gain:.07,cut:1400,a:.4,d:.4,s:.8,r:.5});
+    timpani(hz('D2'), base); timpani(hz('D2'), base+2*S);
+    timpani(hz('D2'), base+BAR); timpani(hz('A2'), base+BAR+8*S);
+    for(let i=0;i<8;i++) noiseBurst(base+BAR+ i*(BAR/8), .1, 6000, .7, .08+i*0.03, true); // rising snare roll
+    kick(base+2*BAR-2*S); snare(base+2*BAR-1*S);
+    return 2*BAR;
+  }
+
+  // ---------- transport ----------
+  let playing=false, timer=null, nextBody=0, rafId=null;
+  function start(){
+    if(!ctx) initAudio();
+    if(ctx.state==='suspended') ctx.resume();
+    playing=true;
+    const t0=ctx.currentTime+0.12;
+    const introLen=scheduleIntro(t0);
+    let bodyStart=t0+introLen;
+    scheduleBody(bodyStart);
+    nextBody=bodyStart+bodyLen;
+    timer=setInterval(()=>{
+      if(!playing) return;
+      if(ctx.currentTime > nextBody - 2){ scheduleBody(nextBody); nextBody+=bodyLen; }
+    },250);
+    playBtn.textContent='■ 戦闘中断'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on');
+    drawViz();
+  }
+  function stop(){
+    playing=false;
+    clearInterval(timer);
+    if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.25); }
+    setTimeout(()=>{ if(!playing && ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.9; }, 320);
+    playBtn.textContent='▶ 戦闘開始'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing','rage'); statusEl.classList.remove('on');
+    bars.forEach(b=>b.style.height='2px');
+  }
+
+  // ---------- visuals ----------
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  const N=40, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){
+    if(!playing) return;
+    analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){
+      const v=freqData[Math.floor(i/N*freqData.length)]/255;
+      bars[i].style.height=(2+v*54).toFixed(1)+'px';
+    }
+    rafId=requestAnimationFrame(drawViz);
+  }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.9; });
+
+  // ---------- HP mini-game ----------
+  const hpEl=document.getElementById('hp'), hpNum=document.getElementById('hpnum');
+  const MAX=99999; let hp=MAX;
+  function renderHP(){
+    const pct=Math.max(0,hp/MAX*100);
+    hpEl.style.width=pct+'%';
+    hpNum.textContent=Math.max(0,Math.round(hp))+'/'+MAX;
+    if(pct<30) stage.classList.add('rage'); else stage.classList.remove('rage');
+    document.getElementById('bossEmoji').textContent = hp<=0 ? '💀' : (pct<30?'😡':'👹');
+  }
+  document.getElementById('attack').addEventListener('click', ()=>{
+    if(hp<=0){ hp=MAX; renderHP(); return; }
+    const dmg=Math.floor(3000+Math.random()*9000)*(Math.random()<.12?3:1);
+    hp-=dmg; if(hp<0) hp=0;
+    renderHP();
+    if(ctx && playing){ // hit sfx
+      noiseBurst(ctx.currentTime,.12,3000,1,.4,true); kick(ctx.currentTime);
+    }
+    if(hp<=0){ statusEl.textContent='☆ VICTORY ☆'; setTimeout(()=>statusEl.textContent='♪ NOW PLAYING ♪',2500); }
+  });
+  renderHP();
+})();
+</script>
+</body>
+</html>
