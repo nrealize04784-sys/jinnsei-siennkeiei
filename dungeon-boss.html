@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成する中ボスBGM『石の守護者、目覚める』。緊迫感を注入した儀式トライバル（和太鼓＋詠唱＋トレモロ弦＋脈打つ低音）。ポケモンの精神を継承。" />
+<meta name="description" content="Web Audioでリアルタイム合成する中ボスBGM『石の守護者、目覚める』。緊迫感のある儀式トライバル。低域を整理しクリアな仕上げ。ポケモンの精神を継承。" />
 <title>石の守護者、目覚める | Dungeon Boss</title>
 </head>
 <body>
@@ -140,10 +140,10 @@
     const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
     n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
   // TAIKO — big membrane drum: pitch-drop sine + saturated body + skin-slap noise
-  const _taiko=(t,f0,g=.8)=>{ const o=ctx.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(f0*1.8,t); o.frequency.exponentialRampToValueAtTime(f0,t+.07);
-    const ws=shaper(2.2); const e=ctx.createGain(); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.001,t+.34);
-    o.connect(ws); ws.connect(e); e.connect(master); const x=ctx.createGain(); x.gain.value=.18; e.connect(x); x.connect(revL);
-    o.start(t); o.stop(t+.36); _noise(t,.03,'bandpass',f0*4,.8,g*.35); };
+  const _taiko=(t,f0,g=.8)=>{ const o=ctx.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(f0*1.7,t); o.frequency.exponentialRampToValueAtTime(f0,t+.06);
+    const ws=shaper(1.4); const e=ctx.createGain(); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.001,t+.24);
+    o.connect(ws); ws.connect(e); e.connect(master); const x=ctx.createGain(); x.gain.value=.1; e.connect(x); x.connect(revL);
+    o.start(t); o.stop(t+.26); _noise(t,.02,'bandpass',f0*4,1.4,g*.14); };  // tighter, cleaner: less saturation, quieter skin-slap
   const _shake=(t,g=.12)=> _noise(t,.05,'highpass',7000,.7,g);
   // GONG — huge inharmonic metallic swell, long tail
   const _gong=(t,g=.5)=>{ const base=98;
@@ -151,7 +151,7 @@
       e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.03); e.gain.exponentialRampToValueAtTime(.0001,t+3.2*(1-.12*r));
       o.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=rnd(-.3,.3);e.connect(p);p.connect(master);}else e.connect(master);
       const x=ctx.createGain(); x.gain.value=.6; e.connect(x); x.connect(revL); o.start(t); o.stop(t+3.3); });
-    _noise(t,1.4,'bandpass',600,.5,g*.3); };
+    _noise(t,.9,'bandpass',600,.7,g*.16); };
   // GAMELAN — bright inharmonic tuned percussion, interlocking, with echo
   const _gam=(t,note,g=.09,pan=0)=>{ const f0=hz(note);
     [[1,1],[2.76,.5],[5.4,.24]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
@@ -221,18 +221,17 @@
     ['A#4',4],['A4',4],['A#4',8]
   ];
 
-  // driving taiko — busier, galloping, with 16th fills
+  // driving taiko — tight & punchy (not a continuous rumble)
   function taikoBar(base, root, lvl){
-    for(const p of [0,3,6,8,11,14]) taiko(base+p*S, 72, .82);        // rolling low booms
-    for(const p of [2,4,10,12])     taiko(base+p*S, 130, .5);        // mid drive
-    for(let i=0;i<16;i++) shake(base+i*S, i%2?.06:.1);              // 16th shakers = urgency
-    taiko(base, mf(midi(CH[root].lo)), .5);
-    if(lvl>=1){ for(const p of [5,13]) taiko(base+p*S,110,.42); }
-    if(lvl>=2){ for(const p of [1,7,9,15]) taiko(base+p*S,150,.4);   // 16th fills
-      taiko(base+14*S,130,.4); taiko(base+14.5*S,150,.5); taiko(base+15*S,170,.6); taiko(base+15.5*S,190,.7); } }
-  // pulsing low ostinato = racing heartbeat (never stops)
+    for(const p of [0,3,8,11]) taiko(base+p*S, 72, .78);            // rolling low booms
+    for(const p of [4,6,12,14]) taiko(base+p*S, 130, .46);          // mid drive
+    for(let i=0;i<16;i++) shake(base+i*S, i%2?.05:.09);            // 16th shakers = urgency
+    taiko(base, mf(midi(CH[root].lo)), .42);
+    if(lvl>=1){ for(const p of [7,15]) taiko(base+p*S,110,.38); }
+    if(lvl>=2){ taiko(base+14*S,130,.38); taiko(base+15*S,160,.52); } }  // small fill, not a barrage
+  // pulsing low ostinato = racing heartbeat — CLEAN sub (no saturation, gated so it's a pulse, not a roar)
   function pulseBass(root, base){ const f=mf(midi(CH[root].lo)+12);
-    for(let i=0;i<16;i+=2) str(base+i*S, f, 2*S*0.85, {g:.11, cut:520, det:3, a:.004, r:.05, sat:2, type:'sawtooth'}); }
+    for(let i=0;i<16;i+=2) str(base+i*S, f, 2*S*0.5, {g:.09, cut:700, det:2, a:.004, r:.05, type:'triangle'}); }
   // tremolo strings — the cinematic "danger" shimmer (16th tremolo on chord tones)
   function tremStr(root, base, g){ const c=CH[root].tr;
     for(let i=0;i<16;i++){ const n=c[i%2]; str(base+i*S, hz(n), S*0.95, {g:g||.03, cut:1900, det:10, a:.004, r:.03, q:1.2, pan:(i%2?.3:-.3), rl:.3}); } }
@@ -265,7 +264,7 @@
     for(let i=0;i<Math.floor(4*BAR/S);i++){ const t=base+i*S; str(t, hz('A4'), S*0.95, {g:.01+.03*(i/(4*BAR/S)), cut:1700, det:10, a:.004, r:.03, q:1.3, pan:(i%2?.3:-.3), rl:.3}); } // crescendo tremolo
     chant(base, 'A2', 4*BAR*0.97, .05, -.2); chant(base+2*BAR, 'A#2', 2*BAR*0.97, .05, .2);   // drone shifts up a semitone = unease
     let acc=0, gap=1.4; for(let b=0;b<4;b++){ for(let k=0;k<(b+1)*2;k++){ taiko(base+acc*S, 72, .35+b*.13); acc+=Math.max(gap*Math.pow(.86,b),0.5); } }  // accelerating taiko
-    for(let i=0;i<8;i++) str(base+3*BAR+i*2*S, hz('A3'), 2*S*0.85, {g:.06, cut:500, det:3, a:.004, r:.05, sat:2}); // pulse creeps in bar4
+    for(let i=0;i<8;i++) str(base+3*BAR+i*2*S, hz('A3'), 2*S*0.5, {g:.06, cut:700, det:2, a:.004, r:.05, type:'triangle'}); // pulse creeps in bar4
     gong(base+3*BAR, .5); taiko(base+4*BAR, 72, .95); taiko(base+4*BAR,150,.7);
     return 4*BAR;
   }
