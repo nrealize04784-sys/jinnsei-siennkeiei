@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』（改訂版）。ト長調・スウィング・エコー＆残響つきのループ。" />
+<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』。ポケモンの精神を継承（PSG矩形波・快適な音域・リミッターで歪みなし）。" />
 <title>ひだまりの村 | Daytime Village Theme</title>
 </head>
 <body>
@@ -117,20 +117,23 @@
   }
   function initAudio(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
-    master=ctx.createGain(); master.gain.value=volEl.value/100*0.85;
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.68;
     comp=ctx.createDynamicsCompressor();
-    comp.threshold.value=-15; comp.knee.value=26; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.25;
+    comp.threshold.value=-18; comp.knee.value=24; comp.ratio.value=4; comp.attack.value=.004; comp.release.value=.25;
+    // brickwall limiter — guarantees no clipping distortion even when FX/voices pile up
+    const limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.12;
     analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
-    master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
 
-    // --- FX sends: tempo-synced delay (chiptune echo) + short reverb ---
+    // --- FX sends: tempo-synced delay (chiptune echo) + short reverb — kept subtle so it never builds up ---
     fxIn=ctx.createGain();
     const dl=ctx.createDelay(1.0); dl.delayTime.value=3*S;          // dotted-eighth echo
-    const fb=ctx.createGain(); fb.gain.value=0.32;
-    const dWet=ctx.createGain(); dWet.gain.value=0.9;
+    const fb=ctx.createGain(); fb.gain.value=0.20;                  // lower feedback: no runaway wash
+    const dWet=ctx.createGain(); dWet.gain.value=0.4;
     fxIn.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(dWet); dWet.connect(master);
-    const rv=ctx.createConvolver(); rv.buffer=makeImpulse(1.1,2.6);
-    const rWet=ctx.createGain(); rWet.gain.value=0.5;
+    const rv=ctx.createConvolver(); rv.buffer=makeImpulse(1.0,2.8);
+    const rWet=ctx.createGain(); rWet.gain.value=0.26;
     fxIn.connect(rv); rv.connect(rWet); rWet.connect(master);
   }
   // voice: detuned pair, lowpass, ADSR; `fx` (0..1) sends to delay+reverb
@@ -161,10 +164,10 @@
   }
   const kick=t=>{ const o=ctx.createOscillator(),g=ctx.createGain();
     o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(48,t+.09);
-    g.gain.setValueAtTime(.5,t); g.gain.exponentialRampToValueAtTime(.001,t+.15);
+    g.gain.setValueAtTime(.4,t); g.gain.exponentialRampToValueAtTime(.001,t+.15);
     o.connect(g); g.connect(master); o.start(t); o.stop(t+.17); };
   const clap=t=>{ // layered short noise bursts = a soft handclap on the backbeat
-    for(const off of [0,0.012,0.024]) noise(t+off,.09,'bandpass',1700,1.6,.16); };
+    for(const off of [0,0.012,0.024]) noise(t+off,.09,'bandpass',1700,1.6,.12); };
   const hat=(t,open)=> noise(t, open?.1:.035,'highpass',8500,.8, open?.14:.1);
   const shaker=t=> noise(t,.028,'highpass',6500,.7,.05);
 
@@ -199,26 +202,26 @@
     ['D5',4],['G5',4],['B5',8],
     ['C6',4],['B5',4],['A5',4],['G5',4],
     ['B5',4],['A5',4],['G5',8],
-    ['A5',4],['C6',4],['E6',4],['C6',4],
+    ['A5',4],['C6',4],['B5',4],['A5',4],
     ['B5',4],['A5',4],['D5',8]
   ];
-  // B theme — higher, brighter contrast
+  // B theme — contrasting, in a warmer mid register (one octave lower than before)
   const leadB=[
-    ['E6',8],['D6',4],['C6',4],
-    ['D6',8],['A5',4],['D6',4],
-    ['B5',4],['D6',4],['G6',8],
-    ['E6',4],['D6',4],['B5',8],
-    ['C6',4],['E6',4],['G6',4],['E6',4],
-    ['A5',4],['D6',4],['F#6',4],['D6',4],
-    ['G6',4],['F#6',4],['E6',4],['D6',4],
-    ['A5',4],['B5',4],['D6',8]
+    ['E5',8],['D5',4],['C5',4],
+    ['D5',8],['A4',4],['D5',4],
+    ['B4',4],['D5',4],['G5',8],
+    ['E5',4],['D5',4],['B4',8],
+    ['C5',4],['E5',4],['G5',4],['E5',4],
+    ['A4',4],['D5',4],['F#5',4],['D5',4],
+    ['G5',4],['F#5',4],['E5',4],['D5',4],
+    ['A4',4],['B4',4],['D5',8]
   ];
 
   function seqLead(list, base){
     let acc=0;
     for(const [n,d] of list){
       const t=base + acc*S + sw(acc%16);
-      voice(hz(n), t, d*S*0.92, {duty:.25, gain:.17, cut:4400, detune:6, a:.006, d:.06, s:.72, r:.08, fx:.28}); // bright lead w/ echo
+      voice(hz(n), t, d*S*0.92, {duty:.25, gain:.16, cut:3400, detune:6, a:.006, d:.06, s:.72, r:.08, fx:.16}); // bright lead w/ echo
       voice(hz(n), t, d*S*0.9,  {type:'triangle', gain:.05, cut:2600, detune:3, a:.01, d:.06, s:.7, r:.08});    // soft body
       acc += d;
     }
@@ -228,11 +231,11 @@
     const rm=midi(CH[ch].b), fm=rm+7;
     const seq=[rm,fm,rm,fm];
     for(let i=0;i<4;i++)
-      voice(mf(seq[i]), base+i*4*S, 4*S*0.88, {type:'triangle', gain:.2, cut:1150, detune:3, a:.006, d:.08, s:.6, r:.08});
+      voice(mf(seq[i]), base+i*4*S, 4*S*0.88, {type:'triangle', gain:.18, cut:1050, detune:3, a:.006, d:.08, s:.6, r:.08});
   }
   function padBar(ch, base){
     for(const n of CH[ch].pad)
-      voice(hz(n), base, BAR*0.98, {type:'triangle', gain:.04, cut:1900, detune:8, a:.14, d:.22, s:.85, r:.28, fx:.14});
+      voice(hz(n), base, BAR*0.98, {type:'triangle', gain:.04, cut:1700, detune:8, a:.14, d:.22, s:.85, r:.28, fx:.07});
   }
   function pluckBar(ch, base){
     // swung offbeat plucks (mandolin-ish) with a touch of echo
@@ -240,7 +243,7 @@
     for(let i=0;i<8;i++){
       const step=i*2;
       voice(hz(cell[i%4]), base+step*S+sw(step%16), 2*S*0.6,
-        {duty:.25, gain:.05, cut:3600, detune:2, a:.003, d:.04, s:.22, r:.05, fx:.2});
+        {duty:.25, gain:.045, cut:3000, detune:2, a:.003, d:.04, s:.22, r:.05, fx:.12});
     }
   }
   function drumBar(base){
@@ -269,8 +272,8 @@
     section(base+3*8*BAR,  progA, leadA, {perc:true,  pluck:true});  // reprise
   }
   function scheduleIntro(base){
-    for(const n of CH.G.pad) voice(hz(n), base, 2*BAR*0.96, {type:'triangle', gain:.06, cut:2200, a:.2, d:.3, s:.85, r:.4, fx:.15});
-    ['G4','B4','D5','G5'].forEach((n,i)=> voice(hz(n), base+i*2*S, 2*S*0.9, {duty:.25, gain:.12, cut:4000, a:.004, d:.05, s:.4, r:.06, fx:.3}));
+    for(const n of CH.G.pad) voice(hz(n), base, 2*BAR*0.96, {type:'triangle', gain:.06, cut:2000, a:.2, d:.3, s:.85, r:.4, fx:.08});
+    ['G4','B4','D5','G5'].forEach((n,i)=> voice(hz(n), base+i*2*S, 2*S*0.9, {duty:.25, gain:.11, cut:3200, a:.004, d:.05, s:.4, r:.06, fx:.16}));
     kick(base+BAR); clap(base+BAR+8*S);
     return 2*BAR;
   }
@@ -280,7 +283,7 @@
   function start(){
     if(!ctx) initAudio();
     if(ctx.state==='suspended') ctx.resume();
-    master.gain.setValueAtTime(volEl.value/100*0.85, ctx.currentTime);
+    master.gain.setValueAtTime(volEl.value/100*0.68, ctx.currentTime);
     playing=true;
     const t0=ctx.currentTime+0.15;
     const introLen=scheduleIntro(t0);
@@ -297,7 +300,7 @@
     if(master){ master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
       master.gain.linearRampToValueAtTime(0.0001,ctx.currentTime+0.35); }
-    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.85; },400);
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.68; },400);
     playBtn.textContent='▶ 村へ行く'; playBtn.classList.remove('playing');
     scene.classList.remove('playing'); statusEl.classList.remove('on');
     bars.forEach(b=>b.style.height='2px');
@@ -318,7 +321,7 @@
     rafId=requestAnimationFrame(drawViz);
   }
   playBtn.addEventListener('click', ()=> playing?stop():start());
-  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.85; });
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.68; });
 })();
 </script>
 
