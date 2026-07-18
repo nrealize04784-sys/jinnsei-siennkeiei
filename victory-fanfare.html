@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成したRPG勝利ファンファーレ『戦闘勝利！』。ポケモンの精神を継承したPSGブラスのジングル。" />
+<meta name="description" content="Web Audioでリアルタイム合成したRPG勝利ファンファーレ『戦闘勝利！』。駆け上がる歓喜のランと積み重ねた大団円。ポケモンの精神を継承。" />
 <title>戦闘勝利！ | Victory Fanfare</title>
 </head>
 <body>
@@ -88,7 +88,7 @@
   }
   function init(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
-    master=ctx.createGain(); master.gain.value=volEl.value/100*0.9;
+    master=ctx.createGain(); master.gain.value=volEl.value/100*1.2;
     comp=ctx.createDynamicsCompressor();
     comp.threshold.value=-15; comp.knee.value=22; comp.ratio.value=3.2; comp.attack.value=.004; comp.release.value=.2;
     limiter=ctx.createDynamicsCompressor();
@@ -157,43 +157,45 @@
     tone(t,.07,{wave:'triangle',f0:200,g:g*.5,cut:1200,env:'perc'}); };
 
   // ---------- the fanfare (C major, ~4.6s) ----------
-  const BPM=132, S=60/BPM/4;
+  const BPM=150, S=60/BPM/4;
   function playFanfare(){
     if(!ctx) init();
     if(ctx.state==='suspended') ctx.resume();
-    master.gain.setValueAtTime(volEl.value/100*0.9, ctx.currentTime);
+    master.gain.setValueAtTime(volEl.value/100*1.2, ctx.currentTime);
     const t0=ctx.currentTime+0.06;
     const at=n=>t0+n*S;
 
-    // — 第1部: タ・タ・タ・ターン！ —
+    // — 第1部: タ・タ・タ・ターン！(勢いよく叩き込む) —
     [0,2,4].forEach(p=>{
-      chord(at(p),1.3*S,['G4','C5','E5'],{g:.11});
-      brass(at(p),1.3*S,'G5',{g:.15});
-      snare(at(p),.12);
+      chord(at(p),1.5*S,['G4','C5','E5'],{g:.16});
+      brass(at(p),1.5*S,'G5',{g:.22});
+      brass(at(p),1.5*S,'G4',{g:.1});                            // octave-down power
+      snare(at(p),.2);
     });
-    timpani(at(6),hz('C2'),.65); cymbal(at(6),.25);
-    chord(at(6),8*S,['C5','E5','G5'],{g:.1});
-    brass(at(6),8*S,'C6',{g:.22,vib:8});
-    bass(at(6),8*S,'C2',.26);
+    // 着地：Cメジャーを豪快に
+    timpani(at(6),hz('C2'),.9); cymbal(at(6),.4);
+    chord(at(6),6*S,['C5','E5','G5','C6'],{g:.14});
+    brass(at(6),6*S,'C6',{g:.3,vib:9});
+    bass(at(6),6*S,'C2',.34); snare(at(6),.22);
 
-    // — 第2部: 高らかなフレーズ —
-    const phrase=[['E5',2],['F5',2],['G5',2],['A5',2]];
-    let p=14;
-    for(const [n,d] of phrase){ brass(at(p),d*S*.94,n,{g:.17}); p+=d; }
-    chord(at(14),4*S,['F4','A4','C5'],{g:.07});
-    chord(at(18),4*S,['G4','B4','D5'],{g:.07});
-    bass(at(14),4*S,'F2'); bass(at(18),4*S,'G2');
-    snare(at(14),.1); snare(at(18),.1);
+    // — 第2部: 駆け上がる歓喜のラン (fast ascending run) —
+    const run=['C5','D5','E5','F5','G5','A5','B5','C6'];
+    run.forEach((n,i)=>{ brass(at(12+i),1.6*S,n,{g:.17+i*.012}); if(i%2===0) snare(at(12+i),.12); });
+    chord(at(12),4*S,['F4','A4','C5'],{g:.09}); chord(at(16),4*S,['G4','B4','D5'],{g:.09});
+    bass(at(12),4*S,'F2',.28); bass(at(16),4*S,'G2',.28);
 
-    // — 第3部: 輝く終止 (Cadd9) —
-    timpani(at(22),hz('C2'),.7); cymbal(at(22),.3);
-    brass(at(22),14*S,'C6',{g:.24,vib:10});
-    chord(at(22),14*S,['C5','D5','E5','G5'],{g:.08});
-    bass(at(22),4*S,'C2',.28); bass(at(26),4*S,'G2',.24); bass(at(30),6*S,'C3',.26);
-    for(let i=0;i<8;i++) snare(at(24+i), .05+.016*i);            // rising roll under the held note
-    snare(at(32),.2); cymbal(at(32),.3);                          // final hit
-    for(let i=0;i<9;i++) tone(t0+(24+rnd(0,10))*S,.14,           // glitter
-      {wave:'sine',f0:rnd(2100,5200),g:.05,a:.003,env:'perc',cut:9000,pan:rnd(-.6,.6),rl:.5});
+    // — 第3部: 輝かしい大団円 (big triumphant finale) —
+    timpani(at(20),hz('C2'),1); cymbal(at(20),.5);
+    chord(at(20),18*S,['C5','E5','G5','C6','E6'],{g:.1});         // full stacked chord
+    brass(at(20),18*S,'C6',{g:.34,vib:12});
+    brass(at(20),18*S,'E6',{g:.16,vib:12,pan:.35});              // shining upper harmony
+    brass(at(20),18*S,'G5',{g:.14,vib:10,pan:-.35});
+    bass(at(20),4*S,'C2',.36); bass(at(24),4*S,'G2',.32); bass(at(28),10*S,'C2',.36);
+    for(let i=0;i<12;i++) snare(at(21+i*.9), .07+.018*i);        // building roll
+    timpani(at(30),hz('C2'),.85); cymbal(at(30),.5); snare(at(30),.3);  // final stinger
+    chord(at(30),8*S,['C5','E5','G5','C6'],{g:.13});
+    for(let i=0;i<14;i++) tone(t0+(20+rnd(0,13))*S,.14,          // sparkle burst
+      {wave:'sine',f0:rnd(2400,6200),g:.07,a:.003,env:'perc',cut:9500,pan:rnd(-.7,.7),rl:.5});
 
     // visuals
     stage.classList.remove('playing'); void stage.offsetWidth; stage.classList.add('playing');
@@ -212,7 +214,7 @@
 
   const volEl=document.getElementById('vol');
   document.getElementById('play').addEventListener('click', playFanfare);
-  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.9; });
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*1.2; });
 })();
 </script>
 
