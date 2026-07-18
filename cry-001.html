@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成した鳴き声SFX（単体・大音量版）No.001。" />
+<title>鳴き声 No.001 | Procedural Cry</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:radial-gradient(120% 90% at 50% 0%,#0a2230,#04060a 65%);color:#eafcff;
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:min(420px,100%);text-align:center;border:1px solid #12384a;border-radius:20px;
+    background:linear-gradient(180deg,rgba(10,26,36,.9),rgba(5,10,16,.95));
+    padding:40px 28px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+  .tag{font-size:11px;letter-spacing:.4em;color:#39e6ff;text-transform:uppercase;opacity:.85}
+  h1{font-size:44px;font-weight:800;margin:6px 0 2px;letter-spacing:.04em;
+    background:linear-gradient(180deg,#fff,#39e6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:#7fb4c4;font-size:13px;letter-spacing:.15em;margin-bottom:26px}
+  .emoji{font-size:96px;line-height:1;filter:drop-shadow(0 0 24px rgba(57,230,255,.45));
+    transition:transform .12s;user-select:none}
+  .emoji.cry{animation:pop .32s ease}
+  @keyframes pop{0%{transform:scale(1)}30%{transform:scale(1.22) rotate(-4deg)}100%{transform:scale(1)}}
+  button{margin-top:26px;font-family:inherit;cursor:pointer;border:none;border-radius:14px;
+    padding:18px 34px;font-size:17px;font-weight:800;letter-spacing:.1em;color:#04222c;
+    background:linear-gradient(180deg,#9df0ff,#39c6e6);
+    box-shadow:0 10px 28px rgba(57,198,230,.4),inset 0 1px 0 rgba(255,255,255,.55);
+    transition:transform .12s,filter .2s}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  button:active{transform:translateY(1px)}
+  .vol{margin-top:20px;color:#7fb4c4;font-size:12px;display:flex;gap:8px;align-items:center;justify-content:center}
+  input[type=range]{accent-color:#39e6ff;width:130px}
+  .hint{margin-top:22px;color:#5f8a98;font-size:12px;line-height:1.7}
+</style>
+
+<div class="card">
+  <div class="tag">Pokemon-style Cry</div>
+  <h1>No.001</h1>
+  <div class="sub">PROCEDURAL CRY &nbsp;/&nbsp; seed 17</div>
+  <div class="emoji" id="emoji">🌱</div>
+  <button id="play">▸ 鳴らす</button>
+  <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="85"></div>
+  <div class="hint">
+    Web Audioでリアルタイム合成した鳴き声です（音源ファイルなし）。<br>
+    1つの可変デューティ矩形波を、固定シードのピッチ包絡で鳴らしています。
+  </div>
+</div>
+
+<script>
+(() => {
+  const SEED=17;
+  let ctx, master, comp;
+  const _pw={};
+  function pulseWave(duty){
+    const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=40, real=new Float32Array(N), imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
+  }
+  function init(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-12; comp.ratio.value=3.2; comp.attack.value=.003; comp.release.value=.2;
+    master.connect(comp); comp.connect(ctx.destination);
+  }
+  function noise(t,dur,cut,q,gain){
+    const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,ctx.sampleRate*dur,ctx.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type='highpass'; f.frequency.value=cut; f.Q.value=q;
+    const g=ctx.createGain(); g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
+  }
+  function cry(seed){
+    if(!ctx) init();
+    if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100, ctx.currentTime);
+    let s=(Math.abs(seed|0)%9973)+7;
+    const rnd=()=>{ s=(s*9301+49297)%233280; return s/233280; };
+    const t0=ctx.currentTime+0.03;
+    const duty=[.125,.25,.5][Math.floor(rnd()*3)];
+    const g=ctx.createGain(); g.gain.value=0.0001;
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=1700+rnd()*2000; f.Q.value=3;
+    const o=ctx.createOscillator(); o.setPeriodicWave(pulseWave(duty));
+    o.connect(f); f.connect(g); g.connect(master);
+    const segs=2+Math.floor(rnd()*3);
+    let t=t0; o.frequency.setValueAtTime(140+rnd()*300,t);
+    for(let i=0;i<segs;i++){ const dur=0.06+rnd()*0.13; o.frequency.exponentialRampToValueAtTime(110+rnd()*520,t+dur); t+=dur; }
+    const total=t-t0, peak=0.7;
+    g.gain.setValueAtTime(0.0001,t0);
+    g.gain.exponentialRampToValueAtTime(peak,t0+0.015);
+    g.gain.setValueAtTime(peak,t0+Math.max(total-0.05,0.05));
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+total+0.02);
+    o.start(t0); o.stop(t0+total+0.05);
+    noise(t0,0.06,2000+rnd()*2000,1.2,0.4);
+    const em=document.getElementById('emoji');
+    em.classList.remove('cry'); void em.offsetWidth; em.classList.add('cry');
+  }
+  const volEl=document.getElementById('vol');
+  volEl.addEventListener('input',()=>{ if(master) master.gain.value=volEl.value/100; });
+  document.getElementById('play').addEventListener('click',()=>cry(SEED));
+})();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成するRPGボス戦BGM『魔王との決戦』。GB風の可変デューティ矩形波、ツーファイブ終止、秩序→混沌→大秩序のダイナミクス、独立した鳴き声SFXを実装。" />
+<meta name="description" content="Web Audioでリアルタイム合成するRPGボス戦BGM『魔王との決戦』。GB風可変デューティ矩形波、ツーファイブ終止、秩序→混沌→大秩序のダイナミクス、独立した鳴き声SFXを実装。" />
 <title>魔王との決戦 | RPG Boss Battle Theme</title>
 </head>
 <body>
@@ -429,13 +429,13 @@
       o.frequency.exponentialRampToValueAtTime(110+rnd()*520, t+dur);
       t+=dur;
     }
-    const total=t-t0;
+    const total=t-t0, peak=0.55;
     g.gain.setValueAtTime(0.0001,t0);
-    g.gain.exponentialRampToValueAtTime(0.3, t0+0.015);
-    g.gain.setValueAtTime(0.3, t0+Math.max(total-0.05,0.05));
+    g.gain.exponentialRampToValueAtTime(peak, t0+0.015);
+    g.gain.setValueAtTime(peak, t0+Math.max(total-0.05,0.05));
     g.gain.exponentialRampToValueAtTime(0.0001, t0+total+0.02);
     o.start(t0); o.stop(t0+total+0.05);
-    noiseBurst(t0, 0.06, 2000+rnd()*2000, 1.2, 0.16, true, master); // attack chirp
+    noiseBurst(t0, 0.06, 2000+rnd()*2000, 1.2, 0.3, true, master); // attack chirp
   }
 
   // ---------- visuals ----------
