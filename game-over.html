@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成したRPGゲームオーバー・ジングル『敗北…』。下降ラメントと弔いの鐘。ポケモンの精神を継承。" />
+<title>敗北… | Game Over Jingle</title>
+</head>
+<body>
+<style>
+  :root{ --ash:#c8ccd6; --dim:#6c7080; --blood:#8a2b34; --ink:#e6e8ee; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(100% 80% at 50% -10%, #241418 0%, transparent 55%),
+      radial-gradient(90% 70% at 50% 120%, #101014 0%, transparent 55%),
+      linear-gradient(180deg,#0c0d11,#080809 60%,#0a0708);
+    color:var(--ink);font-family:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:min(560px,100%);text-align:center;position:relative;
+    border:1px solid rgba(138,43,52,.4);border-radius:20px;
+    background:linear-gradient(180deg,rgba(20,18,20,.94),rgba(8,7,8,.97));
+    box-shadow:0 30px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(200,200,210,.06);
+    padding:34px 28px 32px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.42em;color:var(--blood);text-transform:uppercase;opacity:.9}
+  h1{font-size:clamp(28px,6.5vw,44px);font-weight:700;letter-spacing:.16em;margin:6px 0 2px;
+    background:linear-gradient(180deg,#d6d8e0,#8a8d99 60%,#5a2b30);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--dim);font-size:13px;letter-spacing:.24em;margin-bottom:24px}
+  .stage{position:relative;height:150px;margin-bottom:22px;display:flex;align-items:center;justify-content:center}
+  .skull{font-size:92px;line-height:1;display:inline-block;filter:grayscale(.4) drop-shadow(0 0 24px rgba(138,43,52,.4));user-select:none;
+    transition:transform 2s ease, opacity 2s ease}
+  .stage.playing .skull{animation:sink 3.4s ease-in forwards}
+  @keyframes sink{0%{transform:translateY(-10px) scale(1.05);opacity:1;filter:grayscale(0) drop-shadow(0 0 26px rgba(138,43,52,.6))}
+    100%{transform:translateY(24px) scale(.92);opacity:.5;filter:grayscale(.85) drop-shadow(0 0 10px rgba(138,43,52,.2))}}
+  .vignette{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.85) 100%)}
+  .stage.playing .vignette{animation:dim 3.4s ease-in forwards}
+  @keyframes dim{0%{opacity:0}100%{opacity:1}}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:14px;
+    padding:18px 40px;font-size:17px;font-weight:700;letter-spacing:.14em;color:#f0e6e6;
+    background:linear-gradient(180deg,#7a2530,#4a161c);
+    box-shadow:0 12px 30px rgba(120,30,40,.4),inset 0 1px 0 rgba(255,255,255,.12);
+    transition:transform .12s,filter .2s}
+  button:hover{transform:translateY(-2px);filter:brightness(1.15)}
+  button:active{transform:translateY(1px)}
+  .vol{margin-top:20px;color:var(--dim);font-size:12px;display:flex;gap:8px;align-items:center;justify-content:center}
+  input[type=range]{accent-color:var(--blood);width:130px}
+  .hint{margin-top:20px;color:#5a5560;font-size:12px;line-height:1.8}
+</style>
+
+<div class="card">
+  <div class="tag">◆ Game Over ◆</div>
+  <h1>敗北…</h1>
+  <div class="sub">GAME OVER &nbsp;—&nbsp; "The Fallen Hero"</div>
+
+  <div class="stage" id="stage">
+    <span class="skull">💀</span>
+    <div class="vignette"></div>
+  </div>
+
+  <button id="play">▶ 敗北…</button>
+  <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="78"></div>
+
+  <div class="hint">
+    Web Audioでリアルタイム合成したゲームオーバー・ジングルです（音源ファイルなし・約7秒）。<br>
+    崩れ落ちる下降スタブ → 悲しみのため息 → 沈む終止和音と弔いの鐘の3部構成。
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, rev;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+
+  const _pw={};
+  function pulseWave(duty){
+    const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16, real=new Float32Array(N), imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
+  }
+  function impulse(dur,decay){
+    const len=Math.max(1,Math.floor(ctx.sampleRate*dur)), buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=buf.getChannelData(c);
+      for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay); }
+    return buf;
+  }
+  function init(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.9;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-16; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.25;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    master.connect(comp); comp.connect(limiter); limiter.connect(ctx.destination);
+    rev=ctx.createConvolver(); rev.buffer=impulse(2.4,2.2);          // large, cold chamber
+    const rOut=ctx.createGain(); rOut.gain.value=.95; rev.connect(rOut); rOut.connect(master);
+  }
+  function route(n,{pan=0,rl=0}={}){
+    let tail=n;
+    if(ctx.createStereoPanner){ const p=ctx.createStereoPanner(); p.pan.value=pan; n.connect(p); tail=p; }
+    tail.connect(master);
+    if(rl){ const s=ctx.createGain(); s.gain.value=rl; n.connect(s); s.connect(rev); }
+  }
+  function tone(t,dur,{wave='square',duty=null,f0=440,f1=null,det=0,vib=0,vr=5,g=.15,a=.02,r=.2,
+                       cut=3000,env='hold',pan=0,rl=0}={}){
+    const o=ctx.createOscillator();
+    if(duty!=null)o.setPeriodicWave(pulseWave(duty)); else o.type=wave;
+    o.frequency.setValueAtTime(Math.max(f0,1),t);
+    if(f1)o.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
+    if(det)o.detune.setValueAtTime(det,t);
+    if(vib){ const l=ctx.createOscillator(),lg=ctx.createGain();
+      l.frequency.value=vr; lg.gain.value=vib; l.connect(lg); lg.connect(o.detune); l.start(t); l.stop(t+dur+.05); }
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=1;
+    const e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a);
+    if(env==='hold'){ e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(f); f.connect(e); route(e,{pan,rl});
+    o.start(t); o.stop(t+dur+.06);
+  }
+  function nz(t,dur,{type='highpass',cut=6000,q=.8,g=.2,pan=0,rl=0}={}){
+    const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const e=ctx.createGain(); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(e); route(e,{pan,rl});
+    n.start(t); n.stop(t+dur+.02);
+  }
+  function timpani(t,freq,g=.6){
+    const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.09);
+    e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+.6);
+    o.connect(e); route(e,{rl:.25}); o.start(t); o.stop(t+.65);
+  }
+  // funeral bell — a couple of inharmonic partials, long decay
+  function bell(t,freq,g=.4){
+    [[1,1],[2.76,.5],[5.4,.28],[8.1,.16]].forEach(([r,a])=>{
+      const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=freq*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.01);
+      e.gain.exponentialRampToValueAtTime(.0001,t+2.6*(1-.12*r));
+      o.connect(e); route(e,{rl:.4}); o.start(t); o.stop(t+2.7);
+    });
+  }
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const hz=n=>{ const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);
+    const s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);
+    return 440*Math.pow(2,(12*(+m[3]+1)+s-69)/12); };
+
+  // mournful sustained voice — triangle body + muted reedy pulse, slow attack, slight vibrato
+  function reed(t,dur,note,{g=.16,vib=8,pan=0}={}){
+    const f=hz(note);
+    tone(t,dur,{wave:'triangle',f0:f,g,det:4,vib,vr:5,cut:2200,a:.05,r:.3,pan,rl:.4});
+    tone(t,dur,{duty:.5,f0:f,g:g*.4,det:6,vib,vr:5,cut:1600,a:.06,r:.3,pan,rl:.3});
+  }
+  // dark staccato chord stab
+  function stab(t,dur,notes,{g=.11,pan=0}={}){
+    notes.forEach((n,i)=> tone(t,dur,{duty:.25,f0:hz(n),g,det:(i-1)*5,cut:2400,a:.006,r:.1,env:'perc',pan:(i-(notes.length-1)/2)*.2+pan,rl:.3}));
+  }
+  function padc(t,dur,notes,{g=.06}={}){
+    notes.forEach((n,i)=> tone(t,dur,{wave:'triangle',f0:hz(n),g,det:6,cut:1500,a:.15,r:.5,pan:(i-(notes.length-1)/2)*.24,rl:.4}));
+  }
+  const bass=(t,dur,note,g=.22)=> tone(t,dur,{wave:'triangle',f0:hz(note),g,cut:700,a:.03,r:.3,rl:.12});
+
+  // ---------- the jingle (D minor, slow, ~7s) ----------
+  const BPM=66, B=60/BPM;
+  function playGameOver(){
+    if(!ctx) init();
+    if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.9, ctx.currentTime);
+    const t0=ctx.currentTime+0.06;
+    const at=b=>t0+b*B;
+
+    // — 第1部: 崩れ落ちる下降スタブ (i → VII → VI → V) —
+    stab(at(0),  .8*B,['D4','F4','A4']); timpani(at(0),hz('D2'),.6); bass(at(0),1.4*B,'D2');
+    tone(at(0),.7,{wave:'sawtooth',f0:hz('A5'),f1:hz('A3'),g:.05,cut:2600,env:'perc',rl:.3}); // downward power-down gliss
+    stab(at(1),  .8*B,['C4','E4','G4']); bass(at(1),1*B,'C2');
+    stab(at(2),  .8*B,['Bb3','D4','F4']); bass(at(2),1*B,'Bb1');
+    stab(at(3), 1.4*B,['A3','C#4','E4'],{g:.13}); timpani(at(3),hz('A1'),.55); bass(at(3),1.4*B,'A1'); // V — tense
+    nz(at(3),.5,{type:'highpass',cut:5000,q:.6,g:.06,rl:.3});
+
+    // — 第2部: 悲しみのため息 (descending lament over Dm) —
+    padc(at(5),4*B,['D3','F3','A3']);
+    reed(at(5),  1.6*B,'A4',{g:.16}); reed(at(6.5),1.4*B,'F4',{g:.15});          // sigh 1
+    reed(at(8),  1.6*B,'E4',{g:.15}); reed(at(9.5),1.6*B,'D4',{g:.15,vib:10});   // sigh 2 → settle
+    padc(at(9),3*B,['A2','C#3','E3'],{g:.05});                                    // V underneath
+    bass(at(5),4*B,'D2'); bass(at(9),2.5*B,'A1');
+
+    // — 第3部: 沈む終止和音 + 弔いの鐘 —
+    const tf=at(12);
+    padc(tf,4.5*B,['D3','F3','A3','D4'],{g:.075});                                // final Dm, long fade
+    reed(tf,4*B,'F4',{g:.12,vib:6});
+    bass(tf,4.5*B,'D2',.24);
+    bell(tf+.1,hz('D2'),.42);                                                     // funeral toll
+    bell(tf+2.0,hz('A2'),.3);                                                     // distant second toll
+    tone(tf,4.5*B,{wave:'sine',f0:hz('D5'),g:.03,a:.4,r:1.5,cut:3000,rl:.5});     // faint high mourning tone
+
+    // visuals
+    stage.classList.remove('playing'); void stage.offsetWidth; stage.classList.add('playing');
+  }
+
+  const stage=document.getElementById('stage');
+  const volEl=document.getElementById('vol');
+  document.getElementById('play').addEventListener('click', playGameOver);
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.9; });
+})();
+</script>
+
+</body>
+</html>
