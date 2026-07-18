@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0e2c4"/>
+      <stop offset="0.45" stop-color="#ecd194"/>
+      <stop offset="1" stop-color="#a88848"/>
+    </linearGradient>
+    <linearGradient id="goldV" gradientUnits="userSpaceOnUse" x1="0" y1="140" x2="0" y2="330">
+      <stop offset="0" stop-color="#ecd194"/>
+      <stop offset="1" stop-color="#b8945a"/>
+    </linearGradient>
+    <g id="six" fill="none" stroke-linecap="round">
+      <circle cx="0" cy="17" r="21"/>
+      <path d="M 25 -38 C 4 -33 -16 -14 -20 10"/>
+    </g>
+  </defs>
+
+  <!-- background -->
+  <circle cx="256" cy="256" r="252" fill="#0a0e12"/>
+
+  <!-- double ring -->
+  <circle cx="256" cy="256" r="234" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#d4b270" stroke-width="1" opacity="0.5"/>
+
+  <!-- AK letters -->
+  <g stroke="url(#goldV)" stroke-width="23" fill="none" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- A -->
+    <path d="M 141 316 L 201 148 L 261 316"/>
+    <path d="M 170 262 L 232 262"/>
+    <!-- K -->
+    <path d="M 303 148 L 303 316"/>
+    <path d="M 371 150 L 305 238"/>
+    <path d="M 318 224 L 373 316"/>
+  </g>
+
+  <!-- 69 : rotationally symmetric pair -->
+  <g stroke="url(#gold)" stroke-width="13">
+    <use href="#six" x="219" y="392"/>
+    <use href="#six" transform="rotate(180 293 392)" x="293" y="392"/>
+  </g>
+
+  <!-- diamond accents -->
+  <g fill="#d4b270">
+    <path d="M 160 392 l 7 -7 l 7 7 l -7 7 Z"/>
+    <path d="M 338 392 l 7 -7 l 7 7 l -7 7 Z"/>
+  </g>
+</svg>

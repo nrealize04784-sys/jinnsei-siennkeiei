@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AK69 | ブランドロゴ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deepest: #07080a;
+    --bg-primary: #0c1115;
+    --bg-secondary: #11181e;
+    --bg-cream: #faf7f0;
+    --accent-gold: #d4b270;
+    --accent-gold-bright: #ecd194;
+    --text-primary: #faf6ec;
+    --text-muted: #948a78;
+    --border-subtle: rgba(212, 178, 112, 0.15);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Shippori Mincho', serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.9;
+    letter-spacing: 0.05em;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+  header {
+    padding: 90px 0 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  header .en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.55em;
+    color: var(--accent-gold);
+  }
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    letter-spacing: 0.18em;
+    color: var(--accent-gold-bright);
+    line-height: 1.2;
+    margin-top: 14px;
+  }
+  header p { color: var(--text-muted); font-size: 14px; margin-top: 10px; }
+
+  section { padding: 70px 0; border-bottom: 1px solid var(--border-subtle); }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 0.3em;
+    color: var(--accent-gold);
+    margin-bottom: 34px;
+    text-align: center;
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+  }
+  .card .stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    padding: 40px;
+  }
+  .card .stage.dark { background: var(--bg-deepest); }
+  .card .stage.light { background: var(--bg-cream); }
+  .card .stage img { max-width: 100%; height: auto; }
+  .card .label {
+    padding: 16px 22px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .card .label strong { color: var(--text-primary); font-weight: 500; }
+
+  .full { grid-column: 1 / -1; }
+
+  .colors { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+  .swatch { text-align: center; font-size: 12px; color: var(--text-muted); }
+  .swatch .chip {
+    width: 110px; height: 110px; border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 10px;
+  }
+
+  footer { padding: 46px 0; text-align: center; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="en">BRAND IDENTITY</div>
+    <h1>AK69</h1>
+    <p>ロゴデザイン &amp; 使用ガイド</p>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>LOGO VARIATIONS</h2>
+    <div class="grid">
+      <div class="card full">
+        <div class="stage dark">
+          <img src="ak69-logo-horizontal.svg" alt="AK69 ワードマーク（ダーク背景用）" style="width: 520px;">
+        </div>
+        <div class="label"><strong>ワードマーク／ダーク背景用</strong> — ak69-logo-horizontal.svg。メインで使用する横組みロゴ。</div>
+      </div>
+      <div class="card">
+        <div class="stage light">
+          <img src="ak69-logo-horizontal-light.svg" alt="AK69 ワードマーク（ライト背景用）" style="width: 420px;">
+        </div>
+        <div class="label"><strong>ワードマーク／ライト背景用</strong> — ak69-logo-horizontal-light.svg。白・明色の紙面やスライドに。</div>
+      </div>
+      <div class="card">
+        <div class="stage dark">
+          <img src="ak69-icon.svg" alt="AK69 エンブレムアイコン" style="width: 240px;">
+        </div>
+        <div class="label"><strong>エンブレム／アイコン</strong> — ak69-icon.svg。SNSアイコン・ファビコン・スタンプ用途に。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>DESIGN CONCEPT</h2>
+    <p style="max-width: 720px; margin: 0 auto; font-size: 15px; color: var(--text-primary);">
+      鋭角に立ち上がる「A」と「K」は意志と推進力を、円環を描く「6」と「9」は
+      180度回転しても同じ形になる点対称のペアとして描き、循環と調和を表しています。
+      直線のシャープさと曲線のしなやかさの対比が、このロゴの核となるコンセプトです。
+      配色は深いチャコールに温かみのあるシャンパンゴールドを合わせ、品格と存在感を両立させています。
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>COLOR PALETTE</h2>
+    <div class="colors">
+      <div class="swatch"><div class="chip" style="background:#ecd194"></div>Gold Bright<br>#ECD194</div>
+      <div class="swatch"><div class="chip" style="background:#d4b270"></div>Gold<br>#D4B270</div>
+      <div class="swatch"><div class="chip" style="background:#a88848"></div>Gold Deep<br>#A88848</div>
+      <div class="swatch"><div class="chip" style="background:#0c1115"></div>Charcoal<br>#0C1115</div>
+      <div class="swatch"><div class="chip" style="background:#faf7f0"></div>Cream<br>#FAF7F0</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">AK69 Brand Identity — SVG形式のため、拡大・縮小しても劣化しません。</div>
+</footer>
+
+</body>
+</html>

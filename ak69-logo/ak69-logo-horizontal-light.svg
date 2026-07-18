@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 320" width="620" height="320">
+  <defs>
+    <linearGradient id="goldL2" gradientUnits="userSpaceOnUse" x1="0" y1="-40" x2="0" y2="40">
+      <stop offset="0" stop-color="#d4b270"/>
+      <stop offset="1" stop-color="#a88848"/>
+    </linearGradient>
+    <g id="sixL" fill="none" stroke-linecap="round">
+      <circle cx="0" cy="17" r="21"/>
+      <path d="M 25 -38 C 4 -33 -16 -14 -20 10"/>
+    </g>
+    <g id="nineL" fill="none" stroke-linecap="round">
+      <circle cx="0" cy="-17" r="21"/>
+      <path d="M -25 38 C -4 33 16 14 20 -10"/>
+    </g>
+  </defs>
+
+  <!-- AK -->
+  <g stroke="#0c1115" stroke-width="26" fill="none" stroke-linecap="square">
+    <!-- A -->
+    <path d="M 48 250 L 113 70 L 178 250"/>
+    <path d="M 80 192 L 147 192"/>
+    <!-- K -->
+    <path d="M 228 70 L 228 250"/>
+    <path d="M 301 72 L 230 166"/>
+    <path d="M 244 152 L 303 250"/>
+  </g>
+
+  <!-- 69 -->
+  <g stroke="url(#goldL2)" stroke-width="11.5">
+    <use href="#sixL" transform="translate(408 160) scale(2.3)"/>
+    <use href="#nineL" transform="translate(530 160) scale(2.3)"/>
+  </g>
+</svg>
