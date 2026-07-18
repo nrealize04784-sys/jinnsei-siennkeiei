@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成したRPG攻撃効果音8種（味方側4・敵側4）。ポケモンのSE精神を継承。" />
+<meta name="description" content="Web Audioでリアルタイム合成したプロ品質のRPG攻撃効果音8種（味方4・敵4）。多層設計＋ステレオ＋残響＋FM合成。" />
 <title>攻撃の効果音 | Battle SFX</title>
 </head>
 <body>
@@ -27,6 +27,8 @@
   .arena{position:relative;height:120px;border-radius:14px;overflow:hidden;margin-bottom:20px;
     border:1px solid #26304d;background:radial-gradient(80% 120% at 50% 120%,#20304e,#0b1120 70%);
     display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+  .arena.shake{animation:ashake .32s}
+  @keyframes ashake{0%,100%{transform:translate(0)}20%{transform:translate(-6px,3px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-4px,2px)}80%{transform:translate(3px,-1px)}}
   .fighter{font-size:60px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));transition:transform .08s}
   .hero.hit{animation:hurt .3s}
   .foe.hit{animation:hurt .3s}
@@ -36,6 +38,9 @@
   .flash.foe{background:radial-gradient(circle at 28% 50%,rgba(255,84,112,.55),transparent 55%)}
   .flash.show{animation:fl .3s}
   @keyframes fl{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
+  .pop{position:absolute;top:45%;font-size:38px;opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.4)}
+  .pop.show{animation:popa .5s ease-out}
+  @keyframes popa{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}100%{opacity:0;transform:translate(-50%,-50%) scale(.9) translateY(-16px)}}
 
   .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:520px){.cols{grid-template-columns:1fr}}
@@ -59,11 +64,12 @@
   <h1>攻撃の効果音</h1>
   <div class="subtitle">味方 4 &nbsp;vs&nbsp; 敵 4</div>
 
-  <div class="arena">
+  <div class="arena" id="arena">
     <div class="flash ally" id="flashAlly"></div>
     <div class="flash foe" id="flashFoe"></div>
     <div class="fighter hero" id="hero">🦸</div>
     <div class="fighter foe" id="foe">👹</div>
+    <div class="pop" id="pop">💥</div>
   </div>
 
   <div class="cols">
@@ -90,19 +96,36 @@
   <div class="volrow">🔊 <input type="range" id="vol" min="0" max="100" value="80"></div>
   <div class="hint">
     Web Audioでリアルタイム合成した攻撃効果音です（音源ファイルなし）。<br>
-    味方は明るく鋭い音、敵は低く禍々しい音で対比しています。
+    各SEはトランジェント／ボディ／テイルの多層設計＋ステレオ＋残響。押すたびに微妙に表情が変わります。
   </div>
 </div>
 
 <script>
 (() => {
-  let ctx, master, comp, limiter;
+  let ctx, master, comp, limiter, revS, revL;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const V=()=>1+(Math.random()*2-1)*.05;              // ±5% per-hit variation
+
   const _pw={};
   function pulseWave(duty){
     const k=duty.toFixed(3); if(_pw[k])return _pw[k];
     const N=16, real=new Float32Array(N), imag=new Float32Array(N);
     for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
     return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
+  }
+  const _sh={};
+  function shaper(amt){                                // cached tanh saturation curves
+    const k=amt.toFixed(2); if(_sh[k])return _sh[k];
+    const n=1024, c=new Float32Array(n);
+    for(let i=0;i<n;i++){ const x=i/(n-1)*2-1; c[i]=Math.tanh(x*amt)/Math.tanh(amt); }
+    const ws=ctx.createWaveShaper(); ws.curve=c; ws.oversample='2x';
+    return _sh[k]=ws;
+  }
+  function impulse(dur,decay){
+    const len=Math.max(1,Math.floor(ctx.sampleRate*dur)), buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=buf.getChannelData(c);
+      for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay); }
+    return buf;
   }
   function init(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
@@ -112,81 +135,189 @@
     limiter=ctx.createDynamicsCompressor();
     limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
     master.connect(comp); comp.connect(limiter); limiter.connect(ctx.destination);
+    // two reverb spaces: tight room for impacts, long hall for magic & roars
+    revS=ctx.createConvolver(); revS.buffer=impulse(.35,3.5);
+    const sOut=ctx.createGain(); sOut.gain.value=.9; revS.connect(sOut); sOut.connect(master);
+    revL=ctx.createConvolver(); revL.buffer=impulse(1.7,2.6);
+    const lOut=ctx.createGain(); lOut.gain.value=.85; revL.connect(lOut); lOut.connect(master);
   }
-  // pitched pulse tone with exp glide f0->f1, optional vibrato (cents)
-  function tone(t, f0, f1, dur, {duty=.25, gain=.3, cut=4500, a=.005, r=.06, vibr=0, vrate=7}={}){
-    const o=ctx.createOscillator(); o.setPeriodicWave(pulseWave(duty));
-    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; f.Q.value=1.2;
-    const g=ctx.createGain();
-    o.frequency.setValueAtTime(Math.max(f0,1),t); o.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
-    if(vibr>0){ const lfo=ctx.createOscillator(), lg=ctx.createGain();
-      lfo.frequency.value=vrate; lg.gain.value=vibr; lfo.connect(lg); lg.connect(o.detune);
-      lfo.start(t); lfo.stop(t+dur+.02); }
-    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+a);
-    g.gain.setValueAtTime(gain,t+Math.max(dur-r,a)); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-    o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t+dur+.03);
+  // routing: dry (panned) + optional sends to short/long reverb
+  function route(n,{pan=0,rs=0,rl=0}={}){
+    let tail=n;
+    if(ctx.createStereoPanner){ const p=ctx.createStereoPanner(); p.pan.value=pan; n.connect(p); tail=p; }
+    tail.connect(master);
+    if(rs){ const s=ctx.createGain(); s.gain.value=rs; n.connect(s); s.connect(revS); }
+    if(rl){ const s=ctx.createGain(); s.gain.value=rl; n.connect(s); s.connect(revL); }
   }
-  function noiseHit(t, dur, {type='highpass', cut=4000, cutTo=null, q=1, gain=.3}={}){
+  // pitched layer: pitch env, optional vibrato / saturation / bandpass formant
+  function tone(t,dur,{wave='square',duty=null,f0=440,f1=null,det=0,vib=0,vr=6,g=.15,a=.004,r=.06,
+                       cut=8000,cutTo=null,ftype='lowpass',q=1.1,sat=0,env='perc',pan=0,rs=0,rl=0}={}){
+    const o=ctx.createOscillator();
+    if(duty!=null)o.setPeriodicWave(pulseWave(duty)); else o.type=wave;
+    o.frequency.setValueAtTime(Math.max(f0,1),t);
+    if(f1)o.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
+    if(det)o.detune.setValueAtTime(det,t);
+    if(vib){ const l=ctx.createOscillator(),lg=ctx.createGain();
+      l.frequency.value=vr; lg.gain.value=vib; l.connect(lg); lg.connect(o.detune); l.start(t); l.stop(t+dur+.05); }
+    const f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.setValueAtTime(cut,t);
+    if(cutTo)f.frequency.exponentialRampToValueAtTime(Math.max(cutTo,20),t+dur);
+    f.Q.value=q;
+    const e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a);
+    if(env==='hold'){ e.gain.setValueAtTime(g,t+Math.max(dur-r,a)); e.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    let head=o; if(sat){ const ws=shaper(sat); o.connect(ws); head=ws; }
+    head.connect(f); f.connect(e); route(e,{pan,rs,rl});
+    o.start(t); o.stop(t+dur+.06);
+  }
+  // noise layer with filter sweep + optional saturation
+  function nz(t,dur,{type='highpass',cut=4000,cutTo=null,q=1,g=.3,a=.001,sat=0,pan=0,rs=0,rl=0}={}){
     const n=ctx.createBufferSource();
     const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
     const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
     n.buffer=buf;
     const f=ctx.createBiquadFilter(); f.type=type; f.frequency.setValueAtTime(cut,t);
-    if(cutTo) f.frequency.exponentialRampToValueAtTime(Math.max(cutTo,20),t+dur); f.Q.value=q;
-    const g=ctx.createGain(); g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
+    if(cutTo)f.frequency.exponentialRampToValueAtTime(Math.max(cutTo,20),t+dur);
+    f.Q.value=q;
+    const e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+a);
+    e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    let head=n; if(sat){ const ws=shaper(sat); n.connect(ws); head=ws; }
+    head.connect(f); f.connect(e); route(e,{pan,rs,rl});
+    n.start(t); n.stop(t+dur+.02);
   }
-  function boom(t, f0, f1, dur, gain){
-    const o=ctx.createOscillator(),g=ctx.createGain(); o.type='sine';
-    o.frequency.setValueAtTime(f0,t); o.frequency.exponentialRampToValueAtTime(Math.max(f1,10),t+dur);
-    g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+dur+.03);
+  // saturated sine drop — cinematic sub weight
+  const subhit=(t,f0,f1,dur,g,satA=0)=> tone(t,dur,{wave:'sine',f0,f1,g,a:.003,cut:1600,sat:satA,rs:.08});
+  // metallic ring — inharmonic partial stack (sword "shing")
+  function ring(t,base,ratios,dur,g,o={}){
+    ratios.forEach((r,i)=> tone(t,dur*(1-.5*i/ratios.length),
+      {wave:'sine',f0:base*r,f1:base*r*.985,g:g/(1+i*.7),det:(Math.random()*2-1)*5,a:.002,cut:12000,...o}));
   }
+  // FM growl — beast voice
+  function fm(t,dur,{cf=90,mf=61,idx=250,g=.2,f1=null,cut=900,pan=0,rs=0,rl=0}={}){
+    const c=ctx.createOscillator(); c.type='sine'; c.frequency.setValueAtTime(cf,t);
+    if(f1)c.frequency.exponentialRampToValueAtTime(Math.max(f1,1),t+dur);
+    const m=ctx.createOscillator(); m.type='sine'; m.frequency.setValueAtTime(mf,t);
+    const mg=ctx.createGain(); mg.gain.value=idx; m.connect(mg); mg.connect(c.frequency);
+    const f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut;
+    const e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.02);
+    e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    c.connect(f); f.connect(e); route(e,{pan,rs,rl});
+    c.start(t); m.start(t); c.stop(t+dur+.05); m.stop(t+dur+.05);
+  }
+  const blip=(t,f)=> tone(t,.05,{wave:'sine',f0:f,f1:f*.55,g:.06,a:.003,cut:2500,pan:rnd(-.5,.5),rl:.3});
 
+  // ================= the 8 attacks =================
   const ATK={
-    // ---- 味方側（明るく鋭い）----
-    a_slash(t){ noiseHit(t,.14,{type:'highpass',cut:7000,cutTo:1400,q:.7,gain:.4});
-      tone(t,2000,520,.12,{duty:.25,gain:.15,cut:5200}); },
-    a_punch(t){ boom(t,230,55,.16,.55);
-      noiseHit(t,.08,{type:'bandpass',cut:1400,q:1.3,gain:.34});
-      tone(t,600,180,.09,{duty:.5,gain:.12,cut:2600}); },
-    a_beam(t){ [659,880,1319].forEach((f,i)=>tone(t+i*.05,f,f,.08,{duty:.5,gain:.12,cut:5200,r:.03}));
-      tone(t+.12,720,1650,.3,{duty:.25,gain:.16,cut:6500,r:.12});
-      noiseHit(t+.12,.3,{type:'highpass',cut:5000,cutTo:9500,q:.6,gain:.08}); },
-    a_special(t){ tone(t,300,1500,.32,{duty:.25,gain:.15,cut:6500});
-      noiseHit(t,.34,{type:'highpass',cut:2200,cutTo:8500,q:.5,gain:.13});
-      const te=t+.34;
-      [523,659,784,1047].forEach(f=>tone(te,f,f,.42,{duty:.25,gain:.09,cut:6500,r:.22}));
-      boom(te,190,50,.36,.5); noiseHit(te,.2,{type:'lowpass',cut:1300,q:.7,gain:.3}); },
-    // ---- 敵側（低く禍々しい）----
-    e_bite(t){ for(const o of [0,.09]) noiseHit(t+o,.05,{type:'bandpass',cut:820,q:7,gain:.36});
-      tone(t,230,90,.16,{duty:.5,gain:.15,cut:1700}); },
-    e_poison(t){ tone(t,720,180,.38,{duty:.5,gain:.15,cut:2400,vibr:35,vrate:9});
-      noiseHit(t,.38,{type:'lowpass',cut:1500,cutTo:480,q:.9,gain:.13}); },
-    e_stomp(t){ boom(t,130,36,.32,.62);
-      noiseHit(t,.14,{type:'lowpass',cut:600,q:.7,gain:.4});
-      noiseHit(t+.02,.05,{type:'bandpass',cut:2600,q:2,gain:.18}); },
-    e_roar(t){ tone(t,150,118,.5,{duty:.5,gain:.14,cut:1400,vibr:40,vrate:6});
-      tone(t,159,126,.5,{duty:.5,gain:.11,cut:1400,vibr:40,vrate:5});
-      noiseHit(t,.5,{type:'lowpass',cut:900,cutTo:2400,q:.6,gain:.16});
-      boom(t+.28,120,40,.32,.5); }
+    // ⚔️ 斬撃 — whoosh(L→) → metallic shing + crack + low support
+    a_slash(t){ const v=V();
+      nz(t,.09,{type:'bandpass',cut:900*v,cutTo:5200,q:.8,g:.2,pan:-.4,rs:.15});          // anticipation whoosh
+      ring(t+.07,3100*v,[1,1.34,2.1,2.76,3.9],.3,.14,{pan:.15,rl:.3});                    // blade ring
+      nz(t+.07,.1,{type:'highpass',cut:6500,cutTo:1800,q:.7,g:.4,pan:.1,rs:.25});         // cut crack
+      tone(t+.07,.11,{duty:.25,f0:2300*v,f1:420,g:.12,cut:5200,pan:.1,rs:.2});            // chip zap
+      subhit(t+.075,300,90,.12,.22,2);                                                     // weight
+    },
+    // 👊 打撃 — knuckle click → smack → saturated sub → dust tail
+    a_punch(t){ const v=V();
+      nz(t,.012,{type:'highpass',cut:4000,q:.7,g:.5});                                     // knuckle transient
+      nz(t+.004,.07,{type:'bandpass',cut:1500*v,q:1.6,g:.38,rs:.2});                       // smack body
+      subhit(t+.006,210*v,52,.22,.55,3);                                                   // sub thump
+      tone(t+.006,.09,{wave:'triangle',f0:95,f1:60,g:.28,cut:900});                        // body knock
+      nz(t+.05,.16,{type:'lowpass',cut:800,cutTo:200,q:.6,g:.1,rs:.3});                    // dust
+    },
+    // ✨ 魔法ビーム — chorused charge → beam(+5th) w/ vibrato → scattered sparkles
+    a_beam(t){ const v=V();
+      for(const d of [-8,0,8]) tone(t,.24,{duty:.25,f0:480*v,f1:1750,g:.05,det:d,cut:7000,pan:d/40,rl:.3});
+      nz(t,.24,{type:'highpass',cut:3000,cutTo:9000,q:.5,g:.05,rl:.3});                    // charge air
+      const tf=t+.22;
+      tone(tf,.34,{duty:.5,f0:1150*v,f1:1350,g:.12,vib:18,vr:11,cut:7500,env:'hold',r:.12,rl:.25});   // beam core
+      tone(tf,.34,{duty:.25,f0:1725*v,f1:2025,g:.05,vib:18,vr:11,cut:8500,env:'hold',r:.12,pan:.2,rl:.3}); // 5th above
+      tone(tf,.3,{wave:'sine',f0:280,f1:340,g:.14,cut:1200,env:'hold',r:.1});              // body warmth
+      for(let i=0;i<7;i++) tone(tf+.05+i*rnd(.03,.055),.09,
+        {wave:'sine',f0:rnd(2200,6800),g:.045,a:.002,cut:9000,pan:rnd(-.6,.6),rl:.5});     // sparkle particles
+    },
+    // 💥 必殺技 — accelerating riser → 30ms SILENCE → sub-drop impact + chord bloom + debris
+    a_special(t){ const v=V();
+      [0,.07,.13,.18,.22,.255,.285,.31,.33].forEach((o,i)=> tone(t+o,.06,
+        {duty:.25,f0:330*Math.pow(1.14,i)*v,g:.08,cut:6000,pan:(i%2?.25:-.25),rs:.2}));    // chip riser
+      nz(t,.36,{type:'bandpass',cut:600,cutTo:7500,q:1.2,g:.15,rl:.25});                   // sweep up
+      const ti=t+.40;                                                                       // ← the silent gap
+      subhit(ti,320,38,.5,.65,3.5);                                                         // cinematic sub drop
+      nz(ti,.26,{type:'lowpass',cut:5200,cutTo:700,q:.5,g:.45,rs:.35,rl:.3});               // crash
+      ring(ti+.01,1900*v,[1,1.5,2.02,3.01],.5,.11,{rl:.5});                                 // bloom ring
+      [523,659,784,1175].forEach((fq,i)=>{ for(const d of[-6,6])
+        tone(ti+.03,.55,{duty:.25,f0:fq*v,g:.04,det:d,cut:6000,pan:d/30+(i-1.5)*.12,rl:.5}); }); // add9 bloom
+      for(let i=0;i<5;i++) nz(ti+.12+i*.07,.04,{type:'bandpass',cut:rnd(1200,3200),q:3,g:.07,pan:rnd(-.5,.5),rs:.4}); // debris
+    },
+    // 🦷 牙 — double bone-snap → flesh crunch → FM growl
+    e_bite(t){ const v=V();
+      [[0,.38],[.11,.48]].forEach(([o,g])=>{
+        nz(t+o,.03,{type:'bandpass',cut:900*v,q:8,g});                                      // jaw clack low
+        nz(t+o+.006,.03,{type:'bandpass',cut:2700*v,q:6,g:g*.6,pan:.1});                    // clack high
+        subhit(t+o,150,70,.09,.26,2);                                                       // jaw weight
+      });
+      nz(t+.13,.14,{type:'lowpass',cut:1100,cutTo:300,q:.8,g:.32,sat:3,rs:.2});             // crunch
+      fm(t+.13,.24,{cf:90*v,mf:63,idx:280,g:.26,cut:700,rl:.15});                           // growl
+    },
+    // ☠️ 毒ビーム — spray hiss + beating detuned fall + bubbles + acid sizzle
+    e_poison(t){ const v=V();
+      nz(t,.4,{type:'bandpass',cut:2400,cutTo:900,q:1,g:.13,rs:.2});                        // pressurized spray
+      tone(t+.02,.42,{duty:.5,f0:640*v,f1:165,g:.12,vib:30,vr:8.5,cut:2200,rl:.25});        // sinister fall
+      tone(t+.02,.42,{duty:.5,f0:646*v,f1:170,g:.09,vib:30,vr:7.5,cut:2200,pan:.2,rl:.25}); // beat pair
+      for(let i=0;i<9;i++) blip(t+.06+i*rnd(.03,.05), rnd(260,520));                        // bubbling
+      nz(t+.3,.3,{type:'highpass',cut:5200,cutTo:8000,q:.6,g:.05,rl:.4});                   // acid sizzle
+    },
+    // 🦶 重い一撃 — air push → massive saturated sub + slam + crack → rubble + rumble
+    e_stomp(t){ const v=V();
+      nz(t,.06,{type:'lowpass',cut:500,q:.6,g:.18});                                        // air push
+      const ti=t+.05;
+      subhit(ti,110*v,28,.55,.7,4);                                                          // massive sub
+      nz(ti,.12,{type:'lowpass',cut:900,cutTo:250,q:.7,g:.45,sat:2.5});                      // ground slam
+      nz(ti+.02,.05,{type:'bandpass',cut:3000,q:2,g:.13});                                   // surface crack
+      for(let i=0;i<6;i++) nz(ti+.1+i*rnd(.045,.075),.05,
+        {type:'bandpass',cut:rnd(500,1600),q:4,g:.09*(1-i/8),pan:rnd(-.6,.6),rs:.3});        // rubble
+      fm(ti,.5,{cf:48,mf:31,idx:120,g:.2,cut:300,rl:.3});                                    // earth rumble
+    },
+    // 🐲 咆哮 — intake growl → formant-swept saturated roar + breath + sub → punctuation
+    e_roar(t){ const v=V();
+      fm(t,.16,{cf:120*v,mf:83,idx:340,g:.14,cut:900,f1:170});                               // intake
+      const tr=t+.14;
+      tone(tr,.7,{wave:'sawtooth',f0:132*v,f1:98,g:.12,sat:3,ftype:'bandpass',cut:430,cutTo:980,q:1.5,vib:25,vr:5,rl:.35});   // roar voice A
+      tone(tr,.7,{wave:'sawtooth',f0:133.5*v,f1:99,g:.1,sat:3,ftype:'bandpass',cut:450,cutTo:1000,q:1.5,vib:25,vr:4.3,pan:.15,rl:.35}); // voice B (beating)
+      fm(tr,.7,{cf:75*v,mf:50,idx:260,g:.18,f1:60,cut:600,rl:.3});                           // chest growl
+      nz(tr,.65,{type:'bandpass',cut:420,cutTo:1000,q:1.2,g:.18,sat:2,rl:.35});              // breath rasp
+      subhit(tr+.05,90,42,.5,.36,3);                                                          // sub floor
+      subhit(tr+.5,120,36,.3,.42,3);                                                          // final punctuation
+    }
   };
+  const POP={a_slash:'⚡',a_punch:'💢',a_beam:'✨',a_special:'💥',e_bite:'🩸',e_poison:'☠️',e_stomp:'💥',e_roar:'💢'};
+  const HEAVY={a_punch:1,a_special:1,e_stomp:1,e_roar:1};
+  const DELAY={a_slash:70,a_punch:10,a_beam:220,a_special:400,e_bite:10,e_poison:30,e_stomp:50,e_roar:140};
 
   const volEl=document.getElementById('vol');
+  const arena=document.getElementById('arena');
   const hero=document.getElementById('hero'), foe=document.getElementById('foe');
   const flashAlly=document.getElementById('flashAlly'), flashFoe=document.getElementById('flashFoe');
-  function anim(isAlly){ // ally attacks hit the foe; enemy attacks hit the hero
-    const flash=isAlly?flashFoe:flashAlly, target=isAlly?foe:hero;
-    flash.classList.remove('show'); target.classList.remove('hit');
-    void flash.offsetWidth; void target.offsetWidth;
-    flash.classList.add('show'); target.classList.add('hit');
+  const pop=document.getElementById('pop');
+  function anim(name){
+    const isAlly=name[0]==='a';
+    setTimeout(()=>{
+      const flash=isAlly?flashFoe:flashAlly, target=isAlly?foe:hero;
+      flash.classList.remove('show'); target.classList.remove('hit'); pop.classList.remove('show');
+      if(HEAVY[name]) arena.classList.remove('shake');
+      void flash.offsetWidth;
+      flash.classList.add('show'); target.classList.add('hit');
+      pop.textContent=POP[name]; pop.style.left=isAlly?'72%':'28%'; pop.classList.add('show');
+      if(HEAVY[name]) arena.classList.add('shake');
+    }, DELAY[name]||0);
   }
   function play(name){
     if(!ctx) init();
     if(ctx.state==='suspended') ctx.resume();
     master.gain.setValueAtTime(volEl.value/100, ctx.currentTime);
     ATK[name](ctx.currentTime+0.02);
-    anim(name[0]==='a');
+    anim(name);
   }
   document.querySelectorAll('button[data-atk]').forEach(b=>
     b.addEventListener('click',()=>play(b.dataset.atk)));
