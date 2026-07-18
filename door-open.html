@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成した、家のドアを開けた瞬間の効果音（きしみ＋ラッチ＋ドン）。" />
+<title>ドアを開ける | Door Open SFX</title>
+</head>
+<body>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:radial-gradient(120% 90% at 50% 0%,#2a1c0d,#120b05 65%);color:#f3e6cf;
+    font-family:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:min(420px,100%);text-align:center;border:1px solid #4a3212;border-radius:20px;
+    background:linear-gradient(180deg,rgba(38,26,12,.92),rgba(20,13,6,.96));
+    padding:40px 28px;box-shadow:0 24px 70px rgba(0,0,0,.55)}
+  .tag{font-size:11px;letter-spacing:.4em;color:#e0a45a;text-transform:uppercase;opacity:.85}
+  h1{font-size:40px;font-weight:700;margin:6px 0 2px;letter-spacing:.1em;color:#fff6e6}
+  .sub{color:#a98a5f;font-size:13px;letter-spacing:.15em;margin-bottom:26px}
+  .door{font-size:96px;line-height:1;filter:drop-shadow(0 6px 20px rgba(0,0,0,.5));
+    display:inline-block;transform-origin:12% 50%;user-select:none}
+  .door.open{animation:swing .5s cubic-bezier(.3,.7,.3,1)}
+  @keyframes swing{0%{transform:perspective(360px) rotateY(0)}55%{transform:perspective(360px) rotateY(-58deg)}100%{transform:perspective(360px) rotateY(-46deg)}}
+  button{margin-top:26px;font-family:inherit;cursor:pointer;border:none;border-radius:14px;
+    padding:18px 34px;font-size:17px;font-weight:700;letter-spacing:.1em;color:#2a1a0a;
+    background:linear-gradient(180deg,#f6d79b,#e0a45a);
+    box-shadow:0 10px 28px rgba(224,164,90,.4),inset 0 1px 0 rgba(255,255,255,.55);transition:transform .12s,filter .2s}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  button:active{transform:translateY(1px)}
+  .vol{margin-top:20px;color:#a98a5f;font-size:12px;display:flex;gap:8px;align-items:center;justify-content:center}
+  input[type=range]{accent-color:#e0a45a;width:130px}
+  .hint{margin-top:22px;color:#8a6f4a;font-size:12px;line-height:1.7}
+</style>
+
+<div class="card">
+  <div class="tag">Door Open SFX</div>
+  <h1>ドアを開ける</h1>
+  <div class="sub">CREAK &nbsp;+&nbsp; LATCH &nbsp;+&nbsp; THUD</div>
+  <div class="door" id="door">🚪</div>
+  <button id="play">▸ 開ける</button>
+  <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="85"></div>
+  <div class="hint">
+    Web Audioでリアルタイム合成したドアの効果音です（音源ファイルなし）。<br>
+    ヒンジのきしみ・ラッチのカチッ・扉が開くドンを重ねています。
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp;
+  function init(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-12; comp.ratio.value=3.4; comp.attack.value=.002; comp.release.value=.18;
+    master.connect(comp); comp.connect(ctx.destination);
+  }
+  function noise(t,dur,type,cut,q,gain,dest){
+    const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+    n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const g=ctx.createGain(); g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(g); g.connect(dest||master); n.start(t); n.stop(t+dur+.02);
+    return f;
+  }
+  function playDoor(){
+    if(!ctx) init();
+    if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100, ctx.currentTime);
+    const t0=ctx.currentTime+0.02;
+
+    // 1) hinge CREAK — stick-slip: a sawtooth through a resonant bandpass that sweeps up,
+    //    amplitude broken into rapid decaying pulses ("cree-ee-eek"), slight pitch jitter.
+    const o=ctx.createOscillator(); o.type='sawtooth';
+    const bp=ctx.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=9;
+    const cg=ctx.createGain(); cg.gain.value=0.0001;
+    o.connect(bp); bp.connect(cg); cg.connect(master);
+    const creakDur=0.52;
+    o.frequency.setValueAtTime(150,t0);
+    bp.frequency.setValueAtTime(700,t0);
+    bp.frequency.linearRampToValueAtTime(1500,t0+creakDur);       // rising creak
+    // pitch jitter (stick-slip)
+    for(let i=0;i<11;i++){ const tt=t0+i*(creakDur/11); o.frequency.setValueAtTime(140+((i*53)%70), tt); }
+    // amplitude tremolo pulses, gently swelling then fading
+    const pulses=9;
+    for(let i=0;i<pulses;i++){
+      const tt=t0+i*(creakDur/pulses);
+      const amp=0.16*Math.sin((i+1)/pulses*Math.PI)+0.05;         // swell in the middle
+      cg.gain.setValueAtTime(0.006,tt);
+      cg.gain.exponentialRampToValueAtTime(Math.max(amp,0.008),tt+0.012);
+      cg.gain.exponentialRampToValueAtTime(0.006,tt+(creakDur/pulses)*0.9);
+    }
+    cg.gain.exponentialRampToValueAtTime(0.0001,t0+creakDur+0.04);
+    o.start(t0); o.stop(t0+creakDur+0.06);
+    // breathy air over the creak
+    noise(t0,creakDur*0.9,'bandpass',1200,0.7,0.05);
+
+    // 2) LATCH click — the handle releasing, right before the swing
+    noise(t0+0.01,0.035,'highpass',3800,1.5,0.5);
+    const cl=ctx.createOscillator(); cl.type='square';
+    const clg=ctx.createGain(); cl.frequency.setValueAtTime(2200,t0+0.01);
+    clg.gain.setValueAtTime(0.12,t0+0.01); clg.gain.exponentialRampToValueAtTime(0.0001,t0+0.05);
+    cl.connect(clg); clg.connect(master); cl.start(t0+0.01); cl.stop(t0+0.06);
+
+    // 3) THUD — the door coming to rest at the end of the swing (low wooden knock)
+    const tThud=t0+creakDur+0.02;
+    const th=ctx.createOscillator(); th.type='sine';
+    const thg=ctx.createGain();
+    th.frequency.setValueAtTime(120,tThud); th.frequency.exponentialRampToValueAtTime(48,tThud+0.13);
+    thg.gain.setValueAtTime(0.5,tThud); thg.gain.exponentialRampToValueAtTime(0.0001,tThud+0.2);
+    th.connect(thg); thg.connect(master); th.start(tThud); th.stop(tThud+0.24);
+    noise(tThud,0.08,'lowpass',400,0.6,0.28);                     // woody body of the knock
+
+    // animate the door
+    const d=document.getElementById('door');
+    d.classList.remove('open'); void d.offsetWidth; d.classList.add('open');
+  }
+  const volEl=document.getElementById('vol');
+  volEl.addEventListener('input',()=>{ if(master) master.gain.value=volEl.value/100; });
+  document.getElementById('play').addEventListener('click', playDoor);
+})();
+</script>
+
+</body>
+</html>
