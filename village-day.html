@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』。ト長調・軽やかな足取りのループ。" />
+<meta name="description" content="Web Audioでリアルタイム合成する、明るい昼の村のBGM『ひだまりの村』（改訂版）。ト長調・スウィング・エコー＆残響つきのループ。" />
 <title>ひだまりの村 | Daytime Village Theme</title>
 </head>
 <body>
@@ -84,22 +84,23 @@
 
   <div class="controls">
     <button id="play">▶ 村へ行く</button>
-    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="70"></div>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="72"></div>
   </div>
   <div class="status" id="status">♪ にぎやかな昼下がり ♪</div>
 
   <div class="hint">
     Web Audio API でリアルタイム合成している、明るい昼の村のBGMです（音源ファイルなし）。<br>
-    ト長調・軽やかな足取りのリズムで、ずっと歩けるループにしています。
+    ト長調・スウィングした足取り・エコー＆残響つきで、ずっと歩けるループにしています。
   </div>
 </div>
 
 <script>
 (() => {
-  let ctx, master, comp, analyser, freqData;
+  let ctx, master, comp, analyser, freqData, fxIn;
   const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
   const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
   const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
 
   const _pw={};
   function pulseWave(duty){
@@ -108,6 +109,12 @@
     for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
     return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false});
   }
+  function makeImpulse(dur, decay){
+    const len=Math.floor(ctx.sampleRate*dur), buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=buf.getChannelData(c);
+      for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay); }
+    return buf;
+  }
   function initAudio(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
     master=ctx.createGain(); master.gain.value=volEl.value/100*0.85;
@@ -115,8 +122,19 @@
     comp.threshold.value=-15; comp.knee.value=26; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.25;
     analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
     master.connect(comp); comp.connect(analyser); analyser.connect(ctx.destination);
+
+    // --- FX sends: tempo-synced delay (chiptune echo) + short reverb ---
+    fxIn=ctx.createGain();
+    const dl=ctx.createDelay(1.0); dl.delayTime.value=3*S;          // dotted-eighth echo
+    const fb=ctx.createGain(); fb.gain.value=0.32;
+    const dWet=ctx.createGain(); dWet.gain.value=0.9;
+    fxIn.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(dWet); dWet.connect(master);
+    const rv=ctx.createConvolver(); rv.buffer=makeImpulse(1.1,2.6);
+    const rWet=ctx.createGain(); rWet.gain.value=0.5;
+    fxIn.connect(rv); rv.connect(rWet); rWet.connect(master);
   }
-  function voice(freq,t,dur,{type='triangle',duty=null,gain=.2,detune=5,cut=3000,a=.008,d=.08,s=.7,r=.12}={}){
+  // voice: detuned pair, lowpass, ADSR; `fx` (0..1) sends to delay+reverb
+  function voice(freq,t,dur,{type='triangle',duty=null,gain=.2,detune=5,cut=3000,a=.008,d=.08,s=.7,r=.12,fx=0}={}){
     const g=ctx.createGain(), f=ctx.createBiquadFilter();
     f.type='lowpass'; f.frequency.value=cut; f.Q.value=1.4;
     const o1=ctx.createOscillator(), o2=ctx.createOscillator();
@@ -129,6 +147,7 @@
     g.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d));
     g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
     o1.connect(f); o2.connect(f); f.connect(g); g.connect(master);
+    if(fx>0){ const sg=ctx.createGain(); sg.gain.value=fx; g.connect(sg); sg.connect(fxIn); }
     o1.start(t); o2.start(t); o1.stop(t+dur+.03); o2.stop(t+dur+.03);
   }
   function noise(t,dur,type,cut,q,gain){
@@ -141,93 +160,118 @@
     n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+dur+.02);
   }
   const kick=t=>{ const o=ctx.createOscillator(),g=ctx.createGain();
-    o.frequency.setValueAtTime(135,t); o.frequency.exponentialRampToValueAtTime(50,t+.09);
-    g.gain.setValueAtTime(.42,t); g.gain.exponentialRampToValueAtTime(.001,t+.14);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+.16); };
-  const shaker=t=> noise(t,.03,'highpass',7000,.8,.06);
-  const woodblock=t=>{ noise(t,.03,'bandpass',1900,3,.14);
-    const o=ctx.createOscillator(),g=ctx.createGain(); o.type='square';
-    o.frequency.setValueAtTime(1600,t); g.gain.setValueAtTime(.09,t); g.gain.exponentialRampToValueAtTime(.001,t+.04);
-    o.connect(g); g.connect(master); o.start(t); o.stop(t+.05); };
+    o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(48,t+.09);
+    g.gain.setValueAtTime(.5,t); g.gain.exponentialRampToValueAtTime(.001,t+.15);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+.17); };
+  const clap=t=>{ // layered short noise bursts = a soft handclap on the backbeat
+    for(const off of [0,0.012,0.024]) noise(t+off,.09,'bandpass',1700,1.6,.16); };
+  const hat=(t,open)=> noise(t, open?.1:.035,'highpass',8500,.8, open?.14:.1);
+  const shaker=t=> noise(t,.028,'highpass',6500,.7,.05);
 
-  // ---------- composition (G major, lively walking pace) ----------
-  const BPM=124, S=60/BPM/4, BAR=16*S;
+  // ---------- composition (G major, swung walking pace) ----------
+  const BPM=126, S=60/BPM/4, BAR=16*S, SW=0.34*S;   // SW = swing offset for off-eighths
+  // swung time for a 16th index within a bar-base (delays the "and" of each beat)
+  const sw=i => (i%4===2 ? SW : 0);
+
+  // chords: explicit bass (slash chords) + soft triad pad voicing
   const CH={
-    G: {bass:['G2','D3'], pad:['G3','B3','D4'], arp:['G3','B3','D4','B3']},
-    D: {bass:['D2','A2'], pad:['D3','F#3','A3'],arp:['D3','F#3','A3','F#3']},
-    Em:{bass:['E2','B2'], pad:['E3','G3','B3'], arp:['E3','G3','B3','G3']},
-    C: {bass:['C2','G2'], pad:['C3','E3','G3'], arp:['C3','E3','G3','E3']}
+    G:    {b:'G2',  pad:['G3','B3','D4']},
+    'D/F#':{b:'F#2',pad:['D3','F#3','A3']},
+    Em:   {b:'E2',  pad:['E3','G3','B3']},
+    'G/D':{b:'D2',  pad:['G3','B3','D4']},
+    C:    {b:'C2',  pad:['C3','E3','G3']},
+    'G/B':{b:'B1',  pad:['G3','B3','D4']},
+    Am:   {b:'A1',  pad:['A2','C3','E3']},
+    D:    {b:'D2',  pad:['D3','F#3','A3']}
   };
-  const prog=['G','D','Em','C','G','D','C','D'];
+  // A: descending-bass canon-style progression (rich voice leading)
+  const progA=['G','D/F#','Em','G/D','C','G/B','Am','D'];
+  // B: brighter lift
+  const progB=['C','D','G','Em','C','D','G','D'];
+  // pad chord tones per bar for arpeggio, by progression
+  const arpOf=ch=>{ const p=CH[ch].pad; return [p[0],p[1],p[2],p[1]]; };
 
-  // bright, skipping melody (8 bars) — chord-tone based, G major
-  const lead=[
-    ['D5',2],['G5',2],['G5',2],['A5',2],['B5',4],['G5',4],
-    ['A5',2],['F#5',2],['D5',4],['F#5',4],['A5',4],
-    ['B5',2],['A5',2],['G5',2],['E5',2],['E5',4],['B4',4],
-    ['C5',2],['E5',2],['G5',2],['E5',2],['G5',4],['E5',4],
-    ['D5',2],['G5',2],['B5',2],['D6',2],['B5',4],['G5',4],
-    ['A5',2],['F#5',2],['A5',2],['D6',2],['A5',4],['F#5',4],
-    ['E5',2],['G5',2],['C6',2],['G5',2],['E5',4],['C5',4],
-    ['D5',2],['F#5',2],['A5',2],['F#5',2],['D5',8]
+  // A theme — memorable hook + answer (chord-tone based). [note, dur-in-16ths]
+  const leadA=[
+    ['G5',4],['D5',4],['E5',4],['G5',4],
+    ['F#5',4],['A5',4],['A5',8],
+    ['G5',4],['B5',4],['A5',4],['G5',4],
+    ['D5',4],['G5',4],['B5',8],
+    ['C6',4],['B5',4],['A5',4],['G5',4],
+    ['B5',4],['A5',4],['G5',8],
+    ['A5',4],['C6',4],['E6',4],['C6',4],
+    ['B5',4],['A5',4],['D5',8]
+  ];
+  // B theme — higher, brighter contrast
+  const leadB=[
+    ['E6',8],['D6',4],['C6',4],
+    ['D6',8],['A5',4],['D6',4],
+    ['B5',4],['D6',4],['G6',8],
+    ['E6',4],['D6',4],['B5',8],
+    ['C6',4],['E6',4],['G6',4],['E6',4],
+    ['A5',4],['D6',4],['F#6',4],['D6',4],
+    ['G6',4],['F#6',4],['E6',4],['D6',4],
+    ['A5',4],['B5',4],['D6',8]
   ];
 
-  function seqLead(base){
-    let t=base;
-    for(const [n,d] of lead){
-      voice(hz(n), t, d*S*0.92, {duty:.25, gain:.17, cut:4200, detune:6, a:.006, d:.06, s:.72, r:.08}); // bright pulse lead
-      voice(hz(n), t, d*S*0.9,  {type:'triangle', gain:.05, cut:2600, detune:3, a:.01, d:.06, s:.7, r:.08}); // soft body
-      t += d*S;
+  function seqLead(list, base){
+    let acc=0;
+    for(const [n,d] of list){
+      const t=base + acc*S + sw(acc%16);
+      voice(hz(n), t, d*S*0.92, {duty:.25, gain:.17, cut:4400, detune:6, a:.006, d:.06, s:.72, r:.08, fx:.28}); // bright lead w/ echo
+      voice(hz(n), t, d*S*0.9,  {type:'triangle', gain:.05, cut:2600, detune:3, a:.01, d:.06, s:.7, r:.08});    // soft body
+      acc += d;
     }
   }
   function bassBar(ch, base){
-    // bouncing quarter-note walk: root fifth root fifth
-    const seq=[ch.bass[0],ch.bass[1],ch.bass[0],ch.bass[1]];
+    // bouncing quarter-note walk: root(1) fifth(2) root(3) fifth(4)
+    const rm=midi(CH[ch].b), fm=rm+7;
+    const seq=[rm,fm,rm,fm];
     for(let i=0;i<4;i++)
-      voice(hz(seq[i]), base+i*4*S, 4*S*0.9, {type:'triangle', gain:.2, cut:1100, detune:3, a:.006, d:.08, s:.6, r:.08});
+      voice(mf(seq[i]), base+i*4*S, 4*S*0.88, {type:'triangle', gain:.2, cut:1150, detune:3, a:.006, d:.08, s:.6, r:.08});
   }
   function padBar(ch, base){
-    for(const n of ch.pad)
-      voice(hz(n), base, BAR*0.98, {type:'triangle', gain:.045, cut:1900, detune:8, a:.12, d:.2, s:.85, r:.25});
+    for(const n of CH[ch].pad)
+      voice(hz(n), base, BAR*0.98, {type:'triangle', gain:.04, cut:1900, detune:8, a:.14, d:.22, s:.85, r:.28, fx:.14});
   }
   function pluckBar(ch, base){
-    // light offbeat plucks (mandolin-ish), eighth notes
+    // swung offbeat plucks (mandolin-ish) with a touch of echo
+    const cell=arpOf(ch);
     for(let i=0;i<8;i++){
-      const n=ch.arp[i%4];
-      voice(hz(n), base+i*2*S, 2*S*0.7, {duty:.25, gain:.05, cut:3600, detune:2, a:.003, d:.04, s:.25, r:.05});
+      const step=i*2;
+      voice(hz(cell[i%4]), base+step*S+sw(step%16), 2*S*0.6,
+        {duty:.25, gain:.05, cut:3600, detune:2, a:.003, d:.04, s:.22, r:.05, fx:.2});
     }
   }
   function drumBar(base){
-    for(let i=0;i<16;i++){
-      const t=base+i*S;
-      if(i===0||i===8) kick(t);          // soft downbeats
-      if(i%2===0) shaker(t);             // gentle eighth shaker (market bustle)
-      if(i===4||i===12) woodblock(t);    // light backbeat tick
-    }
+    kick(base+0*S); kick(base+8*S); kick(base+11*S);          // beats 1,3 + syncopated push
+    clap(base+4*S); clap(base+12*S);                          // backbeat 2 & 4
+    for(let i=0;i<16;i+=2) hat(base+i*S+sw(i), i===14);       // swung eighth hats, open on last
+    shaker(base+2*S+sw(2)); shaker(base+6*S+sw(6)); shaker(base+10*S+sw(10)); shaker(base+14*S+sw(14));
   }
 
-  function section(base, {perc,pluck}){
+  function section(base, prog, lead, {perc,pluck}){
     for(let b=0;b<8;b++){
-      const bt=base+b*BAR, ch=CH[prog[b]];
+      const bt=base+b*BAR, ch=prog[b];
       bassBar(ch, bt);
       padBar(ch, bt);
       if(pluck) pluckBar(ch, bt);
       if(perc)  drumBar(bt);
     }
-    seqLead(base);
+    seqLead(lead, base);
   }
 
-  const BODY_BARS=16, bodyLen=BODY_BARS*BAR;
+  const BODY_BARS=32, bodyLen=BODY_BARS*BAR;   // A, A+full, B, A(reprise)
   function scheduleBody(base){
-    section(base,        {perc:false, pluck:false}); // first pass: light
-    section(base+8*BAR,  {perc:true,  pluck:true});  // second pass: full, bustling
+    section(base+0*8*BAR,  progA, leadA, {perc:false, pluck:false}); // intro-ish: light
+    section(base+1*8*BAR,  progA, leadA, {perc:true,  pluck:true});  // full & bustling
+    section(base+2*8*BAR,  progB, leadB, {perc:true,  pluck:true});  // bright B contrast
+    section(base+3*8*BAR,  progA, leadA, {perc:true,  pluck:true});  // reprise
   }
   function scheduleIntro(base){
-    // bright 2-bar flourish on G
-    for(const n of CH.G.pad) voice(hz(n), base, 2*BAR*0.96, {type:'triangle', gain:.06, cut:2200, a:.2, d:.3, s:.85, r:.4});
-    const up=['G4','B4','D5','G5'];
-    up.forEach((n,i)=> voice(hz(n), base+ i*2*S, 2*S*0.9, {duty:.25, gain:.12, cut:4000, a:.004, d:.05, s:.4, r:.06}));
-    kick(base+BAR); woodblock(base+BAR+8*S);
+    for(const n of CH.G.pad) voice(hz(n), base, 2*BAR*0.96, {type:'triangle', gain:.06, cut:2200, a:.2, d:.3, s:.85, r:.4, fx:.15});
+    ['G4','B4','D5','G5'].forEach((n,i)=> voice(hz(n), base+i*2*S, 2*S*0.9, {duty:.25, gain:.12, cut:4000, a:.004, d:.05, s:.4, r:.06, fx:.3}));
+    kick(base+BAR); clap(base+BAR+8*S);
     return 2*BAR;
   }
 
@@ -243,7 +287,7 @@
     let bodyStart=t0+introLen;
     scheduleBody(bodyStart);
     nextBody=bodyStart+bodyLen;
-    timer=setInterval(()=>{ if(!playing)return; if(ctx.currentTime>nextBody-3){scheduleBody(nextBody);nextBody+=bodyLen;} },350);
+    timer=setInterval(()=>{ if(!playing)return; if(ctx.currentTime>nextBody-3){scheduleBody(nextBody);nextBody+=bodyLen;} },400);
     playBtn.textContent='■ 村を出る'; playBtn.classList.add('playing');
     scene.classList.add('playing'); statusEl.classList.add('on');
     drawViz();
