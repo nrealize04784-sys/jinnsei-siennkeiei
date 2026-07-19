@@ -22,3 +22,18 @@
 
 ※ 完全にシームレスにするには、曲の**終わり→頭が自然につながるよう作られている**のが理想です。
 　mp3のエンコード時に入る前後の無音は、プレイヤー側で自動トリムしています。
+
+---
+
+# 4章 ライフ大陸 BGM 音源
+
+同じく `audio/` に、以下の **6つのmp3** を配置してください（半角の名前で）。
+
+| 置くファイル名 | シーン | 元ファイル名 |
+|---|---|---|
+| `life-landing.mp3`   | 上陸        | life-land Land.mp3 |
+| `life-map.mp3`       | マップ      | life-land map.mp3 |
+| `life-town.mp3`      | 街中        | life-land city.mp3 |
+| `life-battle.mp3`    | 雑魚キャラ戦 | life-land first-battle.mp3 |
+| `life-midboss.mp3`   | 中ボス戦    | life-land middle-president.mp3 |
+| `life-greatboss.mp3` | 大ボス戦    | life-land final-president.mp3 |
