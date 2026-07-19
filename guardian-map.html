@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="ガーディアン大陸　マップ（3章 ガーディアン大陸）。mp3音源をWeb Audioでデコードし、前後の無音を自動トリム＋サンプル単位のloopStart/loopEndで、ブツ切れなしの無限シームレスループ再生。" />
+<title>ガーディアン大陸　マップ | Guardian Continent Ch.3</title>
+</head>
+<body>
+<style>
+  :root{ --accent:#4fd0a0; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:radial-gradient(120% 80% at 50% -8%, #23304a 0%, transparent 46%),
+      radial-gradient(100% 90% at 50% 120%, #0a0e18 0%, transparent 60%),
+      linear-gradient(180deg,#161c2c 0%,#0d111c 55%,#070912 100%);
+    color:#eaf0fb;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(680px,100%);position:relative;border:1px solid rgba(150,170,210,.24);border-radius:20px;
+    background:linear-gradient(180deg,rgba(24,30,48,.94),rgba(12,16,26,.97));
+    box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 1px rgba(120,150,220,.12), inset 0 1px 0 rgba(160,185,240,.12);
+    padding:26px 26px 30px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;text-align:center;opacity:.9}
+  h1{text-align:center;font-size:clamp(24px,6vw,40px);font-weight:800;letter-spacing:.04em;line-height:1.1;margin:4px 0 2px;color:#f2f6ff}
+  .subtitle{text-align:center;color:#9fb0d4;font-size:13px;letter-spacing:.18em;margin-bottom:18px}
+  .stage{position:relative;height:150px;border-radius:14px;overflow:hidden;border:1px solid rgba(150,170,210,.24);
+    background:radial-gradient(circle at 50% 60%, #223048 0%, #141a28 50%, #0a0e18 100%);margin-bottom:16px;
+    display:flex;align-items:center;justify-content:center}
+  .em{font-size:64px;filter:drop-shadow(0 0 20px rgba(120,150,220,.4))}
+  .stage.on .em{animation:bob 3s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.05)}}
+  .loopbadge{position:absolute;top:10px;right:12px;font-size:11px;font-weight:800;letter-spacing:.1em;color:#0a0e18;
+    background:var(--accent);border-radius:20px;padding:2px 10px;opacity:.9}
+  .viz{position:absolute;inset:auto 0 0 0;height:38px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.5}
+  .viz i{flex:1;background:linear-gradient(180deg,#eaf0fb,var(--accent));border-radius:2px 2px 0 0;height:2px;transition:height .06s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.06em;
+    color:#0a0e18;transition:transform .12s,filter .2s;background:linear-gradient(180deg,#f2f6ff,var(--accent));
+    box-shadow:0 10px 26px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.5)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)} button:active{transform:translateY(1px)}
+  button.on{background:linear-gradient(180deg,#8fa0c8,#4a5a86);color:#eaf0fb}
+  button:disabled{opacity:.6;cursor:default;filter:grayscale(.4)}
+  .vol{display:flex;align-items:center;gap:8px;color:#9fb0d4;font-size:12px}
+  input[type=range]{accent-color:var(--accent);width:110px}
+  .status{text-align:center;font-size:12px;color:var(--accent);letter-spacing:.14em;height:16px;margin-top:10px;opacity:.85;font-weight:700}
+  .hint{text-align:center;color:#8a95b0;font-size:12px;margin-top:14px;letter-spacing:.02em;line-height:1.7}
+  .err{color:#ff8a8a}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Ch.3 Guardian Continent ◆</div>
+  <h1>ガーディアン大陸　マップ</h1>
+  <div class="subtitle">マップ &nbsp; ⟳ ENDLESS SEAMLESS LOOP</div>
+
+  <div class="stage" id="stage">
+    <div class="loopbadge">⟳ LOOP</div>
+    <div class="em">🗺️</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 再生</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="82"></div>
+  </div>
+  <div class="status" id="status">♪ マップ ♪</div>
+
+  <div class="hint">
+    mp3音源を <b>Web Audio でデコード → 前後の無音を自動トリム → サンプル単位の loopStart/loopEnd</b> で、
+    <b>ブツ切れなしの無限ループ</b>再生します。<br>
+    <span style="opacity:.8">📱 iPhoneで無音のときは本体横のサイレントスイッチをOFFに。🎧スピーカー/イヤホン推奨。</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  const SRC='audio/guardian-map.mp3';
+  let ctx, buf, node, gain, analyser, freqData, playing=false, rafId=null, loopStart=0, loopEnd=0, loaded=false, loading=false;
+  const stage=document.getElementById('stage'), playBtn=document.getElementById('play'),
+        volEl=document.getElementById('vol'), statusEl=document.getElementById('status'), vizEl=document.getElementById('viz');
+  const N=40, bars=[]; for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+
+  function trimSilence(){ // kill mp3 encoder padding so the loop is gapless
+    const n=buf.length, sr=buf.sampleRate, chs=buf.numberOfChannels, thr=0.004;
+    const amp=i=>{ let m=0; for(let c=0;c<chs;c++){ const v=Math.abs(buf.getChannelData(c)[i]); if(v>m)m=v; } return m; };
+    let s=0; while(s<n-1 && amp(s)<thr) s++;
+    let e=n-1; while(e>s+1 && amp(e)<thr) e--;
+    loopStart=Math.max(0, s/sr - 0.004);
+    loopEnd  =Math.min(buf.duration, e/sr + 0.004);
+    if(loopEnd-loopStart < 0.2){ loopStart=0; loopEnd=buf.duration; } // safety
+  }
+  async function load(){ if(loaded||loading) return; loading=true;
+    statusEl.textContent='読み込み中…';
+    try{
+      ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+      const res=await fetch(SRC, {cache:'force-cache'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const ab=await res.arrayBuffer();
+      buf=await ctx.decodeAudioData(ab);
+      trimSilence(); loaded=true;
+    }catch(err){
+      statusEl.innerHTML='<span class="err">⚠ 音源ファイルが見つかりません（'+SRC+' を配置してください）</span>';
+      playBtn.disabled=false; loading=false; throw err;
+    }
+    loading=false;
+  }
+  async function play(){
+    playBtn.disabled=true;
+    try{ await load(); }catch(e){ return; }
+    if(ctx.state==='suspended') await ctx.resume();
+    gain=gain||ctx.createGain(); gain.gain.value=volEl.value/100;
+    if(!analyser){ analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount); gain.connect(analyser); analyser.connect(ctx.destination); }
+    node=ctx.createBufferSource(); node.buffer=buf; node.loop=true; node.loopStart=loopStart; node.loopEnd=loopEnd;
+    node.connect(gain); node.start(0, loopStart);
+    playing=true; playBtn.disabled=false; playBtn.textContent='■ 停止'; playBtn.classList.add('on');
+    stage.classList.add('on'); statusEl.textContent='▶ エンドレス再生中 ♪'; drawViz();
+  }
+  function stop(){
+    playing=false; if(node){ try{node.stop();}catch(e){} node.disconnect(); node=null; }
+    if(rafId) cancelAnimationFrame(rafId);
+    playBtn.textContent='▶ 再生'; playBtn.classList.remove('on'); stage.classList.remove('on');
+    statusEl.textContent='♪ マップ ♪'; bars.forEach(b=>b.style.height='2px');
+  }
+  function drawViz(){ if(!playing) return; analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*32).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():play());
+  volEl.addEventListener('input', ()=>{ if(gain) gain.gain.value=volEl.value/100; });
+})();
+</script>
+
+</body>
+</html>
