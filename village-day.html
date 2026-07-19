@@ -136,12 +136,16 @@
     if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
     o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
   }
-  // glockenspiel/chime — DP sparkle
+  // celesta / music-box — warm & hopeful. Consonant HARMONIC partials (octave/fifth), no metallic clang
   const _bell=(t,note,g=.09)=>{ const f0=hz(note);
-    [[1,1],[2.76,.35],[5.4,.16]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
-      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+1.4*(1-.1*r));
-      o.connect(e); const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(rev); const y=ctx.createGain(); y.gain.value=.28; e.connect(y); y.connect(fxIn);
-      e.connect(master); o.start(t); o.stop(t+1.5); }); };
+    [[1,1,1.8],[2,.5,1.5],[3,.24,1.2],[4,.12,.9],[6,.05,.7]].forEach(([r,a,dec])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.008); e.gain.exponentialRampToValueAtTime(.0001,t+dec);
+      o.connect(e); const x=ctx.createGain(); x.gain.value=.42; e.connect(x); x.connect(rev); const y=ctx.createGain(); y.gain.value=.26; e.connect(y); y.connect(fxIn);
+      e.connect(master); o.start(t); o.stop(t+dec+.1); });
+    // a breath of triangle warmth on the fundamental — soft, singing, hopeful
+    const o=ctx.createOscillator(),e=ctx.createGain(); o.type='triangle'; o.frequency.value=f0;
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*.42,t+.012); e.gain.exponentialRampToValueAtTime(.0001,t+1.1);
+    o.connect(e); e.connect(master); const y=ctx.createGain(); y.gain.value=.22; e.connect(y); y.connect(rev); o.start(t); o.stop(t+1.2); };
 
   // ---------- composition (C major ballad — MELODY is the star, A7 nostalgia) ----------
   const BPM=88, S=60/BPM/4, BAR=16*S;
