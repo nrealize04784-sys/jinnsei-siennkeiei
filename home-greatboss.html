@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する、ホーム大陸の大ボス（最終形態）戦BGM。雄大かつ凶悪。今までにない新要素＝7/8変拍子・音節を刻む叙事詩的な聖歌隊チャント（フォルマント声質合成）・クライマックスの半音転調。ハ短調＋三全音＋ナポリで守護者の真の姿。" />
+<title>ホーム大陸・大ボス戦 | The Great Guardian, True Form</title>
+</head>
+<body>
+<style>
+  :root{ --obsidian:#0a0a0f; --gold:#e8c14a; --crimson:#c0304a; --ash:#8a8fa8; --ink:#f2eede; --glow:#ffb020; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(120% 80% at 50% -8%, #3a2a10 0%, transparent 46%),
+      radial-gradient(100% 90% at 50% 120%, #2a0810 0%, transparent 58%),
+      linear-gradient(180deg,#14100a 0%,#0c0a10 52%,#06040a 100%);
+    color:#efe8d4;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(720px,100%);position:relative;border:1px solid rgba(232,193,74,.28);border-radius:20px;
+    background:linear-gradient(180deg,rgba(24,18,10,.94),rgba(10,8,12,.97));
+    box-shadow:0 30px 100px rgba(0,0,0,.7),0 0 0 1px rgba(192,48,74,.14), inset 0 1px 0 rgba(232,193,74,.14);
+    padding:26px 26px 30px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.42em;color:#e8c14a;text-transform:uppercase;text-align:center;opacity:.92}
+  h1{text-align:center;font-size:clamp(26px,6.4vw,46px);font-weight:900;letter-spacing:.05em;line-height:1.08;margin:2px 0;
+    background:linear-gradient(180deg,#fff2c8,#e8c14a 44%,#c0304a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 12px rgba(192,48,74,.4)}
+  .subtitle{text-align:center;color:#c9a95a;font-size:13px;letter-spacing:.2em;margin-bottom:16px}
+  .meter{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.14em;color:#0a0a0f;background:linear-gradient(180deg,#f2d886,#d9a92c);
+    padding:2px 10px;border-radius:20px;margin-bottom:14px}
+  .stage{position:relative;height:220px;border-radius:14px;overflow:hidden;border:1px solid rgba(232,193,74,.28);
+    background:radial-gradient(circle at 50% 66%, #3a1420 0%, #180c14 46%, #06040a 100%);margin-bottom:16px;transition:background .8s ease}
+  .stage.ph2{background:radial-gradient(circle at 50% 60%, #2a1830 0%, #140b1e 48%, #05040a 100%)}
+  .stage.ph3{background:radial-gradient(circle at 50% 54%, #5a3410 0%, #2a1206 42%, #0a0604 100%)}
+  .stage.flash::before{content:"";position:absolute;inset:0;background:#fff;opacity:.6;animation:fl .55s ease-out forwards;pointer-events:none;z-index:5}
+  @keyframes fl{to{opacity:0}}
+  .titan{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:92px;filter:drop-shadow(0 0 30px rgba(255,176,32,.55))}
+  .stage.playing .titan{animation:breathe 2.2s ease-in-out infinite}
+  .stage.playing.ph3 .titan{animation:quake .12s linear infinite}
+  @keyframes breathe{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.06) translateY(-4px)}}
+  @keyframes quake{0%{transform:translateX(-50%)}25%{transform:translate(-52%,-2px)}50%{transform:translate(-48%,2px)}75%{transform:translate(-51%,-1px)}100%{transform:translateX(-50%)}}
+  .eyes{position:absolute;top:74px;left:50%;transform:translateX(-50%);font-size:20px;letter-spacing:14px;color:#ff5a4a;text-shadow:0 0 14px #ff2a1a;opacity:.9}
+  .runes{position:absolute;left:0;right:0;bottom:50px;text-align:center;font-size:22px;letter-spacing:.5em;color:#e8c14a;opacity:.42}
+  .stage.playing .runes{animation:pr 1.9s ease-in-out infinite}
+  @keyframes pr{0%,100%{opacity:.2}50%{opacity:.7;text-shadow:0 0 12px #ffb020}}
+  .hero{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:28px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.7))}
+  .phase{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:12px;font-weight:800;letter-spacing:.2em;
+    color:#fff2c8;text-shadow:0 0 10px rgba(0,0,0,.8);opacity:.92}
+  .viz{position:absolute;inset:auto 0 0 0;height:44px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.5}
+  .viz i{flex:1;background:linear-gradient(180deg,#fff2c8,#c0304a);border-radius:2px 2px 0 0;height:2px;transition:height .06s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.08em;
+    color:#1a0f06;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#f2d886,#d9a92c);box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.07)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#d06a76,#a01e38);color:#fff2ea}
+  .vol{display:flex;align-items:center;gap:8px;color:#c9a95a;font-size:12px}
+  input[type=range]{accent-color:#c0304a;width:110px}
+  .status{text-align:center;font-size:12px;color:#d9a92c;letter-spacing:.16em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s;font-weight:700}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#8a7f5a;font-size:12px;margin-top:14px;letter-spacing:.03em;line-height:1.7}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Home Continent · GREAT BOSS ◆</div>
+  <h1>ホーム大陸・大ボス戦</h1>
+  <div class="subtitle">THE GREAT GUARDIAN &nbsp;—&nbsp; "True Form"</div>
+  <div style="text-align:center"><span class="meter">7/8 変拍子 ・ 聖歌隊チャント ・ 半音転調</span></div>
+
+  <div class="stage" id="stage">
+    <div class="phase" id="phase">❖ 招来の詠唱 ❖</div>
+    <div class="titan">🗿</div>
+    <div class="eyes">◉　◉</div>
+    <div class="runes">☠ ✶ ☠ ✶ ☠</div>
+    <div class="hero">⚔️</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 真の姿に挑む</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="82"></div>
+  </div>
+  <div class="status" id="status">♪ 守護者、真の姿へ ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する、ホーム大陸の<b>大ボス（真の最終形態）戦BGM</b>です（音源ファイルなし）。<br>
+    <b>今までにない新要素</b>：<b>7/8の変拍子</b>（巨人の足取り）／<b>音節を刻む叙事詩的な聖歌隊チャント</b>（子音つきのフォルマント声質合成）／<b>クライマックスの半音転調</b>。<br>
+    ハ短調＋三全音(F#)＋ナポリ(Db)で守護者を凶悪化。中ボスよりはるかに手ごわい版。切れ目なくループします。<br>
+    <span style="opacity:.8">📱 iPhoneはサイレントスイッチOFF／🎧重低音・合唱はイヤホン/スピーカー推奨。</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, revS, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const nm=m=>NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+  const tName=(n,semi)=>nm(midi(n)+semi);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.7;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-16; comp.knee.value=26; comp.ratio.value=3.6; comp.attack.value=.005; comp.release.value=.22;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.09;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(2.8,2.0); const l=ctx.createGain(); l.gain.value=.85; revL.connect(l); l.connect(master);
+    revS=ctx.createConvolver(); revS.buffer=impulse(.6,3); const s=ctx.createGain(); s.gain.value=.5; revS.connect(s); s.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.28; const dOut=ctx.createGain(); dOut.gain.value=.28;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function taiko(t,g,f){ if(REC) REC.push({t,play:b=>_taiko(b+t,g,f)}); else _taiko(t,g,f); }
+  function timp(t,f,g){ if(REC) REC.push({t,play:b=>_timp(b+t,f,g)}); else _timp(t,f,g); }
+  function roll(t,f,g,dur){ if(REC) REC.push({t,play:b=>_roll(b+t,f,g,dur)}); else _roll(t,f,g,dur); }
+  function gong(t,g){ if(REC) REC.push({t,play:b=>_gong(b+t,g)}); else _gong(t,g); }
+  function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
+  function hat(t,g,open){ if(REC) REC.push({t,play:b=>_hat(b+t,g,open)}); else _hat(t,g,open); }
+  function chant(notes,t,dur,o){ if(REC) REC.push({t,play:b=>notes.forEach(n=>_vox(n,b+t,dur,o))}); else notes.forEach(n=>_vox(n,t,dur,o)); }
+
+  function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
+                              cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const w=pulseWave(duty);o1.setPeriodicWave(w);o2.setPeriodicWave(w);}else{o1.type=wave;o2.type=wave;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(rs){const x=ctx.createGain();x.gain.value=rs;gn.connect(x);x.connect(revS);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
+  // ---- NEW: epic choir chant — formant vocal synth with a consonant attack (音節を刻む合唱) ----
+  function _vox(note,t,dur,{g=.09,syl='ah',pan=0}={}){ const f0=hz(note);
+    const cons = syl==='s'?7000: syl==='t'?4200: syl==='k'?2600: 0;      // consonant transient
+    if(cons) _noise(t-0.004,0.045,'bandpass',cons,2.2,g*0.55,master);
+    const form = syl==='ee'?1900: syl==='oh'?640: 1050;                   // vowel formant center
+    [[1,g,'sawtooth'],[1,g*0.55,'triangle'],[0.5,g*0.6,'sawtooth']].forEach(([r,gg,w])=>{
+      const o=ctx.createOscillator(), e=ctx.createGain(), bp=ctx.createBiquadFilter();
+      o.type=w; o.frequency.setValueAtTime(f0*r,t);
+      bp.type='bandpass'; bp.frequency.value=form; bp.Q.value=1.3;
+      const lfo=ctx.createOscillator(), lg=ctx.createGain(); lfo.frequency.value=5.4; lg.gain.value=8; lfo.connect(lg); lg.connect(o.detune); lfo.start(t); lfo.stop(t+dur+.05);
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(gg,t+.05); e.gain.setValueAtTime(gg,t+Math.max(dur-.22,.06)); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(bp); bp.connect(e);
+      let tail=e; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;e.connect(p);tail=p;}
+      tail.connect(master); const x=ctx.createGain();x.gain.value=.5;e.connect(x);x.connect(revL);
+      o.start(t); o.stop(t+dur+.06);
+    }); }
+  // ---- deep percussion & metal ----
+  const _taiko=(t,g=.7,f=76)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(f*1.7,t); o.frequency.exponentialRampToValueAtTime(f*.7,t+.13);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.006); e.gain.exponentialRampToValueAtTime(.0001,t+.52);
+    o.connect(e); e.connect(master); const x=ctx.createGain();x.gain.value=.3;e.connect(x);x.connect(revL);
+    _noise(t,.08,'lowpass',1400,.5,g*.45,master); o.start(t);o.stop(t+.57); };
+  const _timp=(t,freq,g=.55)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+.48);
+    o.connect(e); e.connect(master); const x=ctx.createGain();x.gain.value=.34;e.connect(x);x.connect(revL); o.start(t);o.stop(t+.53); };
+  const _roll=(t,freq,g,dur)=>{ const steps=Math.max(2,Math.floor(dur/0.055)); for(let i=0;i<steps;i++) _timp(t+i*(dur/steps),freq,g*(0.3+0.7*i/steps)); };
+  const _gong=(t,g=.45)=>{ const parts=[49,73,131,196,262,349,466];
+    parts.forEach((f,i)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(f*(1+rnd(-.008,.008)),t);
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*(1-i*0.11),t+.02); e.gain.exponentialRampToValueAtTime(.0001,t+3.0-i*0.32);
+      o.connect(e); const x=ctx.createGain();x.gain.value=.55;e.connect(x);x.connect(revL); e.connect(master); o.start(t);o.stop(t+3.1); });
+    _noise(t,2.0,'bandpass',2600,.5,g*.5,master); };
+  const _crash=(t,g=.3)=> _noise(t,1.4,'highpass',5000,.5,g);
+  const _hat=(t,g=.08,open=false)=> _noise(t,open?.09:.028,'highpass',8800,.6,g,master);
+
+  // ---------- Home Continent GREAT boss — C minor "true form" in 7/8, tritone + Neapolitan ----------
+  const BPM=132, S=60/BPM/4, BAR=14*S;   // 7/8 = 14 sixteenths, grouped 3+2+2
+  const ACC=[0,6,10], ACCLEN=[6,4,4];    // accent positions & note-lengths of the 7/8 pulse
+  const CH={
+    Cm:{b:'C2',  p:['C4','D#4','G4']},
+    Ab:{b:'G#1', p:['C4','D#4','G#4']},
+    G: {b:'G1',  p:['D4','G4','B4']},      // harmonic-minor dominant (B leading tone)
+    Fm:{b:'F1',  p:['F3','G#3','C4']},
+    Db:{b:'C#2', p:['F3','G#3','C#4']}      // ♭II Neapolitan
+  };
+  const prog=['Cm','Cm','Ab','G','Cm','Fm','Db','G'];
+  // guardian's corrupted motif — lands on the 3+2+2 accents; F# tritone & Db Neapolitan bite
+  const THEME=[
+    ['C4',6],['G4',4],['G#4',4],
+    ['C4',6],['D#4',4],['F4',4],
+    ['G#4',6],['C5',4],['G4',4],
+    ['F#4',6],['G4',4],['D4',4],       // F# tritone — menace
+    ['C5',6],['G4',4],['G#4',4],
+    ['F4',6],['G#4',4],['C5',4],
+    ['C#5',6],['C5',4],['G#4',4],      // Db Neapolitan peak
+    ['D5',6],['B4',4],['G4',4]         // dominant, B leading tone, into the loop
+  ];
+
+  function sub(m,base,dur,g=.3){ voice(mf(m),base,dur,{wave:'sine',g,cut:220,a:.12,d:.3,s:.92,r:.4,pan:0});
+    voice(mf(m-12),base,dur,{wave:'sine',g:g*.72,cut:110,a:.18,s:.92,r:.5,pan:0}); }
+  function organ(notes,base,dur,{g=.045}={}){ notes.forEach((n,i)=>{ const p=(i-(notes.length-1)/2)*.22;
+      voice(hz(n),base,dur,{wave:'sawtooth',g,det:7,cut:1900,a:.05,d:.2,s:.9,r:.3,rl:.4,pan:p});
+      voice(hz(n),base,dur,{wave:'triangle',g:g*.7,det:3,cut:2400,a:.05,s:.9,r:.3,pan:p}); }); }
+  function dimStab(rootM,t){ [0,3,6,9].forEach(iv=> voice(mf(rootM+iv),t,3*S,{wave:'sawtooth',g:.06,det:8,cut:1900,a:.005,d:.06,s:.4,r:.08,rl:.2,pan:rnd(-.2,.2)})); crash(t,.14); }
+  function seqTheme(list,base,{g=.17,oct=false,tr=0}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S; const m=midi(n)+tr;
+      voice(mf(m),t,d*S*0.94,{wave:'sawtooth',g,det:9,cut:2700,a:.02,d:.1,s:.82,r:.14,rl:.3,de:.1});     // brass lead
+      voice(mf(m),t,d*S*0.9,{duty:.25,g:g*.5,cut:3800,det:6,a:.02,s:.8,r:.14,rl:.2});
+      if(oct) voice(mf(m-12),t,d*S*0.9,{wave:'sawtooth',g:g*.55,det:6,cut:1400,a:.02,s:.78,r:.14,rl:.2});
+      acc+=d; } }
+
+  function section(base,{tr=0, dim=false, dbl=false, oct=false, choirG=.085, gLead=.17}={}){
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=prog[b], rm=midi(CH[ch].b)+tr;
+      sub(rm, bt, BAR*0.99, dbl?.34:.28);
+      organ(CH[ch].p.map(n=>tName(n,tr)), bt, BAR*0.98, {g:.042});
+      // the 7/8 pulse — heavy hits on 3+2+2
+      ACC.forEach((pos,i)=>{ const at=bt+pos*S, len=ACCLEN[i]*S*0.9;
+        taiko(at, i===0?1:0.72, 72); if(i===0) timp(at, mf(rm), .5);
+        voice(mf(rm), at, len, {wave:'sawtooth', g:.12, det:7, cut:820, a:.008,d:.08,s:.58,r:.1});
+        voice(mf(rm), at, len*0.9, {duty:.5, g:.05, cut:1050, det:4, a:.008,s:.5,r:.1}); });
+      // hats mark each 7/8 eighth, accenting the group starts (0,3,5)
+      for(let e=0;e<7;e++) hat(bt+e*2*S, (e===0||e===3||e===5)?.1:.05, false);
+      // epic choir chant on the accents (low, syllabic) — transposed with the section
+      const rootLo=tName(CH[ch].p[0],tr-12), fifthLo=tName(CH[ch].p[2],tr-12);
+      chant([rootLo], bt,       5*S, {g:choirG, syl:'k',  pan:-.1});
+      chant([fifthLo],bt+6*S,   4*S, {g:choirG, syl:'ah', pan:.1});
+      chant([rootLo], bt+10*S,  4*S, {g:choirG, syl:'t',  pan:0});
+      if(dim && b%2===1) dimStab(rm+6, bt+10*S);           // tritone diminished stab
+      if(dbl){ for(let e=0;e<7;e++) taiko(bt+e*2*S+S, .34, 80); }  // double-time driving heartbeat
+    }
+    seqTheme(THEME, base, {g:gLead, oct, tr});
+  }
+
+  const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){
+    gong(base,.5);                                           // cycle marker
+    section(base+0*8*BAR, {tr:0});                           // Ⅰ 巨人の主題
+    gong(base+8*BAR,.5); crash(base+8*BAR,.22);
+    section(base+1*8*BAR, {tr:0, dim:true, choirG:.095});    // Ⅱ 深淵の三全音
+    gong(base+16*BAR,.6); crash(base+16*BAR,.32); roll(base+16*BAR, mf(midi('C2')+1), .4, BAR*0.8);
+    section(base+2*8*BAR, {tr:1, dbl:true, oct:true, choirG:.11, gLead:.2}); // Ⅲ 覚醒・半音上げ (C→C#)
+  }
+  function scheduleIntro(base){
+    // 招来の詠唱 — huge gong, rising deep sub, a long choir "AAAH", then a dies-irae-ish descending chant
+    gong(base,.6); crash(base,.3); sub(midi('C1'),base,4*BAR,.32);
+    chant(['C3','G3','D#4'], base, 3.4*BAR, {g:.075, syl:'ah'});
+    roll(base+2*BAR, mf(midi('C2')), .3, 2*BAR*0.8);
+    [['D#4',6],['D4',4],['D#4',4],['C4',6],['A#3',4],['C4',4]].reduce((a,[n,d],i)=>{ const t=base+2*BAR+a*S;
+      chant([n], t, d*S*0.9, {g:.1, syl:(i%2)?'t':'k'}); return a+d; },0);
+    gong(base+3*BAR,.5); crash(base+4*BAR-0.02,.34); taiko(base+4*BAR,1,62);
+    return 4*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0, bodyOrigin=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.4; let guard=0;
+    while(guard++<9000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  const LABELS=['❖ 招来の詠唱 ❖','Ⅰ. 巨人の主題 (7/8)','Ⅱ. 深淵の三全音 (7/8)','Ⅲ. 覚醒・半音上げ (7/8＋転調)'];
+  let curPhase=-1;
+  function updatePhase(){ const el=ctx.currentTime-bodyOrigin; let ph;
+    if(el<0) ph=0; else { const bar=Math.floor((el/BAR)%BODY_BARS); ph = bar<8?1:bar<16?2:3; }
+    if(ph!==curPhase){ curPhase=ph; phaseEl.textContent=LABELS[ph]; statusEl.textContent=LABELS[ph];
+      stage.classList.remove('ph2','ph3'); if(ph===2) stage.classList.add('ph2'); if(ph===3) stage.classList.add('ph3');
+      if(ph>=2){ stage.classList.remove('flash'); void stage.offsetWidth; stage.classList.add('flash'); } } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.7, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    bodyOrigin=t0+introLen; loopBase=bodyOrigin; evIdx=0; curPhase=-1; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停止'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.5); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.7; },540);
+    playBtn.textContent='▶ 真の姿に挑む'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing','ph2','ph3'); statusEl.classList.remove('on');
+    phaseEl.textContent='❖ 招来の詠唱 ❖'; bars.forEach(b=>b.style.height='2px');
+  }
+
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  const phaseEl=document.getElementById('phase');
+  const N=48, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; updatePhase(); analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*40).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.7; });
+})();
+</script>
+
+</body>
+</html>
