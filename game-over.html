@@ -62,8 +62,8 @@
   <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="78"></div>
 
   <div class="hint">
-    Web Audioでリアルタイム合成したゲームオーバー・ジングルです（音源ファイルなし・約15秒）。<br>
-    崩壊のインパクト → 半音下降のドゥーム → 沈みきる終焉と弔いの鐘。敗北感マシマシ・大音量版。
+    Web Audioでリアルタイム合成したゲームオーバー・ジングルです（音源ファイルなし・約8秒）。<br>
+    崩壊のドン → 「残念」なデフレ下降ブラス → 沈む終止と弔鐘。テンポよく・大音量の敗北感版。
   </div>
 </div>
 
@@ -87,7 +87,7 @@
   }
   function init(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
-    master=ctx.createGain(); master.gain.value=volEl.value/100*1.4;
+    master=ctx.createGain(); master.gain.value=volEl.value/100*1.55;
     comp=ctx.createDynamicsCompressor();
     comp.threshold.value=-16; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.25;
     limiter=ctx.createDynamicsCompressor();
@@ -180,42 +180,46 @@
       tone(t,dur,{wave:'sawtooth',f0:f,g,det:8,cut:1200,a:.18,r:.7,pan:p,rl:.55});
       tone(t,dur,{wave:'triangle',f0:f,g:g*.7,det:4,cut:1600,a:.18,r:.7,pan:p,rl:.4}); });
   }
+  // "残念" deflating brass — a droopy sad horn; `droop` = semitones it slumps down over the note
+  function wah(t,dur,note,{g=.2,droop=0,pan=0}={}){
+    const f=hz(note), f1=droop?f*Math.pow(2,-droop/12):null;
+    tone(t,dur,{duty:.3,f0:f,f1,g,det:5,cut:2200,a:.02,r:.12,env:'perc',pan,rl:.3});
+    tone(t,dur,{wave:'sawtooth',f0:f,f1,g:g*.5,det:9,cut:1500,a:.02,r:.12,env:'perc',pan,rl:.25});
+  }
 
-  // ---------- the jingle (D minor — crushing defeat, LOUD, ~15s) ----------
+  // ---------- the jingle (D minor — snappy, crushing, "残念", LOUD, ~8s) ----------
   function playGameOver(){
     if(!ctx) init();
     if(ctx.state==='suspended') ctx.resume();
-    master.gain.setValueAtTime(volEl.value/100*1.4, ctx.currentTime);
+    master.gain.setValueAtTime(volEl.value/100*1.55, ctx.currentTime);
     const t=ctx.currentTime+0.05;
+    const B=0.5;   // beat — snappy, on-the-beat pacing
 
-    // — 第1部: 崩壊のインパクト (the world collapses) — 巨大＆大音量 —
-    boom(t,150,26,1.9,1.0);                                              // crushing saturated sub drop
-    nz(t,.55,{type:'lowpass',cut:1500,q:.6,g:.5,rl:.3});                 // low debris
-    nz(t,.9,{type:'highpass',cut:4000,q:.5,g:.13,rl:.4});               // shattering
-    timpani(t,hz('D2'),.95); timpani(t+.03,hz('D1'),.85);
-    stab(t,2.6,['D3','F3','A3','D4','D#4'],{g:.18});                     // Dm + ♭2(Eb) の断末魔クラスター（不協・大）
-    organ(t,3.0,['D3','A3','D4','F4'],{g:.095});
-    tone(t,1.9,{wave:'sawtooth',f0:hz('D6'),f1:hz('D3'),g:.1,cut:2400,env:'perc',rl:.35}); // 生命が抜ける下降グリス（大）
-    bass(t,3.0,'D2',.32);
+    // — 第1部: 崩壊のドン (0) 一撃で —
+    boom(t,150,26,1.3,1.0);
+    timpani(t,hz('D2'),1.0); timpani(t+.02,hz('D1'),.9);
+    stab(t,1.1,['D3','F3','A3','D4','D#4'],{g:.22});                     // Dm+♭2 断末魔クラスター
+    nz(t,.4,{type:'lowpass',cut:1500,g:.5,rl:.3});
+    bass(t,1.6,'D2',.36);
 
-    // — 第2部: 半音下降のドゥーム (chromatic sinking) — 一段ごとに重く —
-    const d=t+2.9;
-    ['D2','C#2','C2','B1','A#1','A1'].forEach((n,i)=>{ const tt=d+i*0.86;   // D C# C B Bb A
-      timpani(tt,hz(n),.72); boom(tt,hz(n)*2,hz(n),.82,.5); bass(tt,.9,n,.32); nz(tt,.14,{type:'lowpass',cut:1200,g:.2}); });
-    organ(d,6.5,['D3','F3','A3'],{g:.09});                               // 沈下の上に暗黒ドローン
-    organ(d+2.6,3.9,['A2','C3','D#3'],{g:.075});                         // A-dim的な軋み（不安増）
-    reed(d,1.5,'F4',{g:.23}); reed(d+1.5,1.5,'D#4',{g:.21});             // ♭2(Eb)で絶望のため息
-    reed(d+3.0,1.5,'D4',{g:.21}); reed(d+4.6,2.1,'A3',{g:.19,vib:11});
+    // — 第2部: 「残念」デフレの下降ブラス (wah wah waaah↓) 拍に乗せてテンポよく —
+    const w=t+0.95;
+    wah(w,        .46,'A4',{g:.26}); timpani(w,       hz('D2'),.6);       // ダー
+    wah(w+B,      .46,'F4',{g:.26}); timpani(w+B,     hz('C2'),.55);      // ダー
+    wah(w+2*B,    .46,'D4',{g:.26}); timpani(w+2*B,   hz('A#1'),.55);     // ダー
+    wah(w+3*B,   1.5,'D4',{g:.3,droop:5}); boom(w+3*B,hz('D2'),hz('D2')*.7,1.3,.55); // ダァ…（へなへな下降）
+    timpani(w+3*B,hz('A1'),.7);
+    stab(w+3*B,1.6,['A3','C#4','E4','G4'],{g:.13});                       // A7的な“力尽きた”和音
 
-    // — 第3部: 沈みきる終焉 (the finality) — 底へ、長い暗転 —
-    const f=d+5.5;
-    boom(f,92,20,3.2,.72);                                              // 底なしの最終サブ
-    organ(f,7.2,['D2','A2','D3','F3'],{g:.1});                          // 最終Dm、巨大・低・長い
-    stab(f,3.2,['D3','D#3','A3'],{g:.09});                              // 和音に♭2の軋みを残す
-    bass(f,7.2,'D2',.32); bass(f+.05,7.2,'D1',.26);
-    timpani(f,hz('D1'),.85);
-    bell(f+.2,hz('D2'),.52); bell(f+3.1,hz('D2'),.42); bell(f+5.6,hz('D1'),.32);  // 弔鐘（上に解決しない＝希望なし）
-    tone(f,6.8,{wave:'sine',f0:hz('D5'),g:.032,a:.8,r:2.6,cut:2400,rl:.6});       // かすかな高音の嘆き
+    // — 第3部: 沈む終止＋弔鐘 (short & snappy) —
+    const f=w+3*B+1.6;
+    stab(f,1.8,['D3','F3','A3','D4'],{g:.16}); organ(f,2.4,['D2','A2','D3','F3'],{g:.11});
+    boom(f,92,22,2.0,.6); bass(f,2.6,'D2',.34); bass(f+.03,2.6,'D1',.26);
+    timpani(f,hz('D1'),.75);
+    reed(f,.9,'F4',{g:.2}); reed(f+.9,1.4,'D4',{g:.2,vib:8});
+    bell(f+.1,hz('D2'),.5); bell(f+2.4,hz('D1'),.34);
+    wah(f+1.5,1.5,'A3',{g:.22,droop:7});                                 // 最後の“ざんね〜ん…”のへたり
+    tone(f+1.5,1.7,{wave:'sine',f0:hz('D5'),f1:hz('A4'),g:.03,cut:2400,rl:.5}); // かすかに萎える高音
 
     // visuals
     stage.classList.remove('playing'); void stage.offsetWidth; stage.classList.add('playing');
@@ -224,7 +228,7 @@
   const stage=document.getElementById('stage');
   const volEl=document.getElementById('vol');
   document.getElementById('play').addEventListener('click', playGameOver);
-  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*1.4; });
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*1.55; });
 })();
 </script>
 
