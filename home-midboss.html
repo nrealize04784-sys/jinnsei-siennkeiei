@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する、ホーム大陸の中ボス戦BGM。壮大かつ厳か・重低音が流れ続ける・ギアチェンジ3か所（厳かな聖堂→重圧の低音→覚醒の総攻）。ハ短調（ホーム大陸の相対短調）でライトモチーフを継承。" />
+<title>ホーム大陸・中ボス戦 | The Guardian Awakens</title>
+</head>
+<body>
+<style>
+  :root{ --stone:#8a93b0; --gold:#e8c14a; --deep:#141826; --ink:#eef1fb; --glow:#6a7ce0; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(120% 80% at 50% -6%, #3a4470 0%, transparent 46%),
+      radial-gradient(120% 90% at 50% 120%, #0a0c16 0%, transparent 60%),
+      linear-gradient(180deg,#232a44 0%,#161a2c 50%,#0a0c16 100%);
+    color:#e6eaf8;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(720px,100%);position:relative;border:1px solid rgba(180,190,230,.28);border-radius:20px;
+    background:linear-gradient(180deg,rgba(30,36,58,.92),rgba(16,20,34,.96));
+    box-shadow:0 30px 90px rgba(0,0,0,.6),0 0 0 1px rgba(120,140,220,.15), inset 0 1px 0 rgba(160,180,240,.14);
+    padding:26px 26px 30px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.44em;color:#b7c0e6;text-transform:uppercase;text-align:center;opacity:.9}
+  h1{text-align:center;font-size:clamp(27px,6.6vw,46px);font-weight:800;letter-spacing:.05em;line-height:1.08;margin:2px 0;
+    background:linear-gradient(180deg,#f2e7bf,#e8c14a 46%,#8a93b0);
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .subtitle{text-align:center;color:#9aa6d4;font-size:13px;letter-spacing:.2em;margin-bottom:18px}
+  .stage{position:relative;height:210px;border-radius:14px;overflow:hidden;border:1px solid rgba(150,165,220,.3);
+    background:radial-gradient(circle at 50% 62%, #33406f 0%, #1a1f34 48%, #0b0e1a 100%);margin-bottom:16px;transition:background .8s ease}
+  .stage.ph2{background:radial-gradient(circle at 50% 40%, #45507e 0%, #202744 48%, #0c1020 100%)}
+  .stage.ph3{background:radial-gradient(circle at 50% 68%, #5a2740 0%, #24162a 46%, #0a0810 100%)}
+  .stage.ph4{background:radial-gradient(circle at 50% 50%, #b98a2a 0%, #5a3a5c 40%, #140b1e 100%)}
+  .stage.flash::before{content:"";position:absolute;inset:0;background:#fff;opacity:.55;animation:fl .5s ease-out forwards;pointer-events:none;z-index:5}
+  @keyframes fl{to{opacity:0}}
+  .idol{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:74px;filter:drop-shadow(0 0 22px rgba(120,140,230,.6))}
+  .stage.playing .idol{animation:loom 3.4s ease-in-out infinite}
+  .stage.playing.ph4 .idol{animation:loom 1.1s ease-in-out infinite}
+  @keyframes loom{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+  .runes{position:absolute;left:0;right:0;bottom:52px;text-align:center;font-size:24px;letter-spacing:.5em;color:#8fa0e6;opacity:.5}
+  .stage.playing .runes{animation:pulseR 2s ease-in-out infinite}
+  @keyframes pulseR{0%,100%{opacity:.25}50%{opacity:.75;text-shadow:0 0 12px #6a7ce0}}
+  .hero{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:30px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6))}
+  .phase{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:12px;font-weight:800;letter-spacing:.24em;
+    color:#f2e7bf;text-shadow:0 0 10px rgba(0,0,0,.7);opacity:.9}
+  .viz{position:absolute;inset:auto 0 0 0;height:44px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.5}
+  .viz i{flex:1;background:linear-gradient(180deg,#eef1fb,#4a58a0);border-radius:2px 2px 0 0;height:2px;transition:height .06s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.08em;
+    color:#1a1226;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#f2e2a0,#d9b23c);box-shadow:0 10px 26px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.5)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.07)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#7f8cc8,#4a58a0);color:#eef1fb}
+  .vol{display:flex;align-items:center;gap:8px;color:#9aa6d4;font-size:12px}
+  input[type=range]{accent-color:#e8c14a;width:110px}
+  .status{text-align:center;font-size:12px;color:#c9b46a;letter-spacing:.16em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s;font-weight:700}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#8a93b0;font-size:12px;margin-top:14px;letter-spacing:.03em;line-height:1.7}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Home Continent · Mid-Boss ◆</div>
+  <h1>ホーム大陸・中ボス戦</h1>
+  <div class="subtitle">THE GUARDIAN AWAKENS &nbsp;—&nbsp; "Solemn · Grand · Ever-Deep Bass"</div>
+
+  <div class="stage" id="stage">
+    <div class="phase" id="phase">❖ 厳かなる序曲 ❖</div>
+    <div class="idol">🗿</div>
+    <div class="runes">✦ ⚔ ✦ ⚔ ✦</div>
+    <div class="hero">🛡️</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 対峙する</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="82"></div>
+  </div>
+  <div class="status" id="status">♪ 守護者、目覚める ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する、ホーム大陸の<b>中ボス戦BGM</b>です（音源ファイルなし）。<br>
+    ハ短調（ホーム大陸の相対短調）・壮大かつ厳か・<b>重低音が流れ続ける</b>。ギアチェンジは <b>3か所</b>：<br>
+    Ⅰ壮大なる主題 →〔切替①〕Ⅱ厳かな聖堂 →〔切替②〕Ⅲ重圧の低音 →〔切替③〕Ⅳ覚醒の総攻。切れ目なくループします。<br>
+    <span style="opacity:.8">📱 iPhoneで無音のときは本体横のサイレントスイッチを確認してね！ 🎧重低音はイヤホン/スピーカー推奨。</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, revS, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const nm=m=>NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.72;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-16; comp.knee.value=26; comp.ratio.value=3.4; comp.attack.value=.006; comp.release.value=.24;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(3.0,2.0); const l=ctx.createGain(); l.gain.value=.9; revL.connect(l); l.connect(master);
+    revS=ctx.createConvolver(); revS.buffer=impulse(.7,3); const s=ctx.createGain(); s.gain.value=.5; revS.connect(s); s.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.3; const dOut=ctx.createGain(); dOut.gain.value=.3;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function taiko(t,g,f){ if(REC) REC.push({t,play:b=>_taiko(b+t,g,f)}); else _taiko(t,g,f); }
+  function timp(t,f,g){ if(REC) REC.push({t,play:b=>_timp(b+t,f,g)}); else _timp(t,f,g); }
+  function roll(t,f,g,dur){ if(REC) REC.push({t,play:b=>_roll(b+t,f,g,dur)}); else _roll(t,f,g,dur); }
+  function gong(t,g){ if(REC) REC.push({t,play:b=>_gong(b+t,g)}); else _gong(t,g); }
+  function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
+
+  function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
+                              cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const w=pulseWave(duty);o1.setPeriodicWave(w);o2.setPeriodicWave(w);}else{o1.type=wave;o2.type=wave;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(rs){const x=ctx.createGain();x.gain.value=rs;gn.connect(x);x.connect(revS);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
+  // ---- deep percussion & metal ----
+  const _taiko=(t,g=.7,f=80)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(f*1.7,t); o.frequency.exponentialRampToValueAtTime(f*.7,t+.13);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.006); e.gain.exponentialRampToValueAtTime(.0001,t+.55);
+    o.connect(e); e.connect(master); const x=ctx.createGain();x.gain.value=.3;e.connect(x);x.connect(revL);
+    _noise(t,.08,'lowpass',1400,.5,g*.45,master); o.start(t);o.stop(t+.6); };
+  const _timp=(t,freq,g=.55)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+.5);
+    o.connect(e); e.connect(master); const x=ctx.createGain();x.gain.value=.34;e.connect(x);x.connect(revL); o.start(t);o.stop(t+.55); };
+  const _roll=(t,freq,g,dur)=>{ const steps=Math.max(2,Math.floor(dur/0.06)); for(let i=0;i<steps;i++) _timp(t+i*(dur/steps),freq,g*(0.3+0.7*i/steps)); };
+  const _gong=(t,g=.45)=>{ const parts=[52,78,131,197,262,349];
+    parts.forEach((f,i)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.setValueAtTime(f*(1+rnd(-.008,.008)),t);
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*(1-i*0.13),t+.02); e.gain.exponentialRampToValueAtTime(.0001,t+2.8-i*0.32);
+      o.connect(e); const x=ctx.createGain();x.gain.value=.55;e.connect(x);x.connect(revL); e.connect(master); o.start(t);o.stop(t+2.9); });
+    _noise(t,1.9,'bandpass',2800,.5,g*.5,master); };
+  const _crash=(t,g=.3)=> _noise(t,1.3,'highpass',5200,.5,g);
+
+  // ---------- Home Continent mid-boss (C minor = relative minor of the home Eb theme) ----------
+  const BPM=100, S=60/BPM/4, BAR=16*S;
+  const CH={
+    Cm:{b:'C2',  p:['C4','D#4','G4']},
+    Ab:{b:'G#1', p:['C4','D#4','G#4']},
+    Eb:{b:'D#2', p:['D#4','G4','A#4']},   // III — the home-continent home key (leitmotif nod)
+    Bb:{b:'A#1', p:['D4','F4','A#4']},
+    Fm:{b:'F1',  p:['F3','G#3','C4']},
+    G: {b:'G1',  p:['D4','G4','B4']},      // V (major, B natural leading tone)
+    G7:{b:'G1',  p:['B3','D4','F4']},
+    Db:{b:'C#2', p:['F3','G#3','C#4']}     // ♭II Neapolitan — dark grandeur for the heavy bridge
+  };
+  const progA=['Cm','Ab','Eb','Bb','Cm','Fm','G7','Cm'];
+  const progB=['Cm','G','Ab','Eb','Fm','Cm','G7','Cm'];
+  const progC=['Db','Cm','Db','Cm','Ab','Fm','Db','G7'];
+  const progD=['Cm','Ab','Eb','Bb','Cm','Fm','G7','Cm'];
+  // grand solemn guardian theme (noble 4th/5th leaps, rises to a majestic C6)
+  const THEME=[
+    ['G4',4],['C5',4],['D#5',8],
+    ['D5',4],['C5',4],['G#4',8],
+    ['A#4',4],['D5',4],['A#4',4],['G4',4],
+    ['F5',4],['D5',4],['A#4',8],
+    ['G5',4],['D#5',4],['C5',4],['D#5',4],
+    ['F5',4],['G#5',4],['F5',4],['C5',4],
+    ['D5',4],['F5',4],['G5',4],['B5',4],       // rise to leading tone B — huge tension
+    ['C6',8],['G5',4],['D#5',4]                // majestic resolution up high
+  ];
+  const THEME_SOLEMN=[
+    ['G4',8],['A#4',8],
+    ['C5',16],
+    ['A#4',8],['G4',8],
+    ['G4',16],
+    ['G#4',8],['C5',8],
+    ['D#5',16],
+    ['D5',8],['F5',8],
+    ['D#5',8],['C5',8]
+  ];
+  const BRIDGE_MOTIF=[
+    ['C#5',8],['C5',8],           // Db->C grind (♭2 against 1)
+    ['C5',16],
+    ['G#5',8],['G5',8],
+    ['G5',16],
+    ['C5',8],['G#4',8],
+    ['F4',8],['G#4',8],
+    ['C#5',8],['C5',8],
+    ['D5',8],['B4',8]             // dominant leading tone, builds into the climax
+  ];
+
+  function ledeTheme(list,base,{g=.16,oct=false,low=false}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S; const m=midi(n)+(low?-12:0);
+      voice(mf(m),t,d*S*0.94,{duty:.22,g,cut:4200,det:9,a:.03,d:.12,s:.82,r:.16,pan:.04,rl:.34,de:.12}); // horn
+      voice(mf(m),t,d*S*0.92,{wave:'sawtooth',g:g*.5,det:6,cut:2500,a:.03,s:.8,r:.16,pan:.04,rl:.26});
+      if(oct) voice(mf(m+12),t,d*S*0.9,{duty:.12,g:g*.42,cut:5400,det:11,a:.03,s:.75,r:.16,pan:-.06,rl:.2});
+      acc+=d; } }
+  function sub(bnote,base,dur,g=.3){ const rm=midi(bnote);
+    voice(mf(rm),base,dur,{wave:'sine',g,cut:220,a:.14,d:.3,s:.92,r:.4,pan:0});           // deep fundamental
+    voice(mf(rm-12),base,dur,{wave:'sine',g:g*.72,cut:110,a:.2,s:.92,r:.5,pan:0}); }       // sub-octave rumble (重低音)
+  function organ(notes,base,dur,{g=.045,pan=0}={}){ notes.forEach((n,i)=>{ const p=(i-(notes.length-1)/2)*.22+pan;
+      voice(hz(n),base,dur,{wave:'sawtooth',g,det:7,cut:2000,a:.06,d:.2,s:.9,r:.3,rl:.4,pan:p});
+      voice(hz(n),base,dur,{wave:'triangle',g:g*.7,det:3,cut:2500,a:.06,s:.9,r:.3,pan:p}); }); }
+  function choir(notes,base,dur,g=.045){ notes.forEach(n=> voice(hz(n),base,dur,{wave:'triangle',g,det:10,vib:6,vr:4.5,cut:2300,a:.35,d:.5,s:.9,r:.6,rl:.6,pan:rnd(-.35,.35)})); }
+  function ostinato(root,bt){ const rm=midi(CH[root].b);
+    [0,4,8,12].forEach((p,i)=>{ const m=(i===2)?rm+7:rm;
+      voice(mf(m),bt+p*S,3.3*S,{wave:'sawtooth',g:.12,det:6,cut:900,a:.01,d:.09,s:.5,r:.1,pan:0});   // low brass ostinato
+      voice(mf(m),bt+p*S,3.1*S,{duty:.5,g:.05,cut:1150,det:3,a:.01,s:.42,r:.1}); }); }
+
+  function sectionA(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progA[b];
+      ostinato(ch,bt); sub(CH[ch].b,bt,BAR*0.99,.26); organ(CH[ch].p,bt,BAR*0.98,{g:.03});
+      taiko(bt,.72,80); taiko(bt+8*S,.55,80); timp(bt+4*S,hz('C2'),.4); timp(bt+12*S,hz('G1'),.4); }
+    ledeTheme(THEME, base, {g:.16}); }
+  function sectionB(base){ gong(base,.5); crash(base,.22); taiko(base,.8,60);       // ===== SWITCH ① =====
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progB[b];
+      sub(CH[ch].b,bt,BAR*0.99,.28); organ(CH[ch].p,bt,BAR*0.98,{g:.055}); choir(CH[ch].p,bt,BAR*0.96,.05);
+      if(b%2===0) timp(bt,hz(CH[ch].b),.4); }
+    ledeTheme(THEME_SOLEMN, base, {g:.1, low:true}); }
+  function sectionC(base){ gong(base,.55); crash(base,.26); taiko(base,.95,52);     // ===== SWITCH ② =====
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progC[b];
+      sub(CH[ch].b,bt,BAR*0.99,.36);                                                // heavier flowing sub
+      for(let i=0;i<4;i++){ const p=i*4;
+        voice(mf(midi(CH[ch].b)+12),bt+p*S,3.5*S,{wave:'sawtooth',g:.11,det:7,cut:700,a:.02,d:.1,s:.6,r:.12,pan:0});   // grinding low brass
+        voice(mf(midi(CH[ch].b)+12),bt+p*S,3.3*S,{duty:.5,g:.05,cut:920,det:4,a:.02,s:.5,r:.12}); }
+      choir(CH[ch].p.map(n=>nm(midi(n)-12)),bt,BAR*0.98,.042);                       // low choir "ah"
+      taiko(bt,.75,56); taiko(bt+8*S,.5,56);
+      if(b%2===1) timp(bt+12*S,hz('C2'),.4); }
+    ledeTheme(BRIDGE_MOTIF, base, {g:.12, low:true}); }
+  function sectionD(base){ gong(base,.6); crash(base,.32); roll(base,hz('C2'),.4,BAR*0.9); taiko(base,1,72);  // ===== SWITCH ③ =====
+    for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progD[b];
+      ostinato(ch,bt); sub(CH[ch].b,bt,BAR*0.99,.3); organ(CH[ch].p,bt,BAR*0.98,{g:.055}); choir(CH[ch].p,bt,BAR*0.96,.05);
+      taiko(bt,.82,80); taiko(bt+4*S,.5,80); taiko(bt+8*S,.72,80); taiko(bt+12*S,.5,80);   // driving heartbeat
+      timp(bt+2*S,hz('G1'),.35); timp(bt+10*S,hz('C2'),.35);
+      if(b===7) roll(bt+8*S,hz('G1'),.42,8*S); }
+    ledeTheme(THEME, base, {g:.19, oct:true}); }
+
+  const BODY_BARS=32, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); sectionC(base+16*BAR); sectionD(base+24*BAR); }
+  function scheduleIntro(base){
+    // 厳かなる序曲 — deep gong + rising sub swell + choir + a solemn augmented horn call
+    gong(base,.52); sub('C2',base,4*BAR,.3); choir(['C4','D#4','G4'],base,4*BAR,.045);
+    roll(base+2*BAR,hz('C2'),.3,2*BAR*0.9);
+    [['G4',8],['C5',8],['D#5',16],['D5',8],['C5',8],['G4',16]].reduce((a,[n,d])=>{ const t=base+a*S;
+      voice(hz(n),t,d*S*0.9,{duty:.2,g:.14,cut:3400,det:8,a:.06,d:.12,s:.82,r:.3,rl:.4,de:.2}); return a+d; },0);
+    gong(base+3*BAR,.4); crash(base+4*BAR-0.01,.3); taiko(base+4*BAR,.85,66);
+    return 4*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0, bodyOrigin=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.4; let guard=0;
+    while(guard++<8000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  const LABELS=['❖ 厳かなる序曲 ❖','Ⅰ. 壮大なる主題','Ⅱ. 厳かな聖堂 〔切替①〕','Ⅲ. 重圧の低音 〔切替②〕','Ⅳ. 覚醒の総攻 〔切替③〕'];
+  let curPhase=-1;
+  function updatePhase(){ const el=ctx.currentTime-bodyOrigin; let ph;
+    if(el<0) ph=0; else { const bar=Math.floor((el/BAR)%BODY_BARS); ph = bar<8?1:bar<16?2:bar<24?3:4; }
+    if(ph!==curPhase){ curPhase=ph; phaseEl.textContent=LABELS[ph]; statusEl.textContent=LABELS[ph];
+      stage.classList.remove('ph1','ph2','ph3','ph4'); if(ph>=1) stage.classList.add('ph'+ph);
+      if(ph>=2){ stage.classList.remove('flash'); void stage.offsetWidth; stage.classList.add('flash'); } } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.72, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    bodyOrigin=t0+introLen; loopBase=bodyOrigin; evIdx=0; curPhase=-1; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停止'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.5); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.72; },540);
+    playBtn.textContent='▶ 対峙する'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing','ph1','ph2','ph3','ph4'); statusEl.classList.remove('on');
+    phaseEl.textContent='❖ 厳かなる序曲 ❖'; bars.forEach(b=>b.style.height='2px');
+  }
+
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  const phaseEl=document.getElementById('phase');
+  const N=48, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; updatePhase(); analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*40).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.72; });
+})();
+</script>
+
+</body>
+</html>
