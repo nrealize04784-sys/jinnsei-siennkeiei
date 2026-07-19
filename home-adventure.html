@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する、ホーム大陸のフィールド（冒険）BGM。変ホ長調・テンポ150・リズミカルなドラム＆歩くベース＋♭VIIの新天地カラーとV/Vの郷愁。ポケモンDPの精神を継承。" />
+<title>ホーム大陸・冒険！ | Field Adventure</title>
+</head>
+<body>
+<style>
+  :root{ --grass:#5fce6a; --leaf:#1f8f4d; --gold:#ffcf4d; --sky:#8fd6ff; --ink:#f2fff0; --dim:#bfe6c2; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(120% 80% at 50% -10%, #ffe89a 0%, transparent 42%),
+      radial-gradient(120% 80% at 50% 120%, #1b5c2e 0%, transparent 55%),
+      linear-gradient(180deg,#8fd6ff 0%,#c8f0b8 34%,#5fce6a 60%,#1b6b34 100%);
+    color:#0e3a1c;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(700px,100%);position:relative;border:1px solid rgba(255,255,255,.55);border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(236,251,232,.84));
+    box-shadow:0 30px 80px rgba(20,80,40,.32),0 0 0 1px rgba(95,206,106,.22), inset 0 1px 0 rgba(255,255,255,.9);
+    padding:26px 26px 30px;overflow:hidden;backdrop-filter:blur(2px)}
+  .tag{font-size:11px;letter-spacing:.44em;color:var(--leaf);text-transform:uppercase;text-align:center;opacity:.95}
+  h1{text-align:center;font-size:clamp(28px,7vw,48px);font-weight:800;letter-spacing:.06em;line-height:1.08;margin:2px 0;
+    background:linear-gradient(180deg,#137a3a,#3fbf62 45%,#d99a1c);
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 0 rgba(255,255,255,.5)}
+  .subtitle{text-align:center;color:#3d7a4c;font-size:13px;letter-spacing:.2em;margin-bottom:18px}
+  .stage{position:relative;height:200px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.6);
+    background:linear-gradient(180deg,#a7e6ff 0%,#d6f4c4 44%,#5fce6a 48%,#1b6b34 100%);margin-bottom:16px}
+  .sun{position:absolute;top:20px;right:26px;font-size:44px;filter:drop-shadow(0 0 24px rgba(255,207,77,.85))}
+  .stage.playing .sun{animation:spin 22s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .scenery{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:46px;filter:drop-shadow(0 5px 10px rgba(0,0,0,.24));white-space:nowrap}
+  .path{position:absolute;left:0;right:0;bottom:0;height:46px;
+    background:repeating-linear-gradient(90deg,#c79a4e 0 26px,#b98b3f 26px 52px);opacity:.9}
+  .path::after{content:"";position:absolute;left:0;right:0;top:20px;height:5px;
+    background:repeating-linear-gradient(90deg,#fff4d0 0 20px,transparent 20px 44px);opacity:.8}
+  .hero{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:38px;filter:drop-shadow(0 4px 5px rgba(0,0,0,.3))}
+  .stage.playing .hero{animation:bob .4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0) rotate(-3deg)}50%{transform:translateX(-50%) translateY(-7px) rotate(3deg)}}
+  .bird{position:absolute;font-size:14px;opacity:.85;top:26%;left:16%}
+  .bird.b{top:18%;left:62%}
+  .stage.playing .bird{animation:fly 10s linear infinite}
+  .stage.playing .bird.b{animation:fly 14s linear infinite;animation-delay:-4s}
+  @keyframes fly{0%{transform:translateX(-30px)}100%{transform:translateX(580px)}}
+  .spark{position:absolute;font-size:15px;opacity:0;color:#fff2c8}
+  .stage.playing .spark{animation:tw 2.2s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(1.25)}}
+  .viz{position:absolute;inset:auto 0 46px 0;height:40px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.5}
+  .viz i{flex:1;background:linear-gradient(180deg,#f2fff0,#137a3a);border-radius:2px 2px 0 0;height:2px;transition:height .06s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.08em;
+    color:#0b3319;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#9cf0a2,#3fbf62);box-shadow:0 10px 26px rgba(30,130,60,.35),inset 0 1px 0 rgba(255,255,255,.6)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#ffe08a,#e8b850);color:#4a3a12}
+  .vol{display:flex;align-items:center;gap:8px;color:#3d7a4c;font-size:12px}
+  input[type=range]{accent-color:var(--leaf);width:110px}
+  .status{text-align:center;font-size:12px;color:var(--leaf);letter-spacing:.2em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#3d7a4c;font-size:12px;margin-top:14px;letter-spacing:.03em;line-height:1.7}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Home Continent · Field ◆</div>
+  <h1>ホーム大陸・冒険！</h1>
+  <div class="subtitle">FIELD ADVENTURE &nbsp;—&nbsp; "On the Road, Ever Onward"</div>
+
+  <div class="stage" id="stage">
+    <div class="sun">☀️</div>
+    <div class="bird">🐦</div><div class="bird b">🐦</div>
+    <div class="scenery">⛰️　🌲　🏕️　🌳　⛰️</div>
+    <div class="viz" id="viz"></div>
+    <div class="path"></div>
+    <div class="hero">🚶</div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 冒険に出る</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="80"></div>
+  </div>
+  <div class="status" id="status">♪ てくてく前進中 ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する、ホーム大陸の<b>フィールド（冒険）BGM</b>です（音源ファイルなし）。<br>
+    変ホ長調・テンポ150・リズミカルなドラム＆歩くベース＋♭VIIの新天地カラーとV/Vの郷愁。切れ目なくループします。<br>
+    <span style="opacity:.8">📱 iPhoneで無音のときは本体横のサイレントスイッチを確認してね！</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, revS, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const nm=m=>NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.82;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-15; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.22;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(1.8,2.4); const l=ctx.createGain(); l.gain.value=.7; revL.connect(l); l.connect(master);
+    revS=ctx.createConvolver(); revS.buffer=impulse(.5,3); const s=ctx.createGain(); s.gain.value=.5; revS.connect(s); s.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.28; const dOut=ctx.createGain(); dOut.gain.value=.3;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function bell(t,n,g){ if(REC) REC.push({t,play:b=>_bell(b+t,n,g)}); else _bell(t,n,g); }
+  function kick(t,g){ if(REC) REC.push({t,play:b=>_kick(b+t,g)}); else _kick(t,g); }
+  function snare(t,g){ if(REC) REC.push({t,play:b=>_snare(b+t,g)}); else _snare(t,g); }
+  function hat(t,g,open){ if(REC) REC.push({t,play:b=>_hat(b+t,g,open)}); else _hat(t,g,open); }
+  function shaker(t,g){ if(REC) REC.push({t,play:b=>_shaker(b+t,g)}); else _shaker(t,g); }
+  function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
+
+  function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
+                              cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const w=pulseWave(duty);o1.setPeriodicWave(w);o2.setPeriodicWave(w);}else{o1.type=wave;o2.type=wave;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(rs){const x=ctx.createGain();x.gain.value=rs;gn.connect(x);x.connect(revS);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
+  const _bell=(t,note,g=.1)=>{ const f0=hz(note);
+    [[1,1],[2.01,.4],[3.0,.2]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.006); e.gain.exponentialRampToValueAtTime(.0001,t+1.3*(1-.1*r));
+      o.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=rnd(-.5,.5);e.connect(p);p.connect(master);}else e.connect(master);
+      const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(revL); const y=ctx.createGain(); y.gain.value=.28; e.connect(y); y.connect(fxIn); o.start(t); o.stop(t+1.4); }); };
+  // ---- percussion: rhythmic drive ----
+  const _kick=(t,g=.9)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(155,t); o.frequency.exponentialRampToValueAtTime(46,t+.09);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+.22);
+    o.connect(e); e.connect(master); o.start(t); o.stop(t+.24); };
+  const _snare=(t,g=.5)=>{ _noise(t,.15,'highpass',1700,.7,g,master);
+    const o=ctx.createOscillator(),e=ctx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(195,t);
+    e.gain.setValueAtTime(g*.5,t); e.gain.exponentialRampToValueAtTime(.0001,t+.08); o.connect(e); e.connect(master); o.start(t); o.stop(t+.1); };
+  const _hat=(t,g=.15,open=false)=> _noise(t,open?.11:.032,'highpass',8200,.6,g,master);
+  const _shaker=(t,g=.11)=> _noise(t,.045,'bandpass',6200,.8,g,master);
+  const _crash=(t,g=.3)=> _noise(t,1.1,'highpass',5200,.5,g);
+
+  // ---------- Home Continent field/adventure theme (Eb major, 150bpm, rhythmic) ----------
+  const BPM=150, S=60/BPM/4, BAR=16*S;
+  const CH={
+    Eb:{b:'D#2', st:['G4','A#4','D#5']},
+    Bb:{b:'A#1', st:['D4','F4','A#4']},
+    Cm:{b:'C2',  st:['D#4','G4','C5']},
+    Ab:{b:'G#1', st:['C4','D#4','G#4']},
+    Db:{b:'C#2', st:['F4','G#4','C#5']},   // ♭VII — new-frontier color
+    Fm:{b:'F1',  st:['F4','G#4','C5']},
+    F7:{b:'F1',  st:['F4','A4','D#5']}     // V/V — DP-style secondary-dominant nostalgia
+  };
+  const progA=['Eb','Bb','Cm','Ab','Db','Ab','Bb','Eb'];
+  const progB=['Cm','Ab','Eb','Bb','Fm','F7','Bb','Eb'];
+  // main adventure hook — echoes the home-continent 5th-leap, but bouncy 16th-note motion
+  const THEME_A=[
+    ['A#4',2],['D#5',2],['G5',4],['A#5',4],['G5',2],['F5',2],
+    ['F5',4],['D5',4],['F5',4],['A#4',4],
+    ['C5',2],['D#5',2],['G5',4],['A#5',2],['G5',2],['D#5',4],
+    ['C5',4],['A#4',4],['G#4',8],
+    ['F5',2],['G#5',2],['C6',4],['A#5',4],['G#5',4],       // ♭VII lift — bright wonder
+    ['G5',4],['F5',4],['D#5',4],['C5',4],
+    ['D5',2],['F5',2],['A#5',4],['A5',4],['A#5',4],         // chromatic A♮ passing — bittersweet
+    ['D#5',4],['A#4',4],['D#5',8]
+  ];
+  const THEME_B=[
+    ['G5',4],['A#5',4],['C6',4],['A#5',4],
+    ['G5',4],['F5',4],['G5',8],
+    ['A#5',4],['G5',4],['D#5',4],['F5',4],
+    ['F5',4],['D5',4],['F5',4],['A#4',4],
+    ['G#5',4],['C6',4],['F6',4],['C6',4],                   // soar
+    ['A5',4],['C6',4],['D#6',4],['C6',4],                   // A♮ = V/V tension, lifts the phrase
+    ['A#5',4],['F5',4],['D5',4],['F5',4],
+    ['D#5',8],['D#5',4],['A#4',4]
+  ];
+
+  function seqLead(list,base,{g=.15,oct=false}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S;
+      voice(hz(n),t,d*S*0.92,{duty:.25,g,cut:5200,det:7,a:.01,d:.06,s:.7,r:.08,pan:.05,rl:.16,de:.12});
+      voice(hz(n),t,d*S*0.9,{wave:'triangle',g:g*.4,cut:2800,det:3,a:.01,s:.7,r:.08,pan:.05});
+      if(oct) voice(mf(midi(n)-12),t,d*S*0.9,{duty:.5,g:g*.5,cut:2600,det:6,a:.01,s:.68,r:.08,pan:-.08,rl:.1});
+      acc+=d; } }
+  function drumBar(bt){
+    kick(bt,.95); kick(bt+8*S,.85);
+    snare(bt+4*S,.5); snare(bt+12*S,.5);
+    for(let i=0;i<8;i++) hat(bt+i*2*S, i%2? .1:.17, false);
+    shaker(bt+3*S,.09); shaker(bt+7*S,.09); shaker(bt+11*S,.09); shaker(bt+15*S,.12);
+  }
+  function bassBar(root,bt){ const rm=midi(CH[root].b);
+    const pat=[[0,rm],[3,rm+7],[4,rm],[6,rm+12],[8,rm],[10,rm+7],[11,rm],[14,rm+7]];
+    pat.forEach(([p,m])=> voice(mf(m), bt+p*S, 1.5*S, {wave:'triangle', g:.17, cut:1000, det:2, a:.004, d:.05, s:.35, r:.05, pan:0})); }
+  function stabBar(root,bt){ const st=CH[root].st;
+    [2,6,10,14].forEach(p=> st.forEach(n=> voice(hz(n), bt+p*S, 1.2*S, {duty:.5, g:.048, cut:3200, a:.006, d:.04, s:.3, r:.05, det:6, pan:rnd(-.22,.22), rl:.12}))); }
+  function padBar(root,bt){ CH[root].st.forEach(n=> voice(hz(n), bt, BAR*0.98, {wave:'sawtooth', g:.028, det:11, vib:4, vr:4, cut:1700, a:.08, d:.2, s:.85, r:.2, rl:.32, pan:rnd(-.25,.25)})); }
+  function grooveBar(root,bt,{stab=true,pad=true}={}){ drumBar(bt); bassBar(root,bt); if(stab) stabBar(root,bt); if(pad) padBar(root,bt); }
+
+  function sectionA(base,{oct=false}={}){ for(let b=0;b<8;b++) grooveBar(progA[b], base+b*BAR); seqLead(THEME_A, base, {g:.15, oct}); }
+  function sectionB(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR; grooveBar(progB[b], bt);
+      if(b%2===0) bell(bt, nm(midi(CH[progB[b]].st[2])+12), .06); }
+    crash(base,.18); seqLead(THEME_B, base, {g:.15}); }
+
+  const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); sectionA(base+16*BAR,{oct:true}); }
+  function scheduleIntro(base){
+    // quick, upbeat pickup: rising run + snare build-up + horn call, crash into the groove
+    const run=['D#4','F4','G4','A#4','C5','D5','F5','G5'];
+    run.forEach((n,i)=> voice(hz(n), base+i*2*S, 2*S*0.9, {duty:.25,g:.12,cut:5000,det:6,a:.01,d:.05,s:.5,r:.06,rl:.14,de:.1}));
+    for(let i=0;i<8;i++) hat(base+i*2*S,.12,false);
+    kick(base,.9); kick(base+8*S,.9);
+    for(let i=0;i<8;i++) snare(base+BAR+i*2*S, .16+i*0.04);   // build
+    [['A#4',4],['D#5',4],['G5',8]].reduce((a,[n,d])=>{ const t=base+BAR+a*S;
+      voice(hz(n),t,d*S*0.9,{duty:.25,g:.15,cut:4600,det:8,a:.02,d:.08,s:.7,r:.12,rl:.22,de:.15}); return a+d; },0);
+    crash(base+2*BAR,.3); kick(base+2*BAR,1);
+    return 2*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.35; let guard=0;
+    while(guard++<5000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.82, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    loopBase=t0+introLen; evIdx=0; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停止'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.35); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.82; },380);
+    playBtn.textContent='▶ 冒険に出る'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing'); statusEl.classList.remove('on');
+    bars.forEach(b=>b.style.height='2px');
+  }
+
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  for(let i=0;i<7;i++){ const s=document.createElement('div'); s.className='spark'; s.textContent='✨';
+    s.style.left=(10+i*12)+'%'; s.style.top=(12+(i*15%30))+'%'; s.style.animationDelay=(i*0.28)+'s'; stage.appendChild(s); }
+  const N=46, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*36).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.82; });
+})();
+</script>
+
+</body>
+</html>
