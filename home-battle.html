@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する、ホーム大陸の雑魚戦（ワイルドバトル）BGM。ホ短調・テンポ168の疾走ポップ・パンク進行＋スカの裏打ち＋16分ドライブビート。ポップだけど戦闘感バッチリ。ポケモンの精神を継承。" />
+<title>ホーム大陸・戦闘！ | Wild Battle</title>
+</head>
+<body>
+<style>
+  :root{ --pop:#ff5a7a; --zap:#ffd23f; --volt:#3fd0ff; --grape:#7a3fd0; --ink:#fff4f7; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(90% 60% at 20% 10%, #ffd23f 0%, transparent 45%),
+      radial-gradient(90% 60% at 85% 20%, #ff5a7a 0%, transparent 46%),
+      radial-gradient(120% 90% at 50% 120%, #2a1246 0%, transparent 60%),
+      linear-gradient(160deg,#ff8fab 0%,#ffb14e 34%,#7a3fd0 74%,#2a1246 100%);
+    color:#2a1030;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(700px,100%);position:relative;border:2px solid rgba(255,255,255,.7);border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,239,246,.9));
+    box-shadow:0 30px 80px rgba(60,10,60,.4),0 0 0 3px rgba(255,90,122,.28), inset 0 1px 0 rgba(255,255,255,.9);
+    padding:26px 26px 30px;overflow:hidden}
+  .tag{font-size:11px;letter-spacing:.42em;color:#c0246a;text-transform:uppercase;text-align:center;font-weight:800;opacity:.95}
+  h1{text-align:center;font-size:clamp(28px,7vw,50px);font-weight:900;letter-spacing:.04em;line-height:1.06;margin:2px 0;
+    background:linear-gradient(180deg,#ff2e63,#ff8c1a 55%,#7a3fd0);
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 0 rgba(255,255,255,.55)}
+  .subtitle{text-align:center;color:#a13a7a;font-size:13px;letter-spacing:.18em;margin-bottom:18px;font-weight:700}
+  .stage{position:relative;height:200px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,255,255,.7);
+    background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,.14) 0 14px, transparent 14px 34px),
+      radial-gradient(circle at 50% 46%, #ffe89a 0%, #ff8fab 34%, #7a3fd0 78%, #2a1246 100%);
+    margin-bottom:16px}
+  .stage.playing{animation:shake .09s linear infinite}
+  @keyframes shake{0%{transform:translate(0,0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,-1px)}100%{transform:translate(1px,1px)}}
+  .vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);font-size:46px;font-weight:900;font-style:italic;
+    color:#fff;text-shadow:0 0 10px #ff2e63,0 3px 0 #c0246a,0 0 24px rgba(255,46,99,.7);letter-spacing:.02em}
+  .stage.playing .vs{animation:vspulse .5s ease-in-out infinite}
+  @keyframes vspulse{0%,100%{transform:translate(-50%,-50%) rotate(-8deg) scale(1)}50%{transform:translate(-50%,-50%) rotate(-8deg) scale(1.16)}}
+  .hero{position:absolute;bottom:22px;left:16%;font-size:52px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.35))}
+  .foe{position:absolute;top:24px;right:15%;font-size:48px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.35))}
+  .stage.playing .hero{animation:hop .38s ease-in-out infinite}
+  .stage.playing .foe{animation:hop .38s ease-in-out infinite;animation-delay:.19s}
+  @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .burst{position:absolute;font-size:24px;opacity:0}
+  .stage.playing .burst{animation:pow .5s ease-in-out infinite}
+  @keyframes pow{0%,100%{opacity:0;transform:scale(.4) rotate(0)}50%{opacity:1;transform:scale(1.2) rotate(20deg)}}
+  .viz{position:absolute;inset:auto 0 0 0;height:44px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.55;mix-blend-mode:screen}
+  .viz i{flex:1;background:linear-gradient(180deg,#fff4f7,#ff2e63);border-radius:2px 2px 0 0;height:2px;transition:height .05s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:900;letter-spacing:.08em;
+    color:#5a0a2a;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#ffe08a,#ff8c1a);box-shadow:0 10px 26px rgba(200,40,60,.4),inset 0 1px 0 rgba(255,255,255,.7)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.07)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#ff9bb4,#ff2e63);color:#fff}
+  .vol{display:flex;align-items:center;gap:8px;color:#a13a7a;font-size:12px}
+  input[type=range]{accent-color:#ff2e63;width:110px}
+  .status{text-align:center;font-size:12px;color:#c0246a;letter-spacing:.2em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s;font-weight:700}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#a13a7a;font-size:12px;margin-top:14px;letter-spacing:.03em;line-height:1.7}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Home Continent · Wild Battle ◆</div>
+  <h1>ホーム大陸・戦闘！</h1>
+  <div class="subtitle">WILD BATTLE &nbsp;—&nbsp; "A Wild Enemy Appeared!"</div>
+
+  <div class="stage" id="stage">
+    <div class="foe">👾</div>
+    <div class="hero">🧑‍🎤</div>
+    <div class="vs">VS</div>
+    <div class="burst" style="left:38%;top:30%">💥</div>
+    <div class="burst" style="left:60%;top:58%;animation-delay:.25s">⚡</div>
+    <div class="burst" style="left:26%;top:60%;animation-delay:.12s">✨</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 戦闘開始！</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="80"></div>
+  </div>
+  <div class="status" id="status">♪ たたかいの時！ ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する、ホーム大陸の<b>雑魚戦（ワイルドバトル）BGM</b>です（音源ファイルなし）。<br>
+    ホ短調・テンポ168の疾走ポップ・パンク進行＋スカの裏打ち＋16分ドライブビート。ポップだけど戦闘感バッチリ。切れ目なくループします。<br>
+    <span style="opacity:.8">📱 iPhoneで無音のときは本体横のサイレントスイッチを確認してね！</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, revS, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const nm=m=>NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.8;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-14; comp.knee.value=24; comp.ratio.value=3.2; comp.attack.value=.004; comp.release.value=.2;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.09;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(1.3,2.6); const l=ctx.createGain(); l.gain.value=.5; revL.connect(l); l.connect(master);
+    revS=ctx.createConvolver(); revS.buffer=impulse(.4,3); const s=ctx.createGain(); s.gain.value=.42; revS.connect(s); s.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.24; const dOut=ctx.createGain(); dOut.gain.value=.26;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function bell(t,n,g){ if(REC) REC.push({t,play:b=>_bell(b+t,n,g)}); else _bell(t,n,g); }
+  function kick(t,g){ if(REC) REC.push({t,play:b=>_kick(b+t,g)}); else _kick(t,g); }
+  function snare(t,g){ if(REC) REC.push({t,play:b=>_snare(b+t,g)}); else _snare(t,g); }
+  function hat(t,g,open){ if(REC) REC.push({t,play:b=>_hat(b+t,g,open)}); else _hat(t,g,open); }
+  function tom(t,f,g){ if(REC) REC.push({t,play:b=>_tom(b+t,f,g)}); else _tom(t,f,g); }
+  function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
+
+  function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
+                              cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const w=pulseWave(duty);o1.setPeriodicWave(w);o2.setPeriodicWave(w);}else{o1.type=wave;o2.type=wave;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(rs){const x=ctx.createGain();x.gain.value=rs;gn.connect(x);x.connect(revS);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
+  const _bell=(t,note,g=.1)=>{ const f0=hz(note);
+    [[1,1],[2.01,.4],[3.0,.2]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.006); e.gain.exponentialRampToValueAtTime(.0001,t+1.0*(1-.1*r));
+      o.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=rnd(-.5,.5);e.connect(p);p.connect(master);}else e.connect(master);
+      const x=ctx.createGain(); x.gain.value=.35; e.connect(x); x.connect(revL); o.start(t); o.stop(t+1.1); }); };
+  // ---- percussion: driving battle kit ----
+  const _kick=(t,g=.95)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(160,t); o.frequency.exponentialRampToValueAtTime(44,t+.08);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.004); e.gain.exponentialRampToValueAtTime(.0001,t+.19);
+    o.connect(e); e.connect(master); o.start(t); o.stop(t+.21); };
+  const _snare=(t,g=.55)=>{ _noise(t,.13,'highpass',1800,.7,g,master);
+    const o=ctx.createOscillator(),e=ctx.createGain(); o.type='triangle'; o.frequency.setValueAtTime(210,t);
+    e.gain.setValueAtTime(g*.5,t); e.gain.exponentialRampToValueAtTime(.0001,t+.07); o.connect(e); e.connect(master); o.start(t); o.stop(t+.09); };
+  const _hat=(t,g=.12,open=false)=> _noise(t,open?.09:.026,'highpass',8600,.6,g,master);
+  const _tom=(t,f=140,g=.4)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(f*1.4,t); o.frequency.exponentialRampToValueAtTime(f,t+.08);
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+.26);
+    o.connect(e); e.connect(master); const x=ctx.createGain();x.gain.value=.22;e.connect(x);x.connect(revS); o.start(t); o.stop(t+.28); };
+  const _crash=(t,g=.3)=> _noise(t,.9,'highpass',5600,.5,g);
+
+  // ---------- Home Continent wild-battle theme (E minor, 168bpm, pop-punk + ska) ----------
+  const BPM=168, S=60/BPM/4, BAR=16*S;
+  const CH={
+    Em:{b:'E2',  st:['E4','G4','B4']},
+    C: {b:'C2',  st:['E4','G4','C5']},
+    G: {b:'G1',  st:['D4','G4','B4']},
+    D: {b:'D2',  st:['D4','F#4','A4']},
+    Am:{b:'A1',  st:['E4','A4','C5']},
+    B7:{b:'B1',  st:['D#4','F#4','A4']}   // harmonic-minor dominant (D# leading tone) — battle tension
+  };
+  const progA=['Em','C','G','D','Em','C','G','D'];
+  const progB=['Am','Em','C','B7','Am','Em','C','B7'];
+  // catchy pop-punk hook — repeated-note punch + leaps, lands on D(V) to snap back to Em
+  const THEME_A=[
+    ['E5',2],['E5',2],['G5',2],['E5',2],['B5',4],['A5',4],
+    ['G5',2],['E5',2],['G5',4],['C6',4],['B5',4],
+    ['D5',2],['G5',2],['B5',4],['A5',2],['G5',2],['D5',4],
+    ['F#5',4],['A5',4],['D6',4],['A5',4],
+    ['E5',2],['E5',2],['G5',2],['E5',2],['B5',4],['C6',4],
+    ['C6',2],['B5',2],['A5',4],['G5',4],['E5',4],
+    ['D5',2],['E5',2],['F#5',2],['G5',2],['A5',4],['B5',4],       // rising run — hype
+    ['A5',4],['F#5',4],['D5',4],['D5',4]
+  ];
+  const THEME_B=[
+    ['A5',4],['C6',4],['E6',4],['C6',4],
+    ['B5',4],['G5',4],['E5',4],['G5',4],
+    ['G5',2],['A5',2],['B5',4],['C6',4],['G5',4],
+    ['D#5',4],['F#5',4],['B5',4],['F#5',4],                        // D# = B7 leading tone, tension
+    ['E5',4],['A5',4],['C6',4],['A5',4],
+    ['B5',4],['E6',4],['B5',4],['G5',4],
+    ['C6',2],['B5',2],['A5',4],['G5',4],['F#5',4],
+    ['F#5',4],['D#5',4],['B4',8]
+  ];
+
+  function seqLead(list,base,{g=.16,oct=false}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S;
+      voice(hz(n),t,d*S*0.9,{duty:.25,g,cut:5400,det:8,a:.008,d:.05,s:.65,r:.07,pan:.05,rl:.12,de:.14});
+      voice(hz(n),t,d*S*0.88,{wave:'triangle',g:g*.38,cut:3000,det:3,a:.008,s:.65,r:.07,pan:.05});
+      if(oct) voice(mf(midi(n)-12),t,d*S*0.88,{duty:.5,g:g*.5,cut:2400,det:6,a:.008,s:.6,r:.07,pan:-.08,rl:.06});
+      acc+=d; } }
+  function drumBar(bt,{fill=false}={}){
+    kick(bt,1); kick(bt+6*S,.7); kick(bt+8*S,.95); kick(bt+11*S,.6);
+    snare(bt+4*S,.55); snare(bt+12*S,.55);
+    for(let i=0;i<16;i++) hat(bt+i*S, i%4===0?.14:(i%2===0?.09:.055), false);
+    if(fill){ tom(bt+12*S,155,.42); tom(bt+13*S,135,.42); tom(bt+14*S,112,.46); snare(bt+15*S,.42); } }
+  function bassBar(root,bt){ const rm=midi(CH[root].b);
+    const pat=[[0,rm],[2,rm+12],[4,rm],[6,rm+7],[8,rm],[10,rm+12],[12,rm],[14,rm+7]];
+    pat.forEach(([p,m])=>{ voice(mf(m), bt+p*S, 1.7*S, {wave:'triangle', g:.18, cut:1150, det:2, a:.004,d:.04,s:.4,r:.05, pan:0});
+      voice(mf(m), bt+p*S, 1.5*S, {duty:.25, g:.05, cut:1500, det:4, a:.004,d:.03,s:.3,r:.05, pan:0}); }); }
+  function stabBar(root,bt){ const st=CH[root].st;                 // ska off-beat organ chops
+    [2,6,10,14].forEach(p=> st.forEach(n=> voice(hz(n), bt+p*S, 1.3*S, {duty:.5, g:.052, cut:2900, a:.004,d:.03,s:.22,r:.05, det:5, pan:rnd(-.28,.28), rl:.08}))); }
+  function padBar(root,bt){ CH[root].st.forEach(n=> voice(hz(n), bt, BAR*0.96, {wave:'sawtooth', g:.02, det:10, vib:4, vr:5, cut:1600, a:.05, d:.2, s:.8, r:.15, rl:.22, pan:rnd(-.2,.2)})); }
+  function grooveBar(root,bt,{fill=false}={}){ drumBar(bt,{fill}); bassBar(root,bt); stabBar(root,bt); padBar(root,bt); }
+
+  function sectionA(base,{oct=false}={}){ for(let b=0;b<8;b++) grooveBar(progA[b], base+b*BAR, {fill:(b%4===3)}); seqLead(THEME_A, base, {g:.16, oct}); }
+  function sectionB(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR; grooveBar(progB[b], bt, {fill:(b%4===3)});
+      if(b%4===0) crash(bt,.16); if(b%2===0) bell(bt, nm(midi(CH[progB[b]].st[2])+12), .05); }
+    seqLead(THEME_B, base, {g:.16}); }
+
+  const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); sectionA(base+16*BAR,{oct:true}); }
+  function scheduleIntro(base){
+    // wild-battle start sting: chromatic rising stabs + tom hits, then a driving fill, crash into the groove
+    const rise=['E4','G4','A#4','C#5','E5','G5','A#5','C#6'];
+    rise.forEach((n,i)=>{ const t=base+i*2*S;
+      voice(hz(n),t,2*S*0.9,{duty:.5,g:.14,cut:4200,det:8,a:.004,d:.04,s:.4,r:.05,pan:rnd(-.25,.25),rl:.1});
+      if(i%2===0) tom(t, 180-i*8, .34); });
+    for(let i=0;i<8;i++) hat(base+i*2*S,.1,false);
+    crash(base,.3);
+    // bar 2 — driving snare build into the drop
+    for(let i=0;i<8;i++) snare(base+BAR+i*2*S, .14+i*0.05);
+    tom(base+BAR+12*S,150,.44); tom(base+BAR+14*S,115,.5);
+    crash(base+2*BAR,.4); kick(base+2*BAR,1);
+    return 2*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.35; let guard=0;
+    while(guard++<6000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.8, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    loopBase=t0+introLen; evIdx=0; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停止'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.3); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.8; },340);
+    playBtn.textContent='▶ 戦闘開始！'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing'); statusEl.classList.remove('on');
+    bars.forEach(b=>b.style.height='2px');
+  }
+
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  const N=46, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*38).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.8; });
+})();
+</script>
+
+</body>
+</html>
