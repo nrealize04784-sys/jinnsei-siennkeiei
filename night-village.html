@@ -97,7 +97,8 @@
 
   <div class="hint">
     Web Audio API でリアルタイム合成している、静かな夜の村のBGMです（音源ファイルなし）。<br>
-    イ短調・ゆるやかなテンポ・虫の音つきで、月あかりの下をずっと歩けるループにしています。
+    イ短調・ゆるやかなテンポ・かすかな虫の音。<b>月夜の静けさ重視でぐっと音量を抑え</b>、まず静かな月あかりの床だけ→やがてやわらかな旋律がそっと差す構成にしています。<br>
+    <span style="opacity:.8">📱 iPhoneで無音のときは本体横のサイレントスイッチを確認してね！</span>
   </div>
 </div>
 
@@ -124,7 +125,7 @@
   }
   function initAudio(){
     ctx=new (window.AudioContext||window.webkitAudioContext)();
-    master=ctx.createGain(); master.gain.value=volEl.value/100*0.66;
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.5;
     comp=ctx.createDynamicsCompressor();
     comp.threshold.value=-18; comp.knee.value=24; comp.ratio.value=4; comp.attack.value=.004; comp.release.value=.25;
     const limiter=ctx.createDynamicsCompressor();
@@ -171,7 +172,7 @@
       const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1;
       n.buffer=buf;
       const f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=7200; f.Q.value=12;
-      const g=ctx.createGain(); g.gain.setValueAtTime(.035,t+off); g.gain.exponentialRampToValueAtTime(.0001,t+off+.03);
+      const g=ctx.createGain(); g.gain.setValueAtTime(.02,t+off); g.gain.exponentialRampToValueAtTime(.0001,t+off+.03);
       n.connect(f); f.connect(g); g.connect(master); n.start(t+off); n.stop(t+off+.05);
     }
   }
@@ -205,15 +206,15 @@
     let acc=0;
     for(const [n,d] of lead){
       const t=base+acc*S;
-      voice(hz(n), t, d*S*0.94, {duty:.125, gain:.15, cut:3000, detune:5, a:.02, d:.1, s:.78, r:.16, fx:.24}); // distant pulse flute
-      voice(hz(n), t, d*S*0.9,  {type:'triangle', gain:.05, cut:2200, detune:3, a:.02, d:.08, s:.7, r:.14});    // soft body
+      voice(hz(n), t, d*S*0.94, {duty:.22, gain:.082, cut:2000, detune:5, a:.05, d:.14, s:.72, r:.24, fx:.34}); // distant, soft flute
+      voice(hz(n), t, d*S*0.9,  {type:'triangle', gain:.06, cut:1700, detune:3, a:.05, d:.1, s:.7, r:.2, fx:.16}); // warm body (leads the tone)
       acc += d;
     }
   }
   function bassBar(ch, base){
     const rm=midi(CH[ch].b), fm=rm+7;
-    voice(mf(rm), base,        BAR*0.5*0.95, {type:'triangle', gain:.2, cut:800, detune:3, a:.02, d:.15, s:.75, r:.2});
-    voice(mf(fm), base+BAR*0.5, BAR*0.5*0.95, {type:'triangle', gain:.17, cut:800, detune:3, a:.02, d:.15, s:.75, r:.2});
+    voice(mf(rm), base,        BAR*0.5*0.95, {type:'triangle', gain:.14, cut:640, detune:3, a:.04, d:.2, s:.72, r:.28});
+    voice(mf(fm), base+BAR*0.5, BAR*0.5*0.95, {type:'triangle', gain:.11, cut:640, detune:3, a:.04, d:.2, s:.72, r:.28});
   }
   function padBar(ch, base){
     for(const n of CH[ch].pad)
@@ -223,29 +224,29 @@
     // sparse music-box arpeggio: quarter notes, soft, with echo — like distant chimes
     const cell=arpOf(ch);
     for(let i=0;i<4;i++)
-      voice(hz(cell[i]), base+i*4*S, 4*S*0.7, {duty:.125, gain:.05, cut:3400, detune:2, a:.004, d:.06, s:.25, r:.1, fx:.26});
+      voice(hz(cell[i]), base+i*4*S, 4*S*0.7, {duty:.125, gain:.03, cut:3000, detune:2, a:.004, d:.06, s:.25, r:.1, fx:.3});
   }
-  function ambBar(base){ cricket(base+3*S); cricket(base+11*S); } // faint crickets, twice a bar
+  function ambBar(base, b){ if(b%2===0) cricket(base+7*S); } // a single faint chirp every other bar
 
-  function section(base, {box}){
+  function section(base, {box, lead}){
     for(let b=0;b<8;b++){
       const bt=base+b*BAR, ch=prog[b];
       bassBar(ch, bt);
       padBar(ch, bt);
       if(box) boxBar(ch, bt);
-      ambBar(bt);
+      ambBar(bt, b);
     }
-    seqLead(base);
+    if(lead) seqLead(base);
   }
 
   const BODY_BARS=16, bodyLen=BODY_BARS*BAR;
   function scheduleBody(base){
-    section(base,       {box:false});  // bare & quiet
-    section(base+8*BAR, {box:true});   // add distant music-box chimes
+    section(base,       {box:false, lead:false}); // still moonlit bed — pads, soft bass, faint crickets (no melody = stillness)
+    section(base+8*BAR, {box:true,  lead:true});  // the gentle melody drifts in with distant music-box
   }
   function scheduleIntro(base){
     for(const n of CH.Am.pad) voice(hz(n), base, 2*BAR*0.97, {type:'triangle', gain:.05, cut:1300, a:.6, d:.5, s:.85, r:.6, fx:.12});
-    ['A4','C5','E5','A5'].forEach((n,i)=> voice(hz(n), base+i*4*S, 4*S*0.7, {duty:.125, gain:.09, cut:3200, a:.005, d:.08, s:.3, r:.12, fx:.3}));
+    ['A4','C5','E5','A5'].forEach((n,i)=> voice(hz(n), base+i*4*S, 4*S*0.7, {duty:.2, gain:.055, cut:2400, a:.006, d:.1, s:.3, r:.16, fx:.36}));
     cricket(base+2*S); cricket(base+BAR+6*S);
     return 2*BAR;
   }
@@ -267,7 +268,7 @@
   function start(){
     if(!ctx) initAudio();
     if(ctx.state==='suspended') ctx.resume();
-    master.gain.setValueAtTime(volEl.value/100*0.66, ctx.currentTime);
+    master.gain.setValueAtTime(volEl.value/100*0.5, ctx.currentTime);
     playing=true;
     EVENTS=buildEvents();
     const t0=ctx.currentTime+0.2;
@@ -283,7 +284,7 @@
     if(master){ master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
       master.gain.linearRampToValueAtTime(0.0001,ctx.currentTime+0.45); }
-    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.66; },500);
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.5; },500);
     playBtn.textContent='▶ 夜の村へ'; playBtn.classList.remove('playing');
     scene.classList.remove('playing'); statusEl.classList.remove('on');
     bars.forEach(b=>b.style.height='2px');
@@ -308,7 +309,7 @@
     rafId=requestAnimationFrame(drawViz);
   }
   playBtn.addEventListener('click', ()=> playing?stop():start());
-  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.66; });
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.5; });
 })();
 </script>
 
