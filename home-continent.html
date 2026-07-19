@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Web Audioでリアルタイム合成する、2つ目の冒険の大陸「ホーム大陸」上陸の壮大なBGM。変ホ長調・♭VIIの新天地の畏敬・英雄的主題＋大合唱。ポケモンの精神を継承。" />
+<title>ホーム大陸、上陸！ | Second Continent</title>
+</head>
+<body>
+<style>
+  :root{ --emer:#37c39a; --teal:#0f6f6a; --gold:#ffd77a; --sky:#7fe0d0; --ink:#eafaf4; --dim:#9fc7bd; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:
+      radial-gradient(120% 80% at 50% -10%, #ffe6a8 0%, transparent 40%),
+      radial-gradient(120% 80% at 50% 120%, #06403f 0%, transparent 55%),
+      linear-gradient(180deg,#7fe0d0 0%,#bff0e6 30%,#3aa88f 58%,#0c524d 100%);
+    color:#0c3a35;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+    min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;overflow-x:hidden}
+  .cab{width:min(700px,100%);position:relative;border:1px solid rgba(255,255,255,.55);border-radius:20px;
+    background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(232,250,244,.82));
+    box-shadow:0 30px 80px rgba(10,70,60,.32),0 0 0 1px rgba(55,195,154,.2), inset 0 1px 0 rgba(255,255,255,.9);
+    padding:26px 26px 30px;overflow:hidden;backdrop-filter:blur(2px)}
+  .tag{font-size:11px;letter-spacing:.44em;color:var(--teal);text-transform:uppercase;text-align:center;opacity:.95}
+  h1{text-align:center;font-size:clamp(28px,7vw,48px);font-weight:800;letter-spacing:.06em;line-height:1.08;margin:2px 0;
+    background:linear-gradient(180deg,#0c6b5f,#2fae8e 45%,#c99a2c);
+    -webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 0 rgba(255,255,255,.5)}
+  .subtitle{text-align:center;color:#4a7f76;font-size:13px;letter-spacing:.2em;margin-bottom:18px}
+  .stage{position:relative;height:200px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.6);
+    background:linear-gradient(180deg,#9fe8dd 0%,#cff4ec 42%,#3aa88f 46%,#0c524d 100%);margin-bottom:16px}
+  .sun{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-size:50px;filter:drop-shadow(0 0 26px rgba(255,215,120,.85))}
+  .stage.playing .sun{animation:rise 5s ease-out both}
+  @keyframes rise{0%{transform:translateX(-50%) translateY(40px);opacity:.4}100%{transform:translateX(-50%) translateY(0);opacity:1}}
+  .land{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:54px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.28))}
+  .bird{position:absolute;font-size:14px;opacity:.8;top:30%;left:18%}
+  .bird.b{top:22%;left:66%}
+  .stage.playing .bird{animation:fly 11s linear infinite}
+  .stage.playing .bird.b{animation:fly 15s linear infinite;animation-delay:-5s}
+  @keyframes fly{0%{transform:translateX(-30px)}100%{transform:translateX(560px)}}
+  .spark{position:absolute;font-size:15px;opacity:0;color:#fff2c8}
+  .stage.playing .spark{animation:tw 2.6s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(1.25)}}
+  .viz{position:absolute;inset:auto 0 0 0;height:46px;display:flex;align-items:flex-end;gap:2px;padding:0 8px;opacity:.55}
+  .viz i{flex:1;background:linear-gradient(180deg,#eafaf4,#0c6b5f);border-radius:2px 2px 0 0;height:2px;transition:height .06s linear}
+  .controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 30px;font-size:15px;font-weight:800;letter-spacing:.08em;
+    color:#083630;transition:transform .12s,filter .2s;
+    background:linear-gradient(180deg,#8ef0d8,#2fae8e);box-shadow:0 10px 26px rgba(20,120,100,.35),inset 0 1px 0 rgba(255,255,255,.6)}
+  button:hover{transform:translateY(-2px);filter:brightness(1.06)} button:active{transform:translateY(1px)}
+  button.playing{background:linear-gradient(180deg,#ffe08a,#e8b850);color:#4a3a12}
+  .vol{display:flex;align-items:center;gap:8px;color:#4a7f76;font-size:12px}
+  input[type=range]{accent-color:var(--teal);width:110px}
+  .status{text-align:center;font-size:12px;color:var(--teal);letter-spacing:.2em;height:16px;margin-top:10px;opacity:0;transition:opacity .3s}
+  .status.on{opacity:1}
+  .hint{text-align:center;color:#4a7f76;font-size:12px;margin-top:14px;letter-spacing:.03em;line-height:1.7}
+</style>
+
+<div class="cab">
+  <div class="tag">◆ Second Continent ◆</div>
+  <h1>ホーム大陸、上陸！</h1>
+  <div class="subtitle">THE SECOND CONTINENT &nbsp;—&nbsp; "A Vast New Frontier"</div>
+
+  <div class="stage" id="stage">
+    <div class="sun">🌄</div>
+    <div class="bird">🕊️</div><div class="bird b">🕊️</div>
+    <div class="land">🏔️🏞️🌲🏰🌲</div>
+    <div class="viz" id="viz"></div>
+  </div>
+
+  <div class="controls">
+    <button id="play">▶ 上陸する</button>
+    <div class="vol">🔊 <input type="range" id="vol" min="0" max="100" value="78"></div>
+  </div>
+  <div class="status" id="status">♪ 新天地の予感 ♪</div>
+
+  <div class="hint">
+    Web Audio API でリアルタイム合成する、2つ目の冒険の大陸「ホーム大陸」上陸の壮大なBGMです（音源ファイルなし）。<br>
+    上陸ファンファーレ → 英雄的主題 → 新天地への感嘆 → 総奏の凱旋 を切れ目なくループします。
+  </div>
+</div>
+
+<script>
+(() => {
+  let ctx, master, comp, limiter, revL, revS, dly, fxIn, analyser, freqData;
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const NOTES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  const midi=n=>{const m=/^([A-G])(#|b)?(-?\d)$/.exec(n);let s=NOTES[m[1]]+(m[2]==='#'?1:m[2]==='b'?-1:0);return 12*(+m[3]+1)+s;};
+  const nm=m=>NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);
+  const hz=n=>440*Math.pow(2,(midi(n)-69)/12);
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+
+  const _pw={};
+  function pulseWave(duty){ const k=duty.toFixed(3); if(_pw[k])return _pw[k];
+    const N=16,real=new Float32Array(N),imag=new Float32Array(N);
+    for(let n=1;n<N;n++) imag[n]=(2/(n*Math.PI))*Math.sin(n*Math.PI*duty);
+    return _pw[k]=ctx.createPeriodicWave(real,imag,{disableNormalization:false}); }
+  function impulse(dur,decay){ const len=Math.max(1,Math.floor(ctx.sampleRate*dur)),buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);} return buf; }
+  function initAudio(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    master=ctx.createGain(); master.gain.value=volEl.value/100*0.84;
+    comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-15; comp.knee.value=24; comp.ratio.value=3; comp.attack.value=.005; comp.release.value=.22;
+    limiter=ctx.createDynamicsCompressor();
+    limiter.threshold.value=-2; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=.002; limiter.release.value=.1;
+    analyser=ctx.createAnalyser(); analyser.fftSize=128; freqData=new Uint8Array(analyser.frequencyBinCount);
+    master.connect(comp); comp.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+    revL=ctx.createConvolver(); revL.buffer=impulse(2.6,2.2); const l=ctx.createGain(); l.gain.value=.95; revL.connect(l); l.connect(master);
+    revS=ctx.createConvolver(); revS.buffer=impulse(.6,3); const s=ctx.createGain(); s.gain.value=.55; revS.connect(s); s.connect(master);
+    fxIn=ctx.createGain(); dly=ctx.createDelay(1); dly.delayTime.value=3*S;
+    const fb=ctx.createGain(); fb.gain.value=.3; const dOut=ctx.createGain(); dOut.gain.value=.36;
+    fxIn.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(dOut); dOut.connect(master);
+  }
+
+  let REC=null;
+  function voice(f,t,d,o){ if(REC) REC.push({t,play:b=>_voice(f,b+t,d,o)}); else _voice(f,t,d,o); }
+  function bell(t,n,g){ if(REC) REC.push({t,play:b=>_bell(b+t,n,g)}); else _bell(t,n,g); }
+  function timp(t,f,g){ if(REC) REC.push({t,play:b=>_timp(b+t,f,g)}); else _timp(t,f,g); }
+  function roll(t,f,g,dur){ if(REC) REC.push({t,play:b=>_roll(b+t,f,g,dur)}); else _roll(t,f,g,dur); }
+  function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
+
+  function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
+                              cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
+    const gn=ctx.createGain(), f=ctx.createBiquadFilter(); f.type=ftype; f.frequency.value=cut; f.Q.value=q;
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator();
+    if(duty!=null){const w=pulseWave(duty);o1.setPeriodicWave(w);o2.setPeriodicWave(w);}else{o1.type=wave;o2.type=wave;}
+    o1.frequency.setValueAtTime(freq,t); o2.frequency.setValueAtTime(freq,t); o2.detune.value=det;
+    if(vib){const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=vr;lg.gain.value=vib;l.connect(lg);lg.connect(o1.detune);lg.connect(o2.detune);l.start(t);l.stop(t+dur+.03);}
+    const peak=g, sus=Math.max(g*s,.0001);
+    gn.gain.setValueAtTime(.0001,t); gn.gain.exponentialRampToValueAtTime(peak,t+a);
+    if(env==='hold'){ gn.gain.setValueAtTime(peak,t+Math.max(dur-r,a)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    else { gn.gain.exponentialRampToValueAtTime(sus,t+a+d); gn.gain.setValueAtTime(sus,t+Math.max(dur-r,a+d)); gn.gain.exponentialRampToValueAtTime(.0001,t+dur); }
+    o1.connect(f); o2.connect(f); f.connect(gn);
+    let tail=gn; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;gn.connect(p);tail=p;}
+    tail.connect(master);
+    if(rl){const x=ctx.createGain();x.gain.value=rl;gn.connect(x);x.connect(revL);}
+    if(rs){const x=ctx.createGain();x.gain.value=rs;gn.connect(x);x.connect(revS);}
+    if(de){const x=ctx.createGain();x.gain.value=de;gn.connect(x);x.connect(fxIn);}
+    o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);
+  }
+  function _noise(t,dur,type,cut,q,g,dest){ const n=ctx.createBufferSource();
+    const buf=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*dur)),ctx.sampleRate);
+    const dd=buf.getChannelData(0); for(let i=0;i<dd.length;i++) dd[i]=Math.random()*2-1; n.buffer=buf;
+    const f=ctx.createBiquadFilter(); f.type=type; f.frequency.value=cut; f.Q.value=q;
+    const gn=ctx.createGain(); gn.gain.setValueAtTime(g,t); gn.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    n.connect(f); f.connect(gn); gn.connect(dest||master); n.start(t); n.stop(t+dur+.02); }
+  const _bell=(t,note,g=.1)=>{ const f0=hz(note);
+    [[1,1],[2.01,.4],[3.0,.2]].forEach(([r,a])=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine'; o.frequency.value=f0*r;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*a,t+.006); e.gain.exponentialRampToValueAtTime(.0001,t+1.5*(1-.1*r));
+      o.connect(e); const p=ctx.createStereoPanner?ctx.createStereoPanner():null; if(p){p.pan.value=rnd(-.5,.5);e.connect(p);p.connect(master);}else e.connect(master);
+      const x=ctx.createGain(); x.gain.value=.45; e.connect(x); x.connect(revL); const y=ctx.createGain(); y.gain.value=.3; e.connect(y); y.connect(fxIn); o.start(t); o.stop(t+1.6); }); };
+  const _timp=(t,freq,g=.65)=>{ const o=ctx.createOscillator(),e=ctx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(freq*1.5,t); o.frequency.exponentialRampToValueAtTime(freq,t+.08); e.gain.setValueAtTime(g,t); e.gain.exponentialRampToValueAtTime(.0001,t+.55);
+    o.connect(e); const x=ctx.createGain(); x.gain.value=.4; e.connect(x); x.connect(revL); e.connect(master); o.start(t); o.stop(t+.6); };
+  const _roll=(t,freq,g,dur)=>{ const steps=Math.max(2,Math.floor(dur/0.055));
+    for(let i=0;i<steps;i++) _timp(t+i*(dur/steps), freq, g*(0.3+0.7*i/steps)); };
+  const _crash=(t,g=.3)=> _noise(t,1.4,'highpass',5000,.5,g);
+
+  // ---------- Second-continent grand landing theme (Eb major, heroic, ♭VII epic color) ----------
+  const BPM=116, S=60/BPM/4, BAR=16*S;
+  const CH={
+    Eb:{b:'D#2', pad:['D#3','G3','A#3']},
+    Bb:{b:'A#1', pad:['A#3','D4','F4']},
+    Cm:{b:'C2',  pad:['C4','D#4','G4']},
+    Gm:{b:'G1',  pad:['G3','A#3','D4']},
+    Ab:{b:'G#1', pad:['G#3','C4','D#4']},
+    Fm:{b:'F1',  pad:['F3','G#3','C4']},
+    Db:{b:'C#2', pad:['C#4','F4','G#4']}   // ♭VII — the epic "new frontier" color
+  };
+  const progA=['Eb','Bb','Cm','Gm','Ab','Eb','Fm','Bb'];
+  const progB=['Ab','Bb','Cm','Gm','Db','Ab','Eb','Bb'];   // ♭VII(Db) for grand wonder
+  // heroic theme — opens with a rising 5th (Bb→Eb), bold and sweeping
+  const THEME=[
+    ['A#4',4],['D#5',4],['G5',4],['A#5',4],
+    ['G#5',4],['G5',4],['F5',8],
+    ['G5',4],['A#5',4],['C6',8],
+    ['A#5',4],['G5',4],['D5',8],
+    ['C6',4],['A#5',4],['G#5',4],['G5',4],
+    ['A#5',4],['G5',4],['D#5',8],
+    ['F5',4],['G#5',4],['C6',4],['G#5',4],
+    ['A#5',4],['G#5',4],['G5',4],['F5',4]
+  ];
+  const WONDER=[
+    ['D#5',4],['G#5',4],['C6',8],
+    ['D6',4],['C6',4],['A#5',8],
+    ['C6',4],['A#5',4],['G5',8],
+    ['D5',4],['G5',4],['A#5',8],
+    ['F5',4],['G#5',4],['C#6',8],           // ♭VII peak (Db chord) — awe
+    ['C6',4],['G#5',4],['D#5',8],
+    ['G5',4],['A#5',4],['D#6',4],['A#5',4],
+    ['D6',4],['A#5',4],['F5',8]
+  ];
+
+  function seqTheme(list, base, {g=.16, oct=false, bells=false}={}){ let acc=0;
+    for(const [n,d] of list){ const t=base+acc*S;
+      voice(hz(n), t, d*S*0.95, {duty:.25, g, cut:4600, det:8, a:.02, d:.08, s:.82, r:.1, pan:.05, rl:.32, de:.14}); // horn
+      voice(hz(n), t, d*S*0.92, {wave:'triangle', g:g*.4, cut:2600, det:4, a:.02, s:.8, r:.1, pan:.05});
+      if(oct) voice(mf(midi(n)-12), t, d*S*0.92, {duty:.25, g:g*.55, cut:3200, det:6, a:.02, s:.8, r:.1, pan:-.1, rl:.25});
+      if(bells && acc%16===0) bell(t, nm(midi(n)+12), .08);
+      acc+=d; } }
+  function strings(root, base, g){ for(const n of CH[root].pad){
+      voice(hz(n), base, BAR*0.99, {wave:'sawtooth', g:g||.05, det:12, vib:5, vr:4, cut:1900, a:.14, d:.25, s:.92, r:.35, rl:.55, pan:rnd(-.28,.28)});
+      voice(hz(n), base, BAR*0.99, {wave:'triangle', g:(g||.05)*.7, det:6, cut:2400, a:.14, s:.92, r:.35, rl:.4}); } }
+  function choir(root, base, g){ for(const n of CH[root].pad){
+      voice(hz(n), base, BAR*0.99, {wave:'triangle', g:g||.035, det:10, vib:7, vr:4.5, cut:2600, a:.3, d:.4, s:.92, r:.5, rl:.6, pan:rnd(-.3,.3)}); } }
+  function grandBass(root, base){ const rm=midi(CH[root].b);
+    voice(mf(rm), base, BAR*0.98, {wave:'triangle', g:.16, cut:800, det:3, a:.03, d:.15, s:.8, r:.25, rl:.15});
+    voice(mf(rm-12), base, BAR*0.98, {wave:'sine', g:.12, cut:400, a:.05, s:.85, r:.3}); }
+  function harpArp(root, base){ const p=CH[root].pad;
+    for(let i=0;i<8;i++){ const m=midi(p[i%3])+12; bell(base+i*2*S, nm(m), .05); } }
+  function harpRun(base, notes, span){ notes.forEach((n,i)=> bell(base+i*(span/notes.length), n, .07)); }
+
+  function sectionA(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progA[b];
+      grandBass(ch,bt); strings(ch,bt,.055); if(b%2===0) timp(bt,hz(CH[ch].b),.42); }
+    timp(base,hz('D#2'),.5);
+    seqTheme(THEME, base, {g:.16, bells:true}); }
+  function sectionB(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progB[b];
+      grandBass(ch,bt); strings(ch,bt,.06); choir(ch,bt,.035); harpArp(ch,bt); timp(bt,hz(CH[ch].b),.36); }
+    crash(base,.26); seqTheme(WONDER, base, {g:.15, bells:true}); }
+  function sectionC(base){ for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=progA[b];
+      grandBass(ch,bt); strings(ch,bt,.07); choir(ch,bt,.04); harpArp(ch,bt); roll(bt,hz(CH[ch].b),.3,BAR*0.5); }
+    crash(base,.36); timp(base,hz('D#2'),.7);
+    seqTheme(THEME, base, {g:.18, oct:true, bells:true}); }
+
+  const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
+  function scheduleBody(base){ sectionA(base); sectionB(base+8*BAR); sectionC(base+16*BAR); }
+  function scheduleIntro(base){
+    // a vast new continent rises: cymbal+timpani roll swell + rising strings/choir + a bold HORN CALL + harp gliss
+    for(const n of ['D#3','A#3','D#4','G4','A#4']) voice(hz(n), base, 4*BAR*0.98, {wave:'sawtooth', g:.045, det:12, cut:1500, a:1.0, d:.6, s:.9, r:.7, rl:.6, pan:rnd(-.2,.2)});
+    _roll(base+2*BAR, hz('D#2'), .4, 2*BAR*0.9);
+    harpRun(base+BAR, ['D#4','G4','A#4','D#5','G5','A#5','D#6','G6'], 2*BAR);   // rising gliss
+    // horn call: the 5th-leap heralds the new land
+    [['A#4',6],['D#5',6],['G5',4],['A#5',10]].reduce((acc,[n,d])=>{ const t=base+2*BAR+acc*S;
+      voice(hz(n), t, d*S*0.95, {duty:.25, g:.16, cut:4200, det:8, a:.04, d:.1, s:.85, r:.2, rl:.4, de:.2});
+      bell(t, nm(midi(n)+12), .08); return acc+d; }, 0);
+    crash(base+4*BAR,.32); timp(base+4*BAR,hz('D#2'),.6);
+    return 4*BAR;
+  }
+
+  function buildEvents(){ REC=[]; scheduleBody(0); const ev=REC; REC=null; ev.sort((a,b)=>a.t-b.t); return ev; }
+  let playing=false, timer=null, rafId=null, EVENTS=null, loopBase=0, evIdx=0;
+  function pump(){ if(!playing) return; const horizon=ctx.currentTime+0.35; let guard=0;
+    while(guard++<5000){ if(evIdx>=EVENTS.length){ loopBase+=bodyLen; evIdx=0; }
+      const e=EVENTS[evIdx]; if(loopBase+e.t>horizon) break; e.play(loopBase); evIdx++; } }
+  function start(){
+    if(!ctx) initAudio(); if(ctx.state==='suspended') ctx.resume();
+    master.gain.setValueAtTime(volEl.value/100*0.84, ctx.currentTime);
+    playing=true; EVENTS=buildEvents();
+    const t0=ctx.currentTime+0.2; const introLen=scheduleIntro(t0);
+    loopBase=t0+introLen; evIdx=0; timer=setInterval(pump,25);
+    playBtn.textContent='■ 停止'; playBtn.classList.add('playing');
+    stage.classList.add('playing'); statusEl.classList.add('on'); drawViz();
+  }
+  function stop(){
+    playing=false; clearInterval(timer); if(rafId) cancelAnimationFrame(rafId);
+    if(master){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.0001,ctx.currentTime+.4); }
+    setTimeout(()=>{ if(!playing&&ctx) ctx.suspend(); if(master) master.gain.value=volEl.value/100*0.84; },440);
+    playBtn.textContent='▶ 上陸する'; playBtn.classList.remove('playing');
+    stage.classList.remove('playing'); statusEl.classList.remove('on');
+    bars.forEach(b=>b.style.height='2px');
+  }
+
+  const stage=document.getElementById('stage');
+  const vizEl=document.getElementById('viz');
+  const playBtn=document.getElementById('play');
+  const volEl=document.getElementById('vol');
+  const statusEl=document.getElementById('status');
+  for(let i=0;i<8;i++){ const s=document.createElement('div'); s.className='spark'; s.textContent='✨';
+    s.style.left=(8+i*11)+'%'; s.style.top=(14+(i*13%36))+'%'; s.style.animationDelay=(i*0.3)+'s'; stage.appendChild(s); }
+  const N=46, bars=[];
+  for(let i=0;i<N;i++){ const b=document.createElement('i'); vizEl.appendChild(b); bars.push(b); }
+  function drawViz(){ if(!playing) return; analyser.getByteFrequencyData(freqData);
+    for(let i=0;i<N;i++){ const v=freqData[Math.floor(i/N*freqData.length)]/255; bars[i].style.height=(2+v*42).toFixed(1)+'px'; }
+    rafId=requestAnimationFrame(drawViz); }
+  playBtn.addEventListener('click', ()=> playing?stop():start());
+  volEl.addEventListener('input', ()=>{ if(master) master.gain.value=volEl.value/100*0.84; });
+})();
+</script>
+
+</body>
+</html>
