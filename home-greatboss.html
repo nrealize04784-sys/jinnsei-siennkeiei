@@ -134,6 +134,8 @@
   function crash(t,g){ if(REC) REC.push({t,play:b=>_crash(b+t,g)}); else _crash(t,g); }
   function hat(t,g,open){ if(REC) REC.push({t,play:b=>_hat(b+t,g,open)}); else _hat(t,g,open); }
   function chant(notes,t,dur,o){ if(REC) REC.push({t,play:b=>notes.forEach(n=>_vox(n,b+t,dur,o))}); else notes.forEach(n=>_vox(n,t,dur,o)); }
+  function braam(rm,t,dur,o){ if(REC) REC.push({t,play:b=>_braam(rm,b+t,dur,o)}); else _braam(rm,t,dur,o); }
+  function growl(m,t,dur,g){ if(REC) REC.push({t,play:b=>_growl(m,b+t,dur,g)}); else _growl(m,t,dur,g); }
 
   function _voice(freq,t,dur,{wave='sawtooth',duty=null,g=.14,det=7,vib=0,vr=5,a=.02,d=.1,s=.75,r=.2,
                               cut=4200,ftype='lowpass',q=1,pan=0,rl=0,rs=0,de=0,env='adsr'}={}){
@@ -194,6 +196,28 @@
     _noise(t,2.0,'bandpass',2600,.5,g*.5,master); };
   const _crash=(t,g=.3)=> _noise(t,1.4,'highpass',5000,.5,g);
   const _hat=(t,g=.08,open=false)=> _noise(t,open?.09:.028,'highpass',8800,.6,g,master);
+  // ---- NEW: saturated power layers — the "強そう" muscle ----
+  const _sh={};
+  function shaper(amt){ const k=amt.toFixed(1); if(_sh[k])return _sh[k];
+    const n=1024,c=new Float32Array(n); for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(x*amt)/Math.tanh(amt);}
+    const ws=ctx.createWaveShaper(); ws.curve=c; ws.oversample='2x'; return _sh[k]=ws; }
+  function _braam(rm,t,dur,{g=.16,pan=0}={}){       // massive saturated power-horn cluster (root+5th+octaves), downward bend
+    const ws=shaper(2.5); let tail=ws; if(ctx.createStereoPanner){const p=ctx.createStereoPanner();p.pan.value=pan;ws.connect(p);tail=p;}
+    tail.connect(master); const rv=ctx.createGain(); rv.gain.value=.4; ws.connect(rv); rv.connect(revL);
+    [[rm-12,.85],[rm,1],[rm+7,.9],[rm+12,.7]].forEach(([m,ga],i)=>{
+      const o=ctx.createOscillator(),e=ctx.createGain(),lp=ctx.createBiquadFilter();
+      o.type='sawtooth'; o.frequency.setValueAtTime(mf(m)*1.012,t); o.frequency.exponentialRampToValueAtTime(mf(m)*0.99,t+dur*0.7);
+      o.detune.value=(i-1.5)*7; lp.type='lowpass'; lp.frequency.value=1800;
+      e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g*ga,t+.03); e.gain.setValueAtTime(g*ga,t+Math.max(dur-.18,.05)); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(lp); lp.connect(e); e.connect(ws); o.start(t); o.stop(t+dur+.05); }); }
+  function _growl(m,t,dur,g=.1){                     // saturated low drone — menacing grit under the sub
+    const ws=shaper(3.2), e=ctx.createGain();
+    e.gain.setValueAtTime(.0001,t); e.gain.exponentialRampToValueAtTime(g,t+.08); e.gain.setValueAtTime(g,t+Math.max(dur-.2,.1)); e.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    ws.connect(e); e.connect(master); const rv=ctx.createGain(); rv.gain.value=.2; e.connect(rv); rv.connect(revL);
+    [[m,0],[m,9],[m+7,-6]].forEach(([mm,det])=>{ const o=ctx.createOscillator(),lp=ctx.createBiquadFilter();
+      o.type='sawtooth'; o.frequency.value=mf(mm); o.detune.value=det; lp.type='lowpass'; lp.frequency.value=620;
+      o.connect(lp); lp.connect(ws); o.start(t); o.stop(t+dur+.05); }); }
+  function riser(t){ for(let i=0;i<14;i++) hat(t+i*S, .03+i*0.006, false); roll(t, mf(midi('C3')), .16, BAR*0.95); }
 
   // ---------- Home Continent GREAT boss — C minor "true form" in 7/8, tritone + Neapolitan ----------
   const BPM=132, S=60/BPM/4, BAR=14*S;   // 7/8 = 14 sixteenths, grouped 3+2+2
@@ -228,18 +252,21 @@
     for(const [n,d] of list){ const t=base+acc*S; const m=midi(n)+tr;
       voice(mf(m),t,d*S*0.94,{wave:'sawtooth',g,det:9,cut:2700,a:.02,d:.1,s:.82,r:.14,rl:.3,de:.1});     // brass lead
       voice(mf(m),t,d*S*0.9,{duty:.25,g:g*.5,cut:3800,det:6,a:.02,s:.8,r:.14,rl:.2});
-      if(oct) voice(mf(m-12),t,d*S*0.9,{wave:'sawtooth',g:g*.55,det:6,cut:1400,a:.02,s:.78,r:.14,rl:.2});
+      voice(mf(m-12),t,d*S*0.92,{wave:'sawtooth',g:g*.42,det:8,cut:1300,a:.02,s:.78,r:.14,rl:.16});      // low power octave (always) — muscle
+      if(oct) voice(mf(m+12),t,d*S*0.88,{duty:.125,g:g*.4,cut:6500,det:12,a:.02,s:.7,r:.12,rl:.2,de:.15}); // climax: screaming high octave
       acc+=d; } }
 
   function section(base,{tr=0, dim=false, dbl=false, oct=false, choirG=.085, gLead=.17}={}){
     for(let b=0;b<8;b++){ const bt=base+b*BAR, ch=prog[b], rm=midi(CH[ch].b)+tr;
-      sub(rm, bt, BAR*0.99, dbl?.34:.28);
+      sub(rm, bt, BAR*0.99, dbl?.36:.3);
+      if(dim||dbl) growl(rm, bt, BAR*0.99, dbl?.11:.075);   // saturated grit under the sub
       organ(CH[ch].p.map(n=>tName(n,tr)), bt, BAR*0.98, {g:.042});
-      // the 7/8 pulse — heavy hits on 3+2+2
+      // the 7/8 pulse — mighty POWER-CHORD hits on 3+2+2 (root+5th+octave) + saturated braam
       ACC.forEach((pos,i)=>{ const at=bt+pos*S, len=ACCLEN[i]*S*0.9;
-        taiko(at, i===0?1:0.72, 72); if(i===0) timp(at, mf(rm), .5);
-        voice(mf(rm), at, len, {wave:'sawtooth', g:.12, det:7, cut:820, a:.008,d:.08,s:.58,r:.1});
-        voice(mf(rm), at, len*0.9, {duty:.5, g:.05, cut:1050, det:4, a:.008,s:.5,r:.1}); });
+        taiko(at, i===0?1.05:0.78, 70); if(i===0) timp(at, mf(rm), .55);
+        [0,7,12].forEach(iv=> voice(mf(rm+iv), at, len, {wave:'sawtooth', g:iv?.06:.13, det:7, cut:iv?1300:860, a:.008,d:.08,s:.56,r:.1}));
+        voice(mf(rm), at, len*0.9, {duty:.5, g:.055, cut:1100, det:4, a:.008,s:.5,r:.1});
+        if(i===0 && (b%2===0 || dbl)) braam(rm, at, len*1.05, {g:dbl?.17:.13}); });
       // hats mark each 7/8 eighth, accenting the group starts (0,3,5)
       for(let e=0;e<7;e++) hat(bt+e*2*S, (e===0||e===3||e===5)?.1:.05, false);
       // epic choir chant on the accents (low, syllabic) — transposed with the section
@@ -247,19 +274,22 @@
       chant([rootLo], bt,       5*S, {g:choirG, syl:'k',  pan:-.1});
       chant([fifthLo],bt+6*S,   4*S, {g:choirG, syl:'ah', pan:.1});
       chant([rootLo], bt+10*S,  4*S, {g:choirG, syl:'t',  pan:0});
+      if(dbl) chant([tName(CH[ch].p[0],tr-24)], bt, 5*S, {g:.055, syl:'oh'});  // low roar in the climax
       if(dim && b%2===1) dimStab(rm+6, bt+10*S);           // tritone diminished stab
-      if(dbl){ for(let e=0;e<7;e++) taiko(bt+e*2*S+S, .34, 80); }  // double-time driving heartbeat
+      if(dbl){ for(let e=0;e<7;e++){ taiko(bt+e*2*S+S, .36, 80); } for(let s=1;s<14;s+=2) hat(bt+s*S,.05,false); } // war gallop
+      else if(dim){ for(let e=0;e<7;e+=2) taiko(bt+e*2*S+S, .3, 80); }
     }
     seqTheme(THEME, base, {g:gLead, oct, tr});
   }
 
   const BODY_BARS=24, bodyLen=BODY_BARS*BAR;
   function scheduleBody(base){
-    gong(base,.5);                                           // cycle marker
+    gong(base,.5); braam(midi('C2'),base,BAR*0.9,{g:.18});                    // cycle marker + power impact
     section(base+0*8*BAR, {tr:0});                           // Ⅰ 巨人の主題
-    gong(base+8*BAR,.5); crash(base+8*BAR,.22);
+    gong(base+8*BAR,.5); crash(base+8*BAR,.24); braam(midi('C2'),base+8*BAR,BAR*0.9,{g:.2}); riser(base+8*BAR-BAR);
     section(base+1*8*BAR, {tr:0, dim:true, choirG:.095});    // Ⅱ 深淵の三全音
-    gong(base+16*BAR,.6); crash(base+16*BAR,.32); roll(base+16*BAR, mf(midi('C2')+1), .4, BAR*0.8);
+    gong(base+16*BAR,.6); crash(base+16*BAR,.34); roll(base+16*BAR, mf(midi('C2')+1), .42, BAR*0.8);
+    braam(midi('C2')+1,base+16*BAR,BAR,{g:.24}); riser(base+16*BAR-BAR);
     section(base+2*8*BAR, {tr:1, dbl:true, oct:true, choirG:.11, gLead:.2}); // Ⅲ 覚醒・半音上げ (C→C#)
   }
   function scheduleIntro(base){
@@ -269,7 +299,8 @@
     roll(base+2*BAR, mf(midi('C2')), .3, 2*BAR*0.8);
     [['D#4',6],['D4',4],['D#4',4],['C4',6],['A#3',4],['C4',4]].reduce((a,[n,d],i)=>{ const t=base+2*BAR+a*S;
       chant([n], t, d*S*0.9, {g:.1, syl:(i%2)?'t':'k'}); return a+d; },0);
-    gong(base+3*BAR,.5); crash(base+4*BAR-0.02,.34); taiko(base+4*BAR,1,62);
+    gong(base+3*BAR,.5); crash(base+4*BAR-0.02,.34); taiko(base+4*BAR,1.1,60);
+    braam(midi('C2'),base+4*BAR,BAR*1.1,{g:.24}); growl(midi('C2'),base+4*BAR,BAR,.1);  // colossal entry
     return 4*BAR;
   }
 
