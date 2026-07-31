@@ -100,10 +100,12 @@
     display:grid;grid-template-columns:1fr minmax(0,2.3fr) 1fr;
     gap:28px;align-items:center;
   }
-  .hero-cut{width:100%;height:auto;display:block;
+  /* 暗いダンジョン調の絵なので、溶かさず額装して「作品」として見せる */
+  .hero-cut{
+    width:100%;height:auto;display:block;aspect-ratio:1/1;object-fit:cover;
     image-rendering:pixelated;image-rendering:crisp-edges;
-    /* 白背景の画像を紙面に馴染ませる（白が透けたように見える） */
-    mix-blend-mode:multiply;
+    border:2px solid var(--navy);
+    box-shadow:0 0 0 6px var(--white),0 0 0 8px rgba(11,27,58,.18);
   }
   /* RPGのメッセージウィンドウを模した枠 */
   .window{
