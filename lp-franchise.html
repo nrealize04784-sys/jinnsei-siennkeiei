@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RPGから、家が売れる。｜不動産フランチャイズ加盟募集</title>
 <meta name="description" content="物件を探している人ではなく、人生を良くしたい人が集まる。1エリア2社限定の加盟募集。">
-<!-- 日本語対応のドット絵フォント。見出しとメッセージにのみ使う -->
+<!-- 日本語対応のドット絵フォント。ページ全体の書体として使う -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
@@ -29,9 +29,10 @@
   body{
     background:var(--paper);
     color:var(--navy);
-    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,"Noto Sans JP",Meiryo,sans-serif;
-    line-height:1.9;
-    letter-spacing:.02em;
+    font-family:var(--font-game);
+    font-weight:400;      /* この書体は太字を持たない。疑似太字を避けるため全体を400で統一 */
+    line-height:1.95;
+    letter-spacing:.05em;
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
@@ -65,7 +66,7 @@
   }
   .btn{
     display:inline-block;background:var(--gold);color:var(--navy-deep);
-    font-weight:800;font-size:17px;letter-spacing:.06em;
+    font-weight:400;font-size:17px;letter-spacing:.1em;
     padding:22px 52px;text-decoration:none;border:none;cursor:pointer;
     /* 角を落としてRPGのUIらしさを出す */
     clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
@@ -237,7 +238,7 @@
     padding:44px 32px;text-align:center;
   }
   .stat b{
-    display:block;color:var(--blue);font-weight:900;
+    display:block;color:var(--blue);font-weight:400;
     font-size:clamp(30px,4.6vw,50px);line-height:1.25;letter-spacing:0;
   }
   .stat small{display:block;color:var(--muted);font-size:14px;margin-top:16px;letter-spacing:.08em}
@@ -247,13 +248,13 @@
   /* ここだけ白い膜を薄くし、街の絵をパステル調に透かして見せる */
   .limited{text-align:center;background:rgba(255,255,255,.62)}
   .limited .big{
-    font-size:clamp(36px,7vw,80px);font-weight:900;color:var(--navy);
+    font-size:clamp(34px,6.6vw,74px);font-weight:400;color:var(--navy);
     line-height:1.3;margin-bottom:28px;
     text-shadow:0 2px 18px rgba(255,255,255,.95);
   }
   .limited .big em{font-style:normal;color:var(--blue)}
   .limited p{
-    font-size:clamp(16px,2.2vw,21px);color:var(--navy);font-weight:700;
+    font-size:clamp(15px,2.1vw,20px);color:var(--navy);font-weight:400;
     text-shadow:0 2px 14px rgba(255,255,255,.95);
   }
 
@@ -263,7 +264,7 @@
   .cta .lead{color:rgba(11,27,58,.72);margin-bottom:48px;font-size:16px}
   form{max-width:520px;margin:0 auto;text-align:left}
   .field{margin-bottom:20px}
-  label{display:block;font-size:13px;font-weight:700;margin-bottom:8px;letter-spacing:.08em}
+  label{display:block;font-size:13px;font-weight:400;margin-bottom:8px;letter-spacing:.1em}
   input{
     width:100%;padding:16px 18px;border:2px solid var(--navy-deep);
     background:var(--white);color:var(--navy-deep);
