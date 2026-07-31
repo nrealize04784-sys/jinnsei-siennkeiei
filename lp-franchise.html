@@ -167,19 +167,20 @@
   /* 角を大きく丸めた、生成りの紙のような柔らかいパネル */
   .gate-text{
     position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
-    width:82%;max-width:540px;
-    background:rgba(255,252,246,.94);
+    width:86%;max-width:580px;
+    background:rgba(255,252,246,.72);
     border:none;border-radius:clamp(18px,2.4vw,32px);
-    padding:clamp(20px,2.6vw,36px) clamp(16px,2.2vw,32px);
+    padding:clamp(20px,2.6vw,36px) clamp(16px,2.2vw,30px);
     text-align:center;line-height:2;
-    box-shadow:0 10px 34px rgba(11,27,58,.24);
-    backdrop-filter:blur(2px);
+    box-shadow:0 8px 26px rgba(11,27,58,.14);
+    /* 地を透かす分、背後をぼかして文字の可読性を保つ */
+    backdrop-filter:blur(5px);
   }
   .gate-text p{
     font-family:var(--font-game);
-    font-size:clamp(14px,2vw,23px);font-weight:400;color:var(--navy);
-    letter-spacing:.06em;
-    text-shadow:2px 2px 0 rgba(11,27,58,.14);
+    font-size:clamp(13px,1.85vw,21px);font-weight:400;color:var(--navy);
+    letter-spacing:.03em;
+    text-shadow:0 1px 2px rgba(255,255,255,.8);
     text-wrap:pretty;   /* 行末に1文字だけ残る折り返しを避ける */
   }
   .gate-text .then{color:var(--blue);margin-top:.7em}
