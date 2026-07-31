@@ -149,21 +149,23 @@
     -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
     mask-composite:intersect;
   }
+  /* 角を大きく丸めた、生成りの紙のような柔らかいパネル */
   .gate-text{
     position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
-    width:80%;max-width:520px;
-    background:rgba(7,18,40,.84);
-    border:2px solid rgba(255,255,255,.85);
-    padding:clamp(18px,2.4vw,34px) clamp(14px,2vw,28px);
-    text-align:center;line-height:1.85;
-    /* 角を落としてRPGのUIらしさを出す */
-    clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+    width:82%;max-width:540px;
+    background:rgba(255,252,246,.94);
+    border:none;border-radius:clamp(18px,2.4vw,32px);
+    padding:clamp(20px,2.6vw,36px) clamp(16px,2.2vw,32px);
+    text-align:center;line-height:2;
+    box-shadow:0 10px 34px rgba(11,27,58,.24);
+    backdrop-filter:blur(2px);
   }
   .gate-text p{
-    font-size:clamp(13px,1.9vw,22px);font-weight:700;color:var(--white);
+    font-size:clamp(13px,1.9vw,22px);font-weight:700;color:var(--navy);
+    letter-spacing:.04em;
     text-wrap:pretty;   /* 行末に1文字だけ残る折り返しを避ける */
   }
-  .gate-text .then{color:var(--gold);margin-top:.9em}
+  .gate-text .then{color:var(--blue);margin-top:.7em}
 
   /* ---- 3. 仕組み ---- */
   .flow{background:rgba(231,241,255,.93)}
