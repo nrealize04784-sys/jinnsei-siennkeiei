@@ -78,7 +78,12 @@
     font-size:12px;letter-spacing:.2em;display:flex;align-items:center;
     justify-content:center;text-align:center;background:rgba(255,255,255,.5);
   }
-  h2{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.5;margin-bottom:56px}
+  h2{
+    font-family:var(--font-game);
+    font-size:clamp(25px,3.8vw,38px);font-weight:400;line-height:1.55;
+    letter-spacing:.04em;margin-bottom:56px;
+    text-shadow:3px 3px 0 rgba(11,27,58,.1);
+  }
 
   /* ---- 1. ファーストビュー ---- */
   /* 左に濃紺を寄せて文字を読ませ、右は街の絵をそのまま見せる */
@@ -181,18 +186,29 @@
   /* ---- 3. 仕組み ---- */
   .flow{background:rgba(231,241,255,.93)}
   .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
+  /* 見出しの行数が違ってもICON枠の高さが揃うよう、縦方向のflexにする */
   .step{
     background:var(--white);border-top:4px solid var(--blue);
-    padding:26px 22px 24px;box-shadow:0 4px 20px rgba(11,27,58,.07);
+    padding:26px 18px 24px;box-shadow:0 4px 20px rgba(11,27,58,.07);
+    display:flex;flex-direction:column;
   }
   .step span{
     font-family:var(--font-game);
     font-size:13px;color:var(--blue);letter-spacing:.16em;
     display:block;margin-bottom:14px;font-weight:400;
   }
-  .step p{font-size:clamp(17px,2.1vw,21px);font-weight:700;line-height:1.6}
-  .step .ph{height:88px;margin-top:22px}
-  .note{margin-top:52px;font-size:clamp(15px,2vw,18px);color:var(--muted)}
+  .step p{
+    font-family:var(--font-game);
+    font-size:clamp(15px,1.9vw,20px);font-weight:400;line-height:1.65;
+    letter-spacing:.02em;text-wrap:pretty;margin-bottom:22px;
+  }
+  /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
+  .step .ph{height:88px;margin-top:auto}
+  .note{
+    font-family:var(--font-game);
+    margin-top:52px;font-size:clamp(14px,1.9vw,18px);color:var(--muted);
+    letter-spacing:.04em;
+  }
 
   /* ---- 4. 実績 ---- */
   .proof{background:rgba(255,255,255,.95)}
