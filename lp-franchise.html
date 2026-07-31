@@ -28,10 +28,19 @@
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   section{padding:112px 0;position:relative}
 
-  /* 背景：ドット絵の街を全面に固定。画像が無い場合はネイビー単色にフォールバック */
+  /*
+    背景：ドット絵の街を全面に固定。
+    1層目 bg-town.png（ローカル）を優先し、無ければ2層目の生成画像URLを表示する。
+    ※ 公開前に画像を bg-town.png としてリポジトリに置き、2層目のURLは削除すること。
+  */
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:var(--navy) url("bg-town.png") center top / cover no-repeat;
+    background-color:var(--navy);   /* 画像が両方読めない場合のフォールバック */
+    background-image:url("bg-town.png"),
+                     url("https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_051624_7cbf2893-3471-44c4-a27d-74407820bd42.png");
+    background-position:center top;
+    background-repeat:no-repeat;
+    background-size:cover;
     image-rendering:pixelated;      /* ドット絵をぼかさない */
     image-rendering:crisp-edges;
   }
