@@ -203,13 +203,23 @@
     letter-spacing:.02em;text-wrap:pretty;margin-bottom:22px;
     position:relative;padding-left:1.35em;
   }
-  /* RPGのメニューカーソルを模した三角矢印。文字に依存しないようCSSで描く */
+  /*
+    RPGのメニューカーソルを模した三角矢印。
+    斜辺を4段の階段にして、ドット絵のカーソルらしい輪郭にしている
+    （縦8マス×横4マスのドットを clip-path で再現）
+  */
   .step p::before{
-    content:"";position:absolute;left:0;top:.46em;
-    width:0;height:0;
-    border-left:.6em solid var(--blue);
-    border-top:.37em solid transparent;
-    border-bottom:.37em solid transparent;
+    content:"";position:absolute;left:0;top:.38em;
+    width:.62em;height:.9em;background:var(--blue);
+    clip-path:polygon(
+      0% 0%,   25% 0%,
+      25% 12.5%, 50% 12.5%,
+      50% 25%,   75% 25%,
+      75% 37.5%, 100% 37.5%,
+      100% 62.5%, 75% 62.5%,
+      75% 75%,   50% 75%,
+      50% 87.5%, 25% 87.5%,
+      25% 100%,  0% 100%);
   }
   /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
   .step .ph{height:88px;margin-top:auto}
