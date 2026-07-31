@@ -125,31 +125,27 @@
     -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
     mask-composite:intersect;
   }
-  /* 石造りの門を模したアーチ枠。「入口を変える」というコピーに形を合わせる */
-  .gate{
-    position:relative;text-align:center;background:var(--white);
-    border:3px solid var(--navy);
-    border-radius:50% 50% 6px 6px / 34% 34% 6px 6px;
-    padding:104px 44px 60px;
-    box-shadow:0 0 0 7px var(--white),0 0 0 9px rgba(11,27,58,.2),
-               0 18px 44px rgba(11,27,58,.1);
+  /* 門の絵の上に、RPGのメッセージウィンドウを重ねる */
+  .gate{position:relative;line-height:0}
+  .gate-img{
+    width:100%;height:auto;display:block;
+    image-rendering:pixelated;image-rendering:crisp-edges;
   }
-  /* 要石（アーチ頂点の石） */
-  .gate::before{
-    content:"";position:absolute;top:-15px;left:50%;transform:translateX(-50%);
-    width:56px;height:27px;background:var(--white);
-    border:3px solid var(--navy);border-radius:4px;
+  .gate-text{
+    position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:80%;max-width:520px;
+    background:rgba(7,18,40,.84);
+    border:2px solid rgba(255,255,255,.85);
+    padding:clamp(18px,2.4vw,34px) clamp(14px,2vw,28px);
+    text-align:center;line-height:1.85;
+    /* 角を落としてRPGのUIらしさを出す */
+    clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
   }
-  /* 敷居（門の下の段） */
-  .gate::after{
-    content:"";position:absolute;left:-20px;right:-20px;bottom:-24px;height:13px;
-    background:var(--white);border:3px solid var(--navy);border-radius:3px;
-  }
-  .gate p{
-    font-size:clamp(17px,2.2vw,24px);font-weight:700;line-height:1.85;
+  .gate-text p{
+    font-size:clamp(13px,1.9vw,22px);font-weight:700;color:var(--white);
     text-wrap:pretty;   /* 行末に1文字だけ残る折り返しを避ける */
   }
-  .gate .then{color:var(--blue);margin-top:26px}
+  .gate-text .then{color:var(--gold);margin-top:.9em}
 
   /* ---- 3. 仕組み ---- */
   .flow{background:rgba(231,241,255,.93)}
@@ -229,14 +225,10 @@
     }
     .steps{grid-template-columns:1fr 1fr;gap:20px}
     .stats{grid-template-columns:1fr}
-    /* 横長になるとアーチが潰れるので、曲率と余白を詰める */
-    .gate{
-      padding:64px 26px 44px;
-      border-radius:44% 44% 6px 6px / 20% 20% 6px 6px;
-    }
     /* スマホは門を上に、勇者2体を下に横並び */
     .issue-row{grid-template-columns:1fr 1fr;gap:16px}
-    .issue-row .gate{order:-1;grid-column:1 / -1;margin-bottom:36px}
+    .issue-row .gate{order:-1;grid-column:1 / -1;margin-bottom:20px}
+    .gate-text{width:86%}
     body{padding-bottom:84px}
     .sticky{
       display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;
@@ -271,8 +263,13 @@
     <img class="hero-cut" alt="物件の看板を前に立ち止まる勇者"
          src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_055209_80c1e17f-ab5c-4893-a520-551b10eae79d.png">
     <div class="gate">
-      <p>ポータル頼みの集客。<br>物件で比べられ、価格で削られる。</p>
-      <p class="then">だから、集客の入口そのものを変える。</p>
+      <!-- 門の絵。※公開前に gate.png としてローカル化すること -->
+      <img class="gate-img" alt="石造りのアーチと大きな木の扉の門"
+           src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_061341_5cc3ef2d-0184-403f-b47f-e9ac3b7cc7cc.png">
+      <div class="gate-text">
+        <p>ポータル頼みの集客。<br>物件で比べられ、価格で削られる。</p>
+        <p class="then">だから、集客の入口そのものを変える。</p>
+      </div>
     </div>
     <!-- 右：価格を斬る勇者。※公開前に hero-cut-kakaku.png としてローカル化すること -->
     <img class="hero-cut" alt="価格を剣で斬る勇者"
