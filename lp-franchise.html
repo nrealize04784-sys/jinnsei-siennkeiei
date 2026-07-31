@@ -225,6 +225,12 @@
   }
   /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
   .step .ph{height:88px;margin-top:auto}
+  /* 絵を入れたSTEPは枠線を消し、白地に溶かす */
+  .step-art{
+    height:88px;margin-top:auto;width:100%;object-fit:contain;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    mix-blend-mode:multiply;   /* 白背景の画像をカードに馴染ませる */
+  }
   .note{
     font-family:var(--font-game);
     margin-top:52px;font-size:clamp(14px,1.9vw,18px);color:var(--muted);
@@ -354,7 +360,9 @@
       <div class="step">
         <span>STEP 1</span>
         <p>RPGで人生を学ぶ</p>
-        <div class="ph">ICON</div>
+        <!-- 勇者三人。※公開前に step1-party.png としてローカル化すること -->
+        <img class="step-art" alt="三人の勇者パーティー"
+             src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_064501_14b38913-b737-4ba7-a120-8eb696b86f6f.png">
       </div>
       <div class="step">
         <span>STEP 2</span>
