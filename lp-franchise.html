@@ -95,10 +95,20 @@
 
   /* ---- 2. 課題 ---- */
   .issue{background:rgba(244,248,253,.95)}
+  /* 勇者・メッセージウィンドウ・勇者の3カラム */
+  .issue-row{
+    display:grid;grid-template-columns:1fr minmax(0,2.3fr) 1fr;
+    gap:28px;align-items:center;
+  }
+  .hero-cut{width:100%;height:auto;display:block;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    /* 白背景の画像を紙面に馴染ませる（白が透けたように見える） */
+    mix-blend-mode:multiply;
+  }
   /* RPGのメッセージウィンドウを模した枠 */
   .window{
     border:2px solid var(--navy);background:var(--white);
-    padding:52px 48px;max-width:760px;
+    padding:52px 48px;
     box-shadow:0 0 0 6px var(--white),0 0 0 8px rgba(11,27,58,.18);
   }
   .window p{font-size:clamp(18px,2.6vw,26px);font-weight:700;line-height:1.85}
@@ -183,6 +193,9 @@
     .steps{grid-template-columns:1fr 1fr;gap:20px}
     .stats{grid-template-columns:1fr}
     .window{padding:36px 28px}
+    /* スマホはウィンドウを上に、勇者2体を下に横並び */
+    .issue-row{grid-template-columns:1fr 1fr;gap:16px}
+    .issue-row .window{order:-1;grid-column:1 / -1;margin-bottom:8px}
     body{padding-bottom:84px}
     .sticky{
       display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;
@@ -212,11 +225,17 @@
 
 <!-- 2. 課題 -->
 <section class="issue">
-  <div class="wrap">
+  <div class="wrap issue-row">
+    <!-- 左：物件を斬る勇者。※公開前に hero-cut-bukken.png としてローカル化すること -->
+    <img class="hero-cut" alt="物件を剣で斬る勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_053445_80931180-5027-44a3-8c8e-56713f308484.png">
     <div class="window">
       <p>ポータル頼みの集客。<br>物件で比べられ、価格で削られる。</p>
       <p class="then">だから、集客の入口そのものを変える。</p>
     </div>
+    <!-- 右：価格を斬る勇者。※公開前に hero-cut-kakaku.png としてローカル化すること -->
+    <img class="hero-cut" alt="価格を剣で斬る勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_053447_33564338-1613-4f3a-8ebb-33a05a933d7b.png">
   </div>
 </section>
 
