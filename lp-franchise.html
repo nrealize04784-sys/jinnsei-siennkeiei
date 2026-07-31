@@ -238,29 +238,76 @@
   }
 
   /* ---- 4. 実績 ---- */
-  .proof{background:rgba(255,255,255,.95)}
-  /* レベルアップの合図。控えめに明滅させる */
+  .proof{background:rgba(255,255,255,.95);overflow:hidden}
+  /* 中央から広がる金色の光 */
+  .proof::before{
+    content:"";position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
+    width:min(1200px,130%);aspect-ratio:1;pointer-events:none;
+    background:radial-gradient(circle,
+      rgba(232,182,76,.34) 0%,rgba(232,182,76,.15) 32%,
+      rgba(232,182,76,.05) 55%,transparent 72%);
+  }
+  /* 放射状の光条。ゆっくり回して生きた光にする */
+  .proof::after{
+    content:"";position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
+    width:min(1100px,120%);aspect-ratio:1;pointer-events:none;
+    background:repeating-conic-gradient(from 0deg,
+      rgba(232,182,76,.17) 0deg 3.5deg,transparent 3.5deg 13deg);
+    -webkit-mask-image:radial-gradient(circle,#000 5%,rgba(0,0,0,.45) 34%,transparent 62%);
+    mask-image:radial-gradient(circle,#000 5%,rgba(0,0,0,.45) 34%,transparent 62%);
+    animation:rays 26s linear infinite;
+  }
+  @keyframes rays{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  /* 舞う粒子。1要素の box-shadow を並べてドット状に散らす */
+  .sparks{
+    position:absolute;left:50%;top:56%;width:4px;height:4px;
+    pointer-events:none;background:transparent;
+    box-shadow:
+      -430px -150px 0 var(--gold),   -300px   70px 0 rgba(255,255,255,.95),
+      -210px -190px 0 rgba(255,255,255,.9), -120px  140px 0 var(--gold),
+       -30px -230px 0 var(--gold),     70px  160px 0 rgba(255,255,255,.95),
+       180px -180px 0 rgba(255,255,255,.9),  260px   90px 0 var(--gold),
+       360px -140px 0 var(--gold),    440px   40px 0 rgba(255,255,255,.95),
+      -380px   10px 0 rgba(255,255,255,.8),  400px -220px 0 rgba(255,255,255,.8);
+    animation:twinkle 2.4s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+  /* レベルアップの合図。光をまとわせて明滅させる */
   .levelup{
     text-align:center;color:var(--gold);
     font-size:clamp(17px,2.4vw,26px);letter-spacing:.24em;
     margin-bottom:30px;
-    text-shadow:2px 2px 0 rgba(11,27,58,.16);
+    text-shadow:0 0 16px rgba(232,182,76,.95),0 0 38px rgba(232,182,76,.6),
+                2px 2px 0 rgba(11,27,58,.16);
     animation:levelup-pulse 1.8s ease-in-out infinite;
   }
-  @keyframes levelup-pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes levelup-pulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.5;transform:scale(.985)}
+  }
   /* 動きを好まない利用者には止める */
   @media(prefers-reduced-motion:reduce){
-    .levelup{animation:none}
+    .levelup,.proof::after,.sparks,.stat{animation:none}
   }
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
   /* RPGのステータス窓を模した枠 */
   .stat{
     position:relative;background:var(--white);
     border:2px solid var(--navy);
-    box-shadow:0 0 0 5px var(--white),0 0 0 7px rgba(11,27,58,.16);
     padding:34px 20px;text-align:center;
     display:flex;flex-direction:column;justify-content:center;gap:14px;
+    /* 金色の光を吸ったように、枠の外へにじませる */
+    animation:stat-glow 2.6s ease-in-out infinite;
   }
+  @keyframes stat-glow{
+    0%,100%{box-shadow:0 0 0 5px var(--white),0 0 0 7px rgba(11,27,58,.16),
+                       0 0 24px rgba(232,182,76,.35)}
+    50%    {box-shadow:0 0 0 5px var(--white),0 0 0 7px rgba(11,27,58,.16),
+                       0 0 46px rgba(232,182,76,.8)}
+  }
+  /* 3枚を少しずつずらして光らせ、順に上がっていくように見せる */
+  .stat:nth-child(2){animation-delay:.25s}
+  .stat:nth-child(3){animation-delay:.5s}
   /* 右上の上昇マーク。斜辺を階段状にしてドット絵に揃える */
   .stat::before{
     content:"";position:absolute;top:12px;right:12px;
@@ -428,6 +475,7 @@
 
 <!-- 4. 実績 -->
 <section class="proof">
+  <span class="sparks" aria-hidden="true"></span>
   <div class="wrap">
     <h2>入口を変えた会社は、<br>こうなった。</h2>
     <p class="levelup">LEVEL UP ！</p>
