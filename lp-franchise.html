@@ -127,9 +127,27 @@
   }
   /* 門の絵の上に、RPGのメッセージウィンドウを重ねる */
   .gate{position:relative;line-height:0}
+  /*
+    扉も四辺を白へフェードさせる。ただし勇者の絵より減衰を浅くしている
+    （画面いっぱいにアーチが入っているため、深く消すと門の形が崩れるため）
+  */
   .gate-img{
+    --gate-fade-x:linear-gradient(to right,
+      transparent 0%,rgba(0,0,0,.1) 5%,rgba(0,0,0,.34) 9%,rgba(0,0,0,.62) 13%,
+      rgba(0,0,0,.85) 17%,#000 22%,
+      #000 78%,rgba(0,0,0,.85) 83%,rgba(0,0,0,.62) 87%,rgba(0,0,0,.34) 91%,
+      rgba(0,0,0,.1) 95%,transparent 100%);
+    --gate-fade-y:linear-gradient(to bottom,
+      transparent 0%,rgba(0,0,0,.1) 5%,rgba(0,0,0,.34) 9%,rgba(0,0,0,.62) 13%,
+      rgba(0,0,0,.85) 17%,#000 22%,
+      #000 78%,rgba(0,0,0,.85) 83%,rgba(0,0,0,.62) 87%,rgba(0,0,0,.34) 91%,
+      rgba(0,0,0,.1) 95%,transparent 100%);
     width:100%;height:auto;display:block;
     image-rendering:pixelated;image-rendering:crisp-edges;
+    -webkit-mask-image:var(--gate-fade-x),var(--gate-fade-y);
+    mask-image:var(--gate-fade-x),var(--gate-fade-y);
+    -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
+    mask-composite:intersect;
   }
   .gate-text{
     position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
