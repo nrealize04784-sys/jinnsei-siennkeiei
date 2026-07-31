@@ -98,7 +98,7 @@
   /* 勇者・メッセージウィンドウ・勇者の3カラム。本文より広く取って絵を大きく見せる */
   .issue-row{
     /* フェードで外周が消える分、画像カラムを広めに取って見た目の大きさを保つ */
-    display:grid;grid-template-columns:1.35fr minmax(0,1.7fr) 1.35fr;
+    display:grid;grid-template-columns:1.3fr minmax(0,2fr) 1.3fr;
     gap:0;align-items:center;max-width:1360px;
   }
   /*
@@ -125,14 +125,31 @@
     -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
     mask-composite:intersect;
   }
-  /* RPGのメッセージウィンドウを模した枠 */
-  .window{
-    border:2px solid var(--navy);background:var(--white);
-    padding:48px 36px;
-    box-shadow:0 0 0 6px var(--white),0 0 0 8px rgba(11,27,58,.18);
+  /* 石造りの門を模したアーチ枠。「入口を変える」というコピーに形を合わせる */
+  .gate{
+    position:relative;text-align:center;background:var(--white);
+    border:3px solid var(--navy);
+    border-radius:50% 50% 6px 6px / 34% 34% 6px 6px;
+    padding:104px 44px 60px;
+    box-shadow:0 0 0 7px var(--white),0 0 0 9px rgba(11,27,58,.2),
+               0 18px 44px rgba(11,27,58,.1);
   }
-  .window p{font-size:clamp(18px,2.6vw,26px);font-weight:700;line-height:1.85}
-  .window .then{color:var(--blue);margin-top:26px}
+  /* 要石（アーチ頂点の石） */
+  .gate::before{
+    content:"";position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+    width:56px;height:27px;background:var(--white);
+    border:3px solid var(--navy);border-radius:4px;
+  }
+  /* 敷居（門の下の段） */
+  .gate::after{
+    content:"";position:absolute;left:-20px;right:-20px;bottom:-24px;height:13px;
+    background:var(--white);border:3px solid var(--navy);border-radius:3px;
+  }
+  .gate p{
+    font-size:clamp(17px,2.2vw,24px);font-weight:700;line-height:1.85;
+    text-wrap:pretty;   /* 行末に1文字だけ残る折り返しを避ける */
+  }
+  .gate .then{color:var(--blue);margin-top:26px}
 
   /* ---- 3. 仕組み ---- */
   .flow{background:rgba(231,241,255,.93)}
@@ -212,10 +229,14 @@
     }
     .steps{grid-template-columns:1fr 1fr;gap:20px}
     .stats{grid-template-columns:1fr}
-    .window{padding:36px 28px}
-    /* スマホはウィンドウを上に、勇者2体を下に横並び */
+    /* 横長になるとアーチが潰れるので、曲率と余白を詰める */
+    .gate{
+      padding:64px 26px 44px;
+      border-radius:44% 44% 6px 6px / 20% 20% 6px 6px;
+    }
+    /* スマホは門を上に、勇者2体を下に横並び */
     .issue-row{grid-template-columns:1fr 1fr;gap:16px}
-    .issue-row .window{order:-1;grid-column:1 / -1;margin-bottom:8px}
+    .issue-row .gate{order:-1;grid-column:1 / -1;margin-bottom:36px}
     body{padding-bottom:84px}
     .sticky{
       display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;
@@ -249,7 +270,7 @@
     <!-- 左：物件を見比べる勇者。※公開前に hero-bukken.png としてローカル化すること -->
     <img class="hero-cut" alt="物件の看板を前に立ち止まる勇者"
          src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_055209_80c1e17f-ab5c-4893-a520-551b10eae79d.png">
-    <div class="window">
+    <div class="gate">
       <p>ポータル頼みの集客。<br>物件で比べられ、価格で削られる。</p>
       <p class="then">だから、集客の入口そのものを変える。</p>
     </div>
