@@ -97,15 +97,33 @@
   .issue{background:rgba(244,248,253,.95)}
   /* 勇者・メッセージウィンドウ・勇者の3カラム。本文より広く取って絵を大きく見せる */
   .issue-row{
-    display:grid;grid-template-columns:1.15fr minmax(0,1.75fr) 1.15fr;
-    gap:12px;align-items:center;max-width:1280px;
+    /* フェードで外周が消える分、画像カラムを広めに取って見た目の大きさを保つ */
+    display:grid;grid-template-columns:1.35fr minmax(0,1.7fr) 1.35fr;
+    gap:0;align-items:center;max-width:1360px;
   }
-  /* 枠を外し、四辺を白へフェードさせて紙面に溶け込ませる */
+  /*
+    枠を外し、四辺を白へフェードさせて紙面に溶け込ませる。
+    横方向・縦方向の2枚を掛け合わせる（intersect）ことで、
+    円形の輪郭が出ず、四隅だけが二重に薄くなって自然に消える。
+    停止点を細かく刻み、直線的な減衰に見えないようにしている。
+  */
   .hero-cut{
+    --fade-x:linear-gradient(to right,
+      transparent 0%,rgba(0,0,0,.08) 8%,rgba(0,0,0,.28) 15%,rgba(0,0,0,.55) 21%,
+      rgba(0,0,0,.78) 26%,rgba(0,0,0,.93) 30%,#000 35%,
+      #000 65%,rgba(0,0,0,.93) 70%,rgba(0,0,0,.78) 74%,rgba(0,0,0,.55) 79%,
+      rgba(0,0,0,.28) 85%,rgba(0,0,0,.08) 92%,transparent 100%);
+    --fade-y:linear-gradient(to bottom,
+      transparent 0%,rgba(0,0,0,.08) 8%,rgba(0,0,0,.28) 15%,rgba(0,0,0,.55) 21%,
+      rgba(0,0,0,.78) 26%,rgba(0,0,0,.93) 30%,#000 35%,
+      #000 65%,rgba(0,0,0,.93) 70%,rgba(0,0,0,.78) 74%,rgba(0,0,0,.55) 79%,
+      rgba(0,0,0,.28) 85%,rgba(0,0,0,.08) 92%,transparent 100%);
     width:100%;height:auto;display:block;aspect-ratio:1/1;object-fit:cover;
     image-rendering:pixelated;image-rendering:crisp-edges;
-    -webkit-mask-image:radial-gradient(ellipse 76% 76% at 50% 50%,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
-    mask-image:radial-gradient(ellipse 76% 76% at 50% 50%,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
+    -webkit-mask-image:var(--fade-x),var(--fade-y);
+    mask-image:var(--fade-x),var(--fade-y);
+    -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
+    mask-composite:intersect;
   }
   /* RPGのメッセージウィンドウを模した枠 */
   .window{
