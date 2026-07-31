@@ -95,22 +95,22 @@
 
   /* ---- 2. 課題 ---- */
   .issue{background:rgba(244,248,253,.95)}
-  /* 勇者・メッセージウィンドウ・勇者の3カラム */
+  /* 勇者・メッセージウィンドウ・勇者の3カラム。本文より広く取って絵を大きく見せる */
   .issue-row{
-    display:grid;grid-template-columns:1fr minmax(0,2.3fr) 1fr;
-    gap:28px;align-items:center;
+    display:grid;grid-template-columns:1.15fr minmax(0,1.75fr) 1.15fr;
+    gap:12px;align-items:center;max-width:1280px;
   }
-  /* 暗いダンジョン調の絵なので、溶かさず額装して「作品」として見せる */
+  /* 枠を外し、四辺を白へフェードさせて紙面に溶け込ませる */
   .hero-cut{
     width:100%;height:auto;display:block;aspect-ratio:1/1;object-fit:cover;
     image-rendering:pixelated;image-rendering:crisp-edges;
-    border:2px solid var(--navy);
-    box-shadow:0 0 0 6px var(--white),0 0 0 8px rgba(11,27,58,.18);
+    -webkit-mask-image:radial-gradient(ellipse 76% 76% at 50% 50%,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
+    mask-image:radial-gradient(ellipse 76% 76% at 50% 50%,#000 58%,rgba(0,0,0,.55) 80%,transparent 100%);
   }
   /* RPGのメッセージウィンドウを模した枠 */
   .window{
     border:2px solid var(--navy);background:var(--white);
-    padding:52px 48px;
+    padding:48px 36px;
     box-shadow:0 0 0 6px var(--white),0 0 0 8px rgba(11,27,58,.18);
   }
   .window p{font-size:clamp(18px,2.6vw,26px);font-weight:700;line-height:1.85}
