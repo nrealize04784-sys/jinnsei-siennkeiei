@@ -379,10 +379,18 @@
     padding:32px 28px;
   }
   .field{margin-bottom:20px}
+  /* 項目名はコマンドの一覧に見立て、先頭に▶のカーソルを立てる */
   label{
-    display:block;font-size:13px;font-weight:400;margin-bottom:8px;
+    display:block;font-size:14px;font-weight:400;margin-bottom:8px;
     letter-spacing:.1em;color:#fff;
+    position:relative;padding-left:1.6em;
   }
+  label::before{
+    content:"▶";position:absolute;left:0;top:0;color:#fff;
+  }
+  /* 入力中の項目を、選択中のコマンドとして金色で示す */
+  .field:focus-within label,
+  .field:focus-within label::before{color:var(--gold)}
   input{
     width:100%;padding:16px 18px;border:2px solid #fff;
     background:#000;color:#fff;
