@@ -376,17 +376,23 @@
   form{
     max-width:520px;margin:0 auto;text-align:left;
     background:#000;border:4px solid #fff;
-    padding:32px 28px;
+    /* 上枠に載せた項目名が窓の枠と重ならないよう、上だけ余白を厚くする */
+    padding:42px 28px 32px;
   }
-  .field{margin-bottom:20px}
-  /* 項目名はコマンドの一覧に見立て、先頭に▶のカーソルを立てる */
+  .field{position:relative;margin-bottom:30px}
+  /*
+    項目名は入力欄の上枠に載せる。枠線を切って見せたいので、
+    黒地と同じ background を敷いて白線を隠している。
+  */
   label{
-    display:block;font-size:14px;font-weight:400;margin-bottom:8px;
-    letter-spacing:.1em;color:#fff;
-    position:relative;padding-left:1.6em;
+    position:absolute;top:0;left:16px;transform:translateY(-50%);z-index:1;
+    font-size:14px;font-weight:400;letter-spacing:.1em;color:#fff;
+    background:#000;padding:0 .7em 0 2.1em;line-height:1;
   }
+  /* コマンドを指す▶。枠に載せた項目名の頭に置く */
   label::before{
-    content:"▶";position:absolute;left:0;top:0;color:#fff;
+    content:"▶";position:absolute;left:.7em;top:50%;transform:translateY(-50%);
+    color:#fff;
   }
   /* 入力中の項目を、選択中のコマンドとして金色で示す */
   .field:focus-within label,
