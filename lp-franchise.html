@@ -355,6 +355,16 @@
   .cta{background:var(--gold);color:var(--navy-deep);text-align:center}
   .cta h2{color:var(--navy-deep);margin-bottom:16px}
   .cta .lead{color:rgba(11,27,58,.72);margin-bottom:48px;font-size:16px}
+  /*
+    冒険に発つ一枚。見出しの矢印が指す先に置く。
+    参照した実機画面に寄せて、溶かさず濃紺の枠で囲んだゲーム画面として見せる。
+  */
+  .cta-journey{
+    display:block;width:100%;max-width:720px;margin:0 auto 40px;
+    height:auto;image-rendering:pixelated;image-rendering:crisp-edges;
+    border:4px solid var(--navy-deep);
+    box-shadow:0 8px 28px rgba(11,27,58,.28);
+  }
   form{max-width:520px;margin:0 auto;text-align:left}
   .field{margin-bottom:20px}
   label{display:block;font-size:13px;font-weight:400;margin-bottom:8px;letter-spacing:.1em}
@@ -526,6 +536,9 @@
 <section class="cta" id="entry">
   <div class="wrap">
     <h2>冒険をはじめる↓</h2>
+    <!-- 城門へ向かう三人。※公開前に cta-journey.png としてローカル化すること -->
+    <img class="cta-journey" alt="橋を渡って城門へ向かう三人の勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_053040_17e1fd91-3ad3-4f0c-ba8a-b9e12cd70690.png">
     <p class="lead">事業説明会は無料です。</p>
     <!-- action属性に送信先フォームのURLを設定してください -->
     <form action="#" method="post">
