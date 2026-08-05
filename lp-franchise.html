@@ -85,7 +85,8 @@
     font-family:var(--font-game);
     font-size:clamp(25px,3.8vw,38px);font-weight:400;line-height:1.55;
     letter-spacing:.04em;margin-bottom:56px;
-    text-shadow:3px 3px 0 rgba(11,27,58,.1);
+    /* FVの見出しと同じ硬い落ち影。白地で文字が潰れないよう濃度だけ落としている */
+    text-shadow:4px 4px 0 rgba(11,27,58,.16);
   }
 
   /* ---- 1. ファーストビュー ---- */
@@ -335,6 +336,7 @@
     display:block;color:var(--blue);font-weight:400;
     font-size:clamp(18px,2.6vw,28px);line-height:1.3;letter-spacing:.02em;
     white-space:nowrap;   /* 数値を途中で折り返さない */
+    text-shadow:3px 3px 0 rgba(30,95,191,.18);
   }
   .stat b em{font-style:normal;color:var(--gold);margin:0 .3em}
   .disclaimer{margin-top:32px;font-size:12px;color:rgba(11,27,58,.5);line-height:1.9}
@@ -345,7 +347,7 @@
   .limited .big{
     font-size:clamp(34px,6.6vw,74px);font-weight:400;color:var(--navy);
     line-height:1.3;margin-bottom:28px;
-    text-shadow:0 2px 18px rgba(255,255,255,.95);
+    text-shadow:4px 4px 0 rgba(11,27,58,.15),0 2px 18px rgba(255,255,255,.95);
   }
   .limited .big em{font-style:normal;color:var(--blue)}
   .limited p{
@@ -388,6 +390,7 @@
   .footer-brand{
     display:block;margin-bottom:36px;text-align:center;
     color:var(--gold);text-decoration:none;font-size:15px;letter-spacing:.12em;
+    text-shadow:3px 3px 0 rgba(0,0,0,.55);
   }
   .footer-brand:hover{text-decoration:underline}
   /* 3カラムのサイトマップ。列の高さが揃わなくてよいので単純なgridで置く */
@@ -495,7 +498,7 @@
 <!-- 3. 仕組み -->
 <section class="flow">
   <div class="wrap">
-    <h2>売り込まない。<br>相談から、家にたどり着く。</h2>
+    <h2>売り込まない。<br>相談から、家へ。</h2>
     <div class="steps">
       <div class="step">
         <span>STEP 1</span>
@@ -526,7 +529,7 @@
              src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_030354_959616c1-13bb-4353-905c-8847b7b01b58.png">
       </div>
     </div>
-    <p class="note">売り込まない。相談から始まるから、価格競争にならない。</p>
+    <p class="note">相談から始まる。だから、値段で戦わない。</p>
   </div>
 </section>
 
@@ -534,7 +537,7 @@
 <section class="proof">
   <span class="sparks" aria-hidden="true"></span>
   <div class="wrap">
-    <h2>入口を変えた会社は、<br>こうなった。</h2>
+    <h2>入口を変えた者は、<br>こうなった。</h2>
     <p class="levelup">LEVEL UP ！</p>
     <div class="stats">
       <div class="stat">
@@ -572,7 +575,7 @@
     <!-- 城門へ向かう三人。※公開前に cta-journey.png としてローカル化すること -->
     <img class="cta-journey" alt="橋を渡って城門へ向かう三人の勇者"
          src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_053040_17e1fd91-3ad3-4f0c-ba8a-b9e12cd70690.png">
-    <p class="lead">事業説明会は無料です。</p>
+    <p class="lead">参加は無料。</p>
     <!-- action属性に送信先フォームのURLを設定してください -->
     <form action="#" method="post">
       <div class="field">
