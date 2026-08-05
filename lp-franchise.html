@@ -259,11 +259,11 @@
     絵を入れたSTEPは枠線を消し、白地に溶かす。
     元画像は2752×1536。カード幅まで大きく縮小するので image-rendering は指定しない
     （pixelated は拡大用。縮小に使うと最近傍補間になり線がガタつく）。
-    16:9のままだと左右の余白が広く人物が小さいため、4:3に切り出して寄せている。
+    枠は元画像と同じ16:9。object-fit:contain と合わせ、絵は決して切り取らない。
   */
   .step-art{
-    margin-top:auto;width:100%;aspect-ratio:4/3;
-    object-fit:cover;object-position:center;
+    margin-top:auto;width:100%;aspect-ratio:16/9;
+    object-fit:contain;object-position:center;
     mix-blend-mode:multiply;   /* 白背景の画像をカードに馴染ませる */
   }
   .note{
