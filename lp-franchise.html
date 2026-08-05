@@ -10,6 +10,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 <style>
+  /*
+    ドット絵フォント本体をリポジトリに同梱している。
+    fonts/DotGothic16-subset.woff2 は、このページで実際に使う文字だけに
+    絞り込んだもの（約24KB）。Google Fonts が読めない環境でもドット調が崩れない。
+    ※ 文言に新しい漢字を足した場合、この同梱分に無ければ上の Google Fonts 側が拾う。
+      恒久的に載せるなら、サブセットを作り直して差し替えること。
+  */
+  @font-face{
+    font-family:'DotGothic16Local';
+    src:url('fonts/DotGothic16-subset.woff2') format('woff2');
+    font-weight:400;font-style:normal;font-display:swap;
+  }
   :root{
     --navy:#0B1B3A;          /* 文字色。濃紺は信頼感の担保として残す */
     --navy-deep:#071228;
@@ -24,7 +36,20 @@
     --line:rgba(11,27,58,.12);
     --maxw:1040px;
     /* ドット絵フォント。太字を持たないので font-weight は 400 で使うこと */
-    --font-game:"DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    --font-game:"DotGothic16Local","DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    /*
+      ドット絵のカーソル（縦8マス×横4マスの階段状の三角）。
+      ▶ は DotGothic16 に無く別フォントに落ちてしまうため、文字ではなく形で描く。
+    */
+    --cursor-clip:polygon(
+      0% 0%,   25% 0%,
+      25% 12.5%, 50% 12.5%,
+      50% 25%,   75% 25%,
+      75% 37.5%, 100% 37.5%,
+      100% 62.5%, 75% 62.5%,
+      75% 75%,   50% 75%,
+      50% 87.5%, 25% 87.5%,
+      25% 100%,  0% 100%);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -80,6 +105,14 @@
     border:1px dashed var(--line);color:rgba(11,27,58,.35);
     font-size:12px;letter-spacing:.2em;display:flex;align-items:center;
     justify-content:center;text-align:center;background:rgba(255,255,255,.5);
+  }
+  /*
+    大きく見せる文字だけ、輪郭の平滑化を切ってドットの角を立てる。
+    本文や項目名まで切ると小さい字が荒れて読みにくくなるので、対象は絞っている。
+  */
+  .fv h1,h2,.levelup,.limited .big,.stat b,.footer-brand{
+    -webkit-font-smoothing:none;
+    -moz-osx-font-smoothing:unset;
   }
   h2{
     font-family:var(--font-game);
@@ -216,15 +249,7 @@
   .step p::before{
     content:"";position:absolute;left:0;top:.38em;
     width:.62em;height:.9em;background:var(--blue);
-    clip-path:polygon(
-      0% 0%,   25% 0%,
-      25% 12.5%, 50% 12.5%,
-      50% 25%,   75% 25%,
-      75% 37.5%, 100% 37.5%,
-      100% 62.5%, 75% 62.5%,
-      75% 75%,   50% 75%,
-      50% 87.5%, 25% 87.5%,
-      25% 100%,  0% 100%);
+    clip-path:var(--cursor-clip);
   }
   /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
   .step .ph{height:88px;margin-top:auto}
@@ -391,12 +416,12 @@
   }
   /* コマンドを指す▶。枠に載せた項目名の頭に置く */
   label::before{
-    content:"▶";position:absolute;left:.7em;top:50%;transform:translateY(-50%);
-    color:#fff;
+    content:"";position:absolute;left:.75em;top:50%;transform:translateY(-50%);
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
   }
   /* 入力中の項目を、選択中のコマンドとして金色で示す */
-  .field:focus-within label,
-  .field:focus-within label::before{color:var(--gold)}
+  .field:focus-within label{color:var(--gold)}
+  .field:focus-within label::before{background:var(--gold)}
   input{
     width:100%;padding:16px 18px;border:2px solid #fff;
     background:#000;color:#fff;
@@ -419,7 +444,11 @@
     box-shadow:none;
   }
   /* 選択中のコマンドを指す▶。装飾なので読み上げ対象から外す */
-  .submit::before{content:"▶";margin-right:.6em;color:#fff}
+  .submit::before{
+    content:"";display:inline-block;vertical-align:middle;
+    width:.5em;height:.72em;margin-right:.7em;
+    background:#fff;clip-path:var(--cursor-clip);
+  }
   .submit:hover{background:#111;filter:none;transform:none}
   /* ---- 7. フッター（コーポレートサイトの導線） ---- */
   footer{
