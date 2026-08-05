@@ -223,6 +223,8 @@
 
   /* ---- 3. 仕組み ---- */
   .flow{background:rgba(231,241,255,.93)}
+  /* 絵を大きく見せたいセクションなので、本文（1040px）より横幅を広く取る */
+  .flow .wrap{max-width:1240px}
   .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:8px}
   /* 見出しの行数が違ってもICON枠の高さが揃うよう、縦方向のflexにする */
   .step{
@@ -253,10 +255,15 @@
   }
   /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
   .step .ph{height:150px;margin-top:auto}
-  /* 絵を入れたSTEPは枠線を消し、白地に溶かす */
+  /*
+    絵を入れたSTEPは枠線を消し、白地に溶かす。
+    元画像は2752×1536。カード幅まで大きく縮小するので image-rendering は指定しない
+    （pixelated は拡大用。縮小に使うと最近傍補間になり線がガタつく）。
+    16:9のままだと左右の余白が広く人物が小さいため、4:3に切り出して寄せている。
+  */
   .step-art{
-    height:150px;margin-top:auto;width:100%;object-fit:contain;
-    image-rendering:pixelated;image-rendering:crisp-edges;
+    margin-top:auto;width:100%;aspect-ratio:4/3;
+    object-fit:cover;object-position:center;
     mix-blend-mode:multiply;   /* 白背景の画像をカードに馴染ませる */
   }
   .note{
