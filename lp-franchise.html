@@ -380,9 +380,38 @@
     width:100%;background:var(--navy-deep);color:var(--gold);
     margin-top:12px;padding:24px;font-size:18px;
   }
+  /* ---- 7. フッター（コーポレートサイトの導線） ---- */
   footer{
-    background:var(--white);text-align:center;padding:44px 24px;
-    font-size:12px;color:var(--muted);border-top:1px solid var(--line);
+    background:var(--navy-deep);color:rgba(255,255,255,.82);
+    padding:64px 0 40px;font-size:13px;letter-spacing:.04em;
+  }
+  .footer-brand{
+    display:block;margin-bottom:36px;text-align:center;
+    color:var(--gold);text-decoration:none;font-size:15px;letter-spacing:.12em;
+  }
+  .footer-brand:hover{text-decoration:underline}
+  /* 3カラムのサイトマップ。列の高さが揃わなくてよいので単純なgridで置く */
+  .sitemap{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:28px 32px;
+    margin-bottom:40px;
+  }
+  .sitemap ul{list-style:none}
+  .sitemap li{margin-bottom:10px;line-height:1.7}
+  .sitemap a{color:rgba(255,255,255,.82);text-decoration:none}
+  .sitemap a:hover{color:var(--gold);text-decoration:underline}
+  /* 下位階層。参照画像と同じく ∟ を立てて親子関係を示す */
+  .sitemap ul ul{margin:10px 0 0 0}
+  .sitemap ul ul li{padding-left:1.4em;position:relative;font-size:12px}
+  .sitemap ul ul li::before{
+    content:"∟";position:absolute;left:0;color:rgba(255,255,255,.45);
+  }
+  .legal{
+    text-align:center;font-size:12px;line-height:2;
+    color:rgba(255,255,255,.6);
+    border-top:1px solid rgba(255,255,255,.14);padding-top:28px;
+  }
+  @media(max-width:640px){
+    .sitemap{grid-template-columns:1fr;gap:24px}
   }
 
   /* ---- スマホ追従ボタン ---- */
@@ -419,6 +448,8 @@
       border-top:1px solid var(--line);box-shadow:0 -4px 20px rgba(11,27,58,.1);
     }
     .sticky .btn{display:block;text-align:center;padding:18px;font-size:16px}
+    /* 追従ボタンはフッター最下部に重なる。法定表記が隠れないよう逃がす */
+    footer{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
   }
   @media(max-width:460px){
     .steps{grid-template-columns:1fr}
@@ -565,7 +596,58 @@
   </div>
 </section>
 
-<footer>日本リアライズ株式会社</footer>
+<!--
+  7. フッター
+  日本リアライズのコーポレートサイトへの導線。
+  ※ 各ページの個別URLが不明なため、リンク先はすべてトップに向けている。
+     判明し次第、各 <a> の href を個別ページのURLに差し替えること。
+-->
+<footer>
+  <div class="wrap">
+    <a class="footer-brand" href="https://n-realize.co.jp/" target="_blank" rel="noopener">日本リアライズ株式会社</a>
+    <nav class="sitemap" aria-label="日本リアライズ サイトマップ">
+      <ul>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">HOME</a></li>
+        <li>
+          <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">日本リアライズの想い</a>
+          <ul>
+            <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">社長メッセージ</a></li>
+            <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">会社概要</a></li>
+            <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">福利厚生</a></li>
+            <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">アスリート支援</a></li>
+          </ul>
+        </li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">ライフコンサルタント</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">暮らしとお金について</a></li>
+      </ul>
+      <ul>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">家計の最適化</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">保険の見直し</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">マイホーム購入</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">お客様の声</a></li>
+        <li>
+          <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">漫画・動画</a>
+          <ul>
+            <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">漫画</a></li>
+          </ul>
+        </li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">ラジオ情報</a></li>
+      </ul>
+      <ul>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">新着情報</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">お問い合わせ</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">個人情報保護方針</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">ブログ</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">リアライズクラブ</a></li>
+        <li><a href="https://n-realize.co.jp/" target="_blank" rel="noopener">日本リアライズHDグループ</a></li>
+      </ul>
+    </nav>
+    <p class="legal">
+      &copy; 2019 All right reserved by Nihon Realize Inc.<br>
+      国土交通大臣（2）第8639号（社）東京都宅地建物取引業協会
+    </p>
+  </div>
+</footer>
 
 <!-- スマホ追従ボタン -->
 <div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
