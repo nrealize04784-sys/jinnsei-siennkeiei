@@ -1,23 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 200" width="880" height="200" role="img" aria-label="LMP LIFE MAKE PARTNER'S">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 120" width="900" height="120" role="img" aria-label="LMP LIFE MAKE PARTNER'S">
   <!--
     固定ヘッダー用の横組みロゴ（暫定再現版）。
-    フッターは縦組みの logo-lmp.svg を使う。
+    マークを小さめに組み、限られた高さの中で欧文をできるだけ大きく見せている。
+    狭い画面ではマーク単体の logo-lmp-mark.svg に差し替わる。
+    フッターは縦組みの logo-lmp.svg。
     書体・線幅・比率は正規のロゴと一致していない。差し替え前提。
   -->
   <title>LMP / LIFE MAKE PARTNER'S</title>
 
-  <!-- 家のマーク。LMP が屋根の内側に収まる比率にしている -->
-  <path d="M14 134 L114 62 L214 134" fill="none" stroke="#17803d" stroke-width="20"
-        stroke-linejoin="miter" stroke-miterlimit="10"/>
-  <rect x="54" y="34" width="14" height="104" fill="#17803d"/>
-  <path fill="#f5333f"
-        d="M61 32 C43 20 46.5 6 54 6 C58 6 60.5 9 61 11.5 C61.5 9 64 6 68 6 C75.5 6 79 20 61 32 Z"/>
-  <text x="114" y="182" text-anchor="middle"
-        font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
-        font-weight="900" font-size="74" fill="#17803d">LMP</text>
+  <!-- 家のマーク。縦組み版と同じ形を 0.62 倍で置いている -->
+  <g transform="translate(2,4) scale(0.62)">
+    <path d="M14 134 L114 62 L214 134" fill="none" stroke="#17803d" stroke-width="20"
+          stroke-linejoin="miter" stroke-miterlimit="10"/>
+    <rect x="54" y="34" width="14" height="104" fill="#17803d"/>
+    <path fill="#f5333f"
+          d="M61 32 C43 20 46.5 6 54 6 C58 6 60.5 9 61 11.5 C61.5 9 64 6 68 6 C75.5 6 79 20 61 32 Z"/>
+    <text x="114" y="182" text-anchor="middle"
+          font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
+          font-weight="900" font-size="74" fill="#17803d">LMP</text>
+  </g>
 
   <!-- 欧文の社名。textLength で幅を固定し、書体差でずれないようにする -->
-  <text x="262" y="126" textLength="600" lengthAdjust="spacingAndGlyphs"
+  <text x="168" y="88" textLength="716" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
-        font-weight="900" font-size="72" fill="#17803d">LIFE MAKE PARTNER'S</text>
+        font-weight="900" font-size="74" fill="#17803d">LIFE MAKE PARTNER'S</text>
 </svg>

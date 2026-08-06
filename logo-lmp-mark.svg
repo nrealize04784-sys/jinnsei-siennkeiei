@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 228 190" width="228" height="190" role="img" aria-label="LMP">
+  <!--
+    マーク単体（暫定再現版）。狭い画面のヘッダー用。
+    横組みの logo-lmp-header.svg では幅が足りない場面で使う。
+  -->
+  <title>LMP</title>
+  <path d="M14 134 L114 62 L214 134" fill="none" stroke="#17803d" stroke-width="20"
+        stroke-linejoin="miter" stroke-miterlimit="10"/>
+  <rect x="54" y="34" width="14" height="104" fill="#17803d"/>
+  <path fill="#f5333f"
+        d="M61 32 C43 20 46.5 6 54 6 C58 6 60.5 9 61 11.5 C61.5 9 64 6 68 6 C75.5 6 79 20 61 32 Z"/>
+  <text x="114" y="182" text-anchor="middle"
+        font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
+        font-weight="900" font-size="74" fill="#17803d">LMP</text>
+</svg>
