@@ -28,14 +28,15 @@
     文字ではなく図形で描いている。そのぶん文字列を3つに割り、
     それぞれ textLength で幅を固定して、書体が違う環境でも位置がずれないようにしている。
   -->
-  <text x="262" y="122" textLength="668" lengthAdjust="spacingAndGlyphs"
+  <text x="262" y="122" textLength="700" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
         font-weight="900" font-size="92" fill="#17803d">LIFE MAKE PARTNER</text>
   <!--
     グッドマーク。左が手首、右が拳、上に立てた親指。
-    傾けると小さい表示で引用符に見えてしまうため、垂直のまま置いている。
+    原寸のロゴでは大文字の4割ほどの大きさで、上端に寄っている。
+    アポストロフィの位置なので、垂直のまま小さく置く。
   -->
-  <g transform="translate(940,48) scale(1.2)" fill="#17803d">
+  <g transform="translate(970,53) scale(0.59)" fill="#17803d">
     <rect x="0" y="19" width="11" height="25" rx="3"/>
     <path d="M15 44 L15 22
              C15 15 19 6 23 3
@@ -47,7 +48,7 @@
              C37 43 35 44 32 44
              Z"/>
   </g>
-  <text x="996" y="122" textLength="62" lengthAdjust="spacingAndGlyphs"
+  <text x="1000" y="122" textLength="64" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
         font-weight="900" font-size="92" fill="#17803d">S</text>
 </svg>
