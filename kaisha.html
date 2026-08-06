@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>会社概要｜ライフメイクパートナーズ</title>
+<meta name="description" content="ライフメイクパートナーズ（日本リアライズ株式会社）の会社概要。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  /* 書体・配色・コマンドウィンドウの作りは lp-franchise.html と揃えている */
+  @font-face{
+    font-family:'DotGothic16Local';
+    src:url('fonts/DotGothic16-subset.woff2') format('woff2');
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+  :root{
+    --navy:#0B1B3A;
+    --navy-deep:#071228;
+    --gold:#E8B64C;
+    --gold-pale:#F7E7C1;
+    --line:rgba(11,27,58,.18);
+    --muted:rgba(11,27,58,.62);
+    --font-game:"DotGothic16Local","DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    --cursor-clip:polygon(
+      0% 0%,   25% 0%,
+      25% 12.5%, 50% 12.5%,
+      50% 25%,   75% 25%,
+      75% 37.5%, 100% 37.5%,
+      100% 62.5%, 75% 62.5%,
+      75% 75%,   50% 75%,
+      50% 87.5%, 25% 87.5%,
+      25% 100%,  0% 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--gold-pale);color:var(--navy);
+    font-family:var(--font-game);font-weight:400;
+    line-height:1.95;letter-spacing:.05em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* ---- ヘッダー ---- */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    background:rgba(7,18,40,.92);
+    border-bottom:1px solid rgba(255,255,255,.14);
+    backdrop-filter:blur(8px);
+  }
+  .site-header .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding-top:14px;padding-bottom:14px;
+  }
+  .hdr-lockup{
+    display:inline-flex;align-items:center;gap:14px;
+    background:#fff;border-radius:5px;padding:6px 16px 6px 12px;
+  }
+  .hdr-logo{height:48px;width:auto;object-fit:contain;display:block}
+  .hdr-wordmark{height:18px;width:auto;object-fit:contain;display:block}
+  .hdr-nav{display:flex;align-items:center;gap:34px}
+  .hdr-nav a{
+    display:inline-flex;align-items:center;gap:.5em;
+    color:rgba(255,255,255,.88);text-decoration:none;
+    font-size:14px;letter-spacing:.08em;white-space:nowrap;
+  }
+  .hdr-nav a::before{
+    content:"";flex:none;
+    width:.45em;height:.66em;background:currentColor;clip-path:var(--cursor-clip);
+  }
+  .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
+
+  /* ---- 本文 ---- */
+  main{padding:150px 0 96px}
+  h1{
+    font-size:clamp(26px,4.2vw,40px);font-weight:400;line-height:1.5;
+    letter-spacing:.04em;text-align:center;margin-bottom:14px;
+    text-shadow:4px 4px 0 rgba(11,27,58,.16);
+    -webkit-font-smoothing:none;
+  }
+  .lead{
+    text-align:center;font-size:16px;color:var(--muted);
+    margin-bottom:44px;
+  }
+  /* 見出しと内容の2列。狭い画面では縦に積む */
+  dl{
+    max-width:720px;margin:0 auto;
+    display:grid;grid-template-columns:150px 1fr;
+    border-top:1px solid var(--line);
+  }
+  dt,dd{
+    padding:20px 8px;border-bottom:1px solid var(--line);
+    font-size:15px;line-height:1.9;
+  }
+  dt{color:var(--muted);letter-spacing:.1em}
+  dd{color:var(--navy)}
+  dd a{color:var(--navy);text-decoration:none}
+  dd a:hover{text-decoration:underline}
+  .back{
+    display:block;text-align:center;margin-top:52px;
+    color:var(--navy);font-size:14px;letter-spacing:.08em;
+  }
+
+  /* ---- フッター ---- */
+  footer{
+    background:var(--navy-deep);color:rgba(255,255,255,.82);
+    padding:56px 0;font-size:14px;letter-spacing:.04em;text-align:center;
+  }
+  .footer-logo-plate{
+    display:inline-block;background:#fff;
+    padding:20px 26px;margin-bottom:30px;border-radius:5px;
+  }
+  .footer-logo{display:block;width:min(300px,64vw);height:auto}
+  .footer-links{
+    display:flex;justify-content:center;align-items:center;
+    gap:14px 34px;flex-wrap:wrap;
+  }
+  .footer-links a{color:rgba(255,255,255,.88);text-decoration:none}
+  .footer-links a:hover{color:var(--gold);text-decoration:underline}
+
+  @media(max-width:640px){
+    .hdr-wordmark{display:none}
+    .hdr-lockup{padding:4px 7px}
+    .hdr-logo{height:34px}
+    .site-header .wrap{padding-top:10px;padding-bottom:10px}
+    .hdr-nav{gap:13px}
+    .hdr-nav a{font-size:12px;letter-spacing:0;gap:.4em}
+    main{padding:110px 0 72px}
+    dl{grid-template-columns:1fr}
+    dt{padding-bottom:0;border-bottom:none}
+    dd{padding-top:6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="wrap">
+    <a class="hdr-lockup" href="lp-franchise.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+      <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
+    </a>
+    <nav class="hdr-nav">
+      <a href="lp-franchise.html">ホーム</a>
+      <a href="shiryou.html">資料請求</a>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <h1>会社概要</h1>
+    <p class="lead">ライフメイクパートナーズの運営会社です。</p>
+    <dl>
+      <dt>商号</dt><dd>日本リアライズ株式会社</dd>
+      <dt>設立</dt><dd>2009年1月20日</dd>
+      <dt>代表者</dt><dd>代表取締役　大橋 孝行</dd>
+      <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
+      <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
+    </dl>
+    <a class="back" href="lp-franchise.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+    </a>
+    <nav class="footer-links">
+      <a href="kaisha.html">会社概要</a>
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

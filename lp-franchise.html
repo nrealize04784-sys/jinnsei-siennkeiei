@@ -542,33 +542,7 @@
   */
   .submit-alt{color:#fff;margin-top:14px;font-size:16px;padding:20px}
   .submit:hover{background:#111;filter:none;transform:none}
-  /* ---- 7. 会社概要 ---- */
-  .company{background:rgba(244,248,253,.95)}
-  .company h2{text-align:center}
-  /* 見出しと内容の2列。狭い画面では縦に積む */
-  .company dl{
-    max-width:720px;margin:0 auto;
-    display:grid;grid-template-columns:150px 1fr;
-    border-top:1px solid var(--line);
-  }
-  .company dt,.company dd{
-    padding:20px 8px;border-bottom:1px solid var(--line);
-    font-size:15px;line-height:1.9;
-  }
-  .company dt{color:var(--muted);letter-spacing:.1em}
-  .company dd{color:var(--navy)}
-  .company a{color:var(--navy);text-decoration:none}
-  .company a:hover{text-decoration:underline}
-  /* 固定ヘッダーの裏に見出しが隠れないよう、着地点を下げる */
-  #about{scroll-margin-top:92px}
-  @media(max-width:640px){
-    .company dl{grid-template-columns:1fr}
-    .company dt{padding-bottom:0;border-bottom:none}
-    .company dd{padding-top:6px}
-    #about{scroll-margin-top:66px}
-  }
-
-  /* ---- 8. フッター ---- */
+  /* ---- 7. フッター ---- */
   footer{
     background:var(--navy-deep);color:rgba(255,255,255,.82);
     padding:56px 0;font-size:14px;letter-spacing:.04em;text-align:center;
@@ -654,7 +628,7 @@
     </a>
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
-      <a href="#about">会社概要</a>
+      <a href="kaisha.html">会社概要</a>
       <a class="btn hdr-cta hdr-cta-main" href="#entry">事業説明会に申し込む</a>
       <a class="btn hdr-cta" href="shiryou.html">資料請求</a>
     </nav>
@@ -800,21 +774,7 @@
   </div>
 </section>
 
-<!-- 7. 会社概要 -->
-<section class="company" id="about">
-  <div class="wrap">
-    <h2>会社概要</h2>
-    <dl>
-      <dt>商号</dt><dd>日本リアライズ株式会社</dd>
-      <dt>設立</dt><dd>2009年1月20日</dd>
-      <dt>代表者</dt><dd>代表取締役　大橋 孝行</dd>
-      <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
-      <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
-    </dl>
-  </div>
-</section>
-
-<!-- 8. フッター -->
+<!-- 7. フッター -->
 <footer>
   <div class="wrap">
     <!--
@@ -827,7 +787,7 @@
            onerror="this.closest('.footer-logo-plate').remove()">
     </a>
     <nav class="footer-links">
-      <a href="#about">会社概要</a>
+      <a href="kaisha.html">会社概要</a>
       <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
     </nav>
   </div>
