@@ -450,6 +450,16 @@
     clip-path:none;   /* コマンド枠なので角は落とさない */
     box-shadow:none;
   }
+  /*
+    2つ目のコマンド（資料請求）。同じ枠だが、文字色を白にして
+    主コマンド（金文字の申し込み）より一段控えめに見せる。
+  */
+  .submit-alt{
+    color:#fff;text-decoration:none;
+    display:block;text-align:center;margin-top:14px;
+    font-size:16px;padding:20px;
+  }
+  .submit-alt:hover{background:#111}
   /* 選択中のコマンドを指す▶。装飾なので読み上げ対象から外す */
   .submit::before{
     content:"";display:inline-block;vertical-align:middle;
@@ -670,6 +680,8 @@
         <input id="email" name="email" type="email" required>
       </div>
       <button class="btn submit" type="submit">事業説明会に申し込む（無料）</button>
+      <!-- 2つ目のコマンド。※ href に資料請求フォームのURLを設定してください -->
+      <a class="btn submit submit-alt" href="#">資料請求（無料）</a>
     </form>
   </div>
 </section>
