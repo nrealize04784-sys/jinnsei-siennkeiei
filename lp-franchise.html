@@ -536,13 +536,14 @@
   /*
     コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
     文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
-    ※ logo-lmp.svg が未設置の間は onerror で台紙ごと消える。
+    ※ ロゴが未設置の間は onerror で台紙ごと消える。
   */
   .footer-logo-plate{
     display:inline-block;background:#fff;
-    padding:16px 26px;margin-bottom:26px;border-radius:4px;
+    padding:20px 26px;margin-bottom:30px;border-radius:5px;
   }
-  .footer-logo{display:block;height:44px;width:auto}
+  /* 横組みを使う。縦組みだと欧文が全体の1割ほどしかなく、拡大しても読めないため */
+  .footer-logo{display:block;width:min(430px,74vw);height:auto}
   /* 会社概要とメールアドレスの2つだけ。横に並べ、狭い画面では縦に落とす */
   .footer-links{
     display:flex;justify-content:center;align-items:center;
@@ -599,14 +600,14 @@
 <div class="site-header">
   <div class="wrap">
     <!--
-      ロゴ。※ logo-lmp.svg をリポジトリ直下に置くこと。
+      ロゴ。正規のファイルが用意でき次第、下の src を差し替えること。
       未設置の間はマークだけ消え、社名のテキストは残る（壊れた画像は出ない）。
     -->
     <a class="hdr-brand" href="#top">
       <picture>
         <!-- 狭い画面は横組みだとメニューと衝突するので、マーク単体に差し替える -->
         <source media="(max-width:640px)" srcset="logo-lmp-mark.svg">
-        <img class="hdr-logo" src="logo-lmp-header.svg" alt="ライフメイクパートナーズ"
+        <img class="hdr-logo" src="logo-lmp-wide.svg" alt="ライフメイクパートナーズ"
              onerror="this.closest('picture').remove()">
       </picture>
       <span>ライフメイクパートナーズ</span>
@@ -765,12 +766,12 @@
 <footer>
   <div class="wrap">
     <!--
-      コーポレートロゴ。※ logo-lmp.svg をリポジトリ直下に置くこと。
+      コーポレートロゴ。正規のファイルが用意でき次第、下の src を差し替えること。
       ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
     -->
     <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
        onerror="this.remove()">
-      <img class="footer-logo" src="logo-lmp.svg" alt="ライフメイクパートナーズ"
+      <img class="footer-logo" src="logo-lmp-wide.svg" alt="ライフメイクパートナーズ"
            onerror="this.closest('.footer-logo-plate').remove()">
     </a>
     <nav class="footer-links">
