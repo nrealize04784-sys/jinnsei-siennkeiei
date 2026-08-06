@@ -549,6 +549,12 @@
   */
   .submit-alt{color:#fff;margin-top:14px;font-size:16px;padding:20px}
   .submit:hover{background:#111;filter:none;transform:none}
+  /* メーラーが開く旨の断り書き。フォームと同じ幅に収める */
+  .entry-note{
+    max-width:520px;margin:20px auto 0;text-align:left;
+    font-size:13px;line-height:2;color:rgba(11,27,58,.62);
+  }
+  .entry-note a{color:var(--navy-deep)}
   /* ---- 7. フッター ---- */
   footer{
     background:var(--navy-deep);color:rgba(255,255,255,.82);
@@ -758,23 +764,27 @@
     <img class="cta-journey" alt="橋を渡って城門へ向かう三人の勇者"
          src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_053040_17e1fd91-3ad3-4f0c-ba8a-b9e12cd70690.png">
     <p class="lead">参加は無料。</p>
-    <!-- action属性に送信先フォームのURLを設定してください -->
-    <form action="#" method="post">
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（資料請求ページと同じ）。
+      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+    -->
+    <form id="entry-form" novalidate>
       <div class="field">
         <label for="company">会社名</label>
-        <input id="company" name="company" type="text" required>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
       </div>
       <div class="field">
         <label for="name">お名前</label>
-        <input id="name" name="name" type="text" required>
+        <input id="name" name="name" type="text" autocomplete="name" required>
       </div>
       <div class="field">
         <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" required>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
       </div>
       <div class="field">
         <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" required>
+        <input id="email" name="email" type="email" autocomplete="email" required>
       </div>
       <!-- 備考は任意。書かなくても申し込めるようにする -->
       <div class="field">
@@ -785,6 +795,12 @@
       <!-- 2つ目のコマンド。資料請求ページへ -->
       <a class="btn submit submit-alt" href="shiryou.html">資料請求（無料）</a>
     </form>
+    <p class="entry-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      メールソフトが開かない場合は、お手数ですが
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
+    </p>
   </div>
 </section>
 
@@ -809,6 +825,34 @@
 
 <!-- スマホ追従ボタン -->
 <div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '事業説明会への参加を申し込みます。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '備考：' + v('note'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('事業説明会 申し込み')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
 
 </body>
 </html>
