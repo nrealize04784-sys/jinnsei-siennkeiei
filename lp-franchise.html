@@ -138,10 +138,16 @@
     gap:16px;padding-top:14px;padding-bottom:14px;
   }
   .hdr-brand{
+    display:flex;align-items:center;gap:12px;
     color:var(--gold);text-decoration:none;
     font-size:15px;letter-spacing:.1em;white-space:nowrap;
   }
-  .hdr-brand:hover{text-decoration:underline}
+  .hdr-brand:hover span{text-decoration:underline}
+  /* ロゴは緑と赤。濃紺に直接置くと沈むので、白い小さな台紙に載せる */
+  .hdr-logo{
+    height:34px;width:34px;object-fit:contain;
+    background:#fff;border-radius:4px;padding:3px;
+  }
   /* ヘッダー内のボタンは小ぶりに。影も落とさない */
   .site-header .btn{
     padding:12px 24px;font-size:14px;letter-spacing:.06em;
@@ -513,7 +519,7 @@
   /*
     コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
     文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
-    ※ logo-nihon-realize.png が未設置の間は onerror で台紙ごと消える。
+    ※ logo-lmp.png が未設置の間は onerror で台紙ごと消える。
   */
   .footer-logo-plate{
     display:inline-block;background:#fff;
@@ -575,7 +581,14 @@
 <!-- 0. 固定ヘッダー -->
 <div class="site-header">
   <div class="wrap">
-    <a class="hdr-brand" href="#top">日本リアライズ株式会社</a>
+    <!--
+      ロゴ。※ logo-lmp.png をリポジトリ直下に置くこと。
+      未設置の間はマークだけ消え、社名のテキストは残る（壊れた画像は出ない）。
+    -->
+    <a class="hdr-brand" href="#top">
+      <img class="hdr-logo" src="logo-lmp.png" alt="" onerror="this.remove()">
+      <span>ライフメイクパートナーズ</span>
+    </a>
     <a class="btn" href="#entry">事業説明会に申し込む</a>
   </div>
 </div>
@@ -724,12 +737,12 @@
 <footer>
   <div class="wrap">
     <!--
-      コーポレートロゴ。※ logo-nihon-realize.png をリポジトリ直下に置くこと。
+      コーポレートロゴ。※ logo-lmp.png をリポジトリ直下に置くこと。
       ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
     -->
     <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
        onerror="this.remove()">
-      <img class="footer-logo" src="logo-nihon-realize.png" alt="日本リアライズ株式会社"
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
            onerror="this.closest('.footer-logo-plate').remove()">
     </a>
     <nav class="footer-links">
