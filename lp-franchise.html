@@ -158,12 +158,27 @@
     font-size:14px;letter-spacing:.08em;white-space:nowrap;
   }
   .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
-  /* メニュー内の資料請求だけはボタン。小ぶりにして影は落とさない */
+  /*
+    メニュー内の資料請求はコマンドウィンドウに見立てる。
+    黒地・白の角枠・▶カーソルという、申し込みフォームと同じ作り。
+  */
   .hdr-cta{
-    padding:11px 22px;font-size:14px;letter-spacing:.06em;
+    display:inline-flex;align-items:center;gap:.6em;
+    background:#000;color:var(--gold);
+    border:2px solid #fff;
+    padding:9px 18px;font-size:14px;letter-spacing:.06em;
+    clip-path:none;   /* コマンド枠なので角は落とさない */
     box-shadow:none;
   }
-  .hdr-nav a.hdr-cta:hover{color:var(--navy-deep);text-decoration:none}
+  /* 選択中のコマンドを指す▶。装飾なので文字ではなく形で描く */
+  .hdr-cta::before{
+    content:"";flex:none;
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
+  }
+  .hdr-nav a.hdr-cta:hover{
+    color:var(--gold);background:#111;text-decoration:none;
+    transform:none;filter:none;
+  }
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
