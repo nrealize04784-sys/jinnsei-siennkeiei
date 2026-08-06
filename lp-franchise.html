@@ -164,6 +164,14 @@
   /* ロゴが出ているときは、同じ内容のカタカナ社名を重ねて出さない。
      読み込みに失敗して台紙ごと消えると、この指定が外れて社名が復活する */
   .hdr-lockup + span{display:none}
+  /*
+    ロゴとメニューの間を歩く三人。背景は透過済みなので濃紺にそのまま溶ける。
+    ロゴと同じ高さに収め、ヘッダーの高さは変えない。
+  */
+  .hdr-party{
+    height:48px;width:auto;flex:none;display:block;
+    opacity:.92;
+  }
   /* メニュー。等間隔で並べ、狭い画面では文字だけ詰める */
   .hdr-nav{display:flex;align-items:center;gap:34px}
   .hdr-nav a{
@@ -191,6 +199,10 @@
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
   */
   #entry{scroll-margin-top:92px}
+  /* ロゴとメニューを優先する。横幅が足りなくなったら三人は出さない */
+  @media(max-width:1100px){
+    .hdr-party{display:none}
+  }
   @media(max-width:640px){
     /* 幅が足りないので、ロゴを小さくして社名テキストは出さない */
     .hdr-brand > span:not(.hdr-lockup){display:none}
@@ -641,6 +653,10 @@
       </span>
       <span>ライフメイクパートナーズ</span>
     </a>
+    <!-- 横向きに歩く三人（背景透過）。読み込めなければ自分ごと消える -->
+    <img class="hdr-party" alt=""
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260806_064709_985e93d9-126e-45da-904a-3c042ae7cc5c.png"
+         onerror="this.remove()">
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="kaisha.html">会社概要</a>

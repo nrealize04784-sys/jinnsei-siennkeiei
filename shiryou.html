@@ -59,6 +59,14 @@
   }
   .hdr-logo{height:48px;width:auto;object-fit:contain;display:block}
   .hdr-wordmark{height:18px;width:auto;object-fit:contain;display:block}
+  /*
+    ロゴとメニューの間を歩く三人。背景は透過済みなので濃紺にそのまま溶ける。
+    ロゴと同じ高さに収め、ヘッダーの高さは変えない。
+  */
+  .hdr-party{
+    height:48px;width:auto;flex:none;display:block;
+    opacity:.92;
+  }
   .hdr-nav{display:flex;align-items:center;gap:34px}
   .hdr-nav a{
     display:inline-flex;align-items:center;gap:.5em;
@@ -156,6 +164,10 @@
   .footer-links a{color:rgba(255,255,255,.88);text-decoration:none}
   .footer-links a:hover{color:var(--gold);text-decoration:underline}
 
+  /* ロゴとメニューを優先する。横幅が足りなくなったら三人は出さない */
+  @media(max-width:1100px){
+    .hdr-party{display:none}
+  }
   @media(max-width:640px){
     .hdr-wordmark{display:none}
     .hdr-lockup{padding:4px 7px}
@@ -175,6 +187,10 @@
       <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
       <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
     </a>
+    <!-- 横向きに歩く三人（背景透過）。読み込めなければ自分ごと消える -->
+    <img class="hdr-party" alt=""
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260806_064709_985e93d9-126e-45da-904a-3c042ae7cc5c.png"
+         onerror="this.remove()">
     <nav class="hdr-nav">
       <a href="lp-franchise.html">ホーム</a>
       <a href="kaisha.html">会社概要</a>
