@@ -148,21 +148,24 @@
     height:34px;width:34px;object-fit:contain;
     background:#fff;border-radius:4px;padding:3px;
   }
-  /* ヘッダー内のボタンは小ぶりに。影も落とさない */
-  .site-header .btn{
-    padding:12px 24px;font-size:14px;letter-spacing:.06em;
-    box-shadow:none;
+  /* メニュー。等間隔で並べ、狭い画面では文字だけ詰める */
+  .hdr-nav{display:flex;align-items:center;gap:34px}
+  .hdr-nav a{
+    color:rgba(255,255,255,.88);text-decoration:none;
+    font-size:14px;letter-spacing:.08em;white-space:nowrap;
   }
+  .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
   */
   #entry{scroll-margin-top:76px}
   @media(max-width:640px){
-    /* 画面下に追従ボタンがあるので、ヘッダー側のボタンは出さない */
-    .site-header .btn{display:none}
-    .site-header .wrap{justify-content:center;padding-top:12px;padding-bottom:12px}
-    .hdr-brand{font-size:14px}
+    /* 幅が足りないので社名を隠し、ロゴのマークとメニューだけ残す */
+    .hdr-brand span{display:none}
+    .site-header .wrap{padding-top:10px;padding-bottom:10px}
+    .hdr-nav{gap:18px}
+    .hdr-nav a{font-size:13px;letter-spacing:.02em}
     #entry{scroll-margin-top:56px}
   }
 
@@ -589,7 +592,11 @@
       <img class="hdr-logo" src="logo-lmp.png" alt="" onerror="this.remove()">
       <span>ライフメイクパートナーズ</span>
     </a>
-    <a class="btn" href="#entry">事業説明会に申し込む</a>
+    <nav class="hdr-nav">
+      <a href="#top">ホーム</a>
+      <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">会社概要</a>
+      <a href="#entry">お問い合わせ</a>
+    </nav>
   </div>
 </div>
 
