@@ -24,15 +24,26 @@
 
   <!--
     右：欧文の社名。
-    R と S の間の記号は通常のアポストロフィではなく葉のような形なので、
+    R と S の間の記号は通常のアポストロフィではなくグッドマーク（親指を立てた手）なので、
     文字ではなく図形で描いている。そのぶん文字列を3つに割り、
     それぞれ textLength で幅を固定して、書体が違う環境でも位置がずれないようにしている。
   -->
   <text x="262" y="122" textLength="690" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
         font-weight="900" font-size="92" fill="#17803d">LIFE MAKE PARTNER</text>
-  <path fill="#17803d" transform="translate(958,50)"
-        d="M2 34 C0 16 10 2 30 0 C29 8 27 13 22 17 C27 18 30 20 31 23 C26 31 15 35 2 34 Z"/>
+  <!-- グッドマーク。左が手首、右が拳、上に立てた親指 -->
+  <g transform="translate(956,44) rotate(8 17 20)" fill="#17803d">
+    <rect x="0" y="16" width="9" height="24" rx="2"/>
+    <path d="M12 40 L12 17
+             C12 11 15.5 2 19.5 2
+             C23.5 2 24.5 7 23 12.5
+             L21.5 16
+             L32 16
+             C36 16 38 20 36 23.5
+             L32.5 34.5
+             C31.5 38 29 40 26 40
+             Z"/>
+  </g>
   <text x="1000" y="122" textLength="62" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
         font-weight="900" font-size="92" fill="#17803d">S</text>
