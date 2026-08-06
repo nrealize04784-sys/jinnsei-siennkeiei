@@ -472,6 +472,16 @@
     background:var(--navy-deep);color:rgba(255,255,255,.82);
     padding:56px 0;font-size:14px;letter-spacing:.04em;text-align:center;
   }
+  /*
+    コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
+    文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
+    ※ logo-nihon-realize.png が未設置の間は onerror で台紙ごと消える。
+  */
+  .footer-logo-plate{
+    display:inline-block;background:#fff;
+    padding:16px 26px;margin-bottom:26px;border-radius:4px;
+  }
+  .footer-logo{display:block;height:44px;width:auto}
   /* 会社概要とメールアドレスの2つだけ。横に並べ、狭い画面では縦に落とす */
   .footer-links{
     display:flex;justify-content:center;align-items:center;
@@ -667,6 +677,15 @@
 <!-- 7. フッター -->
 <footer>
   <div class="wrap">
+    <!--
+      コーポレートロゴ。※ logo-nihon-realize.png をリポジトリ直下に置くこと。
+      ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
+    -->
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
+       onerror="this.remove()">
+      <img class="footer-logo" src="logo-nihon-realize.png" alt="日本リアライズ株式会社"
+           onerror="this.closest('.footer-logo-plate').remove()">
+    </a>
     <nav class="footer-links">
       <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">会社概要</a>
       <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
