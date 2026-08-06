@@ -463,7 +463,8 @@
 
   /* ---- 5. 希少性 ---- */
   /* ここだけ白い膜を薄くし、街の絵をパステル調に透かして見せる */
-  .limited{text-align:center;background:rgba(255,255,255,.62)}
+  /* 下は次の「冒険をはじめる」に続くので、余白を空けすぎない */
+  .limited{text-align:center;background:rgba(255,255,255,.62);padding-bottom:64px}
   .limited .big{
     font-size:clamp(34px,6.6vw,74px);font-weight:400;color:var(--navy);
     line-height:1.3;margin-bottom:28px;
@@ -476,7 +477,11 @@
   }
 
   /* ---- 6. 最終CTA ---- */
-  .cta{background:var(--gold-pale);color:var(--navy-deep);text-align:center}
+  /*
+    前の希少性セクションの下余白と合わさって見出しの上が空きすぎるので、
+    ここだけ上の余白を詰める（下はフォームの逃げとして残す）。
+  */
+  .cta{background:var(--gold-pale);color:var(--navy-deep);text-align:center;padding-top:48px}
   .cta h2{color:var(--navy-deep);margin-bottom:16px}
   .cta .lead{color:rgba(11,27,58,.72);margin-bottom:22px;font-size:16px}
   /*
@@ -569,6 +574,8 @@
   .sticky{display:none}
   @media(max-width:820px){
     section{padding:76px 0}
+    .limited{padding-bottom:44px}
+    .cta{padding-top:34px}
     /* 縦長画面では上下グラデーションに切り替え、文字を下に寄せる */
     .fv{
       padding:96px 0 80px;min-height:86vh;display:flex;align-items:flex-end;
