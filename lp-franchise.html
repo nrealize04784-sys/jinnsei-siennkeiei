@@ -182,7 +182,10 @@
     黒地・白の角枠・▶カーソルという、申し込みフォームと同じ作り。
   */
   .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em}
-  .hdr-nav a.hdr-cta:hover{color:var(--gold);background:#111;text-decoration:none}
+  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
+  .hdr-nav a.hdr-cta{color:#fff}
+  .hdr-nav a.hdr-cta-main{color:var(--gold)}
+  .hdr-nav a.hdr-cta:hover{background:#111;text-decoration:none}
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
@@ -624,6 +627,7 @@
       <a href="#top">ホーム</a>
       <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">会社概要</a>
       <a class="btn hdr-cta" href="shiryou.html">資料請求</a>
+      <a class="btn hdr-cta hdr-cta-main" href="#entry">事業説明会に申し込む</a>
     </nav>
   </div>
 </div>
