@@ -158,6 +158,12 @@
     font-size:14px;letter-spacing:.08em;white-space:nowrap;
   }
   .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
+  /* メニュー内の資料請求だけはボタン。小ぶりにして影は落とさない */
+  .hdr-cta{
+    padding:11px 22px;font-size:14px;letter-spacing:.06em;
+    box-shadow:none;
+  }
+  .hdr-nav a.hdr-cta:hover{color:var(--navy-deep);text-decoration:none}
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
@@ -168,6 +174,8 @@
     .hdr-brand span{display:none}
     .hdr-logo{height:36px;padding:5px 7px}
     .site-header .wrap{padding-top:10px;padding-bottom:10px}
+    /* 幅が足りず、画面下の追従ボタンとも重複するので出さない */
+    .hdr-cta{display:none}
     .hdr-nav{gap:18px}
     .hdr-nav a{font-size:13px;letter-spacing:.02em}
     #entry{scroll-margin-top:66px}
@@ -607,6 +615,8 @@
       <a href="#top">ホーム</a>
       <a href="https://n-realize.co.jp/" target="_blank" rel="noopener">会社概要</a>
       <a href="https://n-realize.co.jp/contact/" target="_blank" rel="noopener">お問い合わせ</a>
+      <!-- ※ 資料請求フォームのURLが決まったら、ページ下部のボタンと合わせて href を差し替えること -->
+      <a class="btn hdr-cta" href="#entry">資料請求</a>
     </nav>
   </div>
 </div>
