@@ -155,12 +155,12 @@
   .hdr-brand:hover span{text-decoration:underline}
   /* ロゴは緑と赤。濃紺に直接置くと沈むので、白い小さな台紙に載せる */
   .hdr-logo{
-    height:52px;width:auto;object-fit:contain;display:block;
-    background:#fff;border-radius:5px;padding:7px 14px;
+    height:56px;width:auto;object-fit:contain;display:block;
+    background:#fff;border-radius:5px;padding:6px 12px;
   }
   /* ロゴが出ているときは、同じ内容のカタカナ社名を重ねて出さない。
      読み込みに失敗して img が消えると、この指定が外れて社名が復活する */
-  picture:has(.hdr-logo) + span{display:none}
+  .hdr-logo + span{display:none}
   /* メニュー。等間隔で並べ、狭い画面では文字だけ詰める */
   .hdr-nav{display:flex;align-items:center;gap:34px}
   .hdr-nav a{
@@ -188,7 +188,7 @@
   @media(max-width:640px){
     /* 幅が足りないので、ロゴを小さくして社名テキストは出さない */
     .hdr-brand span{display:none}
-    .hdr-logo{height:36px;padding:5px 7px}
+    .hdr-logo{height:40px;padding:5px 8px}
     .site-header .wrap{padding-top:10px;padding-bottom:10px}
     /* 幅が足りず、画面下の追従ボタンとも重複するので出さない */
     .hdr-cta{display:none}
@@ -535,14 +535,13 @@
   /*
     コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
     文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
-    ※ ロゴが未設置の間は onerror で台紙ごと消える。
+    ※ 読み込みに失敗した場合は onerror で台紙ごと消える。
   */
   .footer-logo-plate{
     display:inline-block;background:#fff;
     padding:20px 26px;margin-bottom:30px;border-radius:5px;
   }
-  /* 横組みを使う。縦組みだと欧文が全体の1割ほどしかなく、拡大しても読めないため */
-  .footer-logo{display:block;width:min(430px,74vw);height:auto}
+  .footer-logo{display:block;width:min(300px,64vw);height:auto}
   /* 会社概要とメールアドレスの2つだけ。横に並べ、狭い画面では縦に落とす */
   .footer-links{
     display:flex;justify-content:center;align-items:center;
@@ -600,16 +599,12 @@
 <div class="site-header">
   <div class="wrap">
     <!--
-      ロゴ。正規のファイルが用意でき次第、下の src を差し替えること。
+      ロゴ（正規データ）。
       未設置の間はマークだけ消え、社名のテキストは残る（壊れた画像は出ない）。
     -->
     <a class="hdr-brand" href="#top">
-      <picture>
-        <!-- 狭い画面は横組みだとメニューと衝突するので、マーク単体に差し替える -->
-        <source media="(max-width:640px)" srcset="logo-lmp-mark.svg">
-        <img class="hdr-logo" src="logo-lmp-wide.svg" alt="ライフメイクパートナーズ"
-             onerror="this.closest('picture').remove()">
-      </picture>
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.remove()">
       <span>ライフメイクパートナーズ</span>
     </a>
     <nav class="hdr-nav">
@@ -766,12 +761,12 @@
 <footer>
   <div class="wrap">
     <!--
-      コーポレートロゴ。正規のファイルが用意でき次第、下の src を差し替えること。
+      コーポレートロゴ（正規データ）。
       ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
     -->
     <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
        onerror="this.remove()">
-      <img class="footer-logo" src="logo-lmp-wide.svg" alt="ライフメイクパートナーズ"
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
            onerror="this.closest('.footer-logo-plate').remove()">
     </a>
     <nav class="footer-links">
