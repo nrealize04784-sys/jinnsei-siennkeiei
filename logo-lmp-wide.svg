@@ -22,8 +22,18 @@
           font-weight="900" font-size="52" fill="#17803d">LIFE MAKE PARTNER'S</text>
   </g>
 
-  <!-- 右：欧文の社名。textLength で幅を固定し、書体差でずれないようにする -->
-  <text x="262" y="122" textLength="800" lengthAdjust="spacingAndGlyphs"
+  <!--
+    右：欧文の社名。
+    R と S の間の記号は通常のアポストロフィではなく葉のような形なので、
+    文字ではなく図形で描いている。そのぶん文字列を3つに割り、
+    それぞれ textLength で幅を固定して、書体が違う環境でも位置がずれないようにしている。
+  -->
+  <text x="262" y="122" textLength="690" lengthAdjust="spacingAndGlyphs"
         font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
-        font-weight="900" font-size="92" fill="#17803d">LIFE MAKE PARTNER'S</text>
+        font-weight="900" font-size="92" fill="#17803d">LIFE MAKE PARTNER</text>
+  <path fill="#17803d" transform="translate(958,50)"
+        d="M2 34 C0 16 10 2 30 0 C29 8 27 13 22 17 C27 18 30 20 31 23 C26 31 15 35 2 34 Z"/>
+  <text x="1000" y="122" textLength="62" lengthAdjust="spacingAndGlyphs"
+        font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
+        font-weight="900" font-size="92" fill="#17803d">S</text>
 </svg>
