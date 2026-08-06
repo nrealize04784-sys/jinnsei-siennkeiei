@@ -145,8 +145,8 @@
   .hdr-brand:hover span{text-decoration:underline}
   /* ロゴは緑と赤。濃紺に直接置くと沈むので、白い小さな台紙に載せる */
   .hdr-logo{
-    height:34px;width:34px;object-fit:contain;
-    background:#fff;border-radius:4px;padding:3px;
+    height:38px;width:auto;object-fit:contain;
+    background:#fff;border-radius:4px;padding:4px 7px;
   }
   /* メニュー。等間隔で並べ、狭い画面では文字だけ詰める */
   .hdr-nav{display:flex;align-items:center;gap:34px}
@@ -522,7 +522,7 @@
   /*
     コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
     文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
-    ※ logo-lmp.png が未設置の間は onerror で台紙ごと消える。
+    ※ logo-lmp.svg が未設置の間は onerror で台紙ごと消える。
   */
   .footer-logo-plate{
     display:inline-block;background:#fff;
@@ -585,11 +585,11 @@
 <div class="site-header">
   <div class="wrap">
     <!--
-      ロゴ。※ logo-lmp.png をリポジトリ直下に置くこと。
+      ロゴ。※ logo-lmp.svg をリポジトリ直下に置くこと。
       未設置の間はマークだけ消え、社名のテキストは残る（壊れた画像は出ない）。
     -->
     <a class="hdr-brand" href="#top">
-      <img class="hdr-logo" src="logo-lmp.png" alt="" onerror="this.remove()">
+      <img class="hdr-logo" src="logo-lmp.svg" alt="" onerror="this.remove()">
       <span>ライフメイクパートナーズ</span>
     </a>
     <nav class="hdr-nav">
@@ -744,12 +744,12 @@
 <footer>
   <div class="wrap">
     <!--
-      コーポレートロゴ。※ logo-lmp.png をリポジトリ直下に置くこと。
+      コーポレートロゴ。※ logo-lmp.svg をリポジトリ直下に置くこと。
       ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
     -->
     <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
        onerror="this.remove()">
-      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+      <img class="footer-logo" src="logo-lmp.svg" alt="ライフメイクパートナーズ"
            onerror="this.closest('.footer-logo-plate').remove()">
     </a>
     <nav class="footer-links">

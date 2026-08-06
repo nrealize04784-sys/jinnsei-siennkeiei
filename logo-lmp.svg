@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 500" width="640" height="500" role="img" aria-label="LMP LIFE MAKE PARTNER'S">
+  <!--
+    ライフメイクパートナーズ ロゴの暫定再現版。
+    書体・線幅・比率は正規のロゴと一致していない。
+    正規のロゴファイルが用意でき次第、差し替えること。
+  -->
+  <title>LMP / LIFE MAKE PARTNER'S</title>
+  <!-- 屋根 -->
+  <path d="M70 252 L320 124 L570 252" fill="none" stroke="#17803d" stroke-width="40"
+        stroke-linejoin="miter" stroke-miterlimit="10"/>
+  <!-- 「i」の軸。屋根を貫いて立つ -->
+  <rect x="154" y="118" width="30" height="146" fill="#17803d"/>
+  <!-- 「i」の点にあたる赤いハート -->
+  <path fill="#f5333f"
+        d="M169 112 C134 88 141 62 155 62 C163 62 168 68 169 73 C170 68 175 62 183 62 C197 62 204 88 169 112 Z"/>
+  <!-- 社名 -->
+  <text x="320" y="396" text-anchor="middle"
+        font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
+        font-weight="900" font-size="172" fill="#17803d">LMP</text>
+  <!-- textLength で幅を固定し、書体が違う環境でもはみ出さないようにする -->
+  <text x="320" y="470" text-anchor="middle" textLength="536" lengthAdjust="spacingAndGlyphs"
+        font-family="Arial Black, Arial Bold, Helvetica, Arial, sans-serif"
+        font-weight="900" font-size="52" fill="#17803d">LIFE MAKE PARTNER'S</text>
+</svg>
