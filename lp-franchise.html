@@ -224,6 +224,10 @@
     text-shadow:4px 4px 0 rgba(7,18,40,.75),0 2px 20px rgba(7,18,40,.5);
   }
   .fv h1 em{font-style:normal;color:var(--gold)}
+  /* 2つのコマンドを横に並べる。幅が足りなければ折り返す */
+  .fv-actions{display:flex;flex-wrap:wrap;gap:14px}
+  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
+  .btn-sub{color:#fff}
   .fv p{
     font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,.9);margin-bottom:44px;
     text-shadow:0 2px 14px rgba(7,18,40,.8);
@@ -664,7 +668,10 @@
       <span class="label">不動産フランチャイズ 加盟募集</span>
       <h1><em>RPG</em>から、<br>家が売れる。</h1>
       <p>物件を探している人ではなく、<br>人生を良くしたい人が集まる。</p>
-      <a class="btn" href="#entry">事業説明会に申し込む</a>
+      <div class="fv-actions">
+        <a class="btn" href="#entry">事業説明会に申し込む</a>
+        <a class="btn btn-sub" href="shiryou.html">資料請求</a>
+      </div>
     </div>
   </div>
 </header>
