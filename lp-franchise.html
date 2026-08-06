@@ -145,8 +145,8 @@
   .hdr-brand:hover span{text-decoration:underline}
   /* ロゴは緑と赤。濃紺に直接置くと沈むので、白い小さな台紙に載せる */
   .hdr-logo{
-    height:34px;width:auto;object-fit:contain;
-    background:#fff;border-radius:4px;padding:5px 10px;
+    height:46px;width:auto;object-fit:contain;
+    background:#fff;border-radius:5px;padding:6px 12px;
   }
   /* ロゴが出ているときは、同じ内容のカタカナ社名を重ねて出さない。
      読み込みに失敗して img が消えると、この指定が外れて社名が復活する */
@@ -162,15 +162,15 @@
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
   */
-  #entry{scroll-margin-top:76px}
+  #entry{scroll-margin-top:92px}
   @media(max-width:640px){
     /* 幅が足りないので、ロゴを小さくして社名テキストは出さない */
     .hdr-brand span{display:none}
-    .hdr-logo{height:26px;padding:4px 7px}
+    .hdr-logo{height:32px;padding:5px 8px}
     .site-header .wrap{padding-top:10px;padding-bottom:10px}
     .hdr-nav{gap:18px}
     .hdr-nav a{font-size:13px;letter-spacing:.02em}
-    #entry{scroll-margin-top:56px}
+    #entry{scroll-margin-top:66px}
   }
 
   /* ---- 1. ファーストビュー ---- */
