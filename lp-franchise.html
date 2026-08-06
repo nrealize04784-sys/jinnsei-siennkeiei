@@ -168,6 +168,12 @@
     font-size:14px;letter-spacing:.08em;white-space:nowrap;
   }
   .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
+  /* 文字リンクにもコマンドのカーソルを立てる。色は文字色に追従させる */
+  .hdr-nav > a:not(.hdr-cta){display:inline-flex;align-items:center;gap:.5em}
+  .hdr-nav > a:not(.hdr-cta)::before{
+    content:"";flex:none;
+    width:.45em;height:.66em;background:currentColor;clip-path:var(--cursor-clip);
+  }
   /*
     メニュー内の資料請求はコマンドウィンドウに見立てる。
     黒地・白の角枠・▶カーソルという、申し込みフォームと同じ作り。
