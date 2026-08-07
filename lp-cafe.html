@@ -11,14 +11,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  /* ── 配色はアクセント1色だけ。多色使いはしない ── */
+  /* ── 昭和の喫茶店の配色 ──
+     生成りの地に、あんず色の面と、れんが色の枠。基本はこの3色で組む。
+     食べもののイラストだけは、緑や赤を使ってよい。 */
   :root{
-    --bg:#FAF6F0;
-    --ink:#3E332B;
-    --ink-soft:#6B5D51;
-    --accent:#C4703F;
-    --line:#E5DACE;
-    --card:#FFFCF8;
+    --bg:#FBF1E1;        /* 地 */
+    --apricot:#F2C68C;   /* あんず色の面（ファーストビュー・申込） */
+    --ink:#4A2A1B;
+    --ink-soft:#7A5741;
+    --accent:#A8452A;    /* れんが色。枠とボタン */
+    --line:#E6CDA9;
+    --card:#FFF8EC;
     --r:16px;
     --pad:80px;      /* セクション間の余白（スマホ） */
     --hdr:56px;      /* 固定ヘッダーの高さ（スマホ） */
@@ -61,16 +64,16 @@
     font-family:inherit;
     transition:background .25s ease;
   }
-  .btn:hover{background:#B0602F}
+  .btn:hover{background:#8E3A22}
 
   /* ── 固定ヘッダー ──
-     最上部はヒーロー上端と同じ色で、境目が見えない。
+     最上部は地の色で、ヒーローとの境目が見えない。
      スクロールすると .scrolled が付き、生成りの下地と細い罫線が出る。
      ロゴを乗算で溶かすため、背景は半透明にせず必ず不透明で塗る。 */
   .site-header{
     position:fixed;top:0;left:0;right:0;z-index:30;
     height:var(--hdr);
-    background:#F3EADD;
+    background:var(--bg);
     border-bottom:1px solid transparent;
     transition:background .3s ease,border-color .3s ease;
   }
@@ -118,7 +121,7 @@
   /* ── 1. ファーストビュー ── */
   .hero{
     padding-block:calc(var(--hdr) + 56px) 88px;
-    background:linear-gradient(180deg,#F3EADD 0%,var(--bg) 100%);
+    background:var(--bg);
     text-align:center;
   }
   @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 96px) 120px} }
@@ -127,10 +130,31 @@
     margin:0 0 28px;
   }
   .hero .sub{
-    color:var(--ink-soft);
+    color:#5F3E29;              /* あんず色の上でも読める濃さ */
     font-size:clamp(15px,3.6vw,18px);
-    margin-bottom:44px;
+    margin-bottom:40px;
   }
+  /* あんず色の面を、れんが色の太い枠で囲う。喫茶店の看板の作り */
+  .frame{
+    background:var(--apricot);
+    border:6px solid var(--accent);
+    border-radius:24px;
+    padding:40px 20px 0;
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.38);
+  }
+  @media (min-width:768px){ .frame{padding:64px 40px 0;border-width:8px;border-radius:28px} }
+  /* 看板の小さな文字。太字＋広い字間で昭和の喫茶店の見出しにする */
+  .eyebrow{
+    color:var(--accent);
+    font-family:"Noto Serif JP",serif;
+    font-weight:600;
+    font-size:clamp(12px,3vw,15px);
+    letter-spacing:.42em;
+    text-indent:.42em;      /* 字間ぶん右に寄るので、その分だけ戻す */
+    margin-bottom:24px;
+  }
+  /* 喫茶メニューの並び。枠の下辺にそのまま接地させる */
+  .lineup{width:100%;height:auto;display:block;margin-top:44px}
   /* 写真プレースホルダー①：木のカウンターと窓際の席。
      写真が用意できたら .photo ごと <img> に差し替える。 */
   .photo{
@@ -251,9 +275,11 @@
   .seats p{color:var(--ink-soft)}
 
   /* ── 7. 最終CTA ── */
-  .entry{background:#F3EADD}
+  .entry{background:var(--apricot)}
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:48px}
+  /* あんず色の上の小さな文字は、地の明るさに負けないよう一段濃くする */
+  .entry .lead{text-align:center;color:#5F3E29;margin-bottom:48px}
+  .entry .entry-note{color:#5F3E29}
   form{
     max-width:520px;
     margin-inline:auto;
@@ -300,7 +326,7 @@
   }
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
   footer a:hover{color:var(--accent)}
-  .footer-copy{margin-top:14px;font-size:12px;color:#9A8B7C}
+  .footer-copy{margin-top:14px;font-size:12px;color:#9C7A5E}
   /* テーブルの手前に置く余白。スイーツと文字を重ねない */
   .footer-space{height:150px}
   @media (min-width:768px){ .footer-space{height:120px} }
@@ -308,8 +334,8 @@
   /* テーブル天板。スマホは下端に追従ボタンが重なるぶん厚くする */
   .footer-table{
     height:132px;
-    background:#E3CCA8;
-    border-top:3px solid #D8BC93;
+    background:#D9AE79;
+    border-top:4px solid #C1935E;
   }
   @media (min-width:768px){ .footer-table{height:84px} }
 
@@ -327,7 +353,7 @@
   .sticky{
     position:fixed;left:0;right:0;bottom:0;z-index:20;
     padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-    background:rgba(250,246,240,.92);
+    background:rgba(251,241,225,.94);
     backdrop-filter:blur(6px);
     border-top:1px solid var(--line);
   }
@@ -364,25 +390,60 @@
 <!-- 1. ファーストビュー -->
 <header class="hero">
   <div class="wrap">
-    <h1>入りにくい不動産屋を、<br>やめる。</h1>
-    <p class="sub">まちの人が、コーヒーを飲むみたいに相談に来る。</p>
-    <a class="btn" href="#entry">まず話を聞いてみる</a>
+    <div class="frame">
+      <p class="eyebrow">喫茶・珈琲・相談</p>
+      <h1>入りにくい不動産屋を、<br>やめる。</h1>
+      <p class="sub">まちの人が、コーヒーを飲むみたいに相談に来る。</p>
+      <a class="btn" href="#entry">まず話を聞いてみる</a>
 
-    <!-- 写真プレースホルダー①：窓際の席と木のカウンター -->
-    <div class="photo" role="img" aria-label="窓際の席と木のカウンターがある、明るい店内">
-      <svg viewBox="0 0 880 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="880" height="340" fill="#FFFCF8"/>
-        <rect x="60" y="40" width="330" height="200" rx="8" fill="#F3EADD"/>
-        <path d="M225 40v200M60 140h330" stroke="#E5DACE" stroke-width="2"/>
-        <circle cx="150" cy="100" r="26" fill="#FAF6F0"/>
-        <rect x="440" y="40" width="380" height="200" rx="8" fill="#F7F1E8"/>
-        <path d="M470 200h320" stroke="#E5DACE" stroke-width="2"/>
-        <rect x="520" y="120" width="70" height="52" rx="6" fill="#FFFCF8" stroke="#C4703F" stroke-width="2"/>
-        <path d="M590 134h16a12 12 0 0 1 0 24h-16" fill="none" stroke="#C4703F" stroke-width="2"/>
-        <path d="M540 100c0-8 8-8 8-16M562 100c0-8 8-8 8-16" fill="none" stroke="#E5DACE" stroke-width="2" stroke-linecap="round"/>
-        <rect x="660" y="150" width="90" height="22" rx="6" fill="#F3EADD"/>
-        <rect x="0" y="262" width="880" height="18" fill="#EFE4D6"/>
-        <rect x="0" y="280" width="880" height="60" fill="#F7F1E8"/>
+      <!-- 喫茶メニューの並び。クリームソーダ／珈琲／ポット／パンケーキ／ソフトクリーム -->
+      <svg class="lineup" viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- クリームソーダ -->
+        <path d="M62 76h56l-13 74H75z" fill="#EAF3EA"/>
+        <path d="M67 96h46l-11 52H78z" fill="#68BE6E"/>
+        <circle cx="84" cy="112" r="3" fill="#9BD79F"/>
+        <circle cx="98" cy="130" r="2.5" fill="#9BD79F"/>
+        <rect x="84" y="150" width="12" height="24" fill="#EAF3EA"/>
+        <ellipse cx="90" cy="178" rx="27" ry="7" fill="#EAF3EA"/>
+        <circle cx="90" cy="68" r="21" fill="#FFFDF7"/>
+        <circle cx="74" cy="76" r="12" fill="#FFFDF7"/>
+        <circle cx="106" cy="76" r="12" fill="#FFFDF7"/>
+        <circle cx="104" cy="42" r="8" fill="#D8483A"/>
+        <path d="M104 34c2-8 8-11 14-11" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+        <path d="M70 36l12 32" stroke="#A8452A" stroke-width="6" stroke-linecap="round"/>
+
+        <!-- コーヒーカップ -->
+        <ellipse cx="270" cy="176" rx="62" ry="10" fill="#FFF8EC"/>
+        <path d="M314 128q24 4 24 20t-22 18l-2-10q12-2 12-8t-14-10z" fill="#A8452A"/>
+        <path d="M226 122h88l-8 40q-2 10-14 10h-44q-12 0-14-10z" fill="#FFF8EC"/>
+        <ellipse cx="270" cy="122" rx="44" ry="9" fill="#6B3A1E"/>
+        <path d="M254 100c0-9 9-9 9-18M276 100c0-9 9-9 9-18" fill="none" stroke="#D9AE79" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- コーヒーポット -->
+        <!-- 注ぎ口は右上へ。曲げると取っ手が2つあるように見えるので直線で -->
+        <path d="M478 96 L534 74 L540 86 L482 124 Z" fill="#A8452A"/>
+        <path d="M416 96h68l8 68q1 12-11 12h-62q-12 0-11-12z" fill="#A8452A"/>
+        <path d="M418 92q32-16 64 0z" fill="#8E3A22"/>
+        <rect x="442" y="70" width="16" height="14" rx="5" fill="#8E3A22"/>
+        <path d="M416 112q-26 6-26 26t22 22" fill="none" stroke="#8E3A22" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="450" cy="178" rx="42" ry="7" fill="#8E3A22"/>
+
+        <!-- パンケーキ -->
+        <ellipse cx="630" cy="176" rx="66" ry="11" fill="#FFF8EC"/>
+        <ellipse cx="630" cy="160" rx="52" ry="15" fill="#D99A50"/>
+        <ellipse cx="630" cy="142" rx="52" ry="15" fill="#E5AC65"/>
+        <ellipse cx="630" cy="124" rx="50" ry="15" fill="#EDBB78"/>
+        <path d="M584 126q14 14 46 14t46-14v6q0 16-46 16t-46-16z" fill="#C07A3A" opacity=".45"/>
+        <rect x="616" y="100" width="28" height="16" rx="3" fill="#F2C94C"/>
+        <path d="M616 100h28l-6-8h-16z" fill="#F7DA85"/>
+
+        <!-- ソフトクリーム -->
+        <path d="M789 126h42l-21 54z" fill="#DFA75F"/>
+        <path d="M795 138l30-4M800 152l22-3" stroke="#C07A3A" stroke-width="2"/>
+        <ellipse cx="810" cy="124" rx="30" ry="14" fill="#FFFDF7"/>
+        <ellipse cx="810" cy="104" rx="24" ry="13" fill="#FFFDF7"/>
+        <ellipse cx="810" cy="86" rx="17" ry="11" fill="#FFFDF7"/>
+        <path d="M810 62q9 8 6 18h-12q-3-10 6-18z" fill="#FFFDF7"/>
       </svg>
     </div>
   </div>
@@ -429,15 +490,15 @@
     <!-- 写真プレースホルダー②：カウンター越しの相談風景 -->
     <div class="photo fade" style="margin-top:56px" role="img" aria-label="カウンター越しに向かい合って話す二人">
       <svg viewBox="0 0 880 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="880" height="260" fill="#FFFCF8"/>
-        <circle cx="300" cy="96" r="34" fill="#F3EADD"/>
-        <path d="M240 176c0-33 27-52 60-52s60 19 60 52z" fill="#F3EADD"/>
-        <circle cx="580" cy="96" r="34" fill="#EFE4D6"/>
-        <path d="M520 176c0-33 27-52 60-52s60 19 60 52z" fill="#EFE4D6"/>
-        <rect x="120" y="176" width="640" height="16" rx="6" fill="#E5DACE"/>
-        <rect x="404" y="146" width="40" height="30" rx="5" fill="#FFFCF8" stroke="#C4703F" stroke-width="2"/>
-        <path d="M444 154h10a8 8 0 0 1 0 14h-10" fill="none" stroke="#C4703F" stroke-width="2"/>
-        <path d="M416 132c0-6 6-6 6-12M432 132c0-6 6-6 6-12" fill="none" stroke="#E5DACE" stroke-width="2" stroke-linecap="round"/>
+        <rect width="880" height="260" fill="#FFF8EC"/>
+        <circle cx="300" cy="96" r="34" fill="#F2C68C"/>
+        <path d="M240 176c0-33 27-52 60-52s60 19 60 52z" fill="#F2C68C"/>
+        <circle cx="580" cy="96" r="34" fill="#E5B073"/>
+        <path d="M520 176c0-33 27-52 60-52s60 19 60 52z" fill="#E5B073"/>
+        <rect x="120" y="176" width="640" height="16" rx="6" fill="#D9AE79"/>
+        <rect x="404" y="146" width="40" height="30" rx="5" fill="#FFF8EC" stroke="#A8452A" stroke-width="2"/>
+        <path d="M444 154h10a8 8 0 0 1 0 14h-10" fill="none" stroke="#A8452A" stroke-width="2"/>
+        <path d="M416 132c0-6 6-6 6-12M432 132c0-6 6-6 6-12" fill="none" stroke="#D9AE79" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </div>
   </div>
@@ -521,33 +582,33 @@
   <div class="footer-space"></div>
   <svg class="footer-sweets" viewBox="0 0 300 197" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <!-- 脚付きスタンドのプリンアラモード -->
-    <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFD5A4"/>
-    <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C98A4A"/>
-    <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#E2C08A" opacity=".55"/>
-    <circle cx="134" cy="140" r="10" fill="#FFFDF9"/>
-    <circle cx="123" cy="145" r="7" fill="#FFFDF9"/>
-    <circle cx="104" cy="80" r="8" fill="#C4703F"/>
-    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#B08A5E" stroke-width="2" stroke-linecap="round"/>
+    <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFCF92"/>
+    <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C07A3A"/>
+    <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#DDB47A" opacity=".55"/>
+    <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
+    <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
+    <circle cx="104" cy="80" r="8" fill="#D8483A"/>
+    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
     <!-- 皿・脚・台 -->
-    <path d="M56 148h96c-4 9-14 14-48 14s-44-5-48-14z" fill="#F2EBE1"/>
-    <ellipse cx="104" cy="148" rx="48" ry="9" fill="#F7F2EA"/>
-    <path d="M98 156h12v28H98z" fill="#EDE5DA"/>
-    <ellipse cx="104" cy="186" rx="26" ry="7" fill="#F2EBE1"/>
-    <ellipse cx="104" cy="184" rx="26" ry="7" fill="#F7F2EA"/>
+    <path d="M56 148h96c-4 9-14 14-48 14s-44-5-48-14z" fill="#FFF8EC"/>
+    <ellipse cx="104" cy="148" rx="48" ry="9" fill="#FFFCF3"/>
+    <path d="M98 156h12v28H98z" fill="#F6EBDA"/>
+    <ellipse cx="104" cy="186" rx="26" ry="7" fill="#FFF8EC"/>
+    <ellipse cx="104" cy="184" rx="26" ry="7" fill="#FFFCF3"/>
 
     <!-- クリームソーダ -->
-    <path d="M204 76h56l-7 106a6 6 0 0 1-6 6h-30a6 6 0 0 1-6-6z" fill="#F3E3CC"/>
-    <path d="M208 104h48l-5 78a6 6 0 0 1-6 6h-26a6 6 0 0 1-6-6z" fill="#E8B98A"/>
-    <circle cx="222" cy="130" r="4" fill="#F3D8B8" opacity=".8"/>
-    <circle cx="240" cy="152" r="3" fill="#F3D8B8" opacity=".8"/>
-    <circle cx="228" cy="166" r="3.5" fill="#F3D8B8" opacity=".8"/>
-    <circle cx="232" cy="72" r="24" fill="#FFFDF9"/>
+    <path d="M204 76h56l-7 106a6 6 0 0 1-6 6h-30a6 6 0 0 1-6-6z" fill="#EAF3EA"/>
+    <path d="M208 104h48l-5 78a6 6 0 0 1-6 6h-26a6 6 0 0 1-6-6z" fill="#68BE6E"/>
+    <circle cx="222" cy="130" r="4" fill="#9BD79F" opacity=".9"/>
+    <circle cx="240" cy="152" r="3" fill="#9BD79F" opacity=".9"/>
+    <circle cx="228" cy="166" r="3.5" fill="#9BD79F" opacity=".9"/>
+    <circle cx="232" cy="72" r="24" fill="#FFFDF7"/>
     <circle cx="214" cy="80" r="13" fill="#FFFCF6"/>
     <circle cx="250" cy="80" r="12" fill="#FFFCF6"/>
-    <circle cx="243" cy="48" r="8" fill="#C4703F"/>
-    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#B08A5E" stroke-width="2" stroke-linecap="round"/>
-    <path d="M212 44l10 34" stroke="#C4703F" stroke-width="5" stroke-linecap="round"/>
-    <ellipse cx="232" cy="190" rx="26" ry="7" fill="#F2EBE1"/>
+    <circle cx="243" cy="48" r="8" fill="#D8483A"/>
+    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+    <path d="M212 44l10 34" stroke="#A8452A" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="232" cy="190" rx="26" ry="7" fill="#FFF8EC"/>
   </svg>
   <div class="footer-table"></div>
 </footer>
