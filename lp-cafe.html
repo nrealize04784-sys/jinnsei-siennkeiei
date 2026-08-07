@@ -15,10 +15,11 @@
      生成りの地に、あんず色の面と、れんが色の枠。基本はこの3色で組む。
      食べもののイラストだけは、緑や赤を使ってよい。 */
   :root{
-    --bg:#FBF1E1;        /* 地 */
-    --apricot:#F2C68C;   /* あんず色の面（ファーストビュー・申込） */
+    --bg:#F0B978;        /* 地。喫茶店のポスターと同じあんず色 */
+    --cream:#FBF1E1;     /* 面を切り替えるときの生成り */
+    --apricot:#F2C68C;   /* 板の数字などに使う明るいあんず色 */
     --ink:#4A2A1B;
-    --ink-soft:#7A5741;
+    --ink-soft:#5C3A26;
     --accent:#A8452A;    /* れんが色。枠とボタン */
     --brown:#462C1A;     /* 純喫茶の看板の地 */
     --gold:#D9B978;      /* 札のふち */
@@ -241,7 +242,7 @@
   }
   .ask .turn{
     margin-top:36px;
-    color:var(--accent);
+    color:#8E3A22;
     font-size:clamp(22px,5.4vw,30px);
   }
 
@@ -333,11 +334,9 @@
   .seats p{color:var(--ink-soft)}
 
   /* ── 7. 最終CTA ── */
-  .entry{background:var(--apricot)}
+  .entry{background:var(--cream)}
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px}
-  /* あんず色の上の小さな文字は、地の明るさに負けないよう一段濃くする */
-  .entry .lead{text-align:center;color:#5F3E29;margin-bottom:48px}
-  .entry .entry-note{color:#5F3E29}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:48px}
   form{
     max-width:520px;
     margin-inline:auto;
@@ -388,7 +387,7 @@
      PNGの地が白なので、ヘッダーと同じく乗算で生成りに溶かす。 */
   .footer-logo-link{display:inline-block;margin:0 0 30px}
   .footer-logo{width:min(230px,54vw);height:auto;mix-blend-mode:multiply}
-  .footer-copy{margin-top:14px;font-size:12px;color:#9C7A5E}
+  .footer-copy{margin-top:14px;font-size:12px;color:#6B4527}
   /* テーブルの手前に置く余白。スイーツと文字を重ねない */
   .footer-space{height:150px}
   @media (min-width:768px){ .footer-space{height:120px} }
@@ -396,8 +395,8 @@
   /* テーブル天板。スマホは下端に追従ボタンが重なるぶん厚くする */
   .footer-table{
     height:132px;
-    background:#D9AE79;
-    border-top:4px solid #C1935E;
+    background:#C08A4E;
+    border-top:4px solid #A6733C;
   }
   @media (min-width:768px){ .footer-table{height:84px} }
 
@@ -415,7 +414,7 @@
   .sticky{
     position:fixed;left:0;right:0;bottom:0;z-index:20;
     padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-    background:rgba(251,241,225,.94);
+    background:rgba(240,185,120,.94);
     backdrop-filter:blur(6px);
     border-top:1px solid var(--line);
   }
