@@ -148,32 +148,29 @@
     margin-bottom:40px;
   }
 
-  /* ── 純喫茶の看板 ──
-     四隅を落とした八角形。金の太枠 → 茶の隙間 → 金の細線 → 濃い茶の面、の4枚重ね。
-     枠線は border ではなく「重ねた面の縁」なので、角を落としても線が途切れない。 */
-  .oct{
-    clip-path:polygon(
-      var(--c) 0, calc(100% - var(--c)) 0,
-      100% var(--c), 100% calc(100% - var(--c)),
-      calc(100% - var(--c)) 100%, var(--c) 100%,
-      0 calc(100% - var(--c)), 0 var(--c));
-  }
-  .frame  {--c:18px;background:var(--gold);padding:4px}
-  .frame-a{--c:15px;background:#3E2615;padding:5px}
-  .frame-b{--c:11px;background:rgba(217,185,120,.78);padding:1px}
-  .frame-c{
-    --c:10px;
+  /* ── レトロ浪漫の枠 ──
+     連珠（丸い珠のつながり）を四辺に回し、左右には縦の帯を通す。
+     珠の並びは border-image で作る。3x3に切り出し、辺のタイルを round で繰り返すので、
+     枠の大きさが変わっても珠の間隔が崩れず、角にも必ず珠が来る。 */
+  .frame{
     background:radial-gradient(120% 120% at 50% 0%,#5A3A24 0%,#3E2615 100%);
-    padding:34px 20px 22px;
+    border-radius:10px;
+    padding:9px;
+  }
+  .frame-in{
+    border:20px solid transparent;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='66' viewBox='0 0 66 66'%3E%3Cg fill='%23D9B978'%3E%3Crect x='0' y='0' width='6' height='66'/%3E%3Crect x='60' y='0' width='6' height='66'/%3E%3Ccircle cx='13' cy='11' r='9'/%3E%3Ccircle cx='33' cy='11' r='9'/%3E%3Ccircle cx='53' cy='11' r='9'/%3E%3Ccircle cx='13' cy='55' r='9'/%3E%3Ccircle cx='33' cy='55' r='9'/%3E%3Ccircle cx='53' cy='55' r='9'/%3E%3Ccircle cx='13' cy='33' r='9'/%3E%3Ccircle cx='53' cy='33' r='9'/%3E%3C/g%3E%3C/svg%3E") 22 round;
+    padding:26px 12px 14px;
   }
   @media (min-width:768px){
-    .frame  {--c:24px;padding:6px}
-    .frame-a{--c:20px;padding:7px}
-    .frame-b{--c:14px}
-    .frame-c{--c:13px;padding:52px 44px 26px}
+    .frame{padding:12px}
+    .frame-in{border-width:26px;padding:40px 26px 16px}
   }
-  /* 狭い画面は左右の余白を削り、見出しを1行に保つ */
-  @media (max-width:480px){ .frame-c{padding-inline:14px} }
+  /* 狭い画面は珠を小さくし、左右の余白を削って見出しを1行に保つ */
+  @media (max-width:480px){
+    .frame{padding:6px}
+    .frame-in{border-width:12px;padding-inline:6px}
+  }
 
   /* 札とひし形の飾りを横一列に。狭い画面では札だけ残す */
   .signboard{
@@ -451,7 +448,7 @@
 <!-- 1. ファーストビュー -->
 <header class="hero">
   <div class="wrap">
-    <div class="frame oct"><div class="frame-a oct"><div class="frame-b oct"><div class="frame-c oct">
+    <div class="frame"><div class="frame-in">
       <!-- 看板の札と、その両脇のひし形の飾り -->
       <div class="signboard">
         <svg class="diamonds" viewBox="0 0 224 22" preserveAspectRatio="none" aria-hidden="true">
@@ -525,7 +522,7 @@
         <ellipse cx="810" cy="86" rx="17" ry="11" fill="#FFFDF7"/>
         <path d="M810 62q9 8 6 18h-12q-3-10 6-18z" fill="#FFFDF7"/>
       </svg>
-    </div></div></div></div>
+    </div></div>
   </div>
 </header>
 
