@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>会社概要｜ライフメイクパートナーズ</title>
-<meta name="description" content="ライフメイクパートナーズ（日本リアライズ株式会社）の会社概要。">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="不動産フランチャイズ加盟の資料請求はこちらから。1エリア2社限定の加盟募集。">
 <meta name="robots" content="noindex">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,7 @@
   /* 書体・配色・札の作りは lp-cafe.html と揃えている */
   :root{
     --bg:#FBF1E1;
+    --apricot:#F2C68C;
     --ink:#4A2A1B;
     --ink-soft:#7A5741;
     --accent:#A8452A;
@@ -64,17 +65,14 @@
   .hdr-nav a,.hdr-nav [aria-current]{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
   .hdr-nav [aria-current]{color:var(--ink)}
   .hdr-nav a:hover{color:var(--accent)}
-  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--accent);color:#fff !important}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--accent);color:#fff !important}
   .hdr-cta:hover{background:#8E3A22}
-  .hdr-cta2{border:1px solid var(--accent);color:var(--accent) !important}
-  .hdr-cta2:hover{background:var(--accent);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
-    .hdr-nav a{font-size:13px}
-    .hdr-cta,.hdr-cta2{padding:8px 14px}
+    .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
+    .hdr-cta{padding:8px 14px}
   }
-  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
 
   /* ── 見出しの札。LPのファーストビューと同じ形 ── */
   main{padding:calc(var(--hdr) + 64px) 0 96px;text-align:center}
@@ -101,28 +99,51 @@
   }
   .lead{color:var(--ink-soft);font-size:15px;margin-bottom:52px}
 
-  /* ── 会社概要の表。狭い画面では縦に積む ── */
-  dl{
-    max-width:640px;margin:0 auto;text-align:left;
-    display:grid;grid-template-columns:130px 1fr;
+  /* ── 入力欄。LPの申込フォームと同じ作り ── */
+  form{
+    max-width:520px;margin-inline:auto;text-align:left;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--r);
-    overflow:hidden;
+    padding:32px 24px;
   }
-  dt,dd{padding:20px 22px;font-size:15px;line-height:1.9;margin:0;border-top:1px solid var(--line)}
-  dt:first-of-type,dt:first-of-type + dd{border-top:0}
-  dt{color:var(--ink-soft);letter-spacing:.08em}
-  dd a{color:var(--ink);text-decoration:none}
-  dd a:hover{color:var(--accent);text-decoration:underline}
-  @media (max-width:600px){
-    dl{grid-template-columns:1fr}
-    dt{padding-bottom:0;border-top:1px solid var(--line)}
-    dd{padding-top:4px;border-top:0}
-    dt:first-of-type{border-top:0}
+  .field{margin-bottom:20px}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
+  input,textarea{
+    width:100%;
+    padding:15px 16px;
+    font-size:16px;
+    font-family:inherit;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
   }
+  textarea{min-height:88px;resize:vertical;line-height:1.7;display:block}
+  input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .btn{
+    display:block;width:100%;
+    background:var(--accent);
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    font-size:17px;
+    font-family:inherit;
+    padding:20px;
+    margin-top:8px;
+    border:0;
+    border-radius:var(--r);
+    cursor:pointer;
+    transition:background .25s ease;
+  }
+  .btn:hover{background:#8E3A22}
+  .note{
+    max-width:520px;margin:24px auto 0;
+    font-size:13px;line-height:1.9;color:var(--ink-soft);
+  }
+  .note a{color:var(--accent)}
   .back{
-    display:inline-block;margin-top:48px;
+    display:inline-block;margin-top:44px;
     color:var(--ink-soft);text-decoration:none;font-size:14px;
   }
   .back:hover{color:var(--accent);text-decoration:underline}
@@ -166,25 +187,54 @@
     </a>
     <nav class="hdr-nav">
       <a href="lp-cafe.html">ホーム</a>
-      <!-- 今このページなので、会社概要はリンクにせず現在地として見せる -->
-      <span aria-current="page">会社概要</span>
+      <a href="kaisha-cafe.html">会社概要</a>
       <a class="hdr-cta" href="lp-cafe.html#entry">話を聞いてみる</a>
-      <a class="hdr-cta2" href="shiryou-cafe.html">資料請求</a>
+      <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
+      <span aria-current="page">資料請求</span>
     </nav>
   </div>
 </div>
 
 <main>
   <div class="wrap">
-    <p class="plaque"><span>会社概要</span></p>
-    <p class="lead">ライフメイクパートナーズの運営会社です。</p>
-    <dl>
-      <dt>商号</dt><dd>日本リアライズ株式会社</dd>
-      <dt>設立</dt><dd>2009年1月20日</dd>
-      <dt>代表者</dt><dd>代表取締役　大橋 孝行</dd>
-      <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
-      <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
-    </dl>
+    <p class="plaque"><span>資料請求</span></p>
+    <p class="lead">加盟の概要をまとめた資料をお送りします。</p>
+
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（lp-cafe.html と同じ）。
+      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+    -->
+    <form id="req" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お名前</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="addr">送付先のご住所</label>
+        <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+      </div>
+      <button class="btn" type="submit">この内容で資料請求する</button>
+    </form>
+
+    <p class="note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+    </p>
+
     <a class="back" href="lp-cafe.html">← 前のページにもどる</a>
   </div>
 </main>
@@ -196,6 +246,7 @@
     </a>
     <nav>
       <a href="lp-cafe.html">ホーム</a>
+      <a href="kaisha-cafe.html">会社概要</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
@@ -233,6 +284,34 @@
   </svg>
   <div class="footer-table"></div>
 </footer>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('req').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
 
 </body>
 </html>
