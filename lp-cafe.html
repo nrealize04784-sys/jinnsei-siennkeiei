@@ -20,6 +20,8 @@
     --ink:#4A2A1B;
     --ink-soft:#7A5741;
     --accent:#A8452A;    /* れんが色。枠とボタン */
+    --brown:#462C1A;     /* 純喫茶の看板の地 */
+    --gold:#D9B978;      /* 看板の金線と札 */
     --line:#E6CDA9;
     --card:#FFF8EC;
     --r:16px;
@@ -130,35 +132,74 @@
   }
   @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 96px) 120px} }
   .hero h1{
-    font-size:clamp(30px,7vw,52px);
+    /* 「入りにくい不動産屋を、」が狭い画面でも1行に収まる大きさに抑える */
+    font-size:clamp(24px,6.4vw,52px);
     margin:0 0 28px;
   }
+  .hero h1{color:#F4E6CB}
   .hero .sub{
-    color:#5F3E29;              /* あんず色の上でも読める濃さ */
+    color:#D6BF9C;              /* 濃い茶の上で沈まない明るさ */
     font-size:clamp(15px,3.6vw,18px);
     margin-bottom:40px;
   }
-  /* あんず色の面を、れんが色の太い枠で囲う。喫茶店の看板の作り */
+
+  /* ── 純喫茶の看板 ──
+     濃い茶の地に金の二重線を内側へ引き、中央に金縁の札を掛ける。 */
   .frame{
-    background:var(--apricot);
-    border:6px solid var(--accent);
-    border-radius:24px;
-    padding:40px 20px 0;
-    box-shadow:inset 0 0 0 3px rgba(255,255,255,.38);
+    position:relative;
+    background:radial-gradient(120% 120% at 50% 0%,#5A3A24 0%,#3E2615 100%);
+    border-radius:6px;
+    padding:34px 20px 22px;
   }
-  @media (min-width:768px){ .frame{padding:64px 40px 0;border-width:8px;border-radius:28px} }
-  /* 看板の小さな文字。太字＋広い字間で昭和の喫茶店の見出しにする */
-  .eyebrow{
-    color:var(--accent);
-    font-family:"Noto Serif JP",serif;
-    font-weight:600;
-    font-size:clamp(12px,3vw,15px);
-    letter-spacing:.42em;
-    text-indent:.42em;      /* 字間ぶん右に寄るので、その分だけ戻す */
-    margin-bottom:24px;
+  @media (min-width:768px){ .frame{padding:52px 44px 26px} }
+  /* 狭い画面は左右の余白を削り、見出しを1行に保つ */
+  @media (max-width:480px){ .frame{padding-inline:14px} }
+  /* 内側の金線。太い線と、その内に細く薄い線をもう1本 */
+  .frame::before,.frame::after{
+    content:"";position:absolute;pointer-events:none;border-radius:3px;
   }
-  /* 喫茶メニューの並び。枠の下辺にそのまま接地させる */
-  .lineup{width:100%;height:auto;display:block;margin-top:44px}
+  .frame::before{inset:10px;border:1px solid rgba(217,185,120,.72)}
+  .frame::after{inset:15px;border:1px solid rgba(217,185,120,.26)}
+  @media (min-width:768px){
+    .frame::before{inset:14px}
+    .frame::after{inset:20px}
+  }
+
+  /* 札とひし形の飾りを横一列に。狭い画面では札だけ残す */
+  .signboard{
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    margin-bottom:30px;
+  }
+  .diamonds{flex:1;max-width:200px;height:22px;color:var(--gold);opacity:.85}
+  @media (max-width:620px){ .diamonds{display:none} }
+
+  /* 金縁の札。両端を尖らせた喫茶店の看板の形 */
+  .plaque{
+    --cut:polygon(0% 50%,5% 0%,95% 0%,100% 50%,95% 100%,5% 100%);
+    flex:none;
+    background:var(--gold);
+    clip-path:var(--cut);
+    padding:2px 3px;
+  }
+  .plaque span{
+    display:block;
+    clip-path:var(--cut);
+    background:linear-gradient(180deg,#F7E7C4 0%,#E9D2A4 100%);
+    color:#43290F;
+    font-family:"Noto Serif JP",serif;font-weight:600;
+    font-size:clamp(13px,3.4vw,17px);
+    letter-spacing:.3em;
+    text-indent:.3em;         /* 字間ぶん右に寄るので、その分だけ戻す */
+    padding:9px 34px;
+    white-space:nowrap;
+  }
+
+  /* 看板の上のボタンは金。れんが色は濃い茶に沈むので使わない */
+  .btn-gold{background:var(--gold);color:#43290F}
+  .btn-gold:hover{background:#E8CB93}
+
+  /* 喫茶メニューの並び。内側の金線の上に品物を立たせる */
+  .lineup{width:100%;height:auto;display:block;margin-top:40px}
   /* 写真プレースホルダー①：木のカウンターと窓際の席。
      写真が用意できたら .photo ごと <img> に差し替える。 */
   .photo{
@@ -399,10 +440,29 @@
 <header class="hero">
   <div class="wrap">
     <div class="frame">
-      <p class="eyebrow">喫茶・珈琲・相談</p>
+      <!-- 看板の札と、その両脇のひし形の飾り -->
+      <div class="signboard">
+        <svg class="diamonds" viewBox="0 0 224 22" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M14 11 28 2 42 11 28 20Z"/><path d="M42 11 56 2 70 11 56 20Z"/>
+            <path d="M70 11 84 2 98 11 84 20Z"/><path d="M98 11 112 2 126 11 112 20Z"/>
+            <path d="M126 11 140 2 154 11 140 20Z"/><path d="M154 11 168 2 182 11 168 20Z"/>
+            <path d="M182 11 196 2 210 11 196 20Z"/>
+          </g>
+        </svg>
+        <p class="plaque"><span>喫茶・珈琲・相談</span></p>
+        <svg class="diamonds" viewBox="0 0 224 22" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M14 11 28 2 42 11 28 20Z"/><path d="M42 11 56 2 70 11 56 20Z"/>
+            <path d="M70 11 84 2 98 11 84 20Z"/><path d="M98 11 112 2 126 11 112 20Z"/>
+            <path d="M126 11 140 2 154 11 140 20Z"/><path d="M154 11 168 2 182 11 168 20Z"/>
+            <path d="M182 11 196 2 210 11 196 20Z"/>
+          </g>
+        </svg>
+      </div>
       <h1>入りにくい不動産屋を、<br>やめる。</h1>
       <p class="sub">まちの人が、コーヒーを飲むみたいに相談に来る。</p>
-      <a class="btn" href="#entry">まず話を聞いてみる</a>
+      <a class="btn btn-gold" href="#entry">まず話を聞いてみる</a>
 
       <!-- 喫茶メニューの並び。クリームソーダ／珈琲／ポット／パンケーキ／ソフトクリーム -->
       <svg class="lineup" viewBox="0 0 900 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -417,24 +477,24 @@
         <circle cx="74" cy="76" r="12" fill="#FFFDF7"/>
         <circle cx="106" cy="76" r="12" fill="#FFFDF7"/>
         <circle cx="104" cy="42" r="8" fill="#D8483A"/>
-        <path d="M104 34c2-8 8-11 14-11" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
-        <path d="M70 36l12 32" stroke="#A8452A" stroke-width="6" stroke-linecap="round"/>
+        <path d="M104 34c2-8 8-11 14-11" fill="none" stroke="#C9A57E" stroke-width="2" stroke-linecap="round"/>
+        <path d="M70 36l12 32" stroke="#C25A32" stroke-width="6" stroke-linecap="round"/>
 
         <!-- コーヒーカップ -->
         <ellipse cx="270" cy="176" rx="62" ry="10" fill="#FFF8EC"/>
-        <path d="M314 128q24 4 24 20t-22 18l-2-10q12-2 12-8t-14-10z" fill="#A8452A"/>
+        <path d="M314 128q24 4 24 20t-22 18l-2-10q12-2 12-8t-14-10z" fill="#C25A32"/>
         <path d="M226 122h88l-8 40q-2 10-14 10h-44q-12 0-14-10z" fill="#FFF8EC"/>
-        <ellipse cx="270" cy="122" rx="44" ry="9" fill="#6B3A1E"/>
+        <ellipse cx="270" cy="122" rx="44" ry="9" fill="#4A2A16"/>
         <path d="M254 100c0-9 9-9 9-18M276 100c0-9 9-9 9-18" fill="none" stroke="#D9AE79" stroke-width="3" stroke-linecap="round"/>
 
         <!-- コーヒーポット -->
         <!-- 注ぎ口は右上へ。曲げると取っ手が2つあるように見えるので直線で -->
-        <path d="M478 96 L534 74 L540 86 L482 124 Z" fill="#A8452A"/>
-        <path d="M416 96h68l8 68q1 12-11 12h-62q-12 0-11-12z" fill="#A8452A"/>
-        <path d="M418 92q32-16 64 0z" fill="#8E3A22"/>
-        <rect x="442" y="70" width="16" height="14" rx="5" fill="#8E3A22"/>
-        <path d="M416 112q-26 6-26 26t22 22" fill="none" stroke="#8E3A22" stroke-width="9" stroke-linecap="round"/>
-        <ellipse cx="450" cy="178" rx="42" ry="7" fill="#8E3A22"/>
+        <path d="M478 96 L534 74 L540 86 L482 124 Z" fill="#C25A32"/>
+        <path d="M416 96h68l8 68q1 12-11 12h-62q-12 0-11-12z" fill="#C25A32"/>
+        <path d="M418 92q32-16 64 0z" fill="#A8452A"/>
+        <rect x="442" y="70" width="16" height="14" rx="5" fill="#A8452A"/>
+        <path d="M416 112q-26 6-26 26t22 22" fill="none" stroke="#A8452A" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="450" cy="178" rx="42" ry="7" fill="#A8452A"/>
 
         <!-- パンケーキ -->
         <ellipse cx="630" cy="176" rx="66" ry="11" fill="#FFF8EC"/>
