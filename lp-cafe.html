@@ -286,16 +286,42 @@
   }
   .entry-note a{color:var(--accent)}
 
+  /* ── フッター ──
+     クリームの壁の下に木のテーブルを一段置き、その上にスイーツを乗せる。
+     テーブルの高さぶんだけ、リンクの下に余白を確保する。 */
   footer{
-    padding:48px 0 120px;
+    position:relative;
+    padding-top:48px;
     text-align:center;
     font-size:13px;
     color:var(--ink-soft);
     border-top:1px solid var(--line);
+    overflow:hidden;
   }
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
   footer a:hover{color:var(--accent)}
-  @media (min-width:768px){ footer{padding-bottom:48px} }
+  .footer-copy{margin-top:14px;font-size:12px;color:#9A8B7C}
+  /* テーブルの手前に置く余白。スイーツと文字を重ねない */
+  .footer-space{height:150px}
+  @media (min-width:768px){ .footer-space{height:120px} }
+
+  /* テーブル天板。スマホは下端に追従ボタンが重なるぶん厚くする */
+  .footer-table{
+    height:132px;
+    background:#E3CCA8;
+    border-top:3px solid #D8BC93;
+  }
+  @media (min-width:768px){ .footer-table{height:84px} }
+
+  /* テーブルの上に立つスイーツ。天板の上端に足を合わせる */
+  .footer-sweets{
+    position:absolute;right:16px;bottom:132px;
+    width:200px;height:auto;display:block;
+    pointer-events:none;
+  }
+  @media (min-width:768px){
+    .footer-sweets{right:calc((100% - min(100% - 40px,880px)) / 2);bottom:84px;width:260px}
+  }
 
   /* ── スマホ追従ボタン（細く。主張させない） ── */
   .sticky{
@@ -488,7 +514,42 @@
     <nav>
       <a href="kaisha.html">会社概要</a>
     </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
+
+  <!-- スイーツと木のテーブル。装飾なので読み上げ対象から外す -->
+  <div class="footer-space"></div>
+  <svg class="footer-sweets" viewBox="0 0 300 197" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- 脚付きスタンドのプリンアラモード -->
+    <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFD5A4"/>
+    <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C98A4A"/>
+    <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#E2C08A" opacity=".55"/>
+    <circle cx="134" cy="140" r="10" fill="#FFFDF9"/>
+    <circle cx="123" cy="145" r="7" fill="#FFFDF9"/>
+    <circle cx="104" cy="80" r="8" fill="#C4703F"/>
+    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#B08A5E" stroke-width="2" stroke-linecap="round"/>
+    <!-- 皿・脚・台 -->
+    <path d="M56 148h96c-4 9-14 14-48 14s-44-5-48-14z" fill="#F2EBE1"/>
+    <ellipse cx="104" cy="148" rx="48" ry="9" fill="#F7F2EA"/>
+    <path d="M98 156h12v28H98z" fill="#EDE5DA"/>
+    <ellipse cx="104" cy="186" rx="26" ry="7" fill="#F2EBE1"/>
+    <ellipse cx="104" cy="184" rx="26" ry="7" fill="#F7F2EA"/>
+
+    <!-- クリームソーダ -->
+    <path d="M204 76h56l-7 106a6 6 0 0 1-6 6h-30a6 6 0 0 1-6-6z" fill="#F3E3CC"/>
+    <path d="M208 104h48l-5 78a6 6 0 0 1-6 6h-26a6 6 0 0 1-6-6z" fill="#E8B98A"/>
+    <circle cx="222" cy="130" r="4" fill="#F3D8B8" opacity=".8"/>
+    <circle cx="240" cy="152" r="3" fill="#F3D8B8" opacity=".8"/>
+    <circle cx="228" cy="166" r="3.5" fill="#F3D8B8" opacity=".8"/>
+    <circle cx="232" cy="72" r="24" fill="#FFFDF9"/>
+    <circle cx="214" cy="80" r="13" fill="#FFFCF6"/>
+    <circle cx="250" cy="80" r="12" fill="#FFFCF6"/>
+    <circle cx="243" cy="48" r="8" fill="#C4703F"/>
+    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#B08A5E" stroke-width="2" stroke-linecap="round"/>
+    <path d="M212 44l10 34" stroke="#C4703F" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="232" cy="190" rx="26" ry="7" fill="#F2EBE1"/>
+  </svg>
+  <div class="footer-table"></div>
 </footer>
 
 <!-- スマホ追従ボタン -->
