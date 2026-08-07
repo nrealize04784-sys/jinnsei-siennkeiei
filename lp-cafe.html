@@ -92,11 +92,16 @@
     white-space:nowrap;
   }
   /* ロゴPNGの地は白。生成りの上だと白い四角が浮くので、乗算で下地に溶かす */
-  .hdr-logo{height:32px;width:auto;object-fit:contain;mix-blend-mode:multiply}
-  @media (min-width:768px){ .hdr-logo{height:38px} }
-  /* ロゴが出ているあいだは、同じ意味の社名テキストを重ねない。
-     画像の読み込みに失敗すると img が消え、この指定も外れて社名が出る */
-  .hdr-logo + .hdr-name{display:none}
+  .hdr-logo,.hdr-word{width:auto;object-fit:contain;mix-blend-mode:multiply}
+  .hdr-logo{height:32px}
+  /* 欧文はマークの半分以下の高さに。並べて横長のロゴにする */
+  .hdr-word{height:13px}
+  @media (min-width:768px){ .hdr-logo{height:38px} .hdr-word{height:15px} }
+  /* 幅が足りないので、狭い画面では欧文を出さずマークだけにする */
+  @media (max-width:520px){ .hdr-word{display:none} }
+  /* ロゴが1枚でも出ているあいだは、同じ意味の社名テキストを重ねない。
+     読み込みに失敗すると img が消え、この指定も外れて社名が出る */
+  .hdr-brand:has(img) .hdr-name{display:none}
 
   .hdr-nav{display:flex;align-items:center;gap:22px}
   .hdr-nav a{
@@ -326,6 +331,10 @@
   }
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
   footer a:hover{color:var(--accent)}
+  /* コーポレートロゴ。ヘッダーと同じ絵柄を、こちらは組み全体で大きく見せる。
+     PNGの地が白なので、ヘッダーと同じく乗算で生成りに溶かす。 */
+  .footer-logo-link{display:inline-block;margin:0 0 30px}
+  .footer-logo{width:min(230px,54vw);height:auto;mix-blend-mode:multiply}
   .footer-copy{margin-top:14px;font-size:12px;color:#9C7A5E}
   /* テーブルの手前に置く余白。スイーツと文字を重ねない */
   .footer-space{height:150px}
@@ -376,7 +385,8 @@
   <div class="wrap">
     <a class="hdr-brand" href="#">
       <!-- 読み込みに失敗したら img を消す。壊れた画像を出さず、下の社名だけが残る -->
-      <img class="hdr-logo" src="logo-lmp-mark.png" alt="ライフメイクパートナーズ"
+      <img class="hdr-logo" src="logo-lmp-mark.png" alt="" onerror="this.remove()">
+      <img class="hdr-word" src="logo-lmp-wordmark.png" alt="ライフメイクパートナーズ"
            onerror="this.remove()">
       <span class="hdr-name">ライフメイクパートナーズ</span>
     </a>
@@ -572,6 +582,11 @@
 
 <footer>
   <div class="wrap">
+    <!-- 読み込みに失敗したらリンクごと消える（壊れた画像を出さない） -->
+    <a class="footer-logo-link" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.closest('.footer-logo-link').remove()">
+    </a>
     <nav>
       <a href="kaisha.html">会社概要</a>
     </nav>
