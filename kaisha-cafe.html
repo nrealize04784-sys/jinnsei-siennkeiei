@@ -14,11 +14,13 @@
 <style>
   /* 書体・配色・札の作りは lp-cafe.html と揃えている */
   :root{
-    --bg:#FBF1E1;
+    --bg:#F0B978;        /* 地。LPと同じあんず色 */
+    --cream:#FBF1E1;     /* 面を切り替えるときの生成り */
     --ink:#4A2A1B;
-    --ink-soft:#7A5741;
+    --ink-soft:#5C3A26;  /* あんず色の地でも小さな文字が読める濃さ */
     --accent:#A8452A;
     --gold:#D9B978;
+    --wood:#5B4033;      /* 札の濃茶。LPの吊り看板と同じ色 */
     --line:#E6CDA9;
     --card:#FFF8EC;
     --r:16px;
@@ -67,7 +69,8 @@
   .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
   .hdr-cta{background:var(--accent);color:#fff !important}
   .hdr-cta:hover{background:#8E3A22}
-  .hdr-cta2{border:1px solid var(--accent);color:var(--accent) !important}
+  /* 枠だけだとあんず色の地に沈むので、生成りで塗ってれんが色の文字にする */
+  .hdr-cta2{background:var(--cream);border:1px solid var(--accent);color:var(--accent) !important}
   .hdr-cta2:hover{background:var(--accent);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
@@ -82,7 +85,7 @@
   .plaque{
     --cut:polygon(0% 50%,5% 0%,95% 0%,100% 50%,95% 100%,5% 100%);
     display:inline-block;
-    background:var(--gold);
+    background:var(--wood);
     clip-path:var(--cut);
     padding:2px 3px;
     margin-bottom:18px;
@@ -90,8 +93,8 @@
   .plaque span{
     display:block;
     clip-path:var(--cut);
-    background:linear-gradient(180deg,#F7E7C4 0%,#E9D2A4 100%);
-    color:#43290F;
+    background:linear-gradient(180deg,#6B4C3C 0%,#4E3527 100%);
+    color:#F7EAD2;
     font-family:"Noto Serif JP",serif;font-weight:600;
     font-size:clamp(18px,4.6vw,26px);
     letter-spacing:.24em;
@@ -102,22 +105,24 @@
   .lead{color:var(--ink-soft);font-size:15px;margin-bottom:52px}
 
   /* ── 会社概要の表。狭い画面では縦に積む ── */
+  /* LPのカードと同じ喫茶店のメニュー板。線と四隅の唐草は border-image で回す */
   dl{
     max-width:640px;margin:0 auto;text-align:left;
     display:grid;grid-template-columns:130px 1fr;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    overflow:hidden;
+    background:#6B5A4C;
+    color:#F7EAD2;
+    border:16px solid transparent;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cdefs%3E%3Cg id='c'%3E%3Cpath d='M24 6.5H15A8.5 8.5 0 0 0 6.5 15v9'/%3E%3Cpath d='M15 6.5C8 6.5 4 11 6.5 15'/%3E%3Cpath d='M6.5 15C6.5 8 11 4 15 6.5'/%3E%3Cpath d='M13.5 13.5c1-4.5 4.5-6.5 6.5-4.6 1.7 1.6.3 4.4-2.2 3.7-2-.6-2-3 .2-3.4'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='none' stroke='%23EFE2CC' stroke-width='1.5' stroke-linecap='round'%3E%3Cuse href='%23c'/%3E%3Cuse href='%23c' transform='rotate(90 36 36)'/%3E%3Cuse href='%23c' transform='rotate(180 36 36)'/%3E%3Cuse href='%23c' transform='rotate(270 36 36)'/%3E%3Cpath d='M24 7H48'/%3E%3Cpath d='M24 65H48'/%3E%3Cpath d='M7 24V48'/%3E%3Cpath d='M65 24V48'/%3E%3C/g%3E%3C/svg%3E") 24 stretch;
   }
-  dt,dd{padding:20px 22px;font-size:15px;line-height:1.9;margin:0;border-top:1px solid var(--line)}
+  @media (min-width:768px){ dl{border-width:22px} }
+  dt,dd{padding:14px 16px;font-size:15px;line-height:1.9;margin:0;border-top:1px solid rgba(239,226,204,.28)}
   dt:first-of-type,dt:first-of-type + dd{border-top:0}
-  dt{color:var(--ink-soft);letter-spacing:.08em}
-  dd a{color:var(--ink);text-decoration:none}
-  dd a:hover{color:var(--accent);text-decoration:underline}
+  dt{color:#EBDECB;letter-spacing:.08em}
+  dd a{color:#F7EAD2;text-decoration:none}
+  dd a:hover{color:var(--apricot);text-decoration:underline}
   @media (max-width:600px){
-    dl{grid-template-columns:1fr}
-    dt{padding-bottom:0;border-top:1px solid var(--line)}
+    dl{grid-template-columns:1fr;border-width:13px}
+    dt{padding-bottom:0;border-top:1px solid rgba(239,226,204,.28)}
     dd{padding-top:4px;border-top:0}
     dt:first-of-type{border-top:0}
   }
@@ -141,11 +146,11 @@
   footer a:hover{color:var(--accent)}
   .footer-logo-link{display:inline-block;margin:0 0 30px}
   .footer-logo{width:min(230px,54vw);height:auto;mix-blend-mode:multiply}
-  .footer-copy{margin-top:14px;font-size:12px;color:#9C7A5E}
+  .footer-copy{margin-top:14px;font-size:12px;color:#6B4527}
   .footer-space{height:150px}
   @media (min-width:768px){ .footer-space{height:120px} }
   /* このページは追従ボタンが無いので、天板はLPより薄くてよい */
-  .footer-table{height:70px;background:#D9AE79;border-top:4px solid #C1935E}
+  .footer-table{height:70px;background:#C08A4E;border-top:4px solid #A6733C}
   .footer-sweets{
     position:absolute;right:16px;bottom:70px;
     width:200px;height:auto;display:block;pointer-events:none;
@@ -209,7 +214,7 @@
     <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
     <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
     <circle cx="104" cy="80" r="8" fill="#D8483A"/>
-    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="2" stroke-linecap="round"/>
     <!-- 皿・脚・台 -->
     <path d="M56 148h96c-4 9-14 14-48 14s-44-5-48-14z" fill="#FFF8EC"/>
     <ellipse cx="104" cy="148" rx="48" ry="9" fill="#FFFCF3"/>
@@ -227,7 +232,7 @@
     <circle cx="214" cy="80" r="13" fill="#FFFCF6"/>
     <circle cx="250" cy="80" r="12" fill="#FFFCF6"/>
     <circle cx="243" cy="48" r="8" fill="#D8483A"/>
-    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#C9A57E" stroke-width="2" stroke-linecap="round"/>
     <path d="M212 44l10 34" stroke="#A8452A" stroke-width="5" stroke-linecap="round"/>
     <ellipse cx="232" cy="190" rx="26" ry="7" fill="#FFF8EC"/>
   </svg>

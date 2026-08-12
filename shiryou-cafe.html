@@ -14,12 +14,14 @@
 <style>
   /* 書体・配色・札の作りは lp-cafe.html と揃えている */
   :root{
-    --bg:#FBF1E1;
+    --bg:#F0B978;        /* 地。LPと同じあんず色 */
+    --cream:#FBF1E1;     /* 面を切り替えるときの生成り */
     --apricot:#F2C68C;
     --ink:#4A2A1B;
-    --ink-soft:#7A5741;
+    --ink-soft:#5C3A26;  /* あんず色の地でも小さな文字が読める濃さ */
     --accent:#A8452A;
     --gold:#D9B978;
+    --wood:#5B4033;      /* 札の濃茶。LPの吊り看板と同じ色 */
     --line:#E6CDA9;
     --card:#FFF8EC;
     --r:16px;
@@ -80,7 +82,7 @@
   .plaque{
     --cut:polygon(0% 50%,5% 0%,95% 0%,100% 50%,95% 100%,5% 100%);
     display:inline-block;
-    background:var(--gold);
+    background:var(--wood);
     clip-path:var(--cut);
     padding:2px 3px;
     margin-bottom:18px;
@@ -88,8 +90,8 @@
   .plaque span{
     display:block;
     clip-path:var(--cut);
-    background:linear-gradient(180deg,#F7E7C4 0%,#E9D2A4 100%);
-    color:#43290F;
+    background:linear-gradient(180deg,#6B4C3C 0%,#4E3527 100%);
+    color:#F7EAD2;
     font-family:"Noto Serif JP",serif;font-weight:600;
     font-size:clamp(18px,4.6vw,26px);
     letter-spacing:.24em;
@@ -141,7 +143,7 @@
     max-width:520px;margin:24px auto 0;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
   }
-  .note a{color:var(--accent)}
+  .note a{color:#7A2F1B}
   .back{
     display:inline-block;margin-top:44px;
     color:var(--ink-soft);text-decoration:none;font-size:14px;
@@ -162,11 +164,11 @@
   footer a:hover{color:var(--accent)}
   .footer-logo-link{display:inline-block;margin:0 0 30px}
   .footer-logo{width:min(230px,54vw);height:auto;mix-blend-mode:multiply}
-  .footer-copy{margin-top:14px;font-size:12px;color:#9C7A5E}
+  .footer-copy{margin-top:14px;font-size:12px;color:#6B4527}
   .footer-space{height:150px}
   @media (min-width:768px){ .footer-space{height:120px} }
   /* このページは追従ボタンが無いので、天板はLPより薄くてよい */
-  .footer-table{height:70px;background:#D9AE79;border-top:4px solid #C1935E}
+  .footer-table{height:70px;background:#C08A4E;border-top:4px solid #A6733C}
   .footer-sweets{
     position:absolute;right:16px;bottom:70px;
     width:200px;height:auto;display:block;pointer-events:none;
@@ -260,7 +262,7 @@
     <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
     <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
     <circle cx="104" cy="80" r="8" fill="#D8483A"/>
-    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+    <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="2" stroke-linecap="round"/>
     <!-- 皿・脚・台 -->
     <path d="M56 148h96c-4 9-14 14-48 14s-44-5-48-14z" fill="#FFF8EC"/>
     <ellipse cx="104" cy="148" rx="48" ry="9" fill="#FFFCF3"/>
@@ -278,7 +280,7 @@
     <circle cx="214" cy="80" r="13" fill="#FFFCF6"/>
     <circle cx="250" cy="80" r="12" fill="#FFFCF6"/>
     <circle cx="243" cy="48" r="8" fill="#D8483A"/>
-    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#7A5741" stroke-width="2" stroke-linecap="round"/>
+    <path d="M243 40c2-9 9-12 15-12" fill="none" stroke="#C9A57E" stroke-width="2" stroke-linecap="round"/>
     <path d="M212 44l10 34" stroke="#A8452A" stroke-width="5" stroke-linecap="round"/>
     <ellipse cx="232" cy="190" rx="26" ry="7" fill="#FFF8EC"/>
   </svg>
