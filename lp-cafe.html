@@ -595,107 +595,122 @@
     <p class="note">相談から始まるので、こちらから追いかけません。</p>
 
     <!-- テーブルをはさんで話す二人。写真ができたら .photo ごと <img> に差し替える -->
-    <div class="photo fade" style="margin-top:56px" role="img" aria-label="丸テーブルをはさんで、コーヒー片手に和やかに話す二人">
-      <svg viewBox="0 0 880 470" xmlns="http://www.w3.org/2000/svg">
-        <rect width="880" height="470" fill="#FFF8EC"/>
-        <!-- 線画。前の絵が不気味だったのは、正面向きの真円の顔に大きな口だったため。
-             顔を斜め向きにして、目・口・ほおを小さく片側に寄せている。
-             腕は「太い濃紺の線＋少し細い服の色の線」を重ねた筒。
-             重ね順は 椅子 → 首 → からだ → 顔 → テーブル → 腕と手 → カップ。 -->
+    <div class="photo fade" style="margin-top:56px" role="img" aria-label="丸テーブルでケーキを前に、和やかに話す二人">
+      <svg viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg">
+        <rect width="880" height="520" fill="#FFF8EC"/>
+        <!-- ゆるい線と少ない色でまとめた絵。
+             線は濃茶1色、面は生成り・あんず色・バター色だけ。
+             目は閉じた笑い目（弧）にしている。見開いた目より柔らかく見えるため。
+             重ね順は 影 → 椅子 → 脚 → テーブルの脚 → からだ → 顔 → 天板 → 腕 → ケーキ。 -->
 
-        <!-- 椅子（背もたれだけのぞかせる） -->
-        <g stroke="#2E4A6B" stroke-width="3.2" stroke-linejoin="round">
-          <path transform="translate(-46,6)" d="M292 336q-52-8-54-64t50-58q16-2 22 8l-6 114z" fill="#F7B0A2"/>
-          <path transform="translate(46,6)" d="M616 330q52-8 54-64t-50-58q-16-2-22 8l6 114z" fill="#F7B0A2"/>
+        <!-- 床の影 -->
+        <ellipse cx="440" cy="470" rx="238" ry="24" fill="#F2C68C" opacity=".5"/>
+
+        <!-- 椅子（濃茶のかたまり） -->
+        <g fill="#B98A5E">
+          <path d="M196 262l62-10 10 84-62 10z" />
+          <path d="M204 344l70-10 16 30-76 10z"/>
+          <path d="M212 378l-6 56h10l8-54zM286 366l10 56h-10l-12-52z"/>
+          <path d="M684 262l-62-10-10 84 62 10z"/>
+          <path d="M676 344l-70-10-16 30 76 10z"/>
+          <path d="M668 378l6 56h-10l-8-54zM594 366l-10 56h10l12-52z"/>
         </g>
 
-        <!-- 男性。二人が近すぎたので、左右に離して間合いをとる -->
-        <g transform="translate(-46,6)" stroke="#2E4A6B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M320 172h30v30h-30z" fill="#FFFDF8"/>
-          <!-- なで肩のからだ -->
-          <path d="M304 196q-34 18-40 62-8 48-4 92h150q4-44-4-92-6-44-40-62z" fill="#F5D547"/>
-          <!-- えりとボタン -->
-          <path d="M322 198l14 22 16-20" fill="none"/>
-          <circle cx="341" cy="250" r="2.6" fill="#2E4A6B" stroke="none"/>
-          <circle cx="341" cy="274" r="2.6" fill="#2E4A6B" stroke="none"/>
-          <!-- 顔（斜め向き。輪郭はたまご型） -->
-          <path d="M294 138q0-46 42-46t42 46q0 30-16 42-12 10-26 10t-26-10q-16-12-16-42z" fill="#FFFDF8"/>
-          <!-- 鼻さきの小さなふくらみ -->
-          <path d="M377 140q7 5 0 11" fill="none" stroke-width="2.8"/>
-          <!-- 髪。うしろが厚く、前が軽い -->
-          <path d="M292 132q-6-48 44-50 46-2 48 40 1 16-6 24-4-22-14-28-8 12-30 12-18 0-26-6-10 6-14 18-2-6-2-10z" fill="#2E4A6B"/>
-          <circle cx="342" cy="140" r="3.6" fill="#2E4A6B" stroke="none"/>
-          <circle cx="362" cy="139" r="3.6" fill="#2E4A6B" stroke="none"/>
-          <path d="M336 130q6-4 12-1M357 129q6-3 11 1" fill="none" stroke-width="2.4"/>
-          <!-- 小さく開いた口 -->
-          <path d="M346 158q13-2 15 4-2 8-8 8t-7-6z" fill="#E8615A" stroke-width="2.6"/>
-          <ellipse cx="326" cy="154" rx="8" ry="6" fill="#F7B0A2" stroke="none"/>
+        <!-- 脚（太い濃茶の線に細い生成りの線を重ねて筒にする） -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M266 340Q272 396 296 424" stroke="#5B4033" stroke-width="21"/>
+          <path d="M266 340Q272 396 296 424" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M300 336Q308 392 330 418" stroke="#5B4033" stroke-width="21"/>
+          <path d="M300 336Q308 392 330 418" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M614 340Q608 396 584 424" stroke="#5B4033" stroke-width="21"/>
+          <path d="M614 340Q608 396 584 424" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M580 336Q572 392 550 418" stroke="#5B4033" stroke-width="21"/>
+          <path d="M580 336Q572 392 550 418" stroke="#FFFDF8" stroke-width="15"/>
+        </g>
+        <g stroke="#5B4033" stroke-width="3" fill="#FFFDF8">
+          <ellipse cx="300" cy="430" rx="17" ry="10"/>
+          <ellipse cx="334" cy="424" rx="17" ry="10"/>
+          <ellipse cx="580" cy="430" rx="17" ry="10"/>
+          <ellipse cx="546" cy="424" rx="17" ry="10"/>
         </g>
 
-        <!-- 女性 -->
-        <g transform="translate(46,6)" stroke="#2E4A6B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M556 166h28v30h-28z" fill="#FFFDF8"/>
-          <path d="M572 190q34 18 40 60 8 48 4 92H468q-4-44 4-92 6-42 40-60z" fill="#FFFDF8"/>
-          <path d="M552 194q4 16 20 16t20-16" fill="none"/>
-          <path d="M528 130q0-44 42-44t42 44q0 30-16 42-12 10-26 10t-26-10q-16-12-16-42z" fill="#FFFDF8"/>
-          <path d="M527 132q-7 5 0 11" fill="none" stroke-width="2.8"/>
-          <path d="M612 124q6-46-42-48-44-2-46 38-1 16 6 24 4-22 14-28 8 12 30 12 16 0 24-6 10 6 14 18z" fill="#C6CCD2"/>
-          <circle cx="562" cy="132" r="3.6" fill="#2E4A6B" stroke="none"/>
-          <circle cx="542" cy="133" r="3.6" fill="#2E4A6B" stroke="none"/>
-          <path d="M568 122q-6-4-12-1M547 123q-6-3-11 1" fill="none" stroke-width="2.4"/>
-          <path d="M556 150q-13-2-15 4 2 8 8 8t7-6z" fill="#E8615A" stroke-width="2.6"/>
-          <ellipse cx="578" cy="146" rx="8" ry="6" fill="#F7B0A2" stroke="none"/>
+        <!-- テーブルの脚 -->
+        <g stroke="#5B4033" stroke-width="3" stroke-linejoin="round" fill="#FFFDF8">
+          <path d="M430 356h20l6 82h-32z"/>
+          <ellipse cx="440" cy="442" rx="46" ry="11"/>
         </g>
 
-        <!-- 丸テーブル -->
-        <g stroke="#2E4A6B" stroke-width="3.2" stroke-linejoin="round">
-          <path d="M168 372a272 76 0 0 0 544 0v13a272 76 0 0 1-544 0z" fill="#F1E7D4"/>
-          <ellipse cx="440" cy="372" rx="272" ry="76" fill="#FFFDF8"/>
+        <!-- ── 左の人 ── -->
+        <g stroke="#5B4033" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M244 214q34-18 68 0 22 14 24 50 4 40-2 74H222q-6-34-2-74 2-36 24-50z" fill="#FFFDF8"/>
+          <path d="M266 210q12 9 24 0" fill="none"/>
+          <circle cx="278" cy="154" r="42" fill="#FFFDF8"/>
+          <path d="M236 152q-4-46 42-48 44-2 44 42 0 18-6 26-4-24-12-32-26 12-48 2-14 8-18 26-2-8-2-16z" fill="#F2C68C"/>
+          <path d="M236 156q-6 32 2 52 8-4 8-14-4-18-2-38z" fill="#F2C68C"/>
+          <!-- 閉じた笑い目 -->
+          <path d="M262 154q7-10 14 0M290 152q7-10 14 0" fill="none" stroke-width="3"/>
+          <path d="M282 172q11-2 13 4-2 7-7 7t-6-5z" fill="#C4746A" stroke-width="2.6"/>
+          <ellipse cx="264" cy="170" rx="7" ry="5" fill="#F2A79C" stroke="none"/>
         </g>
 
-        <!-- 腕。からだと同じだけ左右にずらす -->
-        <g transform="translate(-46,6)">
-          <g fill="none" stroke-linecap="round">
-            <path d="M292 240Q270 296 314 312L364 316" stroke="#2E4A6B" stroke-width="25"/>
-            <path d="M292 240Q270 296 314 312L364 316" stroke="#F5D547" stroke-width="19"/>
-            <path d="M386 232Q426 246 444 268" stroke="#2E4A6B" stroke-width="25"/>
-            <path d="M386 232Q426 246 444 268" stroke="#F5D547" stroke-width="19"/>
-          </g>
-          <g stroke="#2E4A6B" stroke-width="3" stroke-linejoin="round" fill="#FFFDF8">
-            <ellipse cx="370" cy="318" rx="15" ry="12"/>
-            <ellipse cx="448" cy="270" rx="16" ry="13"/>
-          </g>
-          <g fill="none" stroke="#2E4A6B" stroke-width="2.3" stroke-linecap="round">
-            <path d="M440 262q11-3 17 1M456 272q4 6 0 9M438 280q11 3 18-1"/>
-            <path d="M362 311q9-3 14 1"/>
-          </g>
-        </g>
-        <g transform="translate(46,6)">
-          <g fill="none" stroke-linecap="round">
-            <path d="M604 240Q626 296 582 312L534 316" stroke="#2E4A6B" stroke-width="25"/>
-            <path d="M604 240Q626 296 582 312L534 316" stroke="#FFFDF8" stroke-width="19"/>
-            <path d="M520 228Q492 240 490 268" stroke="#2E4A6B" stroke-width="25"/>
-            <path d="M520 228Q492 240 490 268" stroke="#FFFDF8" stroke-width="19"/>
-          </g>
-          <g stroke="#2E4A6B" stroke-width="3" stroke-linejoin="round" fill="#FFFDF8">
-            <ellipse cx="528" cy="318" rx="15" ry="12"/>
-            <ellipse cx="490" cy="270" rx="15" ry="12"/>
-          </g>
-          <g fill="none" stroke="#2E4A6B" stroke-width="2.3" stroke-linecap="round">
-            <path d="M521 311q9-3 14 1"/>
-          </g>
-          <!-- 手に持つカップ -->
-          <g stroke="#2E4A6B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M472 218h36l-4 30q-1 7-9 7h-10q-8 0-9-7z" fill="#FFFDF8"/>
-            <path d="M508 226q10 2 10 8t-9 8" fill="none"/>
-            <path d="M482 196q0-8 8-8t8-8M500 198q0-7 7-7" fill="none" stroke-width="2.6"/>
-          </g>
+        <!-- ── 右の人 ── -->
+        <g stroke="#5B4033" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M636 210q-34-18-68 0-22 14-24 50-4 40 2 74h112q6-34 2-74-2-36-24-50z" fill="#FFFDF8"/>
+          <path d="M614 206q-12 9-24 0" fill="none"/>
+          <circle cx="602" cy="148" r="42" fill="#FFFDF8"/>
+          <path d="M644 146q4-46-42-48-44-2-44 42 0 18 6 26 4-24 12-32 26 12 48 2 14 8 18 26 2-8 2-16z" fill="#5B4033"/>
+          <path d="M560 150q-10 42-4 70 12-2 14-14-6-26-2-50zM644 150q10 42 4 70-12-2-14-14 6-26 2-50z" fill="#5B4033"/>
+          <path d="M576 148q7-10 14 0M604 146q7-10 14 0" fill="none" stroke-width="3"/>
+          <path d="M584 166q-11-2-13 4 2 7 7 7t6-5z" fill="#C4746A" stroke-width="2.6"/>
+          <ellipse cx="616" cy="164" rx="7" ry="5" fill="#F2A79C" stroke="none"/>
         </g>
 
-        <!-- カップ -->
-        <g stroke="#2E4A6B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M340 330h38l-5 32q-1 7-9 7h-11q-8 0-9-7z" fill="#FFFDF8"/>
-          <path d="M378 339q10 2 10 8t-9 8" fill="none"/>
+        <!-- 天板（バター色） -->
+        <g stroke="#5B4033" stroke-width="3.2" stroke-linejoin="round">
+          <ellipse cx="440" cy="348" rx="152" ry="50" fill="#F5D547"/>
+        </g>
+
+        <!-- 腕 -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M244 240Q230 288 268 312L306 320" stroke="#5B4033" stroke-width="21"/>
+          <path d="M244 240Q230 288 268 312L306 320" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M330 226Q356 208 372 190" stroke="#5B4033" stroke-width="21"/>
+          <path d="M330 226Q356 208 372 190" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M636 236Q650 284 612 308L574 316" stroke="#5B4033" stroke-width="21"/>
+          <path d="M636 236Q650 284 612 308L574 316" stroke="#FFFDF8" stroke-width="15"/>
+          <path d="M550 222Q524 202 512 182" stroke="#5B4033" stroke-width="21"/>
+          <path d="M550 222Q524 202 512 182" stroke="#FFFDF8" stroke-width="15"/>
+        </g>
+        <g stroke="#5B4033" stroke-width="3" stroke-linejoin="round" fill="#FFFDF8">
+          <ellipse cx="310" cy="322" rx="14" ry="11"/>
+          <ellipse cx="374" cy="188" rx="13" ry="11"/>
+          <ellipse cx="570" cy="318" rx="14" ry="11"/>
+          <ellipse cx="510" cy="180" rx="13" ry="11"/>
+        </g>
+
+        <!-- 右の人が持つクリームソーダ -->
+        <g stroke="#5B4033" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M492 108h38l-7 66q-1 8-10 8h-6q-9 0-10-8z" fill="#F5D547"/>
+          <path d="M534 78l-16 32" fill="none"/>
+          <ellipse cx="511" cy="104" rx="16" ry="11" fill="#FFFDF8"/>
+          <circle cx="500" cy="92" r="5" fill="#C4746A"/>
+        </g>
+        <!-- 左の人が持つスプーン -->
+        <g stroke="#5B4033" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M382 178l26-16" fill="none"/>
+          <ellipse cx="414" cy="158" rx="10" ry="7" transform="rotate(-30 414 158)" fill="#FFFDF8"/>
+        </g>
+
+        <!-- ケーキ -->
+        <g stroke="#5B4033" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="386" cy="346" rx="36" ry="12" fill="#FFFDF8"/>
+          <path d="M366 342l22-30 18 28z" fill="#FFFDF8"/>
+          <path d="M370 330h30" fill="none" stroke-width="2.4"/>
+          <circle cx="388" cy="312" r="4.5" fill="#C4746A"/>
+          <ellipse cx="492" cy="352" rx="36" ry="12" fill="#FFFDF8"/>
+          <path d="M472 348l22-30 18 28z" fill="#FFFDF8"/>
+          <path d="M476 336h30" fill="none" stroke-width="2.4"/>
+          <circle cx="494" cy="318" r="4.5" fill="#C4746A"/>
         </g>
       </svg>
     </div>
