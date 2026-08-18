@@ -69,16 +69,42 @@
 
   /* ---------- ファーストビュー ---------- */
   .fv{
-    position:relative;padding:calc(var(--hdr) + 44px) 0 68px;
-    /* 銭湯のタイル割り。線は細く、うるさくしない */
+    position:relative;padding:calc(var(--hdr) + 30px) 0 68px;
+    /* 銭湯のタイル割り。ポスターに合わせて地をシアンにし、目地を白で通す */
+    background-color:var(--cyan);
     background-image:
-      linear-gradient(rgba(39,192,212,.30) 2px,transparent 2px),
-      linear-gradient(90deg,rgba(39,192,212,.30) 2px,transparent 2px);
+      linear-gradient(rgba(255,255,255,.55) 2px,transparent 2px),
+      linear-gradient(90deg,rgba(255,255,255,.55) 2px,transparent 2px);
     background-size:44px 44px;
+    border-bottom:var(--line) solid var(--ink);
   }
+
+  /* 看板の上。左右に札、真ん中に大きな「ゆ」と湯気 */
+  .yu-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+  @media (min-width:768px){ .yu-row{gap:32px} }
+  .tagset{display:flex;flex-direction:column;gap:8px}
+  .tagset.l{align-items:flex-end}
+  .tagset.r{align-items:flex-start}
+  .tg{
+    border:3px solid var(--ink);border-radius:8px;padding:4px 10px;
+    font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;
+    font-size:14px;white-space:nowrap;
+  }
+  @media (min-width:768px){ .tg{font-size:19px;padding:8px 18px} }
+  .tg.lemon{background:var(--lemon);color:var(--ink)}
+  .tg.cyanbg{background:#7FE0EC;color:var(--ink)}
+  .tg.pinkbg{background:var(--pink);color:#fff;outline:3px solid var(--ink);outline-offset:4px}
+  .yu-big{
+    font-family:"Dela Gothic One",sans-serif;line-height:.9;color:var(--pink);
+    font-size:clamp(78px,17vw,148px);
+    -webkit-text-stroke:14px var(--ink);paint-order:stroke fill;
+  }
+  @media (min-width:768px){ .yu-big{-webkit-text-stroke-width:22px} }
+  .steam{display:block;width:86px;height:34px;margin:2px auto 10px}
+  @media (min-width:768px){ .steam{width:120px;height:44px;margin-bottom:16px} }
   /* 吹き出し。看板の上に少し重ねる */
   .bubble{
-    position:relative;z-index:2;display:block;width:fit-content;margin:0 auto -14px;
+    position:relative;z-index:2;display:block;width:fit-content;margin:0 auto 16px;
     background:var(--lemon);border:var(--line) solid var(--ink);border-radius:50%;
     padding:22px 40px;font-size:17px;line-height:1.4;white-space:nowrap;
     font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;
@@ -97,7 +123,11 @@
   }
   .sign-inner{
     border:3px solid var(--ink);border-radius:10px;
-    padding:32px 10px 28px;
+    padding:30px 10px 28px;
+    /* 明るい地に細かい点。ポスターの刷り面の見立て */
+    background-color:var(--paper);
+    background-image:radial-gradient(circle 2px at center,rgba(245,55,143,.35) 0 2px,transparent 2px);
+    background-size:16px 16px;
   }
   @media (min-width:768px){ .sign{padding:16px} .sign-inner{padding:48px 34px 42px} }
   /* 枠のふちに並ぶ電球。幅が変われば数が増える */
@@ -111,23 +141,30 @@
     background-size:20px 26px;background-repeat:repeat-y}
   .bulbs.l{left:-4px}.bulbs.r{right:-4px}
 
-  .strip{
-    display:inline-block;background:var(--cyan);color:var(--ink);
-    border:3px solid var(--ink);border-radius:999px;
-    padding:5px 20px;font-size:13px;margin-bottom:20px;
+  /* POP UP SENTO の位置。欧文は白抜きに黒フチ */
+  .eyebrow{
+    display:block;color:#fff;font-family:"Dela Gothic One",sans-serif;
+    font-size:clamp(15px,3.4vw,26px);letter-spacing:.14em;margin:0 0 10px;
+    -webkit-text-stroke:4px var(--ink);paint-order:stroke fill;
+  }
+  @media (min-width:768px){ .eyebrow{-webkit-text-stroke-width:5px} }
+  /* PARCO × SENTO FOREVER の位置 */
+  .xline{
+    font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;
+    font-size:clamp(12px,2.8vw,16px);letter-spacing:.04em;margin:0 0 18px;color:var(--ink);
   }
   .fv h1{
-    color:#fff;margin:0 0 18px;
+    color:var(--pink);margin:0 0 10px;
     font-size:clamp(22px,6.3vw,56px);
-    -webkit-text-stroke:6px var(--ink);paint-order:stroke fill;
+    -webkit-text-stroke:7px var(--ink);paint-order:stroke fill;
   }
-  @media (min-width:768px){ .fv h1{-webkit-text-stroke-width:7px} }
+  @media (min-width:768px){ .fv h1{-webkit-text-stroke-width:10px} }
   /* 320px級の端末でも主見出しを1行に保つ */
   @media (max-width:340px){ .fv h1{font-size:19px} }
-  .fv h1 .small{display:block;font-size:.56em;margin-bottom:.25em}
-  .fv .sub{color:#fff;font-weight:700;margin:0 0 26px;font-size:15px;line-height:1.8}
+  .fv h1 .small{display:block;font-size:.56em;margin-bottom:.25em;-webkit-text-stroke-width:5px}
+  .fv .sub{color:var(--ink);font-weight:700;margin:0 0 24px;font-size:15px;line-height:1.8}
   @media (min-width:768px){ .fv .sub{font-size:18px} }
-  .sign .btn{background:var(--lemon);color:var(--ink)}
+  .sign .btn{background:var(--pink);color:#fff}
 
   /* 絵札。ポスターの詰め込み感はここで出す */
   .fuda{
@@ -141,21 +178,6 @@
   .fuda .f:nth-child(3n+3){background:var(--pink)}
   .fuda svg{width:100%;height:100%;display:block}
 
-  /* 看板の角に押す「ゆ」の判子 */
-  .yu{
-    position:absolute;left:-8px;top:-24px;width:66px;height:66px;border-radius:50%;
-    background:var(--cyan);border:var(--line) solid var(--ink);
-    display:grid;place-items:center;transform:rotate(-8deg);z-index:3;
-  }
-  .yu span{
-    font-family:"Dela Gothic One",sans-serif;font-size:34px;line-height:1;color:#fff;
-    -webkit-text-stroke:5px var(--ink);paint-order:stroke fill;
-  }
-  @media (min-width:768px){
-    .yu{left:-16px;top:-30px;width:88px;height:88px}
-    .yu span{font-size:46px;-webkit-text-stroke-width:6px}
-  }
-
   /* サウナ・水風呂の札に見立てた3つのタグ */
   .tags{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
   .tags span{
@@ -166,8 +188,11 @@
   .tags .t2{background:var(--cyan);color:var(--ink)}
   .tags .t3{background:var(--lemon);color:var(--ink)}
   .totonou{
-    text-align:center;margin:18px 0 0;font-family:"Dela Gothic One",sans-serif;
-    font-size:clamp(19px,4.6vw,28px);line-height:1.5;
+    display:block;width:fit-content;max-width:100%;margin:22px auto 0;
+    background:var(--paper);border:var(--line) solid var(--ink);border-radius:14px;
+    padding:10px 22px;text-align:center;
+    font-family:"Dela Gothic One",sans-serif;
+    font-size:clamp(17px,4.4vw,28px);line-height:1.5;
   }
   .totonou em{font-style:normal;color:var(--pink)}
 
@@ -307,15 +332,32 @@
   <div class="wrap">
     <p class="bubble">人生、相談していいですか。</p>
 
+    <div class="yu-row">
+      <span class="tagset l" aria-hidden="true">
+        <span class="tg lemon">人生教育</span>
+        <span class="tg cyanbg">人生相談</span>
+      </span>
+      <span class="yu-big" aria-hidden="true">ゆ</span>
+      <span class="tagset r" aria-hidden="true">
+        <span class="tg pinkbg">ととのう</span>
+      </span>
+    </div>
+    <!-- 湯気 -->
+    <svg class="steam" viewBox="0 0 120 44" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round" aria-hidden="true">
+      <path d="M22 38c10-6-10-12 0-18s-8-10 2-14"/>
+      <path d="M60 40c10-6-10-12 0-18s-8-10 2-14"/>
+      <path d="M98 38c10-6-10-12 0-18s-8-10 2-14"/>
+    </svg>
+
     <div class="sign">
-      <span class="yu" aria-hidden="true"><span>ゆ</span></span>
       <span class="bulbs t" aria-hidden="true"></span>
       <span class="bulbs b" aria-hidden="true"></span>
       <span class="bulbs l" aria-hidden="true"></span>
       <span class="bulbs r" aria-hidden="true"></span>
       <div class="sign-inner">
-        <span class="strip">地域の不動産会社さま向け</span>
+        <span class="eyebrow">POP UP SODAN</span>
         <h1><span class="small">不動産屋が、</span>まちの相談窓口になる。</h1>
+        <p class="xline">LIFE MAKE PARTNER'S × 地域の不動産会社</p>
         <p class="sub">物件を探している人じゃなく、<br>人生を良くしたい人が集まる。</p>
         <a class="btn" href="#entry">事業説明会に申し込む</a>
       </div>
@@ -437,11 +479,6 @@
       </div>
     </div>
 
-    <div class="tags">
-      <span class="t1">人生教育</span>
-      <span class="t2">人生相談</span>
-      <span class="t3">ととのう</span>
-    </div>
     <p class="totonou">学んで、相談して、まちが<em>ととのう</em>。</p>
   </div>
 </header>
