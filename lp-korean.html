@@ -8,245 +8,237 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;700&family=Yuji+Boku&display=swap" rel="stylesheet">
 
 <style>
-  /* ── 韓国風ミニマルの配色 ──
-     生成りの地、墨の文字、面を切り替える砂色、アクセントの陶土色。
-     使うのはこの4色だけ。薄い文字は --mute より下に落とさない。 */
+  /* ── 韓国料理店の看板の配色 ──
+     木の壁を地に、生成りの横断幕と白い皿。札は紺。
+     料理のイラストだけ、コチュジャンの赤・青菜の緑・卵の黄を使ってよい。 */
   :root{
-    --bg:#F7F4EF;      /* 地。生成りの紙 */
-    --ink:#1A1918;     /* 文字。墨 */
-    --sand:#EAE4DA;    /* 面を切り替えるときの砂色 */
-    --clay:#B4593C;    /* アクセント。陶土色。ホバーとごく一部の文字だけ */
-    --mute:#8C857B;    /* 薄い文字の下限 */
-    --line:#DED7CC;    /* 区切りの1px */
-    --pad:96px;        /* セクション間の余白（スマホ） */
-    --side:24px;       /* 左右の余白（スマホ） */
+    --wood:#C79A67;       /* 地。木の壁 */
+    --wood-dark:#A87B4E;  /* 板の継ぎ目 */
+    --wood-deep:#8A6039;  /* 木のふち */
+    --cream:#F8F1E2;      /* 横断幕・皿・紙 */
+    --ink:#241E1A;
+    --ink-soft:#4A3D33;
+    --navy:#2A3550;       /* 料理名の札 */
+    --red:#D2402F;        /* ボタン。コチュジャンの赤 */
+    --green:#4C8B48;
+    --yellow:#F0C33C;     /* 豆電球 */
+    --pot:#2B2724;        /* 黒い石鍋 */
+    --line:#E2D6BE;
+    --r:14px;
+    --pad:88px;      /* セクション間の余白（スマホ） */
+    --side:22px;
     --hdr:56px;
   }
-  @media (min-width:900px){ :root{ --pad:180px; --side:120px; --hdr:72px } }
+  @media (min-width:900px){ :root{ --pad:140px; --side:48px; --hdr:68px } }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     margin:0;
-    background:var(--bg);
     color:var(--ink);
     font-family:"Noto Sans JP","Noto Sans KR",sans-serif;
-    font-weight:400;
     font-size:15px;
     line-height:1.9;
-    letter-spacing:.01em;
     -webkit-font-smoothing:antialiased;
+    /* 縦板の木の壁。継ぎ目の線と、うっすらとした木目 */
+    background-color:var(--wood);
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 118px, rgba(120,78,40,.28) 118px 120px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 3px, transparent 3px 9px),
+      linear-gradient(180deg, rgba(90,58,28,.10), rgba(90,58,28,0) 240px);
   }
   @media (min-width:900px){ body{ font-size:16px } }
-  img{max-width:100%;display:block}
-
-  /* 英字ラベル。飾りであって見出しではないので、小さく薄く */
-  .label{
-    font-family:"Inter",sans-serif;
-    font-size:11px;
-    font-weight:500;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--mute);
-    line-height:1.6;
-    white-space:nowrap;
-  }
-  /* ハングルは意味を運ばせない。ラベル横に1語だけ添える */
-  .ko{
-    font-family:"Noto Sans KR",sans-serif;
-    letter-spacing:.06em;
-    text-transform:none;
-    margin-left:.6em;
-  }
-
-  h1,h2,h3{
-    font-weight:700;
-    line-height:1.5;
-    letter-spacing:-.02em;
-    margin:0;
-  }
-  h1{font-size:34px}
-  h2{font-size:24px}
-  @media (min-width:900px){ h1{font-size:60px} h2{font-size:34px} }
+  img,svg{display:block;max-width:100%}
   p{margin:0}
-  /* 狭い画面で文の途中で折り返さないよう、意味のかたまり単位で改行させる */
-  .nb{display:inline-block}
+  .nb{display:inline-block}   /* 句読点の途中で折り返させない */
 
-  /* ── 全セクション共通の型。左にラベル、右に本文。崩さない ── */
-  .sec{ padding:var(--pad) var(--side); }
-  .row{
-    max-width:1080px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:28px;
+  h1,h2,h3{ margin:0; line-height:1.5 }
+  /* 見出しは筆文字。看板の手書きに合わせる */
+  .brush{ font-family:"Yuji Boku","Noto Sans JP",serif; font-weight:400; letter-spacing:.04em }
+  h1{ font-size:34px }
+  h2{ font-size:25px }
+  @media (min-width:900px){ h1{ font-size:60px } h2{ font-size:36px } }
+
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 var(--side) }
+  .sec{ padding:var(--pad) 0 }
+
+  /* 料理名の札。画像と同じ、紺の角丸に白文字 */
+  .tag{
+    display:inline-block;
+    background:var(--navy); color:var(--cream);
+    font-size:12px; font-weight:500; letter-spacing:.08em;
+    padding:5px 14px; border-radius:6px;
+    box-shadow:0 2px 0 rgba(0,0,0,.18);
   }
-  @media (min-width:900px){
-    .row{ grid-template-columns:200px 1fr; gap:64px; }
+  .tag .ko{ font-family:"Noto Sans KR",sans-serif; margin-left:.5em; opacity:.85 }
+  .sec-head{ text-align:center; margin-bottom:32px }
+  .sec-head h2{ margin-top:18px }
+  .lead{ color:var(--ink-soft) }
+  .note{ font-size:13px; color:var(--ink-soft) }
+
+  /* 紙・皿。木の地の上に置く面 */
+  .panel{
+    background:var(--cream);
+    border-radius:var(--r);
+    padding:32px 24px;
+    box-shadow:0 4px 0 rgba(90,58,28,.18);
   }
-  .body > * + *{ margin-top:24px }
-  .lead{ color:var(--mute) }
-  .note{ font-size:13px; color:var(--mute) }
+  @media (min-width:900px){ .panel{ padding:44px 40px } }
 
-  hr.rule{ border:0; border-top:1px solid var(--line); margin:0 var(--side) }
-
-  /* ── ボタン。墨のピル型。FVと最終CTAの2箇所のみ ── */
   .btn{
     display:inline-block;
-    background:var(--ink);
-    color:var(--bg);
-    text-decoration:none;
-    font-size:14px;
-    letter-spacing:.04em;
-    padding:15px 34px;
-    border:0;
-    border-radius:999px;
-    cursor:pointer;
-    font-family:inherit;
-    transition:background .3s ease;
+    background:var(--red); color:#fff;
+    text-decoration:none; font-size:15px; font-weight:500;
+    padding:15px 34px; border:0; border-radius:999px; cursor:pointer;
+    font-family:inherit; letter-spacing:.03em;
+    box-shadow:0 3px 0 #9E2C1F;
+    transition:transform .15s ease, box-shadow .15s ease;
   }
-  .btn:hover,.btn:focus-visible{ background:var(--clay) }
+  .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
 
-  /* ── ヘッダー。透明で固定。スクロールで地と1pxの線が出る ── */
+  /* ── ヘッダー ── */
   header.site{
-    position:fixed; inset:0 0 auto 0; z-index:20;
-    height:var(--hdr);
+    position:fixed; inset:0 0 auto 0; z-index:20; height:var(--hdr);
     display:flex; align-items:center; justify-content:space-between;
     padding:0 var(--side);
-    background:transparent;
-    border-bottom:1px solid transparent;
-    transition:background .3s ease, border-color .3s ease;
+    background:transparent; transition:background .3s ease, box-shadow .3s ease;
   }
-  header.site.scrolled{ background:var(--bg); border-bottom-color:var(--line) }
-  .wordmark{
-    font-family:"Inter",sans-serif;
-    font-size:12px; font-weight:500; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--ink); text-decoration:none;
-  }
+  header.site.scrolled{ background:rgba(160,116,68,.96); box-shadow:0 1px 0 rgba(90,58,28,.35) }
+  .wordmark{ color:var(--cream); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.14em }
   .hdr-link{
-    font-size:13px; color:var(--ink); text-decoration:none;
-    letter-spacing:.04em; border-bottom:1px solid var(--ink); padding-bottom:2px;
+    color:var(--cream); text-decoration:none; font-size:13px;
+    border:1px solid rgba(248,241,226,.7); border-radius:999px; padding:7px 16px;
   }
-  .hdr-link:hover{ color:var(--clay); border-bottom-color:var(--clay) }
+  .hdr-link:hover{ background:var(--cream); color:var(--ink) }
 
-  /* ── 00 ファーストビュー ── */
-  .hero{
-    min-height:100svh;
-    padding-top:calc(var(--hdr) + 64px);
-    padding-bottom:96px;
-    display:flex; align-items:center;
+  /* ── 豆電球のガーランド ──
+     弦だけを横に伸ばし、電球はHTML側に置く。
+     幅が変わっても電球が楕円につぶれないようにするため。 */
+  .garland{ position:relative; height:84px }
+  .garland svg{ position:absolute; inset:0; width:100%; height:100% }
+  .bulb{
+    position:absolute; width:19px; height:19px; border-radius:50%;
+    background:var(--yellow); transform:translate(-50%,-50%);
+    box-shadow:0 0 0 8px rgba(251,233,168,.32);
+  }
+
+  /* ── ヒーロー。横断幕の看板 ── */
+  .hero{ padding-top:calc(var(--hdr) + 8px); padding-bottom:56px; text-align:center }
+  .banner{
     position:relative;
+    background:var(--cream);
+    border-radius:6px;
+    padding:44px 22px 38px;
+    margin:8px auto 0;
+    max-width:820px;
+    box-shadow:0 6px 0 rgba(90,58,28,.22);
+    transform:rotate(-.5deg);
   }
-  .hero h1{ margin-top:20px }
-  .hero .lead{ margin-top:28px }
-  .hero .btn{ margin-top:44px }
-  .scroll{
-    position:absolute; left:var(--side); bottom:28px;
-    display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+  .banner > *{ transform:rotate(.5deg) }
+  /* 四隅の留めテープ */
+  .tape{
+    position:absolute; width:64px; height:22px;
+    background:rgba(240,195,60,.72); box-shadow:0 1px 0 rgba(0,0,0,.08);
   }
-  .scroll i{ display:block; width:1px; height:56px; background:var(--line) }
+  .tape.tl{ top:-9px; left:14px; transform:rotate(-8deg) }
+  .tape.tr{ top:-9px; right:14px; transform:rotate(8deg) }
+  .banner h1{ margin-top:16px }
+  .hero .lead{ margin-top:22px }
+  .hero .btn{ margin-top:30px }
+  /* 看板の下に並べる料理。フラットな塗りのみ */
+  .dishes{
+    display:flex; justify-content:center; align-items:flex-end;
+    gap:5px; margin-top:34px; flex-wrap:wrap;
+  }
+  .dishes svg{ width:48px; height:48px }
+  @media (min-width:900px){ .dishes{ gap:26px } .dishes svg{ width:104px; height:104px } }
 
-  /* ── 04 数字だけ地を砂色に ── */
-  .sec.sand{ background:var(--sand) }
-  .figs{ display:grid; gap:40px }
-  @media (min-width:900px){ .figs{ grid-template-columns:repeat(3,1fr); gap:32px } }
-  .fig .n{
-    font-family:"Inter","Noto Sans JP",sans-serif;
-    font-weight:500; font-size:48px; line-height:1.1; letter-spacing:-.03em;
-    display:flex; align-items:flex-end; gap:6px;
-    white-space:nowrap;
-  }
-  /* 矢印の入る数字だけは幅を取るので、一段小さくして折り返させない */
-  .fig .n.arrow{ font-size:36px }
-  @media (min-width:900px){ .fig .n{ font-size:72px } .fig .n.arrow{ font-size:52px } }
-  .fig .n small{ font-size:11px; letter-spacing:.1em; color:var(--mute); padding-bottom:10px; font-weight:400 }
-  .fig .cap{ font-size:13px; color:var(--mute); margin-top:10px }
-
-  /* ── 02 変わること。4:5の枠を2枚。間に線は引かない ── */
-  .shift{ display:grid; gap:32px }
-  @media (min-width:640px){ .shift{ grid-template-columns:1fr 1fr; gap:40px } }
-  .frame{
-    aspect-ratio:4/5;
-    background:var(--sand);
-    border-radius:4px;
+  /* ── 02 変わること。白い皿を2枚 ── */
+  .shift{ display:grid; gap:20px }
+  @media (min-width:640px){ .shift{ grid-template-columns:1fr 1fr; gap:26px } }
+  .dish{ text-align:center }
+  .dish .plate{
+    background:var(--cream); border-radius:50%;
+    width:190px; height:190px; margin:0 auto;
     display:flex; align-items:center; justify-content:center;
+    box-shadow:0 5px 0 rgba(90,58,28,.2), inset 0 0 0 9px #FFFDF6;
   }
-  .frame span{
-    font-family:"Inter",sans-serif; font-size:11px; letter-spacing:.18em; color:var(--mute);
-  }
-  .shift .cap{ margin-top:14px }
-  .shift .cap b{ display:block; font-weight:700; letter-spacing:-.01em }
-  .shift .cap .label{ margin-bottom:6px }
+  .dish .plate svg{ width:104px; height:104px }
+  .dish b{ display:block; margin-top:16px; font-size:17px; color:var(--cream) }
+  .dish .tag{ margin-top:14px }
 
-  /* ── 03 流れ。縦一列。番号は小さく ── */
-  .flow{ border-top:1px solid var(--line) }
+  /* ── 03 流れ ── */
+  .flow{ margin:0; padding:0; list-style:none }
   .flow li{
-    list-style:none;
-    display:flex; align-items:baseline; gap:20px;
-    padding:22px 0;
-    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:16px;
+    padding:16px 0; border-bottom:1px dashed var(--line);
   }
-  .flow{ margin:0; padding:0 }
-  .flow li .label{ min-width:22px }
-  .flow li b{ font-weight:700; font-size:19px; letter-spacing:-.02em }
-  @media (min-width:900px){ .flow li b{ font-size:22px } }
+  .flow li:last-child{ border-bottom:0 }
+  .flow .no{
+    flex:0 0 auto; width:30px; height:30px; border-radius:50%;
+    background:var(--navy); color:var(--cream);
+    font-size:12px; display:flex; align-items:center; justify-content:center;
+  }
+  .flow b{ font-size:18px }
+  @media (min-width:900px){ .flow b{ font-size:21px } }
+
+  /* ── 04 数字。黒い石鍋の板 ── */
+  .pot{ background:var(--pot); color:var(--cream); border-radius:var(--r); padding:34px 24px }
+  @media (min-width:900px){ .pot{ padding:48px 40px } }
+  .figs{ display:grid; gap:26px; text-align:center }
+  @media (min-width:640px){ .figs{ grid-template-columns:repeat(3,1fr) } }
+  .fig .n{
+    font-family:"Yuji Boku","Noto Sans JP",serif;
+    color:var(--yellow); font-size:44px; line-height:1.2; white-space:nowrap;
+  }
+  @media (min-width:900px){ .fig .n{ font-size:58px } }
+  .fig .n small{ font-size:13px; color:var(--cream); margin-left:4px }
+  .fig .cap{ font-size:13px; color:#CFC4B2; margin-top:6px }
 
   /* ── 帯。LP全体で1本だけ ── */
-  .band{
-    background:var(--ink); color:var(--bg);
-    height:40px; display:flex; align-items:center; overflow:hidden;
-  }
-  .band .track{ display:flex; white-space:nowrap; animation:slide 34s linear infinite }
-  .band span{
-    font-family:"Inter","Noto Sans JP",sans-serif;
-    font-size:11px; letter-spacing:.3em; padding-right:2.5em;
-  }
+  .band{ background:var(--navy); color:var(--cream); height:42px; display:flex; align-items:center; overflow:hidden }
+  .band .track{ display:flex; white-space:nowrap; animation:slide 36s linear infinite }
+  .band span{ font-size:12px; letter-spacing:.24em; padding-right:2em }
   @keyframes slide{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
   @media (prefers-reduced-motion:reduce){ .band .track{ animation:none } }
 
   /* ── 06 問い合わせ ── */
-  .field{ margin-top:22px }
-  .field label{ display:block; font-size:13px; color:var(--mute); margin-bottom:8px }
+  .entry .panel{ max-width:560px; margin:0 auto }
+  .field{ margin-top:18px; text-align:left }
+  .field label{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px }
   .field input{
-    width:100%; max-width:440px;
-    font-family:inherit; font-size:15px; color:var(--ink);
-    background:transparent;
-    border:0; border-bottom:1px solid var(--line);
-    padding:8px 2px; border-radius:0;
+    width:100%; font-family:inherit; font-size:15px; color:var(--ink);
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:11px 12px;
   }
-  .field input:focus{ outline:0; border-bottom-color:var(--ink) }
-  form .btn{ margin-top:40px }
+  .field input:focus{ outline:0; border-color:var(--red) }
+  .entry form{ margin-top:6px }
+  .entry .btn{ margin-top:26px; width:100% }
 
-  footer{
-    background:var(--ink); color:var(--bg);
-    padding:64px var(--side);
-  }
-  footer .wordmark{ color:var(--bg) }
-  footer .inner{ max-width:1080px; margin:0 auto }
-  footer p{ font-size:13px; color:#B8B2A9; margin-top:20px; line-height:2 }
-  footer a{ color:#B8B2A9 }
+  footer{ background:var(--ink); color:#CFC4B2; padding:52px var(--side) 40px; text-align:center }
+  footer .wordmark{ color:var(--cream) }
+  footer p{ font-size:13px; margin-top:16px; line-height:2 }
+  footer a{ color:#CFC4B2 }
+  .footer-dishes{ display:flex; justify-content:center; gap:18px; margin-bottom:26px }
+  .footer-dishes svg{ width:60px; height:60px }
 
-  /* スマホの追従ボタン。主張させない */
   .sticky{ display:none }
   @media (max-width:899px){
     .sticky{
       display:block; position:fixed; left:0; right:0; bottom:0; z-index:20;
-      background:var(--bg); border-top:1px solid var(--line);
-      padding:10px var(--side);
+      background:rgba(160,116,68,.97); padding:9px var(--side);
+      box-shadow:0 -1px 0 rgba(90,58,28,.35);
     }
     .sticky a{
-      display:block; text-align:center;
-      font-size:13px; letter-spacing:.04em;
-      color:var(--ink); text-decoration:none;
-      border:1px solid var(--ink); border-radius:999px; padding:11px;
+      display:block; text-align:center; font-size:14px; color:#fff; text-decoration:none;
+      background:var(--red); border-radius:999px; padding:11px;
     }
-    body{ padding-bottom:66px }
+    body{ padding-bottom:62px }
   }
 
-  /* 動きはこれだけ。下から8pxのフェードイン */
+  /* 動きはフェードインのみ */
   .fade{ opacity:0; transform:translateY(8px); transition:opacity .6s ease, transform .6s ease }
   .fade.in{ opacity:1; transform:none }
   @media (prefers-reduced-motion:reduce){ .fade{ opacity:1; transform:none; transition:none } }
@@ -255,100 +247,137 @@
 <body>
 
 <header class="site" id="site-header">
-  <a class="wordmark" href="#top">Life Make Partner's</a>
+  <a class="wordmark" href="#top">LIFE MAKE PARTNER'S</a>
   <a class="hdr-link" href="#entry">話を聞いてみる</a>
 </header>
 
 <!-- 00 ファーストビュー -->
-<section class="sec hero" id="top">
-  <div class="row">
-    <p class="label">00 ── Life before house<span class="ko">인생</span></p>
-    <div class="body fade">
-      <h1>家より先に、<br>人生の話を。</h1>
+<section class="hero" id="top">
+  <!-- 豆電球のガーランド。装飾なので読み上げ対象から外す -->
+  <div class="garland" aria-hidden="true">
+    <svg viewBox="0 0 1000 84" preserveAspectRatio="none">
+      <path d="M0 14 Q125 64 250 14 Q375 64 500 14 Q625 64 750 14 Q875 64 1000 14"
+            fill="none" stroke="#6E4A29" stroke-width="3"/>
+    </svg>
+    <i class="bulb" style="left:6.25%;top:33px"></i>
+    <i class="bulb" style="left:12.5%;top:39px"></i>
+    <i class="bulb" style="left:18.75%;top:33px"></i>
+    <i class="bulb" style="left:31.25%;top:33px"></i>
+    <i class="bulb" style="left:37.5%;top:39px"></i>
+    <i class="bulb" style="left:43.75%;top:33px"></i>
+    <i class="bulb" style="left:56.25%;top:33px"></i>
+    <i class="bulb" style="left:62.5%;top:39px"></i>
+    <i class="bulb" style="left:68.75%;top:33px"></i>
+    <i class="bulb" style="left:81.25%;top:33px"></i>
+    <i class="bulb" style="left:87.5%;top:39px"></i>
+    <i class="bulb" style="left:93.75%;top:33px"></i>
+  </div>
+
+  <div class="wrap">
+    <div class="banner fade">
+      <i class="tape tl"></i><i class="tape tr"></i>
+      <span class="tag">はじまりの一杯<span class="ko">인생 상담</span></span>
+      <h1 class="brush">家より先に、<br>人生の話を。</h1>
       <p class="lead"><span class="nb">物件を探す人ではなく、</span><span class="nb">暮らしを整えたい人が集まる。</span></p>
       <p><a class="btn" href="#entry">まず話を聞いてみる</a></p>
     </div>
-  </div>
-  <div class="scroll" aria-hidden="true">
-    <i></i>
-    <span class="label">Scroll</span>
+
+    <!-- 看板の下に並べる料理。輪郭線なしのべた塗り -->
+    <div class="dishes fade" aria-hidden="true">
+      <!-- キンパ -->
+      <svg viewBox="0 0 100 100"><ellipse cx="50" cy="72" rx="40" ry="14" fill="#F8F1E2"/><g><circle cx="30" cy="60" r="17" fill="#2F3D2C"/><circle cx="30" cy="60" r="13" fill="#FFFDF4"/><rect x="25" y="55" width="4" height="10" rx="1" fill="#D2402F"/><rect x="30" y="55" width="4" height="10" rx="1" fill="#F0C33C"/><rect x="35" y="55" width="3" height="10" rx="1" fill="#4C8B48"/></g><g><circle cx="58" cy="56" r="17" fill="#2F3D2C"/><circle cx="58" cy="56" r="13" fill="#FFFDF4"/><rect x="53" y="51" width="4" height="10" rx="1" fill="#D2402F"/><rect x="58" y="51" width="4" height="10" rx="1" fill="#F0C33C"/><rect x="63" y="51" width="3" height="10" rx="1" fill="#4C8B48"/></g></svg>
+      <!-- ビビンバ -->
+      <svg viewBox="0 0 100 100"><path d="M16 52h68c0 20-15 32-34 32S16 72 16 52z" fill="#2B2724"/><ellipse cx="50" cy="52" rx="34" ry="12" fill="#FFFDF4"/><path d="M22 50a28 9 0 0 1 20-7l-2 8z" fill="#4C8B48"/><path d="M60 43a28 9 0 0 1 18 7l-20 1z" fill="#D2402F"/><path d="M28 56a30 10 0 0 0 14 6l2-8z" fill="#F0C33C"/><circle cx="50" cy="52" r="8" fill="#FFF8E6"/><circle cx="50" cy="52" r="5" fill="#F0C33C"/><ellipse cx="50" cy="86" rx="30" ry="5" fill="#8A6039" opacity=".45"/></svg>
+      <!-- チゲ（黒い石鍋） -->
+      <svg viewBox="0 0 100 100"><rect x="6" y="52" width="16" height="7" rx="3" fill="#2B2724"/><rect x="78" y="52" width="16" height="7" rx="3" fill="#2B2724"/><path d="M18 46h64c0 22-14 36-32 36S18 68 18 46z" fill="#2B2724"/><ellipse cx="50" cy="47" rx="32" ry="11" fill="#D2402F"/><circle cx="44" cy="46" r="7" fill="#FFFDF4"/><circle cx="44" cy="46" r="4" fill="#F0C33C"/><path d="M60 42h10v3H60z" fill="#4C8B48"/><g stroke="#F8F1E2" stroke-width="3" stroke-linecap="round" fill="none" opacity=".7"><path d="M38 30c4-4 0-8 4-12"/><path d="M52 27c4-4 0-8 4-12"/><path d="M66 31c4-4 0-8 4-12"/></g></svg>
+      <!-- チヂミ -->
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="54" r="32" fill="#E8B95A"/><path d="M50 22a32 32 0 0 1 32 32H50z" fill="#EFC66E"/><g fill="#4C8B48"><rect x="34" y="40" width="14" height="4" rx="2" transform="rotate(-18 41 42)"/><rect x="56" y="60" width="16" height="4" rx="2" transform="rotate(12 64 62)"/><rect x="40" y="66" width="12" height="4" rx="2" transform="rotate(-8 46 68)"/></g><g fill="#D2402F"><circle cx="62" cy="44" r="3"/><circle cx="38" cy="58" r="3"/></g><g stroke="#C79A67" stroke-width="2" opacity=".55"><path d="M50 22v64"/><path d="M18 54h64"/></g></svg>
+      <!-- トッポギ -->
+      <svg viewBox="0 0 100 100"><ellipse cx="50" cy="66" rx="38" ry="16" fill="#F8F1E2"/><path d="M18 62c8-12 20-18 32-18s24 6 32 18c-6 10-18 16-32 16s-26-6-32-16z" fill="#D2402F"/><g fill="#F6E7C8"><rect x="30" y="52" width="20" height="8" rx="4" transform="rotate(-12 40 56)"/><rect x="48" y="58" width="20" height="8" rx="4" transform="rotate(8 58 62)"/><rect x="38" y="64" width="18" height="8" rx="4" transform="rotate(-4 47 68)"/></g><rect x="60" y="46" width="12" height="4" rx="2" fill="#4C8B48"/></svg>
+      <!-- ソジュとグラス -->
+      <svg viewBox="0 0 100 100"><rect x="34" y="16" width="10" height="16" rx="3" fill="#3E7F4E"/><path d="M30 32h18c4 6 6 10 6 16v30a6 6 0 0 1-6 6H30a6 6 0 0 1-6-6V48c0-6 2-10 6-16z" fill="#3E7F4E"/><rect x="26" y="52" width="26" height="20" rx="3" fill="#F8F1E2"/><rect x="31" y="58" width="16" height="3" rx="1.5" fill="#2A3550"/><rect x="33" y="64" width="12" height="3" rx="1.5" fill="#2A3550"/><path d="M62 58h16l-2 22a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z" fill="#EAF0F2"/><path d="M63 66h14l-1.4 14a4 4 0 0 1-4 4h-3.2a4 4 0 0 1-4-4z" fill="#DCE7EB"/></svg>
+    </div>
   </div>
 </section>
-
-<hr class="rule">
 
 <!-- 01 問い -->
 <section class="sec">
-  <div class="row">
-    <p class="label">01 ── Problem<span class="ko">문제</span></p>
-    <div class="body fade">
-      <h2><span class="nb">家を探している人しか、</span><span class="nb">来ない。</span></h2>
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">いま起きていること<span class="ko">문제</span></span>
+      <h2 class="brush"><span class="nb">家を探している人しか、</span><span class="nb">来ない。</span></h2>
+    </div>
+    <div class="panel fade" style="text-align:center">
       <p class="lead">探していない人は、一生入ってこない。</p>
-      <p>→ 入口を、変える。</p>
+      <p style="margin-top:14px;font-weight:700">→ 入口を、変える。</p>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
 <!-- 02 変わること -->
 <section class="sec">
-  <div class="row">
-    <p class="label">02 ── Shift<span class="ko">전환</span></p>
-    <div class="body fade">
-      <div class="shift">
-        <div>
-          <div class="frame"><span>Image 4:5</span></div>
-          <div class="cap">
-            <p class="label">Before</p>
-            <b>物件を探しに来る人</b>
-          </div>
-        </div>
-        <div>
-          <div class="frame"><span>Image 4:5</span></div>
-          <div class="cap">
-            <p class="label">After</p>
-            <b>暮らしの相談に来る人</b>
-          </div>
-        </div>
-      </div>
-      <p class="note">売り込まないから、価格で比べられない。</p>
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">変わること<span class="ko">전환</span></span>
+      <h2 class="brush">来る人が、入れ替わる。</h2>
     </div>
+    <div class="shift fade">
+      <div class="dish">
+        <div class="plate">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 22 82 48v34a4 4 0 0 1-4 4H22a4 4 0 0 1-4-4V48z" fill="#B9A489"/><rect x="42" y="60" width="16" height="26" fill="#F8F1E2"/><rect x="28" y="52" width="14" height="12" rx="2" fill="#F8F1E2"/><rect x="58" y="52" width="14" height="12" rx="2" fill="#F8F1E2"/></svg>
+        </div>
+        <span class="tag">before</span>
+        <b>物件を探しに来る人</b>
+      </div>
+      <div class="dish">
+        <div class="plate">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="#B9A489" stroke-width="3" stroke-linecap="round" fill="none"><path d="M34 26c4-4 0-8 4-12"/><path d="M62 26c4-4 0-8 4-12"/></g><path d="M14 44h34c0 14-8 22-17 22s-17-8-17-22z" fill="#D2402F"/><ellipse cx="31" cy="44" rx="17" ry="6" fill="#E86B58"/><path d="M52 44h34c0 14-8 22-17 22s-17-8-17-22z" fill="#2B2724"/><ellipse cx="69" cy="44" rx="17" ry="6" fill="#4C8B48"/><rect x="18" y="74" width="64" height="6" rx="3" fill="#B9A489"/></svg>
+        </div>
+        <span class="tag">after</span>
+        <b>暮らしの相談に来る人</b>
+      </div>
+    </div>
+    <p class="note fade" style="text-align:center;margin-top:24px;color:var(--cream)">売り込まないから、価格で比べられない。</p>
   </div>
 </section>
 
 <!-- 帯。LP全体で1本だけ -->
 <div class="band" aria-hidden="true">
   <div class="track">
-    <span>Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── </span>
-    <span>Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── </span>
+    <span>LIFE MAKE PARTNER'S ── 地域の相談窓口 ── 인생 상담 ── LIFE MAKE PARTNER'S ── 地域の相談窓口 ── 인생 상담 ── </span>
+    <span>LIFE MAKE PARTNER'S ── 地域の相談窓口 ── 인생 상담 ── LIFE MAKE PARTNER'S ── 地域の相談窓口 ── 인생 상담 ── </span>
   </div>
 </div>
 
 <!-- 03 流れ -->
 <section class="sec">
-  <div class="row">
-    <p class="label">03 ── Flow<span class="ko">흐름</span></p>
-    <div class="body fade">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">お品書き<span class="ko">흐름</span></span>
+      <h2 class="brush"><span class="nb">相談から、</span><span class="nb">家までの道のり。</span></h2>
+    </div>
+    <div class="panel fade">
       <ul class="flow">
-        <li><span class="label">01</span><b>人生を学ぶ</b></li>
-        <li><span class="label">02</span><b>相談が生まれる</b></li>
-        <li><span class="label">03</span><b>課題が見える</b></li>
-        <li><span class="label">04</span><b>家が答えになる</b></li>
+        <li><span class="no">1</span><b>人生を学ぶ</b></li>
+        <li><span class="no">2</span><b>相談が生まれる</b></li>
+        <li><span class="no">3</span><b>課題が見える</b></li>
+        <li><span class="no">4</span><b>家が答えになる</b></li>
       </ul>
-      <p class="note"><span class="nb">相談から始まるので、</span><span class="nb">こちらから追いかけません。</span></p>
+      <p class="note" style="margin-top:20px"><span class="nb">相談から始まるので、</span><span class="nb">こちらから追いかけません。</span></p>
     </div>
   </div>
 </section>
 
 <!-- 04 数字 -->
-<section class="sec sand">
-  <div class="row">
-    <p class="label">04 ── Numbers<span class="ko">숫자</span></p>
-    <div class="body fade">
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">加盟企業の実績<span class="ko">숫자</span></span>
+    </div>
+    <div class="pot fade">
       <div class="figs">
         <div class="fig">
-          <p class="n arrow">2 → 12<small>件／年</small></p>
+          <p class="n">2 → 12<small>件／年</small></p>
           <p class="cap">年間契約数</p>
         </div>
         <div class="fig">
@@ -366,24 +395,26 @@
 
 <!-- 05 席の数 -->
 <section class="sec">
-  <div class="row">
-    <p class="label">05 ── Seats<span class="ko">자리</span></p>
-    <div class="body fade">
-      <h2>1エリア2社限定。</h2>
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">席の数<span class="ko">자리</span></span>
+      <h2 class="brush">1エリア2社限定。</h2>
+    </div>
+    <div class="panel fade" style="text-align:center">
       <p class="lead"><span class="nb">地域の相談窓口は、</span><span class="nb">先に始めた1社の場所になります。</span></p>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
 <!-- 06 問い合わせ -->
-<section class="sec" id="entry">
-  <div class="row">
-    <p class="label">06 ── Contact<span class="ko">문의</span></p>
-    <div class="body fade">
-      <h2><span class="nb">まずは、</span><span class="nb">話を聞くところから。</span></h2>
-      <p class="lead">その場で決めなくて構いません。</p>
+<section class="sec entry" id="entry">
+  <div class="wrap">
+    <div class="sec-head fade">
+      <span class="tag">ご来店お待ちしています<span class="ko">문의</span></span>
+      <h2 class="brush"><span class="nb">まずは、</span><span class="nb">話を聞くところから。</span></h2>
+    </div>
+    <div class="panel fade">
+      <p class="lead" style="text-align:center">その場で決めなくて構いません。</p>
       <!--
         送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
         入力内容から本文を組み立ててメーラーを開く方式（lp-cafe.html と同じ）。
@@ -408,26 +439,29 @@
         </div>
         <button class="btn" type="submit">まず話を聞いてみる（無料）</button>
       </form>
-      <p class="note" style="margin-top:24px">
+      <p class="note" style="margin-top:18px">
         ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-        開かない場合は <a href="mailto:RC@n-realize.co.jp" style="color:var(--clay)">RC@n-realize.co.jp</a> までご連絡ください。
+        開かない場合は <a href="mailto:RC@n-realize.co.jp" style="color:var(--red)">RC@n-realize.co.jp</a> までご連絡ください。
       </p>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="inner">
-    <a class="wordmark" href="https://n-realize.co.jp/" target="_blank" rel="noopener">Life Make Partner's</a>
-    <p>
-      日本リアライズ株式会社<br>
-      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
-    </p>
-    <p>
-      掲載の数字は加盟企業の実績であり、成果を保証するものではありません。<br>
-      © 日本リアライズ株式会社
-    </p>
+  <div class="footer-dishes" aria-hidden="true">
+    <svg viewBox="0 0 100 100"><ellipse cx="50" cy="66" rx="38" ry="16" fill="#F8F1E2"/><path d="M18 62c8-12 20-18 32-18s24 6 32 18c-6 10-18 16-32 16s-26-6-32-16z" fill="#D2402F"/><g fill="#F6E7C8"><rect x="30" y="52" width="20" height="8" rx="4" transform="rotate(-12 40 56)"/><rect x="48" y="58" width="20" height="8" rx="4" transform="rotate(8 58 62)"/></g></svg>
+    <svg viewBox="0 0 100 100"><rect x="34" y="16" width="10" height="16" rx="3" fill="#3E7F4E"/><path d="M30 32h18c4 6 6 10 6 16v30a6 6 0 0 1-6 6H30a6 6 0 0 1-6-6V48c0-6 2-10 6-16z" fill="#3E7F4E"/><rect x="26" y="52" width="26" height="20" rx="3" fill="#F8F1E2"/><rect x="31" y="58" width="16" height="3" rx="1.5" fill="#2A3550"/><path d="M62 58h16l-2 22a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z" fill="#EAF0F2"/></svg>
+    <svg viewBox="0 0 100 100"><path d="M18 46h64c0 22-14 36-32 36S18 68 18 46z" fill="#2B2724"/><ellipse cx="50" cy="47" rx="32" ry="11" fill="#D2402F"/><circle cx="44" cy="46" r="7" fill="#FFFDF4"/><circle cx="44" cy="46" r="4" fill="#F0C33C"/></svg>
   </div>
+  <a class="wordmark" href="https://n-realize.co.jp/" target="_blank" rel="noopener">LIFE MAKE PARTNER'S</a>
+  <p>
+    日本リアライズ株式会社<br>
+    <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
+  </p>
+  <p>
+    掲載の数字は加盟企業の実績であり、成果を保証するものではありません。<br>
+    © 日本リアライズ株式会社
+  </p>
 </footer>
 
 <div class="sticky"><a href="#entry">まず話を聞いてみる</a></div>
