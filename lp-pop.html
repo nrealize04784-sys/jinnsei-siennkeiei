@@ -36,7 +36,7 @@
   .label,.btn,.tag,.badge,.step-no,.strip{font-family:"M PLUS Rounded 1c","Noto Sans JP",sans-serif;font-weight:800}
   p{margin:0 0 1em}
   .wrap{width:min(1040px,calc(100% - 36px));margin-inline:auto}
-  section{padding:72px 0}
+  section{position:relative;padding:72px 0}
   @media (min-width:768px){ section{padding:120px 0} }
 
   .btn{
@@ -69,7 +69,7 @@
 
   /* ---------- ファーストビュー ---------- */
   .fv{
-    position:relative;padding:calc(var(--hdr) + 44px) 0 0;
+    position:relative;padding:calc(var(--hdr) + 44px) 0 68px;
     /* 銭湯のタイル割り。線は細く、うるさくしない */
     background-image:
       linear-gradient(rgba(39,192,212,.30) 2px,transparent 2px),
@@ -132,14 +132,51 @@
   /* 絵札。ポスターの詰め込み感はここで出す */
   .fuda{
     display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
-    padding:44px 0 64px;
+    padding:40px 0 26px;
   }
-  @media (min-width:768px){ .fuda{grid-template-columns:repeat(8,1fr);gap:14px;padding:56px 0 88px} }
+  @media (min-width:768px){ .fuda{grid-template-columns:repeat(8,1fr);gap:14px;padding:52px 0 30px} }
   .fuda .f{border:3px solid var(--ink);border-radius:12px;aspect-ratio:1;display:grid;place-items:center;padding:12%}
   .fuda .f:nth-child(3n+1){background:var(--paper)}
   .fuda .f:nth-child(3n+2){background:var(--cyan)}
   .fuda .f:nth-child(3n+3){background:var(--pink)}
   .fuda svg{width:100%;height:100%;display:block}
+
+  /* 看板の角に押す「ゆ」の判子 */
+  .yu{
+    position:absolute;left:-8px;top:-24px;width:66px;height:66px;border-radius:50%;
+    background:var(--cyan);border:var(--line) solid var(--ink);
+    display:grid;place-items:center;transform:rotate(-8deg);z-index:3;
+  }
+  .yu span{
+    font-family:"Dela Gothic One",sans-serif;font-size:34px;line-height:1;color:#fff;
+    -webkit-text-stroke:5px var(--ink);paint-order:stroke fill;
+  }
+  @media (min-width:768px){
+    .yu{left:-16px;top:-30px;width:88px;height:88px}
+    .yu span{font-size:46px;-webkit-text-stroke-width:6px}
+  }
+
+  /* サウナ・水風呂の札に見立てた3つのタグ */
+  .tags{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+  .tags span{
+    border:3px solid var(--ink);border-radius:999px;padding:6px 20px;font-size:15px;
+    font-family:"M PLUS Rounded 1c",sans-serif;font-weight:800;
+  }
+  .tags .t1{background:var(--pink);color:#fff}
+  .tags .t2{background:var(--cyan);color:var(--ink)}
+  .tags .t3{background:var(--lemon);color:var(--ink)}
+  .totonou{
+    text-align:center;margin:18px 0 0;font-family:"Dela Gothic One",sans-serif;
+    font-size:clamp(19px,4.6vw,28px);line-height:1.5;
+  }
+  .totonou em{font-style:normal;color:var(--pink)}
+
+  /* 余白に散らす絵。文字とぶつからない幅のときだけ出す */
+  .deco{position:absolute;width:104px;display:none;pointer-events:none}
+  .deco svg{width:100%;height:auto;display:block}
+  @media (min-width:1240px){ .deco{display:block} }
+  .deco.l{left:calc(50% - 610px)}
+  .deco.r{right:calc(50% - 610px)}
 
   /* ---------- 湯気の区切り。多くて3箇所 ---------- */
   .wave{display:block;width:100%;height:32px}
@@ -271,6 +308,7 @@
     <p class="bubble">人生、相談していいですか。</p>
 
     <div class="sign">
+      <span class="yu" aria-hidden="true"><span>ゆ</span></span>
       <span class="bulbs t" aria-hidden="true"></span>
       <span class="bulbs b" aria-hidden="true"></span>
       <span class="bulbs l" aria-hidden="true"></span>
@@ -342,12 +380,88 @@
           <path d="M30 44h40M30 60h26"/>
         </svg>
       </div>
+      <div class="f"><!-- 富士山 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M50 20 88 78H12z" fill="#27C0D4"/>
+          <path d="M50 20 66 44c-5 4-11 4-16 0s-11-4-16 0z" fill="#F7EFDE"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 湯桶 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M22 40h56l-7 40H29z" fill="#FFD84D"/>
+          <path d="M14 40h72"/>
+          <path d="M50 58h14"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 牛乳瓶 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M40 14h20v14l10 14v44H30V42l10-14z" fill="#F7EFDE"/>
+          <path d="M38 14h24" stroke-width="8"/>
+          <path d="M30 60h40" />
+        </svg>
+      </div>
+      <div class="f"><!-- だるま -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M50 16c18 0 30 18 30 36S68 86 50 86 20 70 20 52s12-36 30-36z" fill="#F5378F"/>
+          <circle cx="39" cy="46" r="4" fill="#141414" stroke="none"/>
+          <circle cx="61" cy="46" r="4" fill="#141414" stroke="none"/>
+          <path d="M40 64c6 5 14 5 20 0"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 扇風機 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <circle cx="50" cy="42" r="26" fill="#27C0D4"/>
+          <circle cx="50" cy="42" r="6" fill="#F7EFDE"/>
+          <path d="M50 72v12M34 88h32"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 下駄箱 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M16 20h68v60H16z" fill="#F7EFDE"/>
+          <path d="M16 50h68M50 20v60"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 蛇口 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M18 30h30v14H18z" fill="#FFD84D"/>
+          <path d="M48 37h20v22"/>
+          <path d="M62 70a6 6 0 1 0 12 0c0-5-6-11-6-11s-6 6-6 11z" fill="#27C0D4"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 石けん -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M22 52h56v26H22z" fill="#F5378F"/>
+          <circle cx="36" cy="30" r="10" fill="#F7EFDE"/>
+          <circle cx="60" cy="24" r="7" fill="#F7EFDE"/>
+        </svg>
+      </div>
     </div>
+
+    <div class="tags">
+      <span class="t1">人生教育</span>
+      <span class="t2">人生相談</span>
+      <span class="t3">ととのう</span>
+    </div>
+    <p class="totonou">学んで、相談して、まちが<em>ととのう</em>。</p>
   </div>
 </header>
 
 <!-- 2. 問いかけ -->
 <section style="padding-top:0">
+  <!-- 余白に散らす絵。装飾なので読み上げ対象から外す -->
+  <span class="deco l" style="top:70px" aria-hidden="true">
+    <svg viewBox="0 0 100 120" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M26 36 32 10 52 28zM74 36 68 10 48 28z" fill="#F5378F"/>
+      <path d="M24 54c0-16 12-28 26-28s26 12 26 28v40c0 8-5 14-13 14H37c-8 0-13-6-13-14z" fill="#F7EFDE"/>
+      <circle cx="40" cy="52" r="3.6" fill="#141414" stroke="none"/>
+      <circle cx="60" cy="52" r="3.6" fill="#141414" stroke="none"/>
+      <path d="M46 62h8"/>
+      <path d="M30 58h-9M30 66h-9M70 58h9M70 66h9"/>
+      <path d="M32 72h36v15H32z" fill="#27C0D4"/>
+      <ellipse cx="50" cy="98" rx="15" ry="9" fill="#FFD84D"/>
+      <circle cx="82" cy="48" r="11" fill="#F7EFDE"/>
+    </svg>
+  </span>
   <div class="wrap fade">
     <p class="lead">
       お客様は、家を探すときしか来ない。<br>
@@ -364,6 +478,14 @@
 
 <!-- 3. 変わること -->
 <section>
+  <span class="deco r" style="top:90px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M28 22c0-6 4-10 6-4M46 18c0-6 4-10 6-4M64 22c0-6 4-10 6-4"/>
+      <path d="M18 44h64l-8 42H26z" fill="#FFD84D"/>
+      <path d="M10 44h80"/>
+      <path d="M44 62h18"/>
+    </svg>
+  </span>
   <div class="wrap fade">
     <h2>変わるのは、来る人。</h2>
     <div class="cards">
@@ -383,6 +505,14 @@
 
 <!-- 4. 流れ -->
 <section style="padding-top:0">
+  <span class="deco l" style="top:60px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M8 20h84"/>
+      <path d="M14 28h34v54H14zM52 28h34v54H52z" fill="#F5378F"/>
+      <circle cx="31" cy="52" r="9" fill="#F7EFDE"/>
+      <circle cx="69" cy="52" r="9" fill="#F7EFDE"/>
+    </svg>
+  </span>
   <div class="wrap fade">
     <h2>学びから、信頼は積み上がる。</h2>
     <div class="steps">
@@ -408,6 +538,13 @@
 
 <!-- 5. 実績 -->
 <section>
+  <span class="deco r" style="top:80px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="76" cy="24" r="12" fill="#F5378F"/>
+      <path d="M50 26 92 90H8z" fill="#27C0D4"/>
+      <path d="M50 26 68 54c-6 5-12 5-18 0s-12-5-18 0z" fill="#F7EFDE"/>
+    </svg>
+  </span>
   <div class="wrap fade">
     <h2>先に始めた会社の話。</h2>
     <div class="stats">
