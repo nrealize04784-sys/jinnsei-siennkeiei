@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>家より先に、人生の話を。｜ライフメイクパートナーズ</title>
+<meta name="description" content="物件を探す人ではなく、暮らしを整えたい人が集まる。地域の相談窓口をつくる不動産フランチャイズ。1エリア2社限定。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+
+<style>
+  /* ── 韓国風ミニマルの配色 ──
+     生成りの地、墨の文字、面を切り替える砂色、アクセントの陶土色。
+     使うのはこの4色だけ。薄い文字は --mute より下に落とさない。 */
+  :root{
+    --bg:#F7F4EF;      /* 地。生成りの紙 */
+    --ink:#1A1918;     /* 文字。墨 */
+    --sand:#EAE4DA;    /* 面を切り替えるときの砂色 */
+    --clay:#B4593C;    /* アクセント。陶土色。ホバーとごく一部の文字だけ */
+    --mute:#8C857B;    /* 薄い文字の下限 */
+    --line:#DED7CC;    /* 区切りの1px */
+    --pad:96px;        /* セクション間の余白（スマホ） */
+    --side:24px;       /* 左右の余白（スマホ） */
+    --hdr:56px;
+  }
+  @media (min-width:900px){ :root{ --pad:180px; --side:120px; --hdr:72px } }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans JP","Noto Sans KR",sans-serif;
+    font-weight:400;
+    font-size:15px;
+    line-height:1.9;
+    letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (min-width:900px){ body{ font-size:16px } }
+  img{max-width:100%;display:block}
+
+  /* 英字ラベル。飾りであって見出しではないので、小さく薄く */
+  .label{
+    font-family:"Inter",sans-serif;
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--mute);
+    line-height:1.6;
+    white-space:nowrap;
+  }
+  /* ハングルは意味を運ばせない。ラベル横に1語だけ添える */
+  .ko{
+    font-family:"Noto Sans KR",sans-serif;
+    letter-spacing:.06em;
+    text-transform:none;
+    margin-left:.6em;
+  }
+
+  h1,h2,h3{
+    font-weight:700;
+    line-height:1.5;
+    letter-spacing:-.02em;
+    margin:0;
+  }
+  h1{font-size:34px}
+  h2{font-size:24px}
+  @media (min-width:900px){ h1{font-size:60px} h2{font-size:34px} }
+  p{margin:0}
+  /* 狭い画面で文の途中で折り返さないよう、意味のかたまり単位で改行させる */
+  .nb{display:inline-block}
+
+  /* ── 全セクション共通の型。左にラベル、右に本文。崩さない ── */
+  .sec{ padding:var(--pad) var(--side); }
+  .row{
+    max-width:1080px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+  @media (min-width:900px){
+    .row{ grid-template-columns:200px 1fr; gap:64px; }
+  }
+  .body > * + *{ margin-top:24px }
+  .lead{ color:var(--mute) }
+  .note{ font-size:13px; color:var(--mute) }
+
+  hr.rule{ border:0; border-top:1px solid var(--line); margin:0 var(--side) }
+
+  /* ── ボタン。墨のピル型。FVと最終CTAの2箇所のみ ── */
+  .btn{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--bg);
+    text-decoration:none;
+    font-size:14px;
+    letter-spacing:.04em;
+    padding:15px 34px;
+    border:0;
+    border-radius:999px;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .3s ease;
+  }
+  .btn:hover,.btn:focus-visible{ background:var(--clay) }
+
+  /* ── ヘッダー。透明で固定。スクロールで地と1pxの線が出る ── */
+  header.site{
+    position:fixed; inset:0 0 auto 0; z-index:20;
+    height:var(--hdr);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 var(--side);
+    background:transparent;
+    border-bottom:1px solid transparent;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  header.site.scrolled{ background:var(--bg); border-bottom-color:var(--line) }
+  .wordmark{
+    font-family:"Inter",sans-serif;
+    font-size:12px; font-weight:500; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink); text-decoration:none;
+  }
+  .hdr-link{
+    font-size:13px; color:var(--ink); text-decoration:none;
+    letter-spacing:.04em; border-bottom:1px solid var(--ink); padding-bottom:2px;
+  }
+  .hdr-link:hover{ color:var(--clay); border-bottom-color:var(--clay) }
+
+  /* ── 00 ファーストビュー ── */
+  .hero{
+    min-height:100svh;
+    padding-top:calc(var(--hdr) + 64px);
+    padding-bottom:96px;
+    display:flex; align-items:center;
+    position:relative;
+  }
+  .hero h1{ margin-top:20px }
+  .hero .lead{ margin-top:28px }
+  .hero .btn{ margin-top:44px }
+  .scroll{
+    position:absolute; left:var(--side); bottom:28px;
+    display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+  }
+  .scroll i{ display:block; width:1px; height:56px; background:var(--line) }
+
+  /* ── 04 数字だけ地を砂色に ── */
+  .sec.sand{ background:var(--sand) }
+  .figs{ display:grid; gap:40px }
+  @media (min-width:900px){ .figs{ grid-template-columns:repeat(3,1fr); gap:32px } }
+  .fig .n{
+    font-family:"Inter","Noto Sans JP",sans-serif;
+    font-weight:500; font-size:48px; line-height:1.1; letter-spacing:-.03em;
+    display:flex; align-items:flex-end; gap:6px;
+    white-space:nowrap;
+  }
+  /* 矢印の入る数字だけは幅を取るので、一段小さくして折り返させない */
+  .fig .n.arrow{ font-size:36px }
+  @media (min-width:900px){ .fig .n{ font-size:72px } .fig .n.arrow{ font-size:52px } }
+  .fig .n small{ font-size:11px; letter-spacing:.1em; color:var(--mute); padding-bottom:10px; font-weight:400 }
+  .fig .cap{ font-size:13px; color:var(--mute); margin-top:10px }
+
+  /* ── 02 変わること。4:5の枠を2枚。間に線は引かない ── */
+  .shift{ display:grid; gap:32px }
+  @media (min-width:640px){ .shift{ grid-template-columns:1fr 1fr; gap:40px } }
+  .frame{
+    aspect-ratio:4/5;
+    background:var(--sand);
+    border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .frame span{
+    font-family:"Inter",sans-serif; font-size:11px; letter-spacing:.18em; color:var(--mute);
+  }
+  .shift .cap{ margin-top:14px }
+  .shift .cap b{ display:block; font-weight:700; letter-spacing:-.01em }
+  .shift .cap .label{ margin-bottom:6px }
+
+  /* ── 03 流れ。縦一列。番号は小さく ── */
+  .flow{ border-top:1px solid var(--line) }
+  .flow li{
+    list-style:none;
+    display:flex; align-items:baseline; gap:20px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .flow{ margin:0; padding:0 }
+  .flow li .label{ min-width:22px }
+  .flow li b{ font-weight:700; font-size:19px; letter-spacing:-.02em }
+  @media (min-width:900px){ .flow li b{ font-size:22px } }
+
+  /* ── 帯。LP全体で1本だけ ── */
+  .band{
+    background:var(--ink); color:var(--bg);
+    height:40px; display:flex; align-items:center; overflow:hidden;
+  }
+  .band .track{ display:flex; white-space:nowrap; animation:slide 34s linear infinite }
+  .band span{
+    font-family:"Inter","Noto Sans JP",sans-serif;
+    font-size:11px; letter-spacing:.3em; padding-right:2.5em;
+  }
+  @keyframes slide{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @media (prefers-reduced-motion:reduce){ .band .track{ animation:none } }
+
+  /* ── 06 問い合わせ ── */
+  .field{ margin-top:22px }
+  .field label{ display:block; font-size:13px; color:var(--mute); margin-bottom:8px }
+  .field input{
+    width:100%; max-width:440px;
+    font-family:inherit; font-size:15px; color:var(--ink);
+    background:transparent;
+    border:0; border-bottom:1px solid var(--line);
+    padding:8px 2px; border-radius:0;
+  }
+  .field input:focus{ outline:0; border-bottom-color:var(--ink) }
+  form .btn{ margin-top:40px }
+
+  footer{
+    background:var(--ink); color:var(--bg);
+    padding:64px var(--side);
+  }
+  footer .wordmark{ color:var(--bg) }
+  footer .inner{ max-width:1080px; margin:0 auto }
+  footer p{ font-size:13px; color:#B8B2A9; margin-top:20px; line-height:2 }
+  footer a{ color:#B8B2A9 }
+
+  /* スマホの追従ボタン。主張させない */
+  .sticky{ display:none }
+  @media (max-width:899px){
+    .sticky{
+      display:block; position:fixed; left:0; right:0; bottom:0; z-index:20;
+      background:var(--bg); border-top:1px solid var(--line);
+      padding:10px var(--side);
+    }
+    .sticky a{
+      display:block; text-align:center;
+      font-size:13px; letter-spacing:.04em;
+      color:var(--ink); text-decoration:none;
+      border:1px solid var(--ink); border-radius:999px; padding:11px;
+    }
+    body{ padding-bottom:66px }
+  }
+
+  /* 動きはこれだけ。下から8pxのフェードイン */
+  .fade{ opacity:0; transform:translateY(8px); transition:opacity .6s ease, transform .6s ease }
+  .fade.in{ opacity:1; transform:none }
+  @media (prefers-reduced-motion:reduce){ .fade{ opacity:1; transform:none; transition:none } }
+</style>
+</head>
+<body>
+
+<header class="site" id="site-header">
+  <a class="wordmark" href="#top">Life Make Partner's</a>
+  <a class="hdr-link" href="#entry">話を聞いてみる</a>
+</header>
+
+<!-- 00 ファーストビュー -->
+<section class="sec hero" id="top">
+  <div class="row">
+    <p class="label">00 ── Life before house<span class="ko">인생</span></p>
+    <div class="body fade">
+      <h1>家より先に、<br>人生の話を。</h1>
+      <p class="lead"><span class="nb">物件を探す人ではなく、</span><span class="nb">暮らしを整えたい人が集まる。</span></p>
+      <p><a class="btn" href="#entry">まず話を聞いてみる</a></p>
+    </div>
+  </div>
+  <div class="scroll" aria-hidden="true">
+    <i></i>
+    <span class="label">Scroll</span>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- 01 問い -->
+<section class="sec">
+  <div class="row">
+    <p class="label">01 ── Problem<span class="ko">문제</span></p>
+    <div class="body fade">
+      <h2><span class="nb">家を探している人しか、</span><span class="nb">来ない。</span></h2>
+      <p class="lead">探していない人は、一生入ってこない。</p>
+      <p>→ 入口を、変える。</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- 02 変わること -->
+<section class="sec">
+  <div class="row">
+    <p class="label">02 ── Shift<span class="ko">전환</span></p>
+    <div class="body fade">
+      <div class="shift">
+        <div>
+          <div class="frame"><span>Image 4:5</span></div>
+          <div class="cap">
+            <p class="label">Before</p>
+            <b>物件を探しに来る人</b>
+          </div>
+        </div>
+        <div>
+          <div class="frame"><span>Image 4:5</span></div>
+          <div class="cap">
+            <p class="label">After</p>
+            <b>暮らしの相談に来る人</b>
+          </div>
+        </div>
+      </div>
+      <p class="note">売り込まないから、価格で比べられない。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 帯。LP全体で1本だけ -->
+<div class="band" aria-hidden="true">
+  <div class="track">
+    <span>Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── </span>
+    <span>Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── Life Make Partner's ── 地域の相談窓口 ── </span>
+  </div>
+</div>
+
+<!-- 03 流れ -->
+<section class="sec">
+  <div class="row">
+    <p class="label">03 ── Flow<span class="ko">흐름</span></p>
+    <div class="body fade">
+      <ul class="flow">
+        <li><span class="label">01</span><b>人生を学ぶ</b></li>
+        <li><span class="label">02</span><b>相談が生まれる</b></li>
+        <li><span class="label">03</span><b>課題が見える</b></li>
+        <li><span class="label">04</span><b>家が答えになる</b></li>
+      </ul>
+      <p class="note"><span class="nb">相談から始まるので、</span><span class="nb">こちらから追いかけません。</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 数字 -->
+<section class="sec sand">
+  <div class="row">
+    <p class="label">04 ── Numbers<span class="ko">숫자</span></p>
+    <div class="body fade">
+      <div class="figs">
+        <div class="fig">
+          <p class="n arrow">2 → 12<small>件／年</small></p>
+          <p class="cap">年間契約数</p>
+        </div>
+        <div class="fig">
+          <p class="n">3.6<small>億円</small></p>
+          <p class="cap">年商</p>
+        </div>
+        <div class="fig">
+          <p class="n">2<small>ヶ月</small></p>
+          <p class="cap">営業未経験から自力契約まで、最短で</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 席の数 -->
+<section class="sec">
+  <div class="row">
+    <p class="label">05 ── Seats<span class="ko">자리</span></p>
+    <div class="body fade">
+      <h2>1エリア2社限定。</h2>
+      <p class="lead"><span class="nb">地域の相談窓口は、</span><span class="nb">先に始めた1社の場所になります。</span></p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- 06 問い合わせ -->
+<section class="sec" id="entry">
+  <div class="row">
+    <p class="label">06 ── Contact<span class="ko">문의</span></p>
+    <div class="body fade">
+      <h2><span class="nb">まずは、</span><span class="nb">話を聞くところから。</span></h2>
+      <p class="lead">その場で決めなくて構いません。</p>
+      <!--
+        送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+        入力内容から本文を組み立ててメーラーを開く方式（lp-cafe.html と同じ）。
+        ※ フォーム送信サービスを使う場合は、この form と下の script を差し替えること。
+      -->
+      <form id="entry-form" novalidate>
+        <div class="field">
+          <label for="company">会社名</label>
+          <input id="company" name="company" type="text" autocomplete="organization" required>
+        </div>
+        <div class="field">
+          <label for="name">お名前</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="tel">電話番号</label>
+          <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <button class="btn" type="submit">まず話を聞いてみる（無料）</button>
+      </form>
+      <p class="note" style="margin-top:24px">
+        ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+        開かない場合は <a href="mailto:RC@n-realize.co.jp" style="color:var(--clay)">RC@n-realize.co.jp</a> までご連絡ください。
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <a class="wordmark" href="https://n-realize.co.jp/" target="_blank" rel="noopener">Life Make Partner's</a>
+    <p>
+      日本リアライズ株式会社<br>
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
+    </p>
+    <p>
+      掲載の数字は加盟企業の実績であり、成果を保証するものではありません。<br>
+      © 日本リアライズ株式会社
+    </p>
+  </div>
+</footer>
+
+<div class="sticky"><a href="#entry">まず話を聞いてみる</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      'お話をうかがいたく、連絡いたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('お問い合わせ（まず話を聞いてみる）')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  // 少しでもスクロールしたらヘッダーに地を出す
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // 下から8pxのフェードイン。動きはこれだけ
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('.fade').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>
