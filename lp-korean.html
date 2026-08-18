@@ -99,20 +99,41 @@
   }
   .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
 
-  /* ── ヘッダー ── */
+  /* ── ヘッダー。紺のバーに、▶カーソルとコマンドウィンドウ風の枠 ── */
   header.site{
-    position:fixed; inset:0 0 auto 0; z-index:20; height:var(--hdr);
+    position:fixed; inset:0 0 auto 0; z-index:30; height:var(--hdr);
     display:flex; align-items:center; justify-content:space-between;
     padding:0 var(--side);
-    background:transparent; transition:background .3s ease, box-shadow .3s ease;
+    background:var(--navy);
+    box-shadow:0 1px 0 rgba(0,0,0,.22);
   }
-  header.site.scrolled{ background:rgba(160,116,68,.96); box-shadow:0 1px 0 rgba(90,58,28,.35) }
-  .wordmark{ color:var(--cream); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.14em }
-  .hdr-link{
-    color:var(--cream); text-decoration:none; font-size:13px;
-    border:1px solid rgba(248,241,226,.7); border-radius:999px; padding:7px 16px;
+  header.site.scrolled{ box-shadow:0 2px 10px rgba(0,0,0,.25) }
+  .wordmark{ color:var(--cream); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.14em; white-space:nowrap }
+  .hdr-nav{ display:flex; align-items:center; gap:18px }
+  @media (min-width:900px){ .hdr-nav{ gap:28px } }
+  .hdr-nav a{
+    color:rgba(248,241,226,.9); text-decoration:none;
+    font-size:13px; letter-spacing:.06em; white-space:nowrap;
+    display:inline-flex; align-items:center; gap:.5em;
   }
-  .hdr-link:hover{ background:var(--cream); color:var(--ink) }
+  /* ▶ は書体によって形が変わるので、文字ではなく三角形として描く */
+  .hdr-nav a::before{
+    content:""; flex:none; width:.42em; height:.62em;
+    background:currentColor; clip-path:polygon(0 0,100% 50%,0 100%);
+  }
+  .hdr-nav a:hover{ color:#fff }
+  /* 申し込みと資料請求は枠で囲む。申し込みだけ豆電球の黄で一段強く */
+  .hdr-cta{ border:1px solid rgba(248,241,226,.85); border-radius:5px; padding:8px 16px }
+  .hdr-nav a.hdr-cta-main{ color:var(--yellow) }
+  .hdr-cta:hover{ background:rgba(255,255,255,.1) }
+  /* 固定ヘッダーのぶん、アンカーの着地点を下げる */
+  #entry{ scroll-margin-top:calc(var(--hdr) + 12px) }
+  @media (max-width:899px){
+    /* 幅が足りず、画面下の追従ボタンとも重複するので枠のボタンは出さない */
+    .hdr-nav a.hdr-cta{ display:none }
+    .hdr-nav a{ font-size:12px; letter-spacing:0 }
+    .wordmark{ font-size:11px; letter-spacing:.1em }
+  }
 
   /* ── 豆電球のガーランド ──
      弦だけを横に伸ばし、電球はHTML側に置く。
@@ -248,7 +269,12 @@
 
 <header class="site" id="site-header">
   <a class="wordmark" href="#top">LIFE MAKE PARTNER'S</a>
-  <a class="hdr-link" href="#entry">話を聞いてみる</a>
+  <nav class="hdr-nav">
+    <a href="#top">ホーム</a>
+    <a href="kaisha-korean.html">会社概要</a>
+    <a class="hdr-cta hdr-cta-main" href="#entry">まず話を聞いてみる</a>
+    <a class="hdr-cta" href="shiryou-korean.html">資料請求</a>
+  </nav>
 </header>
 
 <!-- 00 ファーストビュー -->

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="加盟の概要をまとめた資料をお送りします。ライフメイクパートナーズの資料請求フォーム。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400&family=Yuji+Boku&display=swap" rel="stylesheet">
+
+<style>
+  /* 本編（lp-korean.html）と同じ配色・同じヘッダー */
+  :root{
+    --wood:#C79A67; --cream:#F8F1E2; --ink:#241E1A; --ink-soft:#4A3D33;
+    --navy:#2A3550; --red:#D2402F; --yellow:#F0C33C; --line:#E2D6BE;
+    --side:22px; --hdr:56px;
+  }
+  @media (min-width:900px){ :root{ --side:48px; --hdr:68px } }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font-family:"Noto Sans JP","Noto Sans KR",sans-serif; font-size:15px; line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    background-color:var(--wood);
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 118px, rgba(120,78,40,.28) 118px 120px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 3px, transparent 3px 9px),
+      linear-gradient(180deg, rgba(90,58,28,.10), rgba(90,58,28,0) 240px);
+  }
+  a{color:var(--red)}
+  h1{ font-family:"Yuji Boku","Noto Sans JP",serif; font-weight:400; font-size:30px; margin:0; letter-spacing:.04em }
+  @media (min-width:900px){ h1{ font-size:42px } }
+
+  header.site{
+    position:fixed; inset:0 0 auto 0; z-index:30; height:var(--hdr);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 var(--side); background:var(--navy); box-shadow:0 1px 0 rgba(0,0,0,.22);
+  }
+  .wordmark{ color:var(--cream); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.14em; white-space:nowrap }
+  .hdr-nav{ display:flex; align-items:center; gap:18px }
+  @media (min-width:900px){ .hdr-nav{ gap:28px } }
+  .hdr-nav a{
+    color:rgba(248,241,226,.9); text-decoration:none; font-size:13px; letter-spacing:.06em;
+    white-space:nowrap; display:inline-flex; align-items:center; gap:.5em;
+  }
+  .hdr-nav a::before{
+    content:""; flex:none; width:.42em; height:.62em;
+    background:currentColor; clip-path:polygon(0 0,100% 50%,0 100%);
+  }
+  .hdr-nav a:hover{ color:#fff }
+  .hdr-cta{ border:1px solid rgba(248,241,226,.85); border-radius:5px; padding:8px 16px }
+  .hdr-nav a.hdr-cta-main{ color:var(--yellow) }
+  .hdr-cta:hover{ background:rgba(255,255,255,.1) }
+  @media (max-width:899px){
+    .hdr-nav a.hdr-cta{ display:none }
+    .hdr-nav a{ font-size:12px; letter-spacing:0 }
+    .wordmark{ font-size:11px; letter-spacing:.1em }
+  }
+
+  main{ padding:calc(var(--hdr) + 56px) var(--side) 80px }
+  .wrap{ max-width:720px; margin:0 auto }
+  .tag{
+    display:inline-block; background:var(--navy); color:var(--cream);
+    font-size:12px; font-weight:500; letter-spacing:.08em; padding:5px 14px; border-radius:6px;
+    box-shadow:0 2px 0 rgba(0,0,0,.18);
+  }
+  .tag .ko{ font-family:"Noto Sans KR",sans-serif; margin-left:.5em; opacity:.85 }
+  .head{ text-align:center; margin-bottom:28px }
+  .head h1{ margin-top:16px }
+  .head p{ margin:10px 0 0; color:var(--cream) }
+  .panel{
+    background:var(--cream); border-radius:14px; padding:28px 22px;
+    box-shadow:0 4px 0 rgba(90,58,28,.18);
+  }
+  @media (min-width:900px){ .panel{ padding:40px } }
+  dl{ margin:0 }
+  dl div{ display:grid; grid-template-columns:1fr; gap:2px; padding:14px 0; border-bottom:1px dashed var(--line) }
+  @media (min-width:600px){ dl div{ grid-template-columns:120px 1fr; gap:16px } }
+  dl div:last-child{ border-bottom:0 }
+  dt{ font-size:13px; color:var(--ink-soft) }
+  dd{ margin:0 }
+  .field{ margin-top:18px }
+  .field label{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px }
+  .field input,.field textarea{
+    width:100%; font-family:inherit; font-size:15px; color:var(--ink);
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:11px 12px;
+  }
+  .field textarea{ min-height:88px; resize:vertical }
+  .field input:focus,.field textarea:focus{ outline:0; border-color:var(--red) }
+  .btn{
+    display:block; width:100%; margin-top:26px;
+    background:var(--red); color:#fff; text-decoration:none; text-align:center;
+    font-family:inherit; font-size:15px; font-weight:500; letter-spacing:.03em;
+    padding:15px 20px; border:0; border-radius:999px; cursor:pointer;
+    box-shadow:0 3px 0 #9E2C1F; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
+  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
+  .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
+  .back:hover{ text-decoration:underline }
+  footer{ background:var(--ink); color:#CFC4B2; padding:44px var(--side); text-align:center }
+  footer .wordmark{ color:var(--cream) }
+  footer p{ font-size:13px; margin:16px 0 0; line-height:2 }
+  footer a{ color:#CFC4B2 }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <a class="wordmark" href="lp-korean.html">LIFE MAKE PARTNER'S</a>
+  <nav class="hdr-nav">
+    <a href="lp-korean.html">ホーム</a>
+    <a href="kaisha-korean.html">会社概要</a>
+    <a class="hdr-cta hdr-cta-main" href="lp-korean.html#entry">まず話を聞いてみる</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="head">
+      <span class="tag">お持ち帰り<span class="ko">자료 신청</span></span>
+      <h1>資料請求</h1>
+      <p>加盟の概要をまとめた資料をお送りします。</p>
+    </div>
+
+    <div class="panel">
+      <!--
+        送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+        入力内容から本文を組み立ててメーラーを開く方式（shiryou.html と同じ）。
+        ※ フォーム送信サービスを使う場合は、この form と下の script を差し替えること。
+      -->
+      <form id="req" novalidate>
+        <div class="field">
+          <label for="company">会社名</label>
+          <input id="company" name="company" type="text" autocomplete="organization" required>
+        </div>
+        <div class="field">
+          <label for="name">お名前</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="tel">電話番号</label>
+          <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="addr">送付先のご住所</label>
+          <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+        </div>
+        <button class="btn" type="submit">この内容で資料請求する</button>
+      </form>
+
+      <p class="note">
+        ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+        内容をご確認のうえ、そのまま送信してください。<br>
+        開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      </p>
+    </div>
+
+    <a class="back" href="lp-korean.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <a class="wordmark" href="https://n-realize.co.jp/" target="_blank" rel="noopener">LIFE MAKE PARTNER'S</a>
+  <p>
+    日本リアライズ株式会社<br>
+    <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
+  </p>
+  <p>© 日本リアライズ株式会社</p>
+</footer>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('req').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
+
+</body>
+</html>
