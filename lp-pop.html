@@ -97,11 +97,13 @@
   .yu-big{
     font-family:"Dela Gothic One",sans-serif;line-height:.9;color:var(--pink);
     font-size:clamp(78px,17vw,148px);
-    -webkit-text-stroke:14px var(--ink);paint-order:stroke fill;
+    -webkit-text-stroke:10px var(--ink);paint-order:stroke fill;
   }
-  @media (min-width:768px){ .yu-big{-webkit-text-stroke-width:22px} }
-  .steam{display:block;width:86px;height:34px;margin:2px auto 10px}
-  @media (min-width:768px){ .steam{width:120px;height:44px;margin-bottom:16px} }
+  @media (min-width:768px){ .yu-big{-webkit-text-stroke-width:16px} }
+  /* 温泉マークと「ゆ」を縦に積む */
+  .yu-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .onsen{display:block;width:66px;height:auto}
+  @media (min-width:768px){ .onsen{width:108px} }
   /* 吹き出し。看板の上に少し重ねる */
   .bubble{
     position:relative;z-index:2;display:block;width:fit-content;margin:0 auto 16px;
@@ -337,18 +339,17 @@
         <span class="tg lemon">人生教育</span>
         <span class="tg cyanbg">人生相談</span>
       </span>
-      <span class="yu-big" aria-hidden="true">ゆ</span>
+      <span class="yu-wrap" aria-hidden="true">
+        <svg class="onsen" viewBox="0 0 100 86" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M32 42c9-7-9-13 0-20s-7-10 1-14M50 42c9-7-9-13 0-20s-7-10 1-14M68 42c9-7-9-13 0-20s-7-10 1-14"/>
+          <path d="M10 52h80c0 16-18 27-40 27S10 68 10 52z" fill="#F7EFDE"/>
+        </svg>
+        <span class="yu-big">ゆ</span>
+      </span>
       <span class="tagset r" aria-hidden="true">
         <span class="tg pinkbg">ととのう</span>
       </span>
     </div>
-    <!-- 湯気 -->
-    <svg class="steam" viewBox="0 0 120 44" fill="none" stroke="#141414" stroke-width="7" stroke-linecap="round" aria-hidden="true">
-      <path d="M22 38c10-6-10-12 0-18s-8-10 2-14"/>
-      <path d="M60 40c10-6-10-12 0-18s-8-10 2-14"/>
-      <path d="M98 38c10-6-10-12 0-18s-8-10 2-14"/>
-    </svg>
-
     <div class="sign">
       <span class="bulbs t" aria-hidden="true"></span>
       <span class="bulbs b" aria-hidden="true"></span>
