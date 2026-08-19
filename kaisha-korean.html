@@ -100,6 +100,19 @@
   .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
   .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
   .back:hover{ text-decoration:underline }
+  .home-btn{
+    display:block; width:fit-content; margin:32px auto 0;
+    color:var(--cream); text-decoration:none;
+    font-size:15px; letter-spacing:.04em;
+    border:1px solid rgba(248,241,226,.85); border-radius:999px;
+    padding:13px 30px;
+    display:flex; align-items:center; gap:.6em;
+  }
+  .home-btn::before{
+    content:""; flex:none; width:.42em; height:.62em;
+    background:currentColor; clip-path:polygon(100% 0,0 50%,100% 100%);
+  }
+  .home-btn:hover{ background:var(--cream); color:var(--ink) }
   footer{ background:var(--ink); color:#CFC4B2; padding:44px var(--side); text-align:center }
   footer .wordmark{ color:var(--cream) }
   footer p{ font-size:13px; margin:16px 0 0; line-height:2 }
@@ -109,9 +122,9 @@
 <body>
 
 <header class="site">
-  <a class="wordmark" href="lp-korean.html">LIFE MAKE PARTNER'S</a>
+  <a class="wordmark" data-home href="lp-korean.html">LIFE MAKE PARTNER'S</a>
   <nav class="hdr-nav">
-    <a href="lp-korean.html">ホーム</a>
+    <a data-home href="lp-korean.html">ホーム</a>
     <a class="hdr-cta hdr-cta-main" href="lp-korean.html#entry">まず話を聞いてみる</a>
     <a class="hdr-cta" href="shiryou-korean.html">資料請求</a>
   </nav>
@@ -135,7 +148,7 @@
       </dl>
     </div>
 
-    <a class="back" href="lp-korean.html">← 前のページにもどる</a>
+    <a class="home-btn" data-home href="lp-korean.html">ホームに戻る</a>
   </div>
 </main>
 
@@ -147,6 +160,27 @@
   </p>
   <p>© 日本リアライズ株式会社</p>
 </footer>
+
+<script>
+  // 「ホーム」を押したら必ずホームへ戻す。
+  // 埋め込み表示（iframe）では外側の窓ごと移動させ、
+  // 相対リンクを辿れない環境では履歴を1つ戻る、の順に試す。
+  document.querySelectorAll('[data-home]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      // 外側の窓に渡すので、相対パスのままではなく絶対URLにしておく
+      var url = new URL(a.getAttribute('href'), location.href).href;
+      e.preventDefault();
+      try {
+        if (window.top !== window.self) { window.top.location.href = url; return; }
+      } catch (err) { /* 別ドメインに埋め込まれている場合はここに来る */ }
+      var before = location.href;
+      location.href = url;
+      setTimeout(function () {
+        if (location.href === before && history.length > 1) history.back();
+      }, 700);
+    });
+  });
+</script>
 
 </body>
 </html>
