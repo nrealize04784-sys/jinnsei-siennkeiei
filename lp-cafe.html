@@ -666,11 +666,11 @@
     <p class="note">相談から始まるので、こちらから追いかけません。</p>
 
     <!-- 相談の席を、向かい合った2つのカップで表す。写真ができたら .photo ごと <img> に差し替える -->
-    <div class="photo fade" style="margin-top:56px" role="img" aria-label="丸テーブルをはさんで向かい合って座る2人。コーヒーとプリンが並ぶ喫茶店の席">
+    <div class="photo fade" style="margin-top:56px" role="img" aria-label="向かい合ったコーヒーとケーキが並ぶ、喫茶店のテーブル">
       <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg">
         <rect width="880" height="340" fill="#FFF8EC"/>
-        <!-- 相談の席。ヒーローの喫茶メニューやフッターのスイーツと同じ、輪郭線なしのべた塗りでそろえる。
-             顔は閉じた目だけ。鼻と口は描かない。線を足すほど不気味になるため。 -->
+        <!-- 人は描かず、向かい合った2つのカップで「相談の席」を表す。
+             ヒーローの喫茶メニューやフッターのスイーツと同じ、輪郭線なしのべた塗り。 -->
 
         <!-- 椅子（背もたれだけ、テーブルの奥に） -->
         <g fill="#DDB584">
@@ -686,26 +686,6 @@
           <rect x="712" y="216" width="11" height="66" rx="5"/>
         </g>
 
-        <!-- 座っている2人。テーブルより先に描いて、下半身はテーブルと椅子で隠す -->
-        <g>
-          <!-- 左：相談に来た人 -->
-          <path d="M172 210 q2 -66 10 -82 q8 -16 28 -16 q22 0 28 18 q8 20 8 80 z" fill="#A8452A"/>
-          <circle cx="208" cy="74" r="36" fill="#4A2A1B"/>
-          <path d="M178 76 q-16 38 -6 58 q18 8 26 -6 q-14 -24 -6 -52 z" fill="#4A2A1B"/>
-          <circle cx="214" cy="82" r="32" fill="#F6D7B0"/>
-          <circle cx="238" cy="100" r="7" fill="#EFA98C" opacity=".55"/>
-          <path d="M226 86 q6 -9 12 0" fill="none" stroke="#4A2A1B" stroke-width="3.5" stroke-linecap="round"/>
-
-          <!-- 右：迎える側。前掛けで見分ける -->
-          <path d="M708 210 q-2 -66 -10 -82 q-8 -16 -28 -16 q-22 0 -28 18 q-8 20 -8 80 z" fill="#6B5A4C"/>
-          <path d="M634 208 q0 -34 4 -56 l30 4 q-4 26 -4 52 z" fill="#F7EAD2"/>
-          <circle cx="672" cy="74" r="36" fill="#4A2A1B"/>
-          <path d="M702 76 q14 26 8 42 q-16 6 -22 -4 q12 -16 6 -38 z" fill="#4A2A1B"/>
-          <circle cx="666" cy="82" r="32" fill="#F6D7B0"/>
-          <circle cx="642" cy="100" r="7" fill="#EFA98C" opacity=".55"/>
-          <path d="M654 86 q-6 -9 -12 0" fill="none" stroke="#4A2A1B" stroke-width="3.5" stroke-linecap="round"/>
-        </g>
-
         <!-- 床の影 -->
         <ellipse cx="440" cy="308" rx="220" ry="17" fill="#F2C68C" opacity=".55"/>
 
@@ -715,16 +695,7 @@
         <ellipse cx="440" cy="240" rx="224" ry="58" fill="#D9AE79"/>
         <ellipse cx="440" cy="232" rx="224" ry="58" fill="#F5D547"/>
 
-        <!-- 天板に置いた手。テーブルより後に描く -->
-        <!-- 袖は服より一段濃くする。同じ色だと胴体と溶けて、ふくらみに見えるため -->
-        <path d="M242 148 Q254 176 259 200" fill="none" stroke="#8E3722" stroke-width="20" stroke-linecap="round"/>
-        <circle cx="259" cy="204" r="13" fill="#F6D7B0"/>
-        <path d="M638 148 Q626 176 621 200" fill="none" stroke="#57493C" stroke-width="20" stroke-linecap="round"/>
-        <circle cx="621" cy="204" r="13" fill="#F6D7B0"/>
-
-        <!-- 中央のプリン。フッターのスイーツと同じ形をそのまま流用している。
-             人と並べると器が大きすぎたので、皿の中心を軸に縮めて手前へ寄せる -->
-        <g transform="translate(440,262) scale(.72) translate(-440,-226)">
+        <!-- 中央のプリン。フッターのスイーツと同じ形をそのまま流用している -->
         <ellipse cx="440" cy="226" rx="48" ry="13" fill="#FFFCF3"/>
         <ellipse cx="440" cy="223" rx="40" ry="10" fill="#F4EADA"/>
         <g transform="translate(336,74)">
@@ -736,34 +707,29 @@
           <circle cx="104" cy="80" r="8" fill="#D8483A"/>
           <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="3" stroke-linecap="round"/>
         </g>
-        </g>
 
-        <!-- 左のカップ（取っ手は外向き）。湯気ごと同じ倍率で縮めて、それぞれの席の手前に置く -->
-        <g transform="translate(304,254) scale(.66) translate(-326,-222)">
-          <ellipse cx="326" cy="222" rx="50" ry="14" fill="#FFFCF3"/>
-          <ellipse cx="326" cy="219" rx="41" ry="10" fill="#F4EADA"/>
-          <path d="M357 180q23 3 23 15t-21 15" fill="none" stroke="#FFFCF3" stroke-width="11" stroke-linecap="round"/>
-          <path d="M295 168h62l-6 40q-1 9-11 9h-28q-10 0-11-9z" fill="#FFFCF3"/>
-          <ellipse cx="326" cy="168" rx="31" ry="9" fill="#7A4A24"/>
-          <ellipse cx="326" cy="168" rx="23" ry="6" fill="#8B5A30"/>
-          <g fill="none" stroke="#DDB584" stroke-width="10" stroke-linecap="round">
-            <path d="M312 144q0-15 13-15t13-15"/>
-            <path d="M344 140q0-12 10-12t10-12"/>
-          </g>
-        </g>
+        <!-- 左のカップ（取っ手は外向き） -->
+        <ellipse cx="326" cy="222" rx="50" ry="14" fill="#FFFCF3"/>
+        <ellipse cx="326" cy="219" rx="41" ry="10" fill="#F4EADA"/>
+        <path d="M357 180q23 3 23 15t-21 15" fill="none" stroke="#FFFCF3" stroke-width="11" stroke-linecap="round"/>
+        <path d="M295 168h62l-6 40q-1 9-11 9h-28q-10 0-11-9z" fill="#FFFCF3"/>
+        <ellipse cx="326" cy="168" rx="31" ry="9" fill="#7A4A24"/>
+        <ellipse cx="326" cy="168" rx="23" ry="6" fill="#8B5A30"/>
 
         <!-- 右のカップ -->
-        <g transform="translate(576,254) scale(.66) translate(-554,-222)">
-          <ellipse cx="554" cy="222" rx="50" ry="14" fill="#FFFCF3"/>
-          <ellipse cx="554" cy="219" rx="41" ry="10" fill="#F4EADA"/>
-          <path d="M523 180q-23 3-23 15t21 15" fill="none" stroke="#FFFCF3" stroke-width="11" stroke-linecap="round"/>
-          <path d="M523 168h62l-6 40q-1 9-11 9h-28q-10 0-11-9z" fill="#FFFCF3"/>
-          <ellipse cx="554" cy="168" rx="31" ry="9" fill="#7A4A24"/>
-          <ellipse cx="554" cy="168" rx="23" ry="6" fill="#8B5A30"/>
-          <g fill="none" stroke="#DDB584" stroke-width="10" stroke-linecap="round">
-            <path d="M568 144q0-15-13-15t-13-15"/>
-            <path d="M536 140q0-12-10-12t-10-12"/>
-          </g>
+        <ellipse cx="554" cy="222" rx="50" ry="14" fill="#FFFCF3"/>
+        <ellipse cx="554" cy="219" rx="41" ry="10" fill="#F4EADA"/>
+        <path d="M523 180q-23 3-23 15t21 15" fill="none" stroke="#FFFCF3" stroke-width="11" stroke-linecap="round"/>
+        <path d="M523 168h62l-6 40q-1 9-11 9h-28q-10 0-11-9z" fill="#FFFCF3"/>
+        <ellipse cx="554" cy="168" rx="31" ry="9" fill="#7A4A24"/>
+        <ellipse cx="554" cy="168" rx="23" ry="6" fill="#8B5A30"/>
+
+        <!-- 湯気。向かい合って寄り添うように立ちのぼらせる -->
+        <g fill="none" stroke="#DDB584" stroke-width="7" stroke-linecap="round">
+          <path d="M312 144q0-15 13-15t13-15"/>
+          <path d="M344 140q0-12 10-12t10-12"/>
+          <path d="M568 144q0-15-13-15t-13-15"/>
+          <path d="M536 140q0-12-10-12t-10-12"/>
         </g>
       </svg>
     </div>
