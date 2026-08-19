@@ -380,6 +380,12 @@
     <stop offset="1" stop-color="#DE9DBB"/>
   </linearGradient>
 
+  <!-- リボン1本分の形。しなやかに波打って先端が2つに割れる、布のリボンらしい輪郭。
+       色は塗らず、呼び出す側で currentColor / fill を指定して使い回す。 -->
+  <path id="ribbonWave" d="M0,-4 C40,-22 55,6 92,-6 C122,-16 140,2 168,-6 C184,-10 192,-8 200,-10
+    L236,-24 L214,-6 L236,12 L200,-2
+    C192,0 184,2 168,0 C140,8 122,-10 92,0 C55,12 40,-16 0,4 Z"/>
+
   <!-- 四隅の金の唐草飾り -->
   <g id="curl">
     <path d="M0 0c0-13-10-20-19-14-8 6-4 17 4 15" fill="none" stroke="#E8B64C" stroke-width="4" stroke-linecap="round"/>
@@ -495,11 +501,19 @@
              左：さくら色のドレスの人物。右：ターコイズのベストの人物。
              互いに片腕を伸ばし合い、その間に小さなギフトを1つ置いて「手渡し」を表す。 -->
         <g transform="translate(250,206)">
-          <path d="M-11,-78 L11,-78 L24,0 L-24,0 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <!-- ドレス：フィットした胴と、丸みのある裾のスカートを分けて描く。右側にごく薄い陰を重ねて厚みを出す -->
+          <path d="M-9,-78 L9,-78 L10,-46 L-10,-46 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M-10,-46 C-19,-30 -22,-14 -24,0 Q0,10 24,0 C22,-14 19,-30 10,-46 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M10,-46 C19,-30 22,-14 24,0 Q10,6 2,4 C6,-10 9,-28 6,-46 Z" fill="#22352F" opacity=".08"/>
+          <!-- 髪：頭の後ろでひとつのボリュームにし、両脇に長めの毛束を垂らす -->
+          <path d="M-19,-108 C-25,-86 -21,-62 -9,-48 C-15,-70 -16,-92 -11,-109
+                   C-4,-124 4,-124 11,-109 C16,-92 15,-70 9,-48
+                   C21,-62 25,-86 19,-108 C13,-127 -13,-127 -19,-108 Z" fill="#E8B64C"/>
           <rect x="-5" y="-90" width="10" height="12" fill="#22352F"/>
           <circle cx="0" cy="-103" r="15" fill="#E8B64C"/>
           <circle cx="0" cy="-103" r="13" fill="#22352F"/>
-          <path d="M-11,-114 Q-23,-95 -12,-75 Q-19,-98 -11,-114 Z" fill="#E8B64C"/>
+          <!-- 前髪の一房。左右非対称にして自然さを出す -->
+          <path d="M9,-112 Q19,-97 10,-80 Q16,-98 9,-112 Z" fill="#E8B64C"/>
           <path d="M11,-75 Q31,-72 49,-66" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
           <circle cx="50" cy="-65" r="5" fill="#22352F"/>
           <path d="M-11,-75 Q-19,-55 -14,-32" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
@@ -509,9 +523,15 @@
           <path d="M-13,-40 L-2,-40 L-4,0 L-15,0 Z" fill="#E8B64C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
           <path d="M2,-40 L13,-40 L15,0 L4,0 Z" fill="#E8B64C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
           <path d="M-13,-80 L13,-80 L14,-40 L-14,-40 Z" fill="#1B9C8C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <!-- ベストの右半分にごく薄い陰。ネクタイを中央に1本 -->
+          <path d="M2,-80 L13,-80 L14,-40 L4,-40 Z" fill="#22352F" opacity=".1"/>
+          <path d="M-3,-80 L3,-80 L4,-50 L0,-43 L-4,-50 Z" fill="#E2352B"/>
           <rect x="-5" y="-92" width="10" height="12" fill="#22352F"/>
           <circle cx="0" cy="-105" r="13" fill="#22352F"/>
-          <path d="M-13,-118 Q0,-131 13,-118 Q0,-123 -13,-118 Z" fill="#12655B"/>
+          <!-- 髪：頭頂だけでなく両脇にも少しボリュームを足し、丸刈り感をやわらげる -->
+          <path d="M-14,-119 Q-17,-102 -11,-90 Q-15,-106 -13,-120
+                   Q0,-132 13,-120 Q15,-106 11,-90 Q17,-102 14,-119
+                   Q0,-125 -14,-119 Z" fill="#12655B"/>
           <path d="M-13,-77 Q-33,-73 -51,-66" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
           <circle cx="-52" cy="-66" r="5" fill="#22352F"/>
           <path d="M13,-77 Q21,-57 16,-34" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
@@ -524,20 +544,13 @@
           <rect x="-2.2" y="-9" width="4.4" height="18" fill="#E8B64C"/>
         </g>
 
-        <!-- リボンは数本の流れにする。色は既存パレット内（赤・金・ターコイズ・さくら系）だけを使い、
-             参考写真のような虹色にはしない。赤を最も太く長く、他は細く短くして「複数本の流れ」に見せる。 -->
-        <g transform="translate(196,258) rotate(203)">
-          <path d="M0,-13 L172,-13 L198,0 L172,13 L0,13 Z" fill="url(#ribbonGrad)"/>
-        </g>
-        <g transform="translate(190,272) rotate(217)">
-          <path d="M0,-9 L120,-9 L138,0 L120,9 L0,9 Z" fill="url(#ribbonGradGold)"/>
-        </g>
-        <g transform="translate(182,286) rotate(231)">
-          <path d="M0,-7.5 L95,-7.5 L110,0 L95,7.5 L0,7.5 Z" fill="url(#ribbonGradTurquoise)"/>
-        </g>
-        <g transform="translate(206,247) rotate(188)">
-          <path d="M0,-6.5 L85,-6.5 L98,0 L85,6.5 L0,6.5 Z" fill="url(#ribbonGradSakura)"/>
-        </g>
+        <!-- リボンは3本の流れにする。色は既存パレット内（赤・金・ターコイズ）だけを使い、
+             参考写真のような虹色にはしない。赤を最も太く長く、他は細く短くして「複数本の流れ」に見せる。
+             どのリボンも #ribbonWave（波打って先端が割れる、しなやかな形）を拡大縮小して使う。
+             本数が多いと根もとが密集して見づらくなるため、3本にとどめている。 -->
+        <use href="#ribbonWave" fill="url(#ribbonGrad)" transform="translate(196,258) rotate(203)"/>
+        <use href="#ribbonWave" fill="url(#ribbonGradGold)" transform="translate(188,276) rotate(220) scale(.7)"/>
+        <use href="#ribbonWave" fill="url(#ribbonGradTurquoise)" transform="translate(180,294) rotate(237) scale(.55)"/>
       </svg>
     </div>
   </div>
