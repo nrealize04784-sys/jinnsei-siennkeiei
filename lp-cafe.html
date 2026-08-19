@@ -306,9 +306,13 @@
   @media (min-width:768px){ .flow{grid-template-columns:repeat(4,1fr);gap:12px} }
   /* 右下に珈琲を置くぶん、4枚とも下の余白を広げて高さをそろえる */
   .step{padding:16px 4px 44px;text-align:center;position:relative}
-  /* 「気軽に相談」の板の右下に置く珈琲。フッターのスイーツと同じ、輪郭線なしのべた塗り */
-  .step .cup{position:absolute;right:7px;bottom:7px;width:34px;height:auto;display:block}
-  @media (min-width:768px){ .step .cup{width:38px;right:9px;bottom:8px} }
+  /* 板の右下に置く喫茶メニュー。フッターのスイーツと同じ、輪郭線なしのべた塗り。
+     絵ごとに縦横比が違うので、高さでそろえて幅は成り行きにする */
+  .step .cup{position:absolute;right:7px;bottom:7px;height:32px;width:auto;display:block}
+  @media (min-width:768px){
+    .step{padding-bottom:52px}
+    .step .cup{height:36px;right:9px;bottom:8px}
+  }
   .step .num{
     counter-increment:step;
     display:block;
@@ -677,9 +681,55 @@
           <ellipse cx="30" cy="20" rx="11" ry="2.8" fill="#8B5A30"/>
         </svg>
       </div>
-      <div class="step"><span class="num"></span><p class="txt">暮らしが見える</p></div>
-      <div class="step"><span class="num"></span><p class="txt">課題が見つかる</p></div>
-      <div class="step"><span class="num"></span><p class="txt">家が答えになる</p></div>
+      <div class="step">
+        <span class="num"></span><p class="txt">暮らしが見える</p>
+        <!-- クリームソーダ。ファーストビューの並びと同じ形 -->
+        <svg class="cup" viewBox="0 0 40 62" aria-hidden="true">
+          <path d="M12 4l5 14" stroke="#C25A32" stroke-width="3" stroke-linecap="round"/>
+          <path d="M8 20h24l-6 30H14z" fill="#EAF3EA"/>
+          <path d="M10 27h20l-5 21H15z" fill="#68BE6E"/>
+          <circle cx="16" cy="33" r="1.6" fill="#9BD79F"/>
+          <circle cx="23" cy="40" r="1.3" fill="#9BD79F"/>
+          <rect x="16" y="50" width="8" height="6" fill="#EAF3EA"/>
+          <ellipse cx="20" cy="58" rx="11" ry="3.4" fill="#EAF3EA"/>
+          <circle cx="20" cy="16" r="8" fill="#FFFDF7"/>
+          <circle cx="13" cy="20" r="5" fill="#FFFDF7"/>
+          <circle cx="27" cy="20" r="5" fill="#FFFDF7"/>
+          <circle cx="28" cy="7" r="3.6" fill="#D8483A"/>
+          <path d="M28 4q1-4 5-4" fill="none" stroke="#C9A57E" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="step">
+        <span class="num"></span><p class="txt">課題が見つかる</p>
+        <!-- プリン。フッターのスイーツと同じ形 -->
+        <svg class="cup" viewBox="0 0 80 106" aria-hidden="true">
+          <ellipse cx="36" cy="96" rx="34" ry="9" fill="#FFF8EC"/>
+          <g transform="translate(-70,-52)">
+            <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFCF92"/>
+            <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C07A3A"/>
+            <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#DDB47A" opacity=".55"/>
+            <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
+            <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
+            <circle cx="104" cy="80" r="8" fill="#D8483A"/>
+            <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="step">
+        <span class="num"></span><p class="txt">家が答えになる</p>
+        <!-- パンケーキ。ファーストビューの並びと同じ形 -->
+        <svg class="cup" viewBox="0 0 140 104" aria-hidden="true">
+          <g transform="translate(-560,-88)">
+            <ellipse cx="630" cy="176" rx="66" ry="11" fill="#FFF8EC"/>
+            <ellipse cx="630" cy="160" rx="52" ry="15" fill="#D99A50"/>
+            <ellipse cx="630" cy="142" rx="52" ry="15" fill="#E5AC65"/>
+            <ellipse cx="630" cy="124" rx="50" ry="15" fill="#EDBB78"/>
+            <path d="M584 126q14 14 46 14t46-14v6q0 16-46 16t-46-16z" fill="#C07A3A" opacity=".45"/>
+            <rect x="616" y="100" width="28" height="16" rx="3" fill="#F2C94C"/>
+            <path d="M616 100h28l-6-8h-16z" fill="#F7DA85"/>
+          </g>
+        </svg>
+      </div>
     </div>
     <p class="note">相談から始まるので、こちらから追いかけません。</p>
 
