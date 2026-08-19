@@ -380,6 +380,12 @@
     <stop offset="1" stop-color="#DE9DBB"/>
   </linearGradient>
 
+  <!-- リボン1本分の形。しなやかに波打って先端が2つに割れる、布のリボンらしい輪郭。
+       色は塗らず、呼び出す側で currentColor / fill を指定して使い回す。 -->
+  <path id="ribbonWave" d="M0,-4 C40,-22 55,6 92,-6 C122,-16 140,2 168,-6 C184,-10 192,-8 200,-10
+    L236,-24 L214,-6 L236,12 L200,-2
+    C192,0 184,2 168,0 C140,8 122,-10 92,0 C55,12 40,-16 0,4 Z"/>
+
   <!-- 四隅の金の唐草飾り -->
   <g id="curl">
     <path d="M0 0c0-13-10-20-19-14-8 6-4 17 4 15" fill="none" stroke="#E8B64C" stroke-width="4" stroke-linecap="round"/>
@@ -495,7 +501,7 @@
              左：さくら色のドレスの人物。右：ターコイズのベストの人物。
              互いに片腕を伸ばし合い、その間に小さなギフトを1つ置いて「手渡し」を表す。 -->
         <g transform="translate(250,206)">
-          <path d="M-11,-78 L11,-78 L24,0 L-24,0 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M-11,-78 L11,-78 L24,0 Q0,9 -24,0 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
           <rect x="-5" y="-90" width="10" height="12" fill="#22352F"/>
           <circle cx="0" cy="-103" r="15" fill="#E8B64C"/>
           <circle cx="0" cy="-103" r="13" fill="#22352F"/>
@@ -525,19 +531,12 @@
         </g>
 
         <!-- リボンは数本の流れにする。色は既存パレット内（赤・金・ターコイズ・さくら系）だけを使い、
-             参考写真のような虹色にはしない。赤を最も太く長く、他は細く短くして「複数本の流れ」に見せる。 -->
-        <g transform="translate(196,258) rotate(203)">
-          <path d="M0,-13 L172,-13 L198,0 L172,13 L0,13 Z" fill="url(#ribbonGrad)"/>
-        </g>
-        <g transform="translate(190,272) rotate(217)">
-          <path d="M0,-9 L120,-9 L138,0 L120,9 L0,9 Z" fill="url(#ribbonGradGold)"/>
-        </g>
-        <g transform="translate(182,286) rotate(231)">
-          <path d="M0,-7.5 L95,-7.5 L110,0 L95,7.5 L0,7.5 Z" fill="url(#ribbonGradTurquoise)"/>
-        </g>
-        <g transform="translate(206,247) rotate(188)">
-          <path d="M0,-6.5 L85,-6.5 L98,0 L85,6.5 L0,6.5 Z" fill="url(#ribbonGradSakura)"/>
-        </g>
+             参考写真のような虹色にはしない。赤を最も太く長く、他は細く短くして「複数本の流れ」に見せる。
+             どのリボンも #ribbonWave（波打って先端が割れる、しなやかな形）を拡大縮小して使う。 -->
+        <use href="#ribbonWave" fill="url(#ribbonGrad)" transform="translate(196,258) rotate(203)"/>
+        <use href="#ribbonWave" fill="url(#ribbonGradGold)" transform="translate(190,272) rotate(217) scale(.72)"/>
+        <use href="#ribbonWave" fill="url(#ribbonGradTurquoise)" transform="translate(182,286) rotate(231) scale(.58)"/>
+        <use href="#ribbonWave" fill="url(#ribbonGradSakura)" transform="translate(206,247) rotate(188) scale(.5)"/>
       </svg>
     </div>
   </div>
