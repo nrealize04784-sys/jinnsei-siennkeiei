@@ -270,17 +270,13 @@
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
   .box{padding:22px 18px;text-align:center}
-  /* BEFORE / AFTER は見出しと同じリボン（.ribbon）に載せる。大きさだけ変える */
-  .ribbon-tag{
-    margin:0 auto 16px;
-    border-width:0 32px;
-    padding:17px 20px;
-    font-size:14px;
-    font-weight:700;
-    letter-spacing:.18em;
-    line-height:1.4;
+  /* BEFORE / AFTER はリボンの帯に。線も文字も currentColor でまとめて色を変えられる */
+  .box .tag{
+    width:min(200px,90%);
+    margin:0 auto 14px;
+    color:#EBDECB;
   }
-  @media (min-width:768px){ .ribbon-tag{border-width:0 34px;padding:18px 28px;font-size:15px} }
+  .box .tag-ribbon{display:block;width:100%;height:auto}
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px)}
   /* after は板の色は同じまま、文字をあんず色にして違いを出す */
   .box.after .txt{color:#F7D9A8}
@@ -330,40 +326,32 @@
   .board-head .knife{right:24px}
   /* 皿の外にはみ出すカトラリーは、狭い画面では出さない */
   @media (max-width:600px){ .board-head .fork,.board-head .knife{display:none} }
-  /* リボンの帯。見出しと BEFORE / AFTER で同じ形を使う。
-     1枚のSVGを border-image で伸ばす。
-     両端は帯と同じ白のまま外へ広がり、根元近くまで深くV字に切り欠く（＝一枚布の垂れ）。
-     左右64単位が垂れとハトメ（伸びない）、中央272単位が帯（横に伸びる）。
-     border-width は 64単位 × 縦の倍率 に合わせること。ずらすと端だけ横に伸びてゆがむ */
-  .ribbon{
+  /* 見出しのリボン。BEFORE / AFTER と同じ形の帯を、1枚のSVGを
+     border-image で横に伸ばして作る。左右93単位が燕尾、中央214単位が帯。
+     地は板と同じ色にして、線だけで描いた帯に見せる。
+     余白と border-width を em で持つので、文字を変えても比率が崩れない。
+     border-width は「93単位 × 縦の倍率」＝ 3.26em。ずらすと端だけ横に伸びてゆがむ */
+  .ribbon-head{
     position:relative;
     width:fit-content;
+    max-width:100%;
     margin-inline:auto;
-    color:#EBDECB;
-    /* 帯の地は板と同じ色。線だけで描いた帯に見せる。
-       文字の下にも同じ色を敷いておく。画像が出ない環境でも文字が読めるように */
-    background-color:#6B5A4C;
+    color:#FBF3E4;
+    /* 文字の下にも板と同じ色を敷く。画像が出ない環境でも文字が読めるように */
+    background-color:#33210F;
     background-clip:content-box;
     text-align:center;
+    font-size:clamp(12px,4.1vw,30px);
+    line-height:1.25;
+    /* h2 の text-wrap:pretty は行を均そうとして、収まる文字でも折る。ここでは切る */
+    text-wrap:wrap;
+    padding:1.44em .2em 1.51em;
     border-style:solid;
     border-color:transparent;
-    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cg fill='%236B5A4C' stroke='%23EBDECB' stroke-width='3' stroke-linejoin='round'%3E%3Cpath d='M70 18 10 4 36 52 10 100 70 86Z'/%3E%3Cpath d='M330 18 390 4 364 52 390 100 330 86Z'/%3E%3Cpath d='M70 18Q200 34 330 18L330 86Q200 102 70 86Z'/%3E%3C/g%3E%3Cpath d='M80 27Q200 43 320 27L320 77Q200 93 80 77Z' fill='none' stroke='%23EBDECB' stroke-width='1.8' opacity='.7'/%3E%3C/svg%3E") 0 70 fill stretch;
-  }
-  /* 見出し用。同じ帯を大きくして、黒板の色に合わせた地に差し替える */
-  .ribbon-head{
-    max-width:calc(100% - 4px);
-    color:#FBF3E4;
-    background-color:#33210F;
-    font-size:clamp(16px,4.2vw,30px);
-    line-height:1.5;
-    /* 帯が下へたわむぶん、上の余白を厚くして文字を帯の中心に置く */
-    padding:26px 4px;
-    border-width:0 44px;
-    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cg fill='%2333210F' stroke='%23FBF3E4' stroke-width='3' stroke-linejoin='round'%3E%3Cpath d='M70 18 10 4 36 52 10 100 70 86Z'/%3E%3Cpath d='M330 18 390 4 364 52 390 100 330 86Z'/%3E%3Cpath d='M70 18Q200 34 330 18L330 86Q200 102 70 86Z'/%3E%3C/g%3E%3Cpath d='M80 27Q200 43 320 27L320 77Q200 93 80 77Z' fill='none' stroke='%23FBF3E4' stroke-width='1.8' opacity='.7'/%3E%3C/svg%3E") 0 70 fill stretch;
+    border-width:0 3.26em;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cg fill='%2333210F' stroke='%23FBF3E4' stroke-width='3.5' stroke-linejoin='round'%3E%3Cpath d='M93.3 26.3 23.3 7.5 46.7 41.3 23.3 75 93.3 82.5Z'/%3E%3Cpath d='M306.7 26.3 376.7 7.5 353.3 41.3 376.7 75 306.7 82.5Z'/%3E%3Cpath d='M93.3 22.5Q200 48.8 306.7 22.5L306.7 82.5Q200 108.8 93.3 82.5Z'/%3E%3C/g%3E%3C/svg%3E") 0 93 fill stretch;
     transform:rotate(-4deg);
   }
-  .ribbon-head span{display:inline-block}
-  @media (min-width:768px){ .ribbon-head{padding:49px 16px;border-width:0 84px} }
   .flow{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -691,12 +679,36 @@
     <div class="swap">
       <div class="box">
         <!-- 見出しはリボンの帯に載せる -->
-        <p class="ribbon ribbon-tag">BEFORE</p>
+        <p class="tag">
+          <svg class="tag-ribbon" viewBox="0 0 240 64" aria-hidden="true">
+            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
+              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
+              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
+            </g>
+            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
+                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
+            <text x="120" y="40" text-anchor="middle" fill="currentColor"
+                  font-size="15" font-weight="700" letter-spacing="3">BEFORE</text>
+          </svg>
+        </p>
         <p class="txt">物件を探しに来る人</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box after">
-        <p class="ribbon ribbon-tag">AFTER</p>
+        <p class="tag">
+          <svg class="tag-ribbon" viewBox="0 0 240 64" aria-hidden="true">
+            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
+              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
+              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
+            </g>
+            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
+                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
+            <text x="120" y="40" text-anchor="middle" fill="currentColor"
+                  font-size="15" font-weight="700" letter-spacing="3">AFTER</text>
+          </svg>
+        </p>
         <p class="txt">暮らしの相談に来る人</p>
       </div>
     </div>
@@ -738,8 +750,7 @@
           <path d="M20 100q1 58 0 114" stroke-width="4.8"/>
         </g>
       </svg>
-      <!-- 折り返すときは「地域の人生相談窓口／になる。」で切る -->
-      <h2 class="ribbon ribbon-head"><span>地域の人生相談窓口</span><span>になる。</span></h2>
+      <h2 class="ribbon-head">地域の人生相談窓口になる。</h2>
     </div>
     <div class="flow">
       <div class="step">
