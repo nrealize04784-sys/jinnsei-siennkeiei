@@ -239,7 +239,12 @@
       <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
     </p>
 
-    <a class="back" href="lp-franchise.html">← 前のページにもどる</a>
+    <!--
+      href は直接このページを開いたとき用の行き先。
+      サイト内から来た場合は下の script が history.back() に差し替えるので、
+      RPG版・喫茶店版のどちらから来ても、来たページへ戻る。
+    -->
+    <a class="back" id="back-link" href="lp-franchise.html">← 前のページにもどる</a>
   </div>
 </main>
 
@@ -279,6 +284,18 @@
     location.href = 'mailto:RC@n-realize.co.jp'
       + '?subject=' + encodeURIComponent('資料請求')
       + '&body=' + encodeURIComponent(body);
+  });
+
+  // 直前のページが同じサイト内なら、そこへ戻す
+  document.getElementById('back-link').addEventListener('click', function (e) {
+    var sameSite = false;
+    try {
+      sameSite = !!document.referrer && new URL(document.referrer).origin === location.origin;
+    } catch (err) { sameSite = false; }
+    if (sameSite) {
+      e.preventDefault();
+      history.back();
+    }
   });
 </script>
 
