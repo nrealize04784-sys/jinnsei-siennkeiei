@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ja">
+<!-- lp-korean.html（韓国料理店風LP）の資料請求ページ。
+     体裁は shiryou.html と同じドット絵のコマンドウィンドウ。
+     違いは、ホーム・会社概要・もどるの飛び先だけ。 -->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="不動産フランチャイズ加盟の資料請求はこちらから。エリア2社限定の加盟募集。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  /* 書体・配色・コマンドウィンドウの作りは lp-franchise.html と揃えている */
+  @font-face{
+    font-family:'DotGothic16Local';
+    src:url('fonts/DotGothic16-subset.woff2') format('woff2');
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+  :root{
+    --navy:#0B1B3A;
+    --navy-deep:#071228;
+    --gold:#E8B64C;
+    --gold-pale:#F7E7C1;
+    --paper:#F4F8FD;
+    --font-game:"DotGothic16Local","DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    --cursor-clip:polygon(
+      0% 0%,   25% 0%,
+      25% 12.5%, 50% 12.5%,
+      50% 25%,   75% 25%,
+      75% 37.5%, 100% 37.5%,
+      100% 62.5%, 75% 62.5%,
+      75% 75%,   50% 75%,
+      50% 87.5%, 25% 87.5%,
+      25% 100%,  0% 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--gold-pale);color:var(--navy);
+    font-family:var(--font-game);font-weight:400;
+    line-height:1.95;letter-spacing:.05em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* ---- ヘッダー ---- */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    background:rgba(7,18,40,.72);
+    border-bottom:1px solid rgba(255,255,255,.14);
+    backdrop-filter:blur(8px);
+  }
+  .site-header .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding-top:14px;padding-bottom:14px;
+  }
+  .hdr-lockup{
+    display:inline-flex;align-items:center;gap:14px;
+    background:#fff;border-radius:5px;padding:6px 16px 6px 12px;
+  }
+  .hdr-logo{height:48px;width:auto;object-fit:contain;display:block}
+  .hdr-wordmark{height:18px;width:auto;object-fit:contain;display:block}
+  /*
+    ロゴとメニューの間を歩く三人。背景は透過済みなので濃紺にそのまま溶ける。
+    ロゴと同じ高さに収め、ヘッダーの高さは変えない。
+  */
+  .hdr-party{
+    height:48px;width:auto;flex:none;display:block;
+    opacity:.92;
+  }
+  .hdr-nav{display:flex;align-items:center;gap:34px}
+  .hdr-nav a{
+    display:inline-flex;align-items:center;gap:.5em;
+    color:rgba(255,255,255,.88);text-decoration:none;
+    font-size:14px;letter-spacing:.08em;white-space:nowrap;
+  }
+  .hdr-nav a::before{
+    content:"";flex:none;
+    width:.45em;height:.66em;background:currentColor;clip-path:var(--cursor-clip);
+  }
+  .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
+
+  /* ---- 本文 ---- */
+  main{padding:150px 0 96px}
+  h1{
+    font-size:clamp(26px,4.2vw,40px);font-weight:400;line-height:1.5;
+    letter-spacing:.04em;text-align:center;margin-bottom:14px;
+    text-shadow:4px 4px 0 rgba(11,27,58,.16);
+    -webkit-font-smoothing:none;
+  }
+  .lead{
+    text-align:center;font-size:16px;color:rgba(11,27,58,.72);
+    margin-bottom:44px;
+  }
+
+  /* ---- 入力欄。ドラクエのコマンドウィンドウに見立てる ---- */
+  form{
+    max-width:520px;margin:0 auto;text-align:left;
+    background:#000;border:4px solid #fff;
+    padding:42px 28px 32px;
+  }
+  .field{position:relative;margin-bottom:30px}
+  label{
+    position:absolute;top:0;left:16px;transform:translateY(-50%);z-index:1;
+    font-size:14px;letter-spacing:.1em;color:#fff;
+    background:#000;padding:0 .7em 0 2.1em;line-height:1;
+  }
+  label::before{
+    content:"";position:absolute;left:.7em;top:50%;transform:translateY(-50%);
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
+  }
+  .field:focus-within label{color:var(--gold)}
+  .field:focus-within label::before{background:var(--gold)}
+  input,textarea{
+    width:100%;padding:16px 18px;border:2px solid #fff;
+    background:#000;color:#fff;
+    font-size:16px;font-family:inherit;
+  }
+  textarea{min-height:88px;resize:vertical;line-height:1.7}
+  input:focus,textarea:focus{outline:3px solid var(--gold);outline-offset:2px}
+  /* Chromeの自動入力は既定で白地・黒文字に戻すため、黒地を上書きする */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus{
+    -webkit-text-fill-color:#fff;
+    -webkit-box-shadow:0 0 0 1000px #000 inset;
+    caret-color:#fff;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:.7em;
+    width:100%;background:#000;color:var(--gold);
+    border:2px solid #fff;
+    font-family:inherit;font-size:18px;letter-spacing:.1em;
+    padding:22px;cursor:pointer;text-decoration:none;
+    transition:background .15s ease;
+  }
+  .btn::before{
+    content:"";flex:none;
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
+  }
+  .btn:hover{background:#111}
+  .note{
+    max-width:520px;margin:22px auto 0;
+    font-size:13px;line-height:2;color:rgba(11,27,58,.62);
+  }
+  .back{
+    display:block;text-align:center;margin-top:44px;
+    color:var(--navy);font-size:14px;letter-spacing:.08em;
+  }
+
+  /* ---- フッター ---- */
+  footer{
+    background:var(--navy-deep);color:rgba(255,255,255,.82);
+    padding:56px 0;font-size:14px;letter-spacing:.04em;text-align:center;
+  }
+  .footer-logo-plate{
+    display:inline-block;background:#fff;
+    padding:20px 26px;margin-bottom:30px;border-radius:5px;
+  }
+  .footer-logo{display:block;width:min(300px,64vw);height:auto}
+  .footer-links{
+    display:flex;justify-content:center;align-items:center;
+    gap:14px 34px;flex-wrap:wrap;
+  }
+  .footer-links a{color:rgba(255,255,255,.88);text-decoration:none}
+  .footer-links a:hover{color:var(--gold);text-decoration:underline}
+
+  /* ロゴとメニューを優先する。横幅が足りなくなったら三人は出さない */
+  @media(max-width:1100px){
+    .hdr-party{display:none}
+  }
+  @media(max-width:640px){
+    .hdr-wordmark{display:none}
+    .hdr-lockup{padding:4px 7px}
+    .hdr-logo{height:34px}
+    .site-header .wrap{padding-top:10px;padding-bottom:10px}
+    .hdr-nav{gap:13px}
+    .hdr-nav a{font-size:12px;letter-spacing:0;gap:.4em}
+    main{padding:110px 0 72px}
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="wrap">
+    <a class="hdr-lockup" href="lp-korean.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+      <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
+    </a>
+    <!-- 横向きに歩く三人（背景透過）。読み込めなければ自分ごと消える -->
+    <img class="hdr-party" alt=""
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260807_003819_36e8ea05-8822-4aaa-8732-7a1b956c2e79.png"
+         onerror="this.remove()">
+    <nav class="hdr-nav">
+      <a href="lp-korean.html">ホーム</a>
+      <a href="kaisha-korean.html">会社概要</a>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <h1>資料請求</h1>
+    <p class="lead">加盟の概要をまとめた資料をお送りします。</p>
+
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式にしている。
+      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+    -->
+    <form id="req" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お名前</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="addr">送付先のご住所</label>
+        <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+      </div>
+      <button class="btn" type="submit">この内容で資料請求する</button>
+    </form>
+
+    <p class="note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      メールソフトが開かない場合は、お手数ですが
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
+    </p>
+
+    <a class="back" href="lp-korean.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+    </a>
+    <nav class="footer-links">
+      <a href="kaisha-korean.html">会社概要</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // 入力内容からメール本文を組み立て、メーラーを開く
+  document.getElementById('req').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
+
+</body>
+</html>
