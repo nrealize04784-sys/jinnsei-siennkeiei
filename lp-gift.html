@@ -362,6 +362,23 @@
     <stop offset="0" stop-color="#E2352B"/>
     <stop offset="1" stop-color="#B8221B"/>
   </linearGradient>
+  <!-- リボンを複数本にするための追加グラデーション。
+       参考写真は虹色のリボンだが、このサイトは色数を絞ったトーンで統一しているため、
+       既存パレット（金・ターコイズ・さくら）の濃淡だけで「複数本流れる」印象を作る。
+       さくらのグラデーション先だけ、さくらより一段濃いピンク(#DE9DBB)を新たに使うが、
+       これもさくら系統の色で、虹色にはしない。 -->
+  <linearGradient id="ribbonGradGold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#E8B64C"/>
+    <stop offset="1" stop-color="#9C6B12"/>
+  </linearGradient>
+  <linearGradient id="ribbonGradTurquoise" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#1B9C8C"/>
+    <stop offset="1" stop-color="#12655B"/>
+  </linearGradient>
+  <linearGradient id="ribbonGradSakura" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F8C6D8"/>
+    <stop offset="1" stop-color="#DE9DBB"/>
+  </linearGradient>
 
   <!-- 四隅の金の唐草飾り -->
   <g id="curl">
@@ -422,10 +439,12 @@
 
     <div class="chest-wrap">
       <!-- ターコイズの宝箱。縁は金の唐草、蓋の裏地はさくら色。
-           中から白いギフトボックスがあふれ、左上から赤いリボンが1本流れる。
-           人物は描かない（メダリオンの中も、手とギフトの線画のみ）。 -->
+           中から白いギフトボックスがあふれ、その山の上でシンプルな図形だけの
+           人物が二人、小さなギフトを手渡ししている（顔のパーツは描かない）。
+           箱の根もとからは、赤・金・ターコイズ・さくらのリボンが数本流れる。
+           メダリオンの中は、これまでどおり手とギフトの線画のみ。 -->
       <svg class="chest" viewBox="0 0 600 460" xmlns="http://www.w3.org/2000/svg"
-           role="img" aria-label="ターコイズの宝箱のふたが開き、金の唐草縁とさくら色の裏地から、白いギフトボックスが山になってあふれている。左上から赤いリボンが1本流れ、箱の両脇の金縁メダリオンには、手にギフトを乗せた線画が描かれている。">
+           role="img" aria-label="ターコイズの宝箱のふたが開き、金の唐草縁とさくら色の裏地から、白いギフトボックスが山になってあふれている。山の上では、さくら色のドレスの人物と、ターコイズのベストの人物という、シンプルな図形で描いた二人が向き合って立ち、小さなギフトボックスを手渡ししている。箱の根もとからは、赤・金・ターコイズ・さくら色のリボンが数本、外側へ流れ出ている。箱の両脇の金縁メダリオンには、手にギフトを乗せた線画が描かれている。">
 
         <ellipse cx="300" cy="424" rx="165" ry="15" fill="#4A3B12" opacity=".12"/>
 
@@ -472,9 +491,52 @@
         <use href="#giftboxFilled" transform="translate(230,306) rotate(-8) scale(0.7)"/>
         <use href="#giftboxFilled" transform="translate(374,303) rotate(9) scale(0.7)"/>
 
-        <!-- 赤いリボンは1本だけ。グラデーションと回転のみで表現する -->
-        <g transform="translate(198,255) rotate(200)">
+        <!-- 山の上に立つ二人（顔のパーツは描かない、フラットな図形のみ）。
+             左：さくら色のドレスの人物。右：ターコイズのベストの人物。
+             互いに片腕を伸ばし合い、その間に小さなギフトを1つ置いて「手渡し」を表す。 -->
+        <g transform="translate(250,206)">
+          <path d="M-11,-78 L11,-78 L24,0 L-24,0 Z" fill="#F8C6D8" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <rect x="-5" y="-90" width="10" height="12" fill="#22352F"/>
+          <circle cx="0" cy="-103" r="15" fill="#E8B64C"/>
+          <circle cx="0" cy="-103" r="13" fill="#22352F"/>
+          <path d="M-11,-114 Q-23,-95 -12,-75 Q-19,-98 -11,-114 Z" fill="#E8B64C"/>
+          <path d="M11,-75 Q31,-72 49,-66" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="50" cy="-65" r="5" fill="#22352F"/>
+          <path d="M-11,-75 Q-19,-55 -14,-32" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="-14" cy="-31" r="5" fill="#22352F"/>
+        </g>
+        <g transform="translate(350,206)">
+          <path d="M-13,-40 L-2,-40 L-4,0 L-15,0 Z" fill="#E8B64C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M2,-40 L13,-40 L15,0 L4,0 Z" fill="#E8B64C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M-13,-80 L13,-80 L14,-40 L-14,-40 Z" fill="#1B9C8C" stroke="#22352F" stroke-width="2" stroke-linejoin="round"/>
+          <rect x="-5" y="-92" width="10" height="12" fill="#22352F"/>
+          <circle cx="0" cy="-105" r="13" fill="#22352F"/>
+          <path d="M-13,-118 Q0,-131 13,-118 Q0,-123 -13,-118 Z" fill="#12655B"/>
+          <path d="M-13,-77 Q-33,-73 -51,-66" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="-52" cy="-66" r="5" fill="#22352F"/>
+          <path d="M13,-77 Q21,-57 16,-34" fill="none" stroke="#22352F" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="16" cy="-34" r="5" fill="#22352F"/>
+        </g>
+        <!-- 二人の手の間の、小さな受け渡し用ギフト -->
+        <g transform="translate(300,131)">
+          <rect x="-9" y="-9" width="18" height="18" rx="2" fill="#FFFFFF" stroke="#12655B" stroke-width="1.8"/>
+          <rect x="-9" y="-2.2" width="18" height="4.4" fill="#E8B64C"/>
+          <rect x="-2.2" y="-9" width="4.4" height="18" fill="#E8B64C"/>
+        </g>
+
+        <!-- リボンは数本の流れにする。色は既存パレット内（赤・金・ターコイズ・さくら系）だけを使い、
+             参考写真のような虹色にはしない。赤を最も太く長く、他は細く短くして「複数本の流れ」に見せる。 -->
+        <g transform="translate(196,258) rotate(203)">
           <path d="M0,-13 L172,-13 L198,0 L172,13 L0,13 Z" fill="url(#ribbonGrad)"/>
+        </g>
+        <g transform="translate(190,272) rotate(217)">
+          <path d="M0,-9 L120,-9 L138,0 L120,9 L0,9 Z" fill="url(#ribbonGradGold)"/>
+        </g>
+        <g transform="translate(182,286) rotate(231)">
+          <path d="M0,-7.5 L95,-7.5 L110,0 L95,7.5 L0,7.5 Z" fill="url(#ribbonGradTurquoise)"/>
+        </g>
+        <g transform="translate(206,247) rotate(188)">
+          <path d="M0,-6.5 L85,-6.5 L98,0 L85,6.5 L0,6.5 Z" fill="url(#ribbonGradSakura)"/>
         </g>
       </svg>
     </div>
