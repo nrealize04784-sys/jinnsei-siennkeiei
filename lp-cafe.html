@@ -327,9 +327,9 @@
   /* 皿の外にはみ出すカトラリーは、狭い画面では出さない */
   @media (max-width:600px){ .board-head .fork,.board-head .knife{display:none} }
   /* リボンの帯。1枚のSVGを border-image で伸ばす。
-     両端は帯と同じ白のまま外へ広がり、外側をV字に切り欠く（＝一枚布の垂れ）。
-     左右52単位が垂れ（伸びない）、中央296単位が帯（横に伸びる）。
-     border-width は 52単位 × 縦の倍率 に合わせてあり、端がゆがまない */
+     両端は帯と同じ白のまま外へ広がり、根元近くまで深くV字に切り欠く（＝一枚布の垂れ）。
+     左右64単位が垂れとハトメ（伸びない）、中央272単位が帯（横に伸びる）。
+     border-width は 64単位 × 縦の倍率 に合わせてあり、端がゆがまない */
   .ribbon-head{
     position:relative;
     width:fit-content;
@@ -343,17 +343,17 @@
     font-size:clamp(17px,4.4vw,30px);
     line-height:1.5;
     text-align:center;
-    padding:22px 12px;
+    padding:24px 6px;
     border-style:solid;
     border-color:transparent;
-    border-width:0 30px;
-    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cpath d='M6 6C22 10 38 16 52 24C148 4 252 4 348 24C362 16 378 10 394 6L370 60L394 114C378 110 362 104 348 96C252 116 148 116 52 96C38 104 22 110 6 114L30 60Z' fill='%23FBF3E4'/%3E%3Cpath d='M50 26V94M350 26V94' stroke='%23E4D6BC' stroke-width='2' fill='none'/%3E%3C/svg%3E") 0 52 fill stretch;
-    transform:rotate(-4deg);
+    border-width:0 34px;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cpath d='M4 6C20 12 38 20 52 30C110 20 160 23 200 22C260 21 305 25 348 30C362 20 380 12 396 6L354 60L396 114C380 108 362 100 348 90C305 95 260 99 200 98C160 97 110 100 52 90C38 100 20 108 4 114L46 60Z' fill='%23FBF3E4'/%3E%3Cg fill='%2333210F'%3E%3Cellipse cx='58' cy='60' rx='3.4' ry='5'/%3E%3Cellipse cx='342' cy='60' rx='3.4' ry='5'/%3E%3C/g%3E%3C/svg%3E") 0 64 fill stretch;
+    transform:rotate(-6deg);
     /* 影は塗った形に沿わせたいので box-shadow ではなく drop-shadow */
     filter:drop-shadow(0 3px 10px rgba(0,0,0,.3));
   }
   .ribbon-head span{display:inline-block}
-  @media (min-width:768px){ .ribbon-head{padding:26px 20px;border-width:0 44px} }
+  @media (min-width:768px){ .ribbon-head{padding:34px 16px;border-width:0 60px} }
   .flow{
     display:grid;
     grid-template-columns:1fr 1fr;
