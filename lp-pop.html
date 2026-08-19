@@ -186,9 +186,9 @@
     .fuda .f:nth-child(n+7){display:grid}
   }
   .fuda .f{border:3px solid var(--ink);border-radius:12px;aspect-ratio:1;display:grid;place-items:center;padding:12%}
-  .fuda .f:nth-child(3n+1){background:var(--paper)}
-  .fuda .f:nth-child(3n+2){background:var(--cyan)}
-  .fuda .f:nth-child(3n+3){background:var(--pink)}
+  /* 絵をフチなしのベタ塗りにしたので、地は全部クリーム。
+     色地だと絵が沈んで見えなくなる */
+  .fuda .f{background:var(--paper)}
   .fuda svg{width:100%;height:100%;display:block}
 
   /* サウナ・水風呂の札に見立てた3つのタグ */
@@ -431,67 +431,53 @@
         <a class="btn" href="#entry">事業説明会に申し込む</a>
         <!-- シャンプー3本と洗面器 -->
         <span class="corner r" aria-hidden="true">
-          <svg viewBox="0 0 214 132" fill="none" stroke="#141414" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-            <g>
-              <path d="M21 20h16v12h-16z" fill="#F7EFDE"/>
-              <path d="M21 25c-12 0-15 4-15 9"/>
-              <path d="M13 32h24v14H13z" fill="#F7EFDE"/>
-              <path d="M19 35v8M25 35v8M31 35v8" stroke-width="3"/>
-              <path d="M9 46h30l5 72H4z" fill="#27C0D4"/>
-              <path d="M14 62h20v44h-20z" fill="#F7EFDE"/>
-            </g>
-            <g>
-              <path d="M69 20h16v12h-16z" fill="#F7EFDE"/>
-              <path d="M69 25c-12 0-15 4-15 9"/>
-              <path d="M61 32h24v14H61z" fill="#F7EFDE"/>
-              <path d="M67 35v8M73 35v8M79 35v8" stroke-width="3"/>
-              <path d="M57 46h30l5 72H52z" fill="#7FE0EC"/>
-              <path d="M62 62h20v44h-20z" fill="#F7EFDE"/>
-            </g>
-            <g>
-              <path d="M117 20h16v12h-16z" fill="#F7EFDE"/>
-              <path d="M117 25c-12 0-15 4-15 9"/>
-              <path d="M109 32h24v14H109z" fill="#F7EFDE"/>
-              <path d="M115 35v8M121 35v8M127 35v8" stroke-width="3"/>
-              <path d="M105 46h30l5 72H100z" fill="#FFD84D"/>
-              <path d="M110 62h20v44h-20z" fill="#F7EFDE"/>
-            </g>
-            <g>
-              <path d="M153 66v28c0 8 12 14 27 14s27-6 27-14V66z" fill="#FFD84D"/>
-              <path d="M154 84h52M156 96h48" stroke="#F7EFDE" stroke-width="4"/>
-              <ellipse cx="180" cy="66" rx="27" ry="11" fill="#FFD84D"/>
-              <ellipse cx="180" cy="67" rx="16" ry="5" fill="#F7EFDE" stroke-width="4"/>
-              <ellipse cx="180" cy="67" rx="7" ry="2.4" fill="#F5378F" stroke="none"/>
-            </g>
+          <svg viewBox="0 0 214 132" fill="none">
+            <rect x="21" y="20" width="16" height="12" rx="3" fill="#7FE0EC"/>
+            <path d="M7 34c0-8 6-14 15-14h1v6h-1c-5 0-9 4-9 8z" fill="#7FE0EC"/>
+            <rect x="13" y="32" width="24" height="14" rx="3" fill="#7FE0EC"/>
+            <path d="M9 46h30l5 68a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="#17627A"/>
+            <rect x="14" y="62" width="20" height="44" rx="5" fill="#FFFFFF"/>
+            <rect x="69" y="20" width="16" height="12" rx="3" fill="#7FE0EC"/>
+            <path d="M55 34c0-8 6-14 15-14h1v6h-1c-5 0-9 4-9 8z" fill="#7FE0EC"/>
+            <rect x="61" y="32" width="24" height="14" rx="3" fill="#7FE0EC"/>
+            <path d="M57 46h30l5 68a4 4 0 0 1-4 4H56a4 4 0 0 1-4-4z" fill="#27C0D4"/>
+            <rect x="62" y="62" width="20" height="44" rx="5" fill="#FFFFFF"/>
+            <rect x="117" y="20" width="16" height="12" rx="3" fill="#7FE0EC"/>
+            <path d="M103 34c0-8 6-14 15-14h1v6h-1c-5 0-9 4-9 8z" fill="#7FE0EC"/>
+            <rect x="109" y="32" width="24" height="14" rx="3" fill="#7FE0EC"/>
+            <path d="M105 46h30l5 68a4 4 0 0 1-4 4H104a4 4 0 0 1-4-4z" fill="#FFD84D"/>
+            <rect x="110" y="62" width="20" height="44" rx="5" fill="#FFFFFF"/>
+            <path d="M153 66v28c0 9 12 15 27 15s27-6 27-15V66z" fill="#FFD84D"/>
+            <path d="M154 82h52v5h-52zM156 95h48v5h-48z" fill="#FFFFFF" opacity=".8"/>
+            <ellipse cx="180" cy="66" rx="27" ry="11" fill="#FFD84D"/>
+            <ellipse cx="180" cy="67" rx="17" ry="6" fill="#F7EFDE"/>
+            <ellipse cx="180" cy="67" rx="7" ry="2.4" fill="#F5378F"/>
           </svg>
         </span>
         <!-- 富士山の壁絵と湯船 -->
         <span class="corner l" aria-hidden="true">
-          <svg viewBox="0 0 210 150" fill="none" stroke="#141414" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
-            <path d="M24 6h162v64H24z" fill="#7FE0EC"/>
-            <path d="M105 20l34 50H71z" fill="#F7EFDE"/>
-            <path d="M105 20l11 16c-4 3-7 3-11 0s-7-3-11 0z" fill="#FFFFFF" stroke="none"/>
-            <circle cx="48" cy="28" r="8" fill="#F7EFDE"/>
-            <path d="M24 6h162v64H24z"/>
-            <path d="M4 70h202v14H4z" fill="#F7EFDE"/>
-            <path d="M4 84h202v62H4z" fill="#27C0D4"/>
-            <path d="M14 128c14-8 28 8 42 0s28 8 42 0 28 8 42 0 28 8 42 0" stroke="#F7EFDE"/>
+          <svg viewBox="0 0 210 150" fill="none">
+            <rect x="24" y="6" width="162" height="64" rx="4" fill="#17627A"/>
+            <rect x="31" y="13" width="148" height="50" fill="#7FE0EC"/>
+            <path d="M105 22l32 41H73z" fill="#27C0D4"/>
+            <path d="M105 22l11 15c-4 3-7 3-11 0s-7-3-11 0z" fill="#FFFFFF"/>
+            <circle cx="50" cy="28" r="7" fill="#FFFFFF" opacity=".85"/>
+            <rect x="4" y="70" width="202" height="14" fill="#FFFFFF"/>
+            <rect x="4" y="84" width="202" height="62" fill="#27C0D4"/>
+            <path d="M14 126c14-8 28 8 42 0s28 8 42 0 28 8 42 0 28 8 42 0" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
             <path d="M28 146c0-18 16-30 36-30s36 12 36 30z" fill="#F5378F"/>
             <circle cx="64" cy="108" r="20" fill="#F5378F"/>
-            <path d="M46 101a20 20 0 0 1 36 0z" fill="#141414" stroke="none"/>
-            <circle cx="57" cy="112" r="2.6" fill="#141414" stroke="none"/>
-            <circle cx="71" cy="112" r="2.6" fill="#141414" stroke="none"/>
-            <path d="M59 119c3 3 7 3 10 0" stroke-width="3.4"/>
+            <path d="M44 103a20 20 0 0 1 40 0z" fill="#17627A"/>
+            <circle cx="57" cy="112" r="2.8" fill="#17627A"/>
+            <circle cx="71" cy="112" r="2.8" fill="#17627A"/>
+            <path d="M57 118c4 5 10 5 14 0-2 7-12 7-14 0z" fill="#17627A"/>
             <path d="M110 146c0-16 14-26 32-26s32 10 32 26z" fill="#F5378F"/>
             <circle cx="142" cy="112" r="17" fill="#F5378F"/>
-            <path d="M127 96h30v10h-30z" fill="#F7EFDE"/>
-            <circle cx="136" cy="119" r="2.4" fill="#141414" stroke="none"/>
-            <circle cx="148" cy="119" r="2.4" fill="#141414" stroke="none"/>
-            <path d="M138 125c2.5 2.5 5.5 2.5 8 0" stroke-width="3.2"/>
-            <g stroke-width="4">
-              <path d="M18 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9"/>
-              <path d="M192 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9"/>
-            </g>
+            <rect x="126" y="95" width="32" height="11" rx="3" fill="#FFFFFF"/>
+            <circle cx="136" cy="117" r="2.6" fill="#17627A"/>
+            <circle cx="148" cy="117" r="2.6" fill="#17627A"/>
+            <path d="M137 122c3 4 8 4 11 0-2 6-9 6-11 0z" fill="#17627A"/>
+            <path d="M18 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9M192 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
           </svg>
         </span>
       </div>
@@ -500,59 +486,60 @@
     <!-- 絵札。装飾なので読み上げ対象から外す -->
     <div class="fuda" aria-hidden="true">
       <div class="f"><!-- 家 -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M50 16 88 48H12z" fill="#F5378F"/>
-          <path d="M22 48h56v36H22z" fill="#F7EFDE"/>
-          <path d="M42 84V62h16v22" fill="#27C0D4"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M50 16 90 50H10z" fill="#F5378F"/>
+          <path d="M22 48h56v38a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z" fill="#27C0D4"/>
+          <path d="M42 90V66a8 8 0 0 1 16 0v24z" fill="#FFD84D"/>
         </svg>
       </div>
       <div class="f"><!-- のれん -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M12 22h76"/>
-          <path d="M16 30h30v46H16zM54 30h30v46H54z" fill="#F7EFDE"/>
-          <circle cx="31" cy="52" r="8" fill="#F5378F"/>
-          <circle cx="69" cy="52" r="8" fill="#27C0D4"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M10 20h80v9H10z" fill="#17627A"/>
+          <path d="M14 29h32v50H14zM54 29h32v50H54z" fill="#F5378F"/>
+          <circle cx="30" cy="52" r="9" fill="#F7EFDE"/>
+          <circle cx="70" cy="52" r="9" fill="#F7EFDE"/>
         </svg>
       </div>
       <div class="f"><!-- 湯桶 -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M22 40h56l-7 40H29z" fill="#FFD84D"/>
-          <path d="M14 40h72"/>
-          <path d="M50 58h14"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M20 44h60l-7 36a6 6 0 0 1-6 5H33a6 6 0 0 1-6-5z" fill="#FFD84D"/>
+          <ellipse cx="50" cy="44" rx="32" ry="9" fill="#FFD84D"/>
+          <ellipse cx="50" cy="44" rx="20" ry="5" fill="#F7EFDE"/>
+          <path d="M24 62h52l-2 10H26z" fill="#FFFFFF" opacity=".75"/>
         </svg>
       </div>
       <div class="f"><!-- サウナハット -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M50 14c-15 0-23 20-25 40h50c-2-20-10-40-25-40z" fill="#FFD84D"/>
-          <path d="M12 54h76v18H12z" fill="#F7EFDE"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M50 16c-15 0-24 20-26 40h52c-2-20-11-40-26-40z" fill="#27C0D4"/>
+          <path d="M12 56h76v16a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#17627A"/>
         </svg>
       </div>
       <div class="f"><!-- 富士山 -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M50 20 88 78H12z" fill="#27C0D4"/>
-          <path d="M50 20 66 44c-5 4-11 4-16 0s-11-4-16 0z" fill="#F7EFDE"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M50 22 88 82H12z" fill="#27C0D4"/>
+          <path d="M50 22 66 47c-6 5-10 5-16 0s-10-5-16 0z" fill="#F7EFDE"/>
         </svg>
       </div>
       <div class="f"><!-- 牛乳瓶 -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M40 14h20v14l10 14v44H30V42l10-14z" fill="#F7EFDE"/>
-          <path d="M38 14h24" stroke-width="8"/>
-          <path d="M30 60h40" />
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M38 16h24v12l10 16v42a4 4 0 0 1-4 4H32a4 4 0 0 1-4-4V44l10-16z" fill="#7FE0EC"/>
+          <path d="M36 14h28v10H36z" fill="#F5378F"/>
+          <path d="M32 56h36v20H32z" fill="#F7EFDE"/>
         </svg>
       </div>
       <div class="f"><!-- アヒル -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M14 62c0-12 15-20 34-20s34 8 34 20-15 20-34 20-34-8-34-20z" fill="#FFD84D"/>
-          <circle cx="66" cy="34" r="16" fill="#FFD84D"/>
-          <path d="M80 30l14 4-14 7z" fill="#F5378F"/>
-          <circle cx="64" cy="30" r="3.5" fill="#141414" stroke="none"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <ellipse cx="48" cy="64" rx="34" ry="20" fill="#FFD84D"/>
+          <circle cx="66" cy="36" r="17" fill="#FFD84D"/>
+          <path d="M80 31l16 5-16 8z" fill="#F5378F"/>
+          <circle cx="63" cy="32" r="3.4" fill="#17627A"/>
         </svg>
       </div>
       <div class="f"><!-- 砂時計 -->
-        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M28 20h44c0 18-22 24-22 30s22 12 22 30H28c0-18 22-24 22-30s-22-12-22-30z" fill="#F7EFDE"/>
-          <path d="M37 27h26c0 11-13 16-13 20s-13-9-13-20z" fill="#FFD84D" stroke="none"/>
-          <path d="M18 16h64M18 84h64"/>
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M18 12h64v9H18zM18 79h64v9H18z" fill="#17627A"/>
+          <path d="M28 21h44c0 18-22 24-22 29s22 11 22 29H28c0-18 22-24 22-29s-22-11-22-29z" fill="#7FE0EC"/>
+          <path d="M36 27h28c0 11-14 16-14 20s-14-9-14-20z" fill="#FFD84D"/>
         </svg>
       </div>
     </div>
@@ -565,22 +552,21 @@
 <section style="padding-top:0">
   <!-- 余白に散らす絵。装飾なので読み上げ対象から外す -->
   <span class="deco l" style="top:70px" aria-hidden="true">
-    <svg viewBox="0 0 100 120" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M26 36 32 10 52 28zM74 36 68 10 48 28z" fill="#F5378F"/>
-      <path d="M24 54c0-16 12-28 26-28s26 12 26 28v40c0 8-5 14-13 14H37c-8 0-13-6-13-14z" fill="#F7EFDE"/>
-      <circle cx="40" cy="52" r="3.6" fill="#141414" stroke="none"/>
-      <circle cx="60" cy="52" r="3.6" fill="#141414" stroke="none"/>
-      <path d="M46 62h8"/>
-      <path d="M30 58h-9M30 66h-9M70 58h9M70 66h9"/>
-      <path d="M32 72h36v15H32z" fill="#27C0D4"/>
-      <ellipse cx="50" cy="98" rx="15" ry="9" fill="#FFD84D"/>
-      <circle cx="82" cy="48" r="11" fill="#F7EFDE"/>
+    <svg viewBox="0 0 100 122" fill="none">
+      <path d="M26 40 32 10 56 32zM74 40 68 10 44 32z" fill="#F5378F"/>
+      <path d="M24 56c0-16 12-28 26-28s26 12 26 28v40c0 9-6 14-14 14H38c-8 0-14-5-14-14z" fill="#7FE0EC"/>
+      <circle cx="40" cy="54" r="4" fill="#17627A"/>
+      <circle cx="60" cy="54" r="4" fill="#17627A"/>
+      <path d="M46 64h8v4h-8z" fill="#17627A"/>
+      <path d="M32 76h36v11H32z" fill="#27C0D4"/>
+      <ellipse cx="50" cy="99" rx="15" ry="9" fill="#FFD84D"/>
+      <circle cx="82" cy="50" r="11" fill="#7FE0EC"/>
     </svg>
   </span>
   <span class="deco r" style="top:120px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M50 14c-15 0-23 20-25 40h50c-2-20-10-40-25-40z" fill="#FFD84D"/>
-      <path d="M12 54h76v18H12z" fill="#F7EFDE"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M50 16c-15 0-24 20-26 40h52c-2-20-11-40-26-40z" fill="#27C0D4"/>
+      <path d="M12 56h76v16a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#17627A"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -600,18 +586,18 @@
 <!-- 3. 変わること -->
 <section>
   <span class="deco r" style="top:90px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M28 22c0-6 4-10 6-4M46 18c0-6 4-10 6-4M64 22c0-6 4-10 6-4"/>
-      <path d="M18 44h64l-8 42H26z" fill="#FFD84D"/>
-      <path d="M10 44h80"/>
-      <path d="M44 62h18"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M20 44h60l-7 36a6 6 0 0 1-6 5H33a6 6 0 0 1-6-5z" fill="#FFD84D"/>
+      <ellipse cx="50" cy="44" rx="32" ry="9" fill="#FFD84D"/>
+      <ellipse cx="50" cy="44" rx="20" ry="5" fill="#F7EFDE"/>
+      <path d="M24 62h52l-2 10H26z" fill="#FFFFFF" opacity=".75"/>
     </svg>
   </span>
   <span class="deco l" style="top:150px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M28 20h44c0 18-22 24-22 30s22 12 22 30H28c0-18 22-24 22-30s-22-12-22-30z" fill="#F7EFDE"/>
-      <path d="M37 27h26c0 11-13 16-13 20s-13-9-13-20z" fill="#F5378F" stroke="none"/>
-      <path d="M18 16h64M18 84h64"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M18 12h64v9H18zM18 79h64v9H18z" fill="#17627A"/>
+      <path d="M28 21h44c0 18-22 24-22 29s22 11 22 29H28c0-18 22-24 22-29s-22-11-22-29z" fill="#7FE0EC"/>
+      <path d="M36 27h28c0 11-14 16-14 20s-14-9-14-20z" fill="#F5378F"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -634,18 +620,20 @@
 <!-- 4. 流れ -->
 <section style="padding-top:0">
   <span class="deco l" style="top:60px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M8 20h84"/>
-      <path d="M14 28h34v54H14zM52 28h34v54H52z" fill="#F5378F"/>
-      <circle cx="31" cy="52" r="9" fill="#F7EFDE"/>
-      <circle cx="69" cy="52" r="9" fill="#F7EFDE"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M10 20h80v9H10z" fill="#17627A"/>
+      <path d="M14 29h32v50H14zM54 29h32v50H54z" fill="#F5378F"/>
+      <circle cx="30" cy="52" r="9" fill="#F7EFDE"/>
+      <circle cx="70" cy="52" r="9" fill="#F7EFDE"/>
     </svg>
   </span>
   <span class="deco r" style="top:130px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <circle cx="50" cy="52" r="34" fill="#FFD84D"/>
-      <path d="M50 32v20l14 10"/>
-      <path d="M42 12h16"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <path d="M44 8h12v10H44z" fill="#17627A"/>
+      <circle cx="50" cy="56" r="38" fill="#17627A"/>
+      <circle cx="50" cy="56" r="30" fill="#FFD84D"/>
+      <path d="M47 32h6v26h-6z" fill="#17627A"/>
+      <path d="M50 53h20v6H50z" fill="#17627A"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -674,18 +662,18 @@
 <!-- 5. 実績 -->
 <section>
   <span class="deco r" style="top:80px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <svg viewBox="0 0 100 100" fill="none">
       <circle cx="76" cy="24" r="12" fill="#F5378F"/>
-      <path d="M50 26 92 90H8z" fill="#27C0D4"/>
-      <path d="M50 26 68 54c-6 5-12 5-18 0s-12-5-18 0z" fill="#F7EFDE"/>
+      <path d="M50 26 90 88H10z" fill="#27C0D4"/>
+      <path d="M50 26 68 54c-7 5-11 5-18 0s-11-5-18 0z" fill="#F7EFDE"/>
     </svg>
   </span>
   <span class="deco l" style="top:150px" aria-hidden="true">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
-      <path d="M14 62c0-12 15-20 34-20s34 8 34 20-15 20-34 20-34-8-34-20z" fill="#FFD84D"/>
-      <circle cx="66" cy="34" r="16" fill="#FFD84D"/>
-      <path d="M80 30l14 4-14 7z" fill="#F5378F"/>
-      <circle cx="64" cy="30" r="3.5" fill="#141414" stroke="none"/>
+    <svg viewBox="0 0 100 100" fill="none">
+      <ellipse cx="48" cy="64" rx="34" ry="20" fill="#FFD84D"/>
+      <circle cx="66" cy="36" r="17" fill="#FFD84D"/>
+      <path d="M80 31l16 5-16 8z" fill="#F5378F"/>
+      <circle cx="63" cy="32" r="3.4" fill="#17627A"/>
     </svg>
   </span>
   <div class="wrap fade">
