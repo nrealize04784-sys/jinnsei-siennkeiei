@@ -148,13 +148,25 @@
   .badge-icon svg{width:28px;height:28px}
   .badge span{font-size:13px;font-weight:700;color:var(--paper);letter-spacing:.04em}
   .fv-visual{
-    position:absolute;right:-2%;bottom:0;top:104px;width:38%;min-width:280px;
-    display:flex;align-items:flex-end;justify-content:center;z-index:0;
+    position:absolute;right:2%;top:50%;transform:translateY(-50%);
+    width:34%;min-width:240px;max-width:380px;aspect-ratio:1/1;
+    display:flex;align-items:center;justify-content:center;z-index:0;
     pointer-events:none;
   }
-  .fv-visual img{
-    width:100%;height:100%;object-fit:contain;object-position:bottom;
-    filter:drop-shadow(-18px 24px 34px rgba(0,0,0,.55));
+  /* インパクトの光条。グローブの後ろでゆっくり回す */
+  .fv-visual::before{
+    content:"";position:absolute;inset:8%;
+    background:repeating-conic-gradient(from 0deg,
+      rgba(212,175,55,.4) 0deg 4deg,transparent 4deg 15deg);
+    -webkit-mask-image:radial-gradient(circle,#000 4%,rgba(0,0,0,.4) 40%,transparent 68%);
+    mask-image:radial-gradient(circle,#000 4%,rgba(0,0,0,.4) 40%,transparent 68%);
+    animation:fv-rays 22s linear infinite;
+  }
+  @keyframes fv-rays{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){.fv-visual::before{animation:none}}
+  .fv-glove{
+    position:relative;width:82%;height:82%;transform:rotate(-8deg);
+    filter:drop-shadow(-14px 18px 26px rgba(0,0,0,.55));
   }
   @media(max-width:900px){.fv-visual{display:none}}
   @media(max-width:640px){
@@ -323,10 +335,42 @@
 
     <a class="btn" href="#entry">LMP 不動産FC加盟 資料請求（無料）</a>
   </div>
-  <!-- ボクサーキャラクター（AI生成・背景除去済み）。※公開前に boxer.png としてローカル化すること -->
+  <!--
+    グローブは外部画像に頼らず自前のSVGで描いている。
+    AI生成画像は一時URLで消える可能性があり、その場で確実に表示される保証がないため、
+    ベクターの自作イラストに切り替えた（バッジのアイコン3種と同じ方針）。
+  -->
   <div class="fv-visual" aria-hidden="true">
-    <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260819_030023_746860cd-1b00-4fc0-a73b-2f9b7c7b3847.png"
-         alt="" loading="eager">
+    <svg class="fv-glove" viewBox="0 0 300 340" fill="none">
+      <!-- リストバンド -->
+      <path d="M96 236 C90 268 88 300 96 330 L182 330 C190 300 188 268 182 236 Z" fill="#15100F"/>
+      <path d="M100 250 H178" stroke="#3A2A28" stroke-width="6" stroke-linecap="round"/>
+      <path d="M98 274 H180" stroke="#3A2A28" stroke-width="6" stroke-linecap="round"/>
+      <!-- グローブ本体 -->
+      <path d="M60 150
+               C56 100 92 54 150 50
+               C214 46 254 92 252 150
+               C250 200 226 226 214 240
+               C204 252 192 258 176 258
+               L106 258
+               C88 258 70 244 64 216
+               C58 194 58 172 60 150 Z"
+            fill="#C8102E"/>
+      <!-- 親指 -->
+      <path d="M64 170 C40 168 22 184 20 210 C18 234 34 252 58 254
+               C74 256 86 248 90 234 C82 226 74 214 70 198 C66 186 64 178 64 170 Z"
+            fill="#C8102E"/>
+      <!-- ハイライトで丸みを出す -->
+      <path d="M92 78 C124 60 168 60 198 82 C176 70 132 70 106 92 C100 86 96 82 92 78 Z"
+            fill="#E8536A" opacity=".55"/>
+      <!-- 指の分かれ目の陰影 -->
+      <path d="M118 254 L118 190" stroke="#8C0C20" stroke-width="10" stroke-linecap="round" opacity=".5"/>
+      <path d="M154 258 L154 186" stroke="#8C0C20" stroke-width="10" stroke-linecap="round" opacity=".5"/>
+      <path d="M190 250 L190 196" stroke="#8C0C20" stroke-width="10" stroke-linecap="round" opacity=".5"/>
+      <!-- 縁の金ライン -->
+      <path d="M60 150 C56 100 92 54 150 50 C214 46 254 92 252 150 C250 200 226 226 214 240"
+            stroke="#D4AF37" stroke-width="3" opacity=".7" stroke-linecap="round"/>
+    </svg>
   </div>
 </header>
 
