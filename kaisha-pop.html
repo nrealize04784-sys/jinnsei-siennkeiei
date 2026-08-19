@@ -89,8 +89,9 @@
     /* 区切り線を1本につなげたいので列の隙間は空けず、dtの右padding で離す */
     .info{display:grid;grid-template-columns:144px 1fr}
     .info dt{margin-top:0;padding:14px 24px 14px 0;border-top:2px solid var(--ink)}
-    .info dd{padding:14px 0;border-top:2px solid var(--ink)}
-    .info dt:first-of-type,.info dt:first-of-type + dd{border-top:none;padding-top:0}
+    /* dd の上マージンが残ると罫線が2pxずれて段差になる */
+    .info dd{margin:0;padding:14px 0;border-top:2px solid var(--ink)}
+    .info dt:first-of-type,.info dt:first-of-type + dd{border-top:none}
   }
 </style>
 </head>
