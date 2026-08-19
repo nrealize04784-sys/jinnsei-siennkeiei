@@ -140,6 +140,15 @@
     background-size:20px 26px;background-repeat:repeat-y}
   .bulbs.l{left:-4px}.bulbs.r{right:-4px}
 
+  /* 看板の中の左右下に置く絵。文字とぶつかる幅では出さない */
+  .sign-inner{position:relative}
+  .corner{position:absolute;bottom:14px;width:150px;display:none;pointer-events:none}
+  .corner svg{width:100%;height:auto;display:block}
+  .corner.l{left:16px}
+  .corner.r{right:16px}
+  @media (min-width:900px){ .corner{display:block} }
+  @media (min-width:1100px){ .corner{width:176px} }
+
   /* POP UP SENTO の位置。欧文は白抜きに黒フチ */
   .eyebrow{
     display:block;color:#fff;font-family:"Dela Gothic One",sans-serif;
@@ -420,6 +429,61 @@
         <p class="xline">LIFE MAKE PARTNER'S × 地域の不動産会社</p>
         <p class="sub">物件を探している人じゃなく、<br>人生を良くしたい人が集まる。</p>
         <a class="btn" href="#entry">事業説明会に申し込む</a>
+        <!-- シャンプーと洗面器 -->
+        <span class="corner l" aria-hidden="true">
+          <svg viewBox="0 0 210 140" fill="none" stroke="#141414" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <g>
+              <path d="M14 60h34v70H14z" fill="#27C0D4"/>
+              <path d="M22 60V46h18"/><path d="M40 46h10v8"/>
+              <path d="M18 84h26v18H18z" fill="#F7EFDE"/>
+            </g>
+            <g>
+              <path d="M58 66h34v64H58z" fill="#FFD84D"/>
+              <path d="M66 66V52h18"/><path d="M84 52h10v8"/>
+              <path d="M62 88h26v18H62z" fill="#F7EFDE"/>
+            </g>
+            <g>
+              <path d="M102 60h34v70h-34z" fill="#27C0D4"/>
+              <path d="M110 60V46h18"/><path d="M128 46h10v8"/>
+              <path d="M106 84h26v18h-26z" fill="#F7EFDE"/>
+            </g>
+            <g>
+              <path d="M146 96h58v18a16 16 0 0 1-16 12h-26a16 16 0 0 1-16-12z" fill="#FFD84D"/>
+              <ellipse cx="175" cy="96" rx="29" ry="12" fill="#FFD84D"/>
+              <ellipse cx="175" cy="96" rx="18" ry="7" fill="#F7EFDE"/>
+              <path d="M168 96h14" stroke="#F5378F" stroke-width="6"/>
+            </g>
+          </svg>
+        </span>
+        <!-- 富士山の壁絵と湯船 -->
+        <span class="corner r" aria-hidden="true">
+          <svg viewBox="0 0 210 150" fill="none" stroke="#141414" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M24 6h162v64H24z" fill="#7FE0EC"/>
+            <path d="M105 20l34 50H71z" fill="#F7EFDE"/>
+            <path d="M105 20l11 16c-4 3-7 3-11 0s-7-3-11 0z" fill="#FFFFFF" stroke="none"/>
+            <circle cx="48" cy="28" r="8" fill="#F7EFDE"/>
+            <path d="M24 6h162v64H24z"/>
+            <path d="M4 70h202v14H4z" fill="#F7EFDE"/>
+            <path d="M4 84h202v62H4z" fill="#27C0D4"/>
+            <path d="M14 128c14-8 28 8 42 0s28 8 42 0 28 8 42 0 28 8 42 0" stroke="#F7EFDE"/>
+            <path d="M28 146c0-18 16-30 36-30s36 12 36 30z" fill="#F5378F"/>
+            <circle cx="64" cy="108" r="20" fill="#F5378F"/>
+            <path d="M46 101a20 20 0 0 1 36 0z" fill="#141414" stroke="none"/>
+            <circle cx="57" cy="112" r="2.6" fill="#141414" stroke="none"/>
+            <circle cx="71" cy="112" r="2.6" fill="#141414" stroke="none"/>
+            <path d="M59 119c3 3 7 3 10 0" stroke-width="3.4"/>
+            <path d="M110 146c0-16 14-26 32-26s32 10 32 26z" fill="#F5378F"/>
+            <circle cx="142" cy="112" r="17" fill="#F5378F"/>
+            <path d="M127 96h30v10h-30z" fill="#F7EFDE"/>
+            <circle cx="136" cy="119" r="2.4" fill="#141414" stroke="none"/>
+            <circle cx="148" cy="119" r="2.4" fill="#141414" stroke="none"/>
+            <path d="M138 125c2.5 2.5 5.5 2.5 8 0" stroke-width="3.2"/>
+            <g stroke-width="4">
+              <path d="M18 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9"/>
+              <path d="M192 104a5 5 0 0 1 0-10 5 5 0 0 0 0-9"/>
+            </g>
+          </svg>
+        </span>
       </div>
     </div>
 
