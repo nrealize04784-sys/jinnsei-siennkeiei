@@ -270,13 +270,17 @@
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
   .box{padding:22px 18px;text-align:center}
-  /* BEFORE / AFTER はリボンの帯に。線も文字も currentColor でまとめて色を変えられる */
-  .box .tag{
-    width:min(200px,90%);
-    margin:0 auto 14px;
-    color:#EBDECB;
+  /* BEFORE / AFTER は見出しと同じリボン（.ribbon）に載せる。大きさだけ変える */
+  .ribbon-tag{
+    margin:0 auto 16px;
+    border-width:0 23px;
+    padding:12px 20px;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.18em;
+    line-height:1.4;
   }
-  .box .ribbon{display:block;width:100%;height:auto}
+  @media (min-width:768px){ .ribbon-tag{border-width:0 26px;padding:14px 28px;font-size:15px} }
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px)}
   /* after は板の色は同じまま、文字をあんず色にして違いを出す */
   .box.after .txt{color:#F7D9A8}
@@ -326,28 +330,32 @@
   .board-head .knife{right:24px}
   /* 皿の外にはみ出すカトラリーは、狭い画面では出さない */
   @media (max-width:600px){ .board-head .fork,.board-head .knife{display:none} }
-  /* リボンの帯。1枚のSVGを border-image で伸ばす。
+  /* リボンの帯。見出しと BEFORE / AFTER で同じ形を使う。
+     1枚のSVGを border-image で伸ばす。
      両端は帯と同じ白のまま外へ広がり、根元近くまで深くV字に切り欠く（＝一枚布の垂れ）。
      左右64単位が垂れとハトメ（伸びない）、中央272単位が帯（横に伸びる）。
-     border-width は 64単位 × 縦の倍率 に合わせてあり、端がゆがまない */
-  .ribbon-head{
+     border-width は 64単位 × 縦の倍率 に合わせること。ずらすと端だけ横に伸びてゆがむ */
+  .ribbon{
     position:relative;
     width:fit-content;
-    max-width:calc(100% - 16px);
     margin-inline:auto;
     color:#33210F;
     /* 帯は border-image で描くが、文字の下だけは実際の背景色も敷いておく。
        画像が出ない環境でも、濃い板の上に濃い文字が残らないようにするため */
     background-color:#FBF3E4;
     background-clip:content-box;
-    font-size:clamp(17px,4.4vw,30px);
-    line-height:1.5;
     text-align:center;
-    padding:24px 6px;
     border-style:solid;
     border-color:transparent;
-    border-width:0 34px;
     border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cpath d='M4 6C20 12 38 20 52 30C110 20 160 23 200 22C260 21 305 25 348 30C362 20 380 12 396 6L354 60L396 114C380 108 362 100 348 90C305 95 260 99 200 98C160 97 110 100 52 90C38 100 20 108 4 114L46 60Z' fill='%23FBF3E4'/%3E%3Cg fill='%2333210F'%3E%3Cellipse cx='58' cy='60' rx='3.4' ry='5'/%3E%3Cellipse cx='342' cy='60' rx='3.4' ry='5'/%3E%3C/g%3E%3C/svg%3E") 0 64 fill stretch;
+  }
+  /* 見出し用。大きく、右上がりに傾け、影を落とす */
+  .ribbon-head{
+    max-width:calc(100% - 16px);
+    font-size:clamp(17px,4.4vw,30px);
+    line-height:1.5;
+    padding:24px 6px;
+    border-width:0 34px;
     transform:rotate(-6deg);
     /* 影は塗った形に沿わせたいので box-shadow ではなく drop-shadow */
     filter:drop-shadow(0 3px 10px rgba(0,0,0,.3));
@@ -681,36 +689,12 @@
     <div class="swap">
       <div class="box">
         <!-- 見出しはリボンの帯に載せる -->
-        <p class="tag">
-          <svg class="ribbon" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
-                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
-            <text x="120" y="40" text-anchor="middle" fill="currentColor"
-                  font-size="15" font-weight="700" letter-spacing="3">BEFORE</text>
-          </svg>
-        </p>
+        <p class="ribbon ribbon-tag">BEFORE</p>
         <p class="txt">物件を探しに来る人</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box after">
-        <p class="tag">
-          <svg class="ribbon" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
-                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
-            <text x="120" y="40" text-anchor="middle" fill="currentColor"
-                  font-size="15" font-weight="700" letter-spacing="3">AFTER</text>
-          </svg>
-        </p>
+        <p class="ribbon ribbon-tag">AFTER</p>
         <p class="txt">暮らしの相談に来る人</p>
       </div>
     </div>
@@ -753,7 +737,7 @@
         </g>
       </svg>
       <!-- 折り返すときは「地域の人生相談窓口／になる。」で切る -->
-      <h2 class="ribbon-head"><span>地域の人生相談窓口</span><span>になる。</span></h2>
+      <h2 class="ribbon ribbon-head"><span>地域の人生相談窓口</span><span>になる。</span></h2>
     </div>
     <div class="flow">
       <div class="step">
