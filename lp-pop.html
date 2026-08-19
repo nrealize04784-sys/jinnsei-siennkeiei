@@ -102,8 +102,8 @@
   @media (min-width:768px){ .yu-big{-webkit-text-stroke-width:16px} }
   /* 温泉マークと「ゆ」を縦に積む */
   .yu-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
-  .onsen{display:block;width:66px;height:auto}
-  @media (min-width:768px){ .onsen{width:108px} }
+  .onsen{display:block;width:58px;height:auto}
+  @media (min-width:768px){ .onsen{width:96px} }
   /* 吹き出しは雲形。黄色の面＋黒の太フチ＋版ずれの影 */
   .cloud{position:relative;display:block;width:min(520px,88vw);margin:0 auto 6px}
   .cloud-svg{display:block;width:100%;height:auto}
@@ -391,14 +391,12 @@
         <span class="tg cyanbg">人生相談</span>
       </span>
       <span class="yu-wrap" aria-hidden="true">
-        <!-- 温泉マーク。湯船は浅く横長に。深くするとラーメン鉢に見える -->
-        <svg class="onsen" viewBox="0 0 120 88" fill="none" stroke="#141414" stroke-linecap="round" stroke-linejoin="round">
-          <g stroke-width="6">
-            <path d="M38 52a6 6 0 0 1 0-12 6 6 0 0 0 0-12 6 6 0 0 1 0-12"/>
-            <path d="M60 52a6 6 0 0 1 0-12 6 6 0 0 0 0-12 6 6 0 0 1 0-12 6 6 0 0 0 0-12"/>
-            <path d="M82 52a6 6 0 0 1 0-12 6 6 0 0 0 0-12 6 6 0 0 1 0-12"/>
-          </g>
-          <path d="M10 64c30-6 70-6 100 0 0 13-19 21-50 21s-50-8-50-21z" fill="#F7EFDE" stroke-width="7"/>
+        <!-- 温泉マーク。筆致に強弱があり先が尖るので、線ではなく塗りのパスで描く -->
+        <svg class="onsen" viewBox="150 150 950 920" xmlns="http://www.w3.org/2000/svg" fill="#141414" aria-hidden="true">
+          <path d="M655 180C600 270 552 360 556 460 560 560 640 620 648 720 652 780 640 815 612 848 660 790 700 730 700 655 700 570 620 505 612 415 606 340 625 255 655 180Z"/>
+          <path d="M425 268C380 340 345 420 352 500 358 570 420 620 425 690 428 740 420 775 400 805 445 760 478 700 476 640 474 570 415 520 410 455 406 390 412 325 425 268Z"/>
+          <path d="M852 268C805 340 770 425 776 505 782 575 845 625 848 695 850 745 842 778 822 808 868 762 900 700 898 640 896 570 838 520 833 455 829 390 838 325 852 268Z"/>
+          <path d="M300 690C175 745 165 875 330 960 480 1035 790 1040 950 960 1090 890 1075 750 960 690 1010 760 960 850 800 900 640 950 420 940 300 880 235 840 245 750 300 690Z"/>
         </svg>
         <span class="yu-big">ゆ</span>
       </span>
