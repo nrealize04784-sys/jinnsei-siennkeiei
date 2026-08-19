@@ -270,13 +270,13 @@
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
   .box{padding:22px 18px;text-align:center}
+  /* BEFORE / AFTER はリボンの帯に。線も文字も currentColor でまとめて色を変えられる */
   .box .tag{
-    font-size:12px;
-    letter-spacing:.18em;
+    width:min(200px,90%);
+    margin:0 auto 14px;
     color:#EBDECB;
-    text-transform:uppercase;
-    margin-bottom:12px;
   }
+  .box .ribbon{display:block;width:100%;height:auto}
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px)}
   /* after は板の色は同じまま、文字をあんず色にして違いを出す */
   .box.after .txt{color:#F7D9A8}
@@ -609,12 +609,37 @@
   <div class="wrap fade">
     <div class="swap">
       <div class="box">
-        <p class="tag">before</p>
+        <!-- 見出しはリボンの帯に載せる -->
+        <p class="tag">
+          <svg class="ribbon" viewBox="0 0 240 64" aria-hidden="true">
+            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
+              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
+              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
+            </g>
+            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
+                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
+            <text x="120" y="40" text-anchor="middle" fill="currentColor"
+                  font-size="15" font-weight="700" letter-spacing="3">BEFORE</text>
+          </svg>
+        </p>
         <p class="txt">物件を探しに来る人</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box after">
-        <p class="tag">after</p>
+        <p class="tag">
+          <svg class="ribbon" viewBox="0 0 240 64" aria-hidden="true">
+            <g fill="#6B5A4C" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
+              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
+              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
+            </g>
+            <path d="M62 19Q120 32 178 19L178 37Q120 50 62 37Z" fill="none"
+                  stroke="currentColor" stroke-width="1.1" opacity=".7"/>
+            <text x="120" y="40" text-anchor="middle" fill="currentColor"
+                  font-size="15" font-weight="700" letter-spacing="3">AFTER</text>
+          </svg>
+        </p>
         <p class="txt">暮らしの相談に来る人</p>
       </div>
     </div>
