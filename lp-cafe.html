@@ -273,14 +273,14 @@
   /* BEFORE / AFTER は見出しと同じリボン（.ribbon）に載せる。大きさだけ変える */
   .ribbon-tag{
     margin:0 auto 16px;
-    border-width:0 23px;
-    padding:12px 20px;
+    border-width:0 32px;
+    padding:17px 20px;
     font-size:14px;
     font-weight:700;
     letter-spacing:.18em;
     line-height:1.4;
   }
-  @media (min-width:768px){ .ribbon-tag{border-width:0 26px;padding:14px 28px;font-size:15px} }
+  @media (min-width:768px){ .ribbon-tag{border-width:0 34px;padding:18px 28px;font-size:15px} }
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px)}
   /* after は板の色は同じまま、文字をあんず色にして違いを出す */
   .box.after .txt{color:#F7D9A8}
@@ -339,29 +339,31 @@
     position:relative;
     width:fit-content;
     margin-inline:auto;
-    color:#33210F;
-    /* 帯は border-image で描くが、文字の下だけは実際の背景色も敷いておく。
-       画像が出ない環境でも、濃い板の上に濃い文字が残らないようにするため */
-    background-color:#FBF3E4;
+    color:#EBDECB;
+    /* 帯の地は板と同じ色。線だけで描いた帯に見せる。
+       文字の下にも同じ色を敷いておく。画像が出ない環境でも文字が読めるように */
+    background-color:#6B5A4C;
     background-clip:content-box;
     text-align:center;
     border-style:solid;
     border-color:transparent;
-    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cpath d='M4 6C20 12 38 20 52 30C110 20 160 23 200 22C260 21 305 25 348 30C362 20 380 12 396 6L354 60L396 114C380 108 362 100 348 90C305 95 260 99 200 98C160 97 110 100 52 90C38 100 20 108 4 114L46 60Z' fill='%23FBF3E4'/%3E%3Cg fill='%2333210F'%3E%3Cellipse cx='58' cy='60' rx='3.4' ry='5'/%3E%3Cellipse cx='342' cy='60' rx='3.4' ry='5'/%3E%3C/g%3E%3C/svg%3E") 0 64 fill stretch;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cg fill='%236B5A4C' stroke='%23EBDECB' stroke-width='3' stroke-linejoin='round'%3E%3Cpath d='M70 18 10 4 36 52 10 100 70 86Z'/%3E%3Cpath d='M330 18 390 4 364 52 390 100 330 86Z'/%3E%3Cpath d='M70 18Q200 34 330 18L330 86Q200 102 70 86Z'/%3E%3C/g%3E%3Cpath d='M80 27Q200 43 320 27L320 77Q200 93 80 77Z' fill='none' stroke='%23EBDECB' stroke-width='1.8' opacity='.7'/%3E%3C/svg%3E") 0 70 fill stretch;
   }
-  /* 見出し用。大きく、右上がりに傾け、影を落とす */
+  /* 見出し用。同じ帯を大きくして、黒板の色に合わせた地に差し替える */
   .ribbon-head{
-    max-width:calc(100% - 16px);
-    font-size:clamp(17px,4.4vw,30px);
+    max-width:calc(100% - 4px);
+    color:#FBF3E4;
+    background-color:#33210F;
+    font-size:clamp(16px,4.2vw,30px);
     line-height:1.5;
-    padding:24px 6px;
-    border-width:0 34px;
-    transform:rotate(-6deg);
-    /* 影は塗った形に沿わせたいので box-shadow ではなく drop-shadow */
-    filter:drop-shadow(0 3px 10px rgba(0,0,0,.3));
+    /* 帯が下へたわむぶん、上の余白を厚くして文字を帯の中心に置く */
+    padding:26px 4px;
+    border-width:0 44px;
+    border-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='120' viewBox='0 0 400 120'%3E%3Cg fill='%2333210F' stroke='%23FBF3E4' stroke-width='3' stroke-linejoin='round'%3E%3Cpath d='M70 18 10 4 36 52 10 100 70 86Z'/%3E%3Cpath d='M330 18 390 4 364 52 390 100 330 86Z'/%3E%3Cpath d='M70 18Q200 34 330 18L330 86Q200 102 70 86Z'/%3E%3C/g%3E%3Cpath d='M80 27Q200 43 320 27L320 77Q200 93 80 77Z' fill='none' stroke='%23FBF3E4' stroke-width='1.8' opacity='.7'/%3E%3C/svg%3E") 0 70 fill stretch;
+    transform:rotate(-4deg);
   }
   .ribbon-head span{display:inline-block}
-  @media (min-width:768px){ .ribbon-head{padding:34px 16px;border-width:0 60px} }
+  @media (min-width:768px){ .ribbon-head{padding:49px 16px;border-width:0 84px} }
   .flow{
     display:grid;
     grid-template-columns:1fr 1fr;
