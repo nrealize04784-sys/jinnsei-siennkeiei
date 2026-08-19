@@ -167,7 +167,7 @@
 
   /* 絵札。ポスターの詰め込み感はここで出す */
   .fuda{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    display:grid;grid-template-columns:repeat(6,1fr);gap:7px;
     padding:40px 0 26px;
   }
   @media (min-width:768px){ .fuda{grid-template-columns:repeat(8,1fr);gap:14px;padding:52px 0 30px} }
@@ -532,6 +532,65 @@
           <circle cx="60" cy="24" r="7" fill="#F7EFDE"/>
         </svg>
       </div>
+      <div class="f"><!-- サウナハット -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M50 14c-15 0-23 20-25 40h50c-2-20-10-40-25-40z" fill="#FFD84D"/>
+          <path d="M12 54h76v18H12z" fill="#F7EFDE"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 砂時計 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M28 20h44c0 18-22 24-22 30s22 12 22 30H28c0-18 22-24 22-30s-22-12-22-30z" fill="#F7EFDE"/>
+          <path d="M37 27h26c0 11-13 16-13 20s-13-9-13-20z" fill="#FFD84D" stroke="none"/>
+          <path d="M18 16h64M18 84h64"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 温度計 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M36 24a8 8 0 0 1 16 0v40H36z" fill="#F7EFDE"/>
+          <circle cx="44" cy="76" r="14" fill="#F5378F"/>
+          <path d="M44 52v10" stroke="#F5378F" stroke-width="8"/>
+          <path d="M60 32h12M60 46h12M60 60h12"/>
+        </svg>
+      </div>
+      <div class="f"><!-- サウナストーン -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M20 52h60v34H20z" fill="#27C0D4"/>
+          <circle cx="34" cy="52" r="11" fill="#F7EFDE"/>
+          <circle cx="56" cy="48" r="13" fill="#F7EFDE"/>
+          <circle cx="76" cy="53" r="10" fill="#F7EFDE"/>
+          <path d="M40 28a6 6 0 0 1 0-12 6 6 0 0 0 0-10M64 28a6 6 0 0 1 0-12 6 6 0 0 0 0-10"/>
+        </svg>
+      </div>
+      <div class="f"><!-- シャンプー -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M32 40h36v46H32z" fill="#27C0D4"/>
+          <path d="M44 40V26h16"/>
+          <path d="M60 26h12v10"/>
+        </svg>
+      </div>
+      <div class="f"><!-- アヒル -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M14 62c0-12 15-20 34-20s34 8 34 20-15 20-34 20-34-8-34-20z" fill="#FFD84D"/>
+          <circle cx="66" cy="34" r="16" fill="#FFD84D"/>
+          <path d="M80 30l14 4-14 7z" fill="#F5378F"/>
+          <circle cx="64" cy="30" r="3.5" fill="#141414" stroke="none"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 時計 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <circle cx="50" cy="52" r="34" fill="#F7EFDE"/>
+          <path d="M50 32v20l14 10"/>
+          <path d="M42 12h16"/>
+        </svg>
+      </div>
+      <div class="f"><!-- 水風呂 -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M16 42h68v30a12 12 0 0 1-12 12H28a12 12 0 0 1-12-12z" fill="#27C0D4"/>
+          <path d="M24 58c8-6 16 6 24 0s16 6 24 0" stroke="#F7EFDE"/>
+          <path d="M32 30v-8M50 28v-10M68 30v-8"/>
+        </svg>
+      </div>
     </div>
 
     <p class="totonou">学んで、相談して、まちが<em>ととのう</em>。</p>
@@ -552,6 +611,12 @@
       <path d="M32 72h36v15H32z" fill="#27C0D4"/>
       <ellipse cx="50" cy="98" rx="15" ry="9" fill="#FFD84D"/>
       <circle cx="82" cy="48" r="11" fill="#F7EFDE"/>
+    </svg>
+  </span>
+  <span class="deco r" style="top:120px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M50 14c-15 0-23 20-25 40h50c-2-20-10-40-25-40z" fill="#FFD84D"/>
+      <path d="M12 54h76v18H12z" fill="#F7EFDE"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -576,6 +641,13 @@
       <path d="M18 44h64l-8 42H26z" fill="#FFD84D"/>
       <path d="M10 44h80"/>
       <path d="M44 62h18"/>
+    </svg>
+  </span>
+  <span class="deco l" style="top:150px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M28 20h44c0 18-22 24-22 30s22 12 22 30H28c0-18 22-24 22-30s-22-12-22-30z" fill="#F7EFDE"/>
+      <path d="M37 27h26c0 11-13 16-13 20s-13-9-13-20z" fill="#F5378F" stroke="none"/>
+      <path d="M18 16h64M18 84h64"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -603,6 +675,13 @@
       <path d="M14 28h34v54H14zM52 28h34v54H52z" fill="#F5378F"/>
       <circle cx="31" cy="52" r="9" fill="#F7EFDE"/>
       <circle cx="69" cy="52" r="9" fill="#F7EFDE"/>
+    </svg>
+  </span>
+  <span class="deco r" style="top:130px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="50" cy="52" r="34" fill="#FFD84D"/>
+      <path d="M50 32v20l14 10"/>
+      <path d="M42 12h16"/>
     </svg>
   </span>
   <div class="wrap fade">
@@ -635,6 +714,14 @@
       <circle cx="76" cy="24" r="12" fill="#F5378F"/>
       <path d="M50 26 92 90H8z" fill="#27C0D4"/>
       <path d="M50 26 68 54c-6 5-12 5-18 0s-12-5-18 0z" fill="#F7EFDE"/>
+    </svg>
+  </span>
+  <span class="deco l" style="top:150px" aria-hidden="true">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#141414" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M14 62c0-12 15-20 34-20s34 8 34 20-15 20-34 20-34-8-34-20z" fill="#FFD84D"/>
+      <circle cx="66" cy="34" r="16" fill="#FFD84D"/>
+      <path d="M80 30l14 4-14 7z" fill="#F5378F"/>
+      <circle cx="64" cy="30" r="3.5" fill="#141414" stroke="none"/>
     </svg>
   </span>
   <div class="wrap fade">
