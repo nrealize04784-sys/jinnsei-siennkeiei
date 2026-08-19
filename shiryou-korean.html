@@ -100,6 +100,12 @@
   .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
   .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
   .back:hover{ text-decoration:underline }
+  /* まちなみの絵。生成りの面に置いて、白地の絵として見せる */
+  .scene{
+    background:var(--cream); border-radius:14px; padding:16px;
+    box-shadow:0 4px 0 rgba(90,58,28,.18); margin-bottom:22px;
+  }
+  .scene svg{ width:100%; height:auto; display:block }
   /* 本編と同じ線画の飾り。輪郭だけで、塗りはなし */
   .line{ stroke:var(--ink); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; opacity:.8 }
   .ornament{ display:flex; justify-content:center; margin-bottom:18px }
@@ -136,6 +142,106 @@
       <span class="tag">お持ち帰り<span class="ko">자료 신청</span></span>
       <h1>資料請求</h1>
       <p>加盟の概要をまとめた資料をお送りします。</p>
+    </div>
+
+
+    <!-- 韓国のまちなみ。輪郭線なしのべた塗りで、写真を使わずに描いている -->
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 620 214">
+        <!-- 雲 -->
+        <g fill="#CFE6F0">
+          <ellipse cx="70" cy="52" rx="26" ry="13"/><ellipse cx="92" cy="54" rx="17" ry="10"/><ellipse cx="52" cy="55" rx="15" ry="9"/>
+          <ellipse cx="236" cy="42" rx="27" ry="14"/><ellipse cx="258" cy="45" rx="17" ry="10"/>
+          <ellipse cx="540" cy="66" rx="23" ry="12"/><ellipse cx="558" cy="68" rx="15" ry="9"/>
+        </g>
+
+        <!-- 地面 -->
+        <rect x="0" y="196" width="620" height="6" fill="#D6D1C7"/>
+        <rect x="236" y="190" width="176" height="6" fill="#C9CDD2"/>
+
+        <!-- 左のまちなみ -->
+        <g>
+          <rect x="26" y="136" width="46" height="60" fill="#6EC1D9"/><rect x="24" y="130" width="50" height="7" fill="#4FA6C0"/>
+          <g fill="#F8F1E2"><rect x="34" y="146" width="9" height="11"/><rect x="49" y="146" width="9" height="11"/><rect x="34" y="165" width="9" height="11"/><rect x="49" y="165" width="9" height="11"/></g>
+          <rect x="72" y="110" width="28" height="86" fill="#DDE6EA"/><rect x="70" y="104" width="32" height="7" fill="#BFCED6"/>
+          <g fill="#6E8A99"><rect x="79" y="118" width="7" height="9"/><rect x="89" y="118" width="7" height="9"/><rect x="79" y="134" width="7" height="9"/><rect x="89" y="134" width="7" height="9"/><rect x="79" y="150" width="7" height="9"/><rect x="89" y="150" width="7" height="9"/></g>
+          <rect x="100" y="122" width="36" height="74" fill="#F08A5D"/><rect x="98" y="116" width="40" height="7" fill="#D9713F"/>
+          <g fill="#F8F1E2"><rect x="107" y="130" width="9" height="11"/><rect x="121" y="130" width="9" height="11"/><rect x="107" y="149" width="9" height="11"/><rect x="121" y="149" width="9" height="11"/></g>
+          <rect x="136" y="144" width="28" height="52" fill="#B0413E"/><rect x="134" y="138" width="32" height="7" fill="#8E2F2D"/>
+          <g fill="#F8F1E2"><rect x="143" y="152" width="8" height="10"/><rect x="143" y="169" width="8" height="10"/></g>
+          <rect x="164" y="162" width="22" height="34" fill="#F0C33C"/><rect x="162" y="156" width="26" height="7" fill="#D6A821"/>
+          <rect x="170" y="172" width="9" height="10" fill="#F8F1E2"/>
+          <!-- 石段 -->
+          <path d="M196 196h34l-6-8h-22z" fill="#C9CDD2"/>
+        </g>
+
+        <!-- 光化門。石垣に3つのアーチ、上に瓦屋根を2段 -->
+        <g>
+          <rect x="258" y="148" width="124" height="48" fill="#C9CDD2"/>
+          <g fill="#2B2724">
+            <path d="M275 196v-20a13 13 0 0 1 26 0v20z"/>
+            <path d="M307 196v-20a13 13 0 0 1 26 0v20z"/>
+            <path d="M339 196v-20a13 13 0 0 1 26 0v20z"/>
+          </g>
+          <rect x="258" y="140" width="124" height="8" fill="#D2402F"/>
+          <path d="M254 124h132l14 22H240z" fill="#2A3550"/>
+          <rect x="236" y="142" width="168" height="6" rx="3" fill="#1F2839"/>
+          <rect x="284" y="110" width="72" height="14" fill="#D2402F"/>
+          <g fill="#F0C33C"><rect x="292" y="114" width="6" height="6"/><rect x="317" y="114" width="6" height="6"/><rect x="342" y="114" width="6" height="6"/></g>
+          <path d="M286 88h68l12 20H274z" fill="#2A3550"/>
+          <rect x="270" y="104" width="100" height="6" rx="3" fill="#1F2839"/>
+          <rect x="292" y="82" width="56" height="6" rx="3" fill="#2A3550"/>
+        </g>
+
+        <!-- Nソウルタワー -->
+        <g>
+          <path d="M424 196h32l-7-30h-18z" fill="#C9CDD2"/>
+          <rect x="434" y="118" width="12" height="50" fill="#C9CDD2"/>
+          <rect x="424" y="100" width="32" height="18" rx="4" fill="#A9B0B8"/>
+          <rect x="420" y="106" width="40" height="6" rx="3" fill="#8E979F"/>
+          <rect x="438" y="70" width="4" height="30" fill="#A9B0B8"/>
+          <circle cx="440" cy="68" r="5" fill="#D2402F"/>
+        </g>
+
+        <!-- 太極旗 -->
+        <g transform="translate(-14,0)">
+          <rect x="472" y="132" width="3" height="64" fill="#8A6039"/>
+          <rect x="475" y="132" width="48" height="32" fill="#FFFFFF"/>
+          <circle cx="499" cy="148" r="9" fill="#0F4FA8"/>
+          <path d="M490 148a9 9 0 0 1 18 0z" fill="#D2402F"/>
+          <circle cx="494.5" cy="148" r="4.5" fill="#D2402F"/>
+          <circle cx="503.5" cy="148" r="4.5" fill="#0F4FA8"/>
+          <g fill="#241E1A">
+            <g transform="translate(481,138) rotate(-33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(511,140) rotate(33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(479,153) rotate(33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(514,152) rotate(-33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+          </g>
+        </g>
+
+        <!-- 楼閣 -->
+        <g transform="translate(16,0)">
+          <rect x="524" y="178" width="64" height="18" fill="#C9CDD2"/>
+          <rect x="530" y="148" width="7" height="30" fill="#D2402F"/>
+          <rect x="575" y="148" width="7" height="30" fill="#D2402F"/>
+          <rect x="537" y="148" width="38" height="30" fill="#F8F1E2"/>
+          <g fill="#2A3550"><rect x="543" y="154" width="26" height="2"/><rect x="543" y="162" width="26" height="2"/><rect x="543" y="170" width="26" height="2"/></g>
+          <path d="M528 128h56l12 20H516z" fill="#2A3550"/>
+          <rect x="512" y="144" width="88" height="6" rx="3" fill="#1F2839"/>
+          <rect x="540" y="114" width="32" height="14" fill="#D2402F"/>
+          <path d="M536 96h40l10 18H526z" fill="#2A3550"/>
+          <rect x="522" y="110" width="68" height="6" rx="3" fill="#1F2839"/>
+          <circle cx="556" cy="92" r="5" fill="#2A3550"/>
+        </g>
+
+        <!-- 木 -->
+        <g>
+          <g><rect x="12" y="184" width="5" height="12" fill="#8A6039"/><circle cx="14" cy="180" r="12" fill="#4C8B48"/></g>
+          <g><rect x="204" y="184" width="5" height="12" fill="#8A6039"/><circle cx="206" cy="178" r="13" fill="#3E7A3C"/></g>
+          <g><rect x="408" y="186" width="5" height="10" fill="#8A6039"/><circle cx="410" cy="182" r="11" fill="#4C8B48"/></g>
+          <g><rect x="510" y="186" width="5" height="10" fill="#8A6039"/><circle cx="512" cy="182" r="11" fill="#3E7A3C"/></g>
+        </g>
+      </svg>
     </div>
 
     <div class="panel">
