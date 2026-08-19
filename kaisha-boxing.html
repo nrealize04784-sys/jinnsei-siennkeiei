@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>会社概要｜ライフメイクパートナーズ</title>
+<meta name="description" content="ライフメイクパートナーズ（日本リアライズ株式会社）の会社概要。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 書体・配色は lp-boxing.html と揃えている */
+  :root{
+    --ink:#0B0B0F;--panel:#17111A;--panel-2:#1F1418;
+    --red:#C8102E;--gold:#D4AF37;
+    --paper:#F5F1EA;--muted:rgba(245,241,234,.64);--line:rgba(245,241,234,.14);
+    --font:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--ink);color:var(--paper);
+    font-family:var(--font);font-weight:400;
+    line-height:1.9;letter-spacing:.03em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* ---- ヘッダー ---- */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    background:rgba(11,11,15,.86);
+    border-bottom:1px solid rgba(245,241,234,.1);
+    backdrop-filter:blur(8px);
+  }
+  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px}
+  .hdr-lockup{display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:5px;padding:6px 16px 6px 12px}
+  .hdr-logo{height:44px;width:auto;object-fit:contain;display:block}
+  .hdr-wordmark{height:16px;width:auto;object-fit:contain;display:block}
+  .hdr-nav{display:flex;align-items:center;gap:26px}
+  .hdr-nav a{color:rgba(245,241,234,.86);text-decoration:none;font-size:14px;letter-spacing:.04em;white-space:nowrap}
+  .hdr-nav a:hover{color:var(--gold)}
+  @media(max-width:640px){
+    .hdr-wordmark{display:none}
+    .hdr-lockup{padding:4px 7px}
+    .hdr-logo{height:32px}
+    .hdr-nav{gap:12px}
+    .hdr-nav a{font-size:12px}
+  }
+
+  /* ---- 本文 ---- */
+  main{padding:150px 0 96px}
+  h1{
+    font-size:clamp(26px,4.2vw,40px);font-weight:900;line-height:1.5;
+    letter-spacing:.02em;text-align:center;margin-bottom:14px;color:#fff;
+  }
+  .lead{text-align:center;font-size:16px;color:var(--muted);margin-bottom:44px}
+  dl{
+    max-width:720px;margin:0 auto;
+    display:grid;grid-template-columns:150px 1fr;
+    border-top:1px solid var(--line);
+  }
+  dt,dd{padding:20px 8px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.9}
+  dt{color:var(--muted);letter-spacing:.06em}
+  dd{color:var(--paper)}
+  dd a{color:var(--paper);text-decoration:none}
+  dd a:hover{text-decoration:underline}
+  .back{display:block;text-align:center;margin-top:52px;color:var(--paper);font-size:14px;letter-spacing:.04em}
+  .back:hover{color:var(--gold)}
+
+  /* ---- フッター ---- */
+  footer{background:#08070A;color:rgba(245,241,234,.75);padding:56px 0;font-size:14px;text-align:center}
+  .footer-logo-plate{display:inline-block;background:#fff;padding:20px 26px;margin-bottom:26px;border-radius:5px}
+  .footer-logo{display:block;width:min(280px,60vw);height:auto}
+  .footer-links{display:flex;justify-content:center;gap:14px 30px;flex-wrap:wrap}
+  .footer-links a{color:rgba(245,241,234,.85);text-decoration:none}
+  .footer-links a:hover{color:var(--gold)}
+
+  @media(max-width:640px){
+    main{padding:110px 0 72px}
+    dl{grid-template-columns:1fr}
+    dt{padding-bottom:0;border-bottom:none}
+    dd{padding-top:6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="wrap">
+    <a class="hdr-lockup" href="lp-boxing.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+      <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
+    </a>
+    <nav class="hdr-nav">
+      <a href="lp-boxing.html">ホーム</a>
+      <a href="shiryou-boxing.html">資料請求</a>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <h1>会社概要</h1>
+    <p class="lead">ライフメイクパートナーズの運営会社です。</p>
+    <dl>
+      <dt>商号</dt><dd>日本リアライズ株式会社</dd>
+      <dt>設立</dt><dd>2009年1月20日</dd>
+      <dt>代表者</dt><dd>代表取締役　大橋 孝行</dd>
+      <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
+      <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
+    </dl>
+    <a class="back" href="lp-boxing.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+    </a>
+    <nav class="footer-links">
+      <a href="kaisha-boxing.html">会社概要</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
