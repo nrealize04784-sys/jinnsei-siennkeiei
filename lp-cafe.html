@@ -304,7 +304,11 @@
     counter-reset:step;
   }
   @media (min-width:768px){ .flow{grid-template-columns:repeat(4,1fr);gap:12px} }
-  .step{padding:16px 4px;text-align:center}
+  /* 右下に珈琲を置くぶん、4枚とも下の余白を広げて高さをそろえる */
+  .step{padding:16px 4px 44px;text-align:center;position:relative}
+  /* 「気軽に相談」の板の右下に置く珈琲。フッターのスイーツと同じ、輪郭線なしのべた塗り */
+  .step .cup{position:absolute;right:7px;bottom:7px;width:34px;height:auto;display:block}
+  @media (min-width:768px){ .step .cup{width:38px;right:9px;bottom:8px} }
   .step .num{
     counter-increment:step;
     display:block;
@@ -658,7 +662,21 @@
   <div class="wrap fade">
     <h2 class="flow-head">地域の人生相談窓口になる。</h2>
     <div class="flow">
-      <div class="step"><span class="num"></span><p class="txt">気軽に相談</p></div>
+      <div class="step">
+        <span class="num"></span><p class="txt">気軽に相談</p>
+        <svg class="cup" viewBox="0 0 60 56" aria-hidden="true">
+          <g fill="none" stroke="#C9B69E" stroke-width="3" stroke-linecap="round">
+            <path d="M23 12q0-5 4.5-5t4.5-5.5"/>
+            <path d="M34 10q0-4 4-4t4-4.5"/>
+          </g>
+          <ellipse cx="30" cy="46" rx="25" ry="7" fill="#EBDECB"/>
+          <ellipse cx="30" cy="44.5" rx="19" ry="5" fill="#DCCBB2"/>
+          <path d="M45 26q10 1 10 7 0 6-9 7" fill="none" stroke="#F7EAD2" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M15 20h30l-3 20q-.5 4-5 4h-14q-4.5 0-5-4z" fill="#F7EAD2"/>
+          <ellipse cx="30" cy="20" rx="15" ry="4.2" fill="#7A4A24"/>
+          <ellipse cx="30" cy="20" rx="11" ry="2.8" fill="#8B5A30"/>
+        </svg>
+      </div>
       <div class="step"><span class="num"></span><p class="txt">暮らしが見える</p></div>
       <div class="step"><span class="num"></span><p class="txt">課題が見つかる</p></div>
       <div class="step"><span class="num"></span><p class="txt">家が答えになる</p></div>
