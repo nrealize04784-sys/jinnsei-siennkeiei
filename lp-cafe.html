@@ -291,11 +291,75 @@
   }
 
   /* ── 4. 流れ ── */
-  /* 4ステップの見出し。「1エリア2社限定。」と同じ見せ方でそろえる */
-  .flow-head{
-    text-align:center;
-    font-size:clamp(22px,5vw,30px);
+  /* 4ステップの見出し。喫茶店の黒板メニューに見立てる。
+     黒い板／白い皿とカトラリー／斜めに掛けた白いリボン、の3層 */
+  .board-head{
+    position:relative;
+    background:#33210F;
+    border-radius:var(--r);
+    padding:56px 10px;
     margin:0 0 36px;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  @media (min-width:768px){ .board-head{padding:92px 24px} }
+  /* 狭い画面ではリボンの取り分を増やして、3行に折れないようにする */
+  @media (max-width:420px){ .board-head{padding:48px 6px} }
+  /* 板の幅は画面で大きく変わる。皿もカトラリーも高さでそろえて、
+     どの幅でも切れないようにする */
+  .board-head .plate{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    height:calc(100% - 20px);width:auto;
+    z-index:-1;
+  }
+  .board-head .fork,
+  .board-head .knife{
+    position:absolute;top:50%;
+    transform:translateY(-50%);
+    height:calc(100% - 34px);width:auto;
+    z-index:-1;
+  }
+  .board-head .fork{left:24px}
+  .board-head .knife{right:24px}
+  /* 皿の外にはみ出すカトラリーは、狭い画面では出さない */
+  @media (max-width:600px){ .board-head .fork,.board-head .knife{display:none} }
+  /* リボンの帯。文字の長さに合わせて伸びる */
+  .ribbon-head{
+    position:relative;
+    width:fit-content;
+    max-width:calc(100% - 56px);
+    margin-inline:auto;
+    background:#FBF3E4;
+    color:#33210F;
+    font-size:clamp(17px,4.4vw,30px);
+    line-height:1.5;
+    text-align:center;
+    padding:12px 18px;
+    transform:rotate(-4deg);
+    box-shadow:0 3px 14px rgba(0,0,0,.25);
+  }
+  .ribbon-head span{display:inline-block}
+  @media (min-width:768px){ .ribbon-head{padding:16px 34px;max-width:calc(100% - 120px)} }
+  @media (max-width:420px){ .ribbon-head{padding:12px 14px;max-width:calc(100% - 44px)} }
+  /* 両端の燕尾。帯より少し縦に広く、外側をV字に切り欠く */
+  .ribbon-head::before,
+  .ribbon-head::after{
+    content:"";
+    position:absolute;
+    top:-7px;bottom:-7px;
+    width:28px;
+    background:#E8DCC6;
+  }
+  @media (min-width:768px){ .ribbon-head::before,.ribbon-head::after{width:44px} }
+  @media (max-width:420px){ .ribbon-head::before,.ribbon-head::after{width:22px} }
+  .ribbon-head::before{
+    right:100%;
+    clip-path:polygon(100% 0,0 0,40% 50%,0 100%,100% 100%);
+  }
+  .ribbon-head::after{
+    left:100%;
+    clip-path:polygon(0 0,100% 0,60% 50%,100% 100%,0 100%);
   }
   .flow{
     display:grid;
@@ -664,7 +728,39 @@
 <!-- 4. 流れ -->
 <section>
   <div class="wrap fade">
-    <h2 class="flow-head">地域の人生相談窓口になる。</h2>
+    <div class="board-head">
+      <!-- 皿。手描きらしく三重の輪にして、外側に走り書きを散らす -->
+      <svg class="plate" viewBox="0 0 260 260" aria-hidden="true">
+        <g fill="none" stroke="#FBF3E4" stroke-linecap="round">
+          <circle cx="130" cy="130" r="112" stroke-width="1.6" opacity=".65"/>
+          <circle cx="130" cy="130" r="104" stroke-width="4"/>
+          <circle cx="130" cy="130" r="84" stroke-width="1.8" opacity=".85"/>
+          <g stroke-width="2.6" opacity=".75">
+            <path d="M48 44l-14-14M76 26l-8-17M108 14l-3-14"/>
+            <path d="M212 44l14-14M184 26l8-17M152 14l3-14"/>
+            <path d="M48 216l-14 14M212 216l14 14"/>
+            <path d="M108 246l-3 14M152 246l3 14"/>
+          </g>
+        </g>
+      </svg>
+      <!-- フォーク -->
+      <svg class="fork" viewBox="0 0 40 220" aria-hidden="true">
+        <g fill="none" stroke="#FBF3E4" stroke-linecap="round">
+          <path d="M8 6v34q0 15 12 18 12-3 12-18V6" stroke-width="3.2"/>
+          <path d="M14 6v30M20 6v33M26 6v30" stroke-width="2.2"/>
+          <path d="M20 60v154" stroke-width="4.2"/>
+        </g>
+      </svg>
+      <!-- ナイフ -->
+      <svg class="knife" viewBox="0 0 40 220" aria-hidden="true">
+        <g fill="none" stroke="#FBF3E4" stroke-linecap="round">
+          <path d="M10 6q22 10 22 60v34H10z" stroke-width="3.2"/>
+          <path d="M20 100v114" stroke-width="4.8"/>
+        </g>
+      </svg>
+      <!-- 折り返すときは「地域の人生相談窓口／になる。」で切る -->
+      <h2 class="ribbon-head"><span>地域の人生相談窓口</span><span>になる。</span></h2>
+    </div>
     <div class="flow">
       <div class="step">
         <span class="num"></span><p class="txt">気軽に相談</p>
