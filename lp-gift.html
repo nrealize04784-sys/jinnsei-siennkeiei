@@ -200,7 +200,7 @@
     box-shadow:0 4px 22px rgba(120,100,40,.08);
   }
   .box .tag{width:min(220px,90%);margin:0 auto 16px}
-  .box .ribbon-band{display:block;width:100%;height:auto}
+  .box .chest-tag{display:block;width:100%;height:auto}
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
   .arrow{text-align:center;color:var(--turquoise-deep);font-size:24px;line-height:1}
   @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
@@ -418,14 +418,17 @@
     <div class="swap">
       <div class="box">
         <p class="tag">
-          <svg class="ribbon-band" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#12655B" stroke="#12655B" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <text x="120" y="40" text-anchor="middle" fill="#F8C6D8"
-                  font-size="15" font-weight="700" letter-spacing="3">BEFORE</text>
+          <!-- 小さな宝箱アイコン。蓋が開き、その隙間から文字が飛び出しているように見せる -->
+          <svg class="chest-tag" viewBox="0 0 200 150" aria-hidden="true">
+            <path d="M38,96 Q100,14 162,96 Q100,58 38,96 Z" fill="#1B9C8C" stroke="#E8B64C" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M46,90 Q100,42 154,90 Q100,66 46,90 Z" fill="#F8C6D8"/>
+            <rect x="34" y="94" width="132" height="40" rx="8" fill="#1B9C8C" stroke="#E8B64C" stroke-width="4"/>
+            <rect x="34" y="94" width="132" height="7" fill="#E8B64C"/>
+            <rect x="34" y="120" width="132" height="7" fill="#E8B64C"/>
+            <circle cx="100" cy="114" r="7" fill="#E8B64C" stroke="#12655B" stroke-width="2"/>
+            <rect x="97" y="114" width="6" height="7" rx="1.5" fill="#12655B"/>
+            <text x="100" y="60" text-anchor="middle" fill="#12655B"
+                  font-weight="700" font-size="24" letter-spacing="2">BEFORE</text>
           </svg>
         </p>
         <p class="txt">物件を探しに来る人</p>
@@ -433,14 +436,16 @@
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box">
         <p class="tag">
-          <svg class="ribbon-band" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#12655B" stroke="#12655B" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <text x="120" y="40" text-anchor="middle" fill="#F8C6D8"
-                  font-size="15" font-weight="700" letter-spacing="3">AFTER</text>
+          <svg class="chest-tag" viewBox="0 0 200 150" aria-hidden="true">
+            <path d="M38,96 Q100,14 162,96 Q100,58 38,96 Z" fill="#1B9C8C" stroke="#E8B64C" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M46,90 Q100,42 154,90 Q100,66 46,90 Z" fill="#F8C6D8"/>
+            <rect x="34" y="94" width="132" height="40" rx="8" fill="#1B9C8C" stroke="#E8B64C" stroke-width="4"/>
+            <rect x="34" y="94" width="132" height="7" fill="#E8B64C"/>
+            <rect x="34" y="120" width="132" height="7" fill="#E8B64C"/>
+            <circle cx="100" cy="114" r="7" fill="#E8B64C" stroke="#12655B" stroke-width="2"/>
+            <rect x="97" y="114" width="6" height="7" rx="1.5" fill="#12655B"/>
+            <text x="100" y="60" text-anchor="middle" fill="#12655B"
+                  font-weight="700" font-size="24" letter-spacing="2">AFTER</text>
           </svg>
         </p>
         <p class="txt">贈りものを受け取りに来る人</p>
