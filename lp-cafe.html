@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
   /* ── 昭和の喫茶店の配色 ──
@@ -38,13 +38,13 @@
     margin:0;
     background:var(--bg);
     color:var(--ink);
-    font-family:"Noto Sans JP",sans-serif;
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
     font-size:16px;
     line-height:1.9;
     -webkit-font-smoothing:antialiased;
     letter-spacing:.02em;
   }
-  h1,h2,h3,.serif{font-family:"Noto Serif JP",serif;font-weight:600;line-height:1.6;letter-spacing:.01em}
+  h1,h2,h3,.serif{font-weight:700;line-height:1.6;letter-spacing:.01em}
   /* 文節の途中で折り返さない（対応ブラウザのみ。非対応でも表示は崩れない） */
   h1,h2,.hero .sub,.ask p,.box .txt,.step .txt,.note,.seats p{word-break:auto-phrase;text-wrap:pretty}
   p{margin:0}
@@ -92,7 +92,7 @@
   .hdr-brand{
     display:flex;align-items:center;gap:10px;
     text-decoration:none;color:var(--ink);
-    font-family:"Noto Serif JP",serif;font-size:14px;letter-spacing:.06em;
+    font-weight:700;font-size:14px;letter-spacing:.06em;
     white-space:nowrap;
   }
   /* ロゴPNGの地は白。生成りの上だと白い四角が浮くので、乗算で下地に溶かす */
@@ -211,7 +211,7 @@
     clip-path:var(--cut);
     background:linear-gradient(180deg,#6B4C3C 0%,#4E3527 100%);
     color:#F7EAD2;
-    font-family:"Noto Serif JP",serif;font-weight:600;
+    font-weight:700;
     font-size:clamp(13px,3.4vw,17px);
     letter-spacing:.3em;
     text-indent:.3em;         /* 字間ぶん右に寄るので、その分だけ戻す */
@@ -237,7 +237,7 @@
   /* ── 2. 問いかけ ── */
   .ask{text-align:center}
   .ask p{
-    font-family:"Noto Serif JP",serif;
+    font-weight:700;
     font-size:clamp(19px,4.6vw,26px);
     line-height:2;
   }
@@ -277,7 +277,7 @@
     text-transform:uppercase;
     margin-bottom:12px;
   }
-  .box .txt{font-family:"Noto Serif JP",serif;font-size:clamp(17px,4.2vw,21px)}
+  .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px)}
   /* after は板の色は同じまま、文字をあんず色にして違いを出す */
   .box.after .txt{color:#F7D9A8}
   .arrow{text-align:center;color:#7A2F1B;font-size:22px;line-height:1}
@@ -308,7 +308,7 @@
     margin-bottom:10px;
   }
   .step .num::before{content:"0" counter(step)}
-  .step .txt{font-family:"Noto Serif JP",serif;font-size:clamp(15px,4vw,17px)}
+  .step .txt{font-weight:700;font-size:clamp(15px,4vw,17px)}
 
   /* ── 5. 実績 ── */
   .results{display:grid;gap:0}
@@ -321,7 +321,7 @@
   }
   .result .label{font-size:13px;color:#EBDECB;margin-bottom:10px}
   .result .fig{
-    font-family:"Noto Serif JP",serif;
+    font-weight:700;
     font-size:clamp(28px,7vw,38px);
     line-height:1.3;
     color:var(--apricot);
@@ -331,7 +331,7 @@
   /* ── 6. 席の数 ── */
   .seats{text-align:center}
   .seats .lead{
-    font-family:"Noto Serif JP",serif;
+    font-weight:700;
     font-size:clamp(24px,6vw,34px);
     margin-bottom:20px;
   }
