@@ -121,7 +121,7 @@
   @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
 
   /* 固定ヘッダーの高さぶん、アンカーの着地点を下げる */
-  #entry,#kaisha{scroll-margin-top:var(--hdr)}
+  #entry{scroll-margin-top:var(--hdr)}
 
   /* ── 共有アイコン置き場（表示はしない。use で呼び出す） ── */
   .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
@@ -318,24 +318,6 @@
   }
   .entry-note a{color:var(--turquoise-deep)}
 
-  /* ── 運営会社（会社概要リンクの着地点。控えめな注記扱い） ── */
-  .kaisha-block{background:var(--cream);border-top:1px solid var(--line)}
-  .kaisha-block h2{
-    text-align:center;font-size:15px;letter-spacing:.14em;
-    color:var(--ink-soft);margin:0 0 24px;font-weight:700;
-  }
-  .kaisha-block dl{
-    max-width:560px;margin:0 auto;
-    display:grid;grid-template-columns:110px 1fr;
-    font-size:14px;color:var(--ink-soft);
-  }
-  .kaisha-block dt,.kaisha-block dd{padding:10px 6px;border-bottom:1px solid var(--line)}
-  .kaisha-block dt{color:var(--ink-soft);letter-spacing:.06em}
-  .kaisha-block dd{color:var(--ink)}
-  .kaisha-block dd a{color:var(--turquoise-deep);text-decoration:none}
-  .kaisha-block dd a:hover{text-decoration:underline}
-  @media (max-width:520px){ .kaisha-block dl{grid-template-columns:1fr} .kaisha-block dt{border-bottom:none;padding-bottom:0} }
-
   /* ── フッター ── */
   footer{
     padding:48px 0 40px;
@@ -423,9 +405,9 @@
     </a>
     <nav class="hdr-nav">
       <a href="#">ホーム</a>
-      <a href="#kaisha">会社概要</a>
+      <a href="kaisha-gift.html">会社概要</a>
       <a class="hdr-cta" href="#entry">話を聞いてみる</a>
-      <a class="hdr-cta2" href="#entry">資料請求</a>
+      <a class="hdr-cta2" href="shiryou-gift.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -644,20 +626,6 @@
   </div>
 </section>
 
-<!-- 会社概要（ヘッダーの「会社概要」の着地点。控えめな注記として置く） -->
-<section class="kaisha-block" id="kaisha">
-  <div class="wrap fade">
-    <h2>運営会社</h2>
-    <dl>
-      <dt>商号</dt><dd>日本リアライズ株式会社</dd>
-      <dt>設立</dt><dd>2009年1月20日</dd>
-      <dt>代表者</dt><dd>代表取締役　大橋 孝行</dd>
-      <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
-      <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
-    </dl>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
     <a class="footer-logo-link" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
@@ -665,8 +633,8 @@
            onerror="this.closest('.footer-logo-link').remove()">
     </a>
     <nav>
-      <a href="#kaisha">会社概要</a>
-      <a href="#entry">資料請求</a>
+      <a href="kaisha-gift.html">会社概要</a>
+      <a href="shiryou-gift.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
