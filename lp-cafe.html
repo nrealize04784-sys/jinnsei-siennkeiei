@@ -291,6 +291,12 @@
   }
 
   /* ── 4. 流れ ── */
+  /* 4ステップの見出し。「1エリア2社限定。」と同じ見せ方でそろえる */
+  .flow-head{
+    text-align:center;
+    font-size:clamp(22px,5vw,30px);
+    margin:0 0 36px;
+  }
   .flow{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -650,6 +656,7 @@
 <!-- 4. 流れ -->
 <section>
   <div class="wrap fade">
+    <h2 class="flow-head">地域の人生相談窓口になる。</h2>
     <div class="flow">
       <div class="step"><span class="num"></span><p class="txt">気軽に相談</p></div>
       <div class="step"><span class="num"></span><p class="txt">暮らしが見える</p></div>
