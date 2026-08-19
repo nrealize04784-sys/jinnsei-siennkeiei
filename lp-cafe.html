@@ -263,6 +263,9 @@
   /* 狭い画面は額を細くする。4ステップの文字を1行に収めるため */
   @media (max-width:480px){ .box,.step,.results{border-width:13px} }
 
+  /* 「入口」の扉。文の下に小さく添える */
+  .door{width:min(196px,42vw);height:auto;display:block;margin:40px auto 0}
+
   /* ── 3. 変わること ── */
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
@@ -562,6 +565,42 @@
     <p>物件を探している人だけじゃない。</p>
     <p>人生を良くしたい人が集まる。</p>
     <p class="turn serif">人生相談という、新たな入口へ。</p>
+    <!-- 「入口」を絵でも見せる。喫茶店の扉に、カップ型のOPEN札を下げる -->
+    <svg class="door" viewBox="0 0 300 470" xmlns="http://www.w3.org/2000/svg"
+         role="img" aria-label="OPENの札が下がった、喫茶店の扉">
+      <!-- 扉の厚み（右に少しずらした濃い面） -->
+      <rect x="252" y="24" width="22" height="440" rx="3" fill="#9C5334"/>
+      <rect x="24" y="12" width="234" height="452" rx="3" fill="#B4643F"/>
+      <!-- 縁の彫り -->
+      <rect x="42" y="30" width="198" height="416" rx="2" fill="none" stroke="#9C5334" stroke-width="5"/>
+      <rect x="58" y="46" width="166" height="216" rx="2" fill="none" stroke="#9C5334" stroke-width="5"/>
+      <!-- ガラス -->
+      <defs><clipPath id="doorGlass"><rect x="68" y="56" width="146" height="196"/></clipPath></defs>
+      <rect x="68" y="56" width="146" height="196" fill="#F3E3C8"/>
+      <g fill="#FFFDF8" opacity=".55" clip-path="url(#doorGlass)">
+        <path d="M182 50h26l-74 210h-26z"/>
+        <path d="M216 96h9l-56 164h-9z"/>
+      </g>
+      <!-- 下の鏡板 -->
+      <rect x="66" y="288" width="72" height="142" rx="2" fill="none" stroke="#9C5334" stroke-width="5"/>
+      <rect x="146" y="288" width="72" height="142" rx="2" fill="none" stroke="#9C5334" stroke-width="5"/>
+      <!-- 取っ手 -->
+      <rect x="42" y="200" width="11" height="74" rx="5.5" fill="#3E2A1C"/>
+      <circle cx="47.5" cy="196" r="7" fill="#3E2A1C"/>
+      <circle cx="47.5" cy="278" r="7" fill="#3E2A1C"/>
+      <!-- 玉くさり（点線で玉に見せる） -->
+      <path d="M141 66 106 128M141 66 176 128" fill="none" stroke="#3E2A1C"
+            stroke-width="5" stroke-linecap="round" stroke-dasharray="1 7"/>
+      <circle cx="141" cy="64" r="4" fill="#3E2A1C"/>
+      <!-- 受け皿 -->
+      <ellipse cx="141" cy="200" rx="58" ry="12" fill="#DFC69E"/>
+      <!-- カップ型のOPEN札 -->
+      <path d="M196 138c17 0 25 10 25 20s-8 20-25 20" fill="none" stroke="#FFFCF3" stroke-width="12" stroke-linecap="round"/>
+      <path d="M84 126h114v26c0 25-26 42-57 42s-57-17-57-42z" fill="#FFFCF3"/>
+      <text x="141" y="165" text-anchor="middle" fill="#33302E"
+            font-family="Helvetica,Arial,sans-serif" font-weight="800"
+            font-size="31" letter-spacing="1">OPEN</text>
+    </svg>
   </div>
 </section>
 
