@@ -101,7 +101,12 @@
   }
   @media (min-width:768px){ .yu-big{-webkit-text-stroke-width:16px} }
   /* 温泉マークと「ゆ」を縦に積む */
-  .yu-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+  /* 「ゆ」を看板の上辺に少しかぶせる。transform なので配置は動かさない */
+  .yu-wrap{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    position:relative;z-index:2;transform:translateY(22px);
+  }
+  @media (min-width:768px){ .yu-wrap{transform:translateY(28px)} }
   .onsen{display:block;width:58px;height:auto}
   @media (min-width:768px){ .onsen{width:96px} }
   /* 吹き出しは雲形。黄色の面＋黒の太フチ＋版ずれの影 */
