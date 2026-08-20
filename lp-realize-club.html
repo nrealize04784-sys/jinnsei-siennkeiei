@@ -87,15 +87,23 @@
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
   .hdr-brand{
-    display:flex;align-items:baseline;gap:8px;
+    display:flex;align-items:center;gap:9px;
     text-decoration:none;color:var(--ink);
     font-weight:900;font-size:16px;letter-spacing:.08em;
     white-space:nowrap;
   }
-  .hdr-brand .flame-dot{
-    display:inline-block;width:8px;height:8px;border-radius:50%;
-    background:var(--flame);box-shadow:0 0 10px 2px rgba(242,112,60,.7);
+  .hdr-flame{
+    width:22px;height:22px;flex:none;display:block;
+    filter:drop-shadow(0 0 6px rgba(242,112,60,.65));
+    animation:hdrFlicker 2.6s ease-in-out infinite;
+    transform-origin:50% 90%;
   }
+  @keyframes hdrFlicker{
+    0%,100%{transform:scale(1) rotate(0deg)}
+    30%{transform:scale(1.05) rotate(-1.5deg)}
+    60%{transform:scale(.97) rotate(1.5deg)}
+  }
+  @media (prefers-reduced-motion:reduce){ .hdr-flame{animation:none} }
   .hdr-nav{display:flex;align-items:center;gap:22px}
   .hdr-nav a{
     color:var(--ink-soft);text-decoration:none;
@@ -373,6 +381,14 @@
     <circle cx="0" cy="2" r="15"/>
     <path d="M0 -14c0 5 -5 6 -5 11 0 3 2 5 5 5s5 -2 5 -5c0 -5 -5 -6 -5 -11z" fill="currentColor" stroke="none" opacity=".9"/>
   </g>
+  <!-- ヘッダー・フッターのブランドアイコン用。炎のシルエット、グラデーション塗り -->
+  <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
+    <stop offset="0%" style="stop-color:var(--red)"/>
+    <stop offset="55%" style="stop-color:var(--orange)"/>
+    <stop offset="100%" style="stop-color:var(--gold)"/>
+  </linearGradient>
+  <path id="flameIcon" fill="url(#flameGrad)"
+    d="M12 1.2c-.6 3.2-2.6 5-4.4 7.2C5.8 10.7 4.6 13 4.6 15.6 4.6 20.2 7.9 23 12 23s7.4-2.8 7.4-7.4c0-2.6-1.3-4.7-2.7-6.3-.2 2.1-1.2 3.5-2.5 3.5-1.2 0-1.9-1-1.6-2.3.4-1.7 1-3.3-.6-9.3z"/>
 </defs>
 </svg>
 
@@ -380,7 +396,7 @@
 <div class="site-header" id="site-header">
   <div class="wrap">
     <a class="hdr-brand" href="#top">
-      <span class="flame-dot" aria-hidden="true"></span>
+      <svg class="hdr-flame" viewBox="0 0 24 24" aria-hidden="true"><use href="#flameIcon"/></svg>
       REALIZE CLUB
     </a>
     <nav class="hdr-nav">
@@ -529,7 +545,7 @@
 
 <footer>
   <div class="wrap">
-    <p class="brand"><span class="flame-dot" aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,#C6281D,#F2703C 55%,#F2A93C);display:inline-block"></span>REALIZE CLUB</p>
+    <p class="brand"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;flex:none"><use href="#flameIcon"/></svg>REALIZE CLUB</p>
     <nav>
       <a href="kaisha.html">会社概要</a>
       <a href="#entry">資料請求</a>
