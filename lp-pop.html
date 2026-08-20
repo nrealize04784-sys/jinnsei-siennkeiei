@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>その安心、今がお得。｜REALIZE CLUB</title>
+<meta name="description" content="社員の「お金・人間関係・将来」の不安を、困る前に支える福利厚生プラットフォーム。REALIZEマーケットの利用で、社員の家計に毎月2〜3万円のゆとりが生まれます。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ── スーパーの特売ポップ風の配色 ──
+     地は白。赤は「巨大数字・吹き出し・CTA」だけ、黄色は「商品名の帯・値札」だけに使う。
+     使う場所を絞ることで、マーカーの勢いを保ったまま情報が読める。 */
+  :root{
+    --bg:#FFFFFF;
+    --cream:#FFFBEA;      /* セクションの地を交互に切り替える生成り */
+    --yellow:#FFD400;
+    --yellow-deep:#8A6A00; /* 黄色の上でも読める文字色 */
+    --red:#E2352B;
+    --red-deep:#B8221B;
+    --ink:#1A1A1A;
+    --ink-soft:#5A564A;
+    --line:rgba(26,26,26,.14);
+    --card:#FFFFFF;
+    --r:16px;
+    --pad:80px;
+    --hdr:56px;
+    --font-pop:"Mochiy Pop One","Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif;
+  }
+  @media (min-width:768px){ :root{ --pad:140px; --hdr:68px } }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.02em;
+  }
+  h1,h2,h3{font-weight:700;line-height:1.5;letter-spacing:.01em}
+  h1,h2,.catch,.note,.trust p{word-break:auto-phrase;text-wrap:pretty}
+  p{margin:0}
+  img{max-width:100%;display:block}
+
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
+  section{padding-block:calc(var(--pad) / 2)}
+  .cream{background:var(--cream)}
+
+  .btn{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:18px 40px;
+    border-radius:var(--r);
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .25s ease,transform .15s ease;
+  }
+  .btn:hover{background:var(--red-deep)}
+
+  /* ── 固定ヘッダー ── */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    height:var(--hdr);
+    background:#fff;
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease;
+  }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
+  .site-header .wrap{ height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px }
+  .hdr-brand{
+    font-family:var(--font-pop);
+    text-decoration:none;color:var(--ink);
+    font-size:clamp(13px,3.4vw,17px);
+    white-space:nowrap;
+  }
+  .hdr-brand span{color:var(--red)}
+  .hdr-nav{display:flex;align-items:center;gap:22px}
+  .hdr-nav a,.hdr-nav [aria-current]{ color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap }
+  .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
+  .hdr-nav a:hover{color:var(--red)}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
+  .hdr-cta:hover{background:var(--red-deep)}
+  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta{padding:8px 13px} }
+  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not([aria-current]){display:none} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
+
+  #entry{scroll-margin-top:var(--hdr)}
+
+  /* ── 共有アイコン置き場 ── */
+  .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* ── 1. ファーストビュー（特売ポップ） ── */
+  .hero{
+    position:relative;
+    padding-block:calc(var(--hdr) + 28px) 56px;
+    background:var(--cream);
+    text-align:center;
+  }
+  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 44px) 84px} }
+
+  /* ポップ全体を囲む白いカード。厚い黄色の縁と、非対称な角丸・微妙な傾きで
+     「マーカーで囲った枠」に近づける（完全な長方形にしない）。 */
+  .pop-frame{
+    position:relative;
+    max-width:640px;margin:0 auto;
+    background:#fff;
+    border:10px solid var(--yellow);
+    border-radius:38px 20px 44px 16px;
+    box-shadow:0 18px 40px rgba(26,26,26,.10);
+    padding:56px 22px 32px;
+    transform:rotate(-.6deg);
+  }
+  @media (min-width:768px){ .pop-frame{padding:64px 40px 40px} }
+
+  /* 赤いギザギザの吹き出し（POPの煽り文句）。clip-pathで16角の破裂形にする */
+  .burst{
+    position:absolute;top:-58px;left:50%;
+    transform:translateX(-50%) rotate(-4deg);
+    width:clamp(150px,34vw,190px);
+    aspect-ratio:1/1;
+    background:var(--red);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;
+    font-family:var(--font-pop);
+    font-size:clamp(15px,3.6vw,19px);
+    line-height:1.35;
+    padding:0 8%;
+    clip-path:polygon(
+      50% 0%, 63.4% 17.7%, 85.4% 14.6%, 82.3% 36.6%,
+      100% 50%, 82.3% 63.4%, 85.4% 85.4%, 63.4% 82.3%,
+      50% 100%, 36.6% 82.3%, 14.6% 85.4%, 17.7% 63.4%,
+      0% 50%, 17.7% 36.6%, 14.6% 14.6%, 36.6% 17.7%
+    );
+    box-shadow:0 10px 22px rgba(184,34,27,.28);
+  }
+
+  .catch{
+    margin:44px 0 26px;
+    font-weight:700;
+    font-size:clamp(16px,4.2vw,21px);
+    line-height:1.8;
+    color:var(--ink);
+  }
+
+  /* 黄色い帯（マーカーでなぞったような、不揃いな縁） */
+  .brandband{
+    position:relative;
+    margin:0 auto 22px;
+    padding:20px 16px;
+    background:var(--yellow);
+    clip-path:polygon(1.5% 10%, 98% 0%, 100% 86%, 2.5% 100%);
+    transform:rotate(-.8deg);
+  }
+  .brand-badge{
+    position:absolute;top:-14px;left:14px;
+    background:#fff;
+    color:var(--red);
+    font-weight:700;
+    font-size:clamp(10px,2.6vw,12px);
+    letter-spacing:.04em;
+    padding:7px 12px;
+    border-radius:999px;
+    border:2px solid var(--red);
+    white-space:nowrap;
+    transform:rotate(-6deg);
+  }
+  .brand-name{
+    font-family:var(--font-pop);
+    font-size:clamp(26px,8vw,42px);
+    color:var(--ink);
+    margin:6px 0 0;
+  }
+  .brand-icon{
+    display:none;
+  }
+  @media (min-width:560px){
+    .brandband{display:flex;align-items:center;justify-content:center;gap:16px}
+    .brand-icon{display:block;width:44px;height:44px;color:var(--red-deep);flex:none}
+    .brand-icon svg{width:100%;height:100%}
+  }
+
+  /* 短冊タグ（両端が尖ったリボン形） */
+  .ribbon-tag{
+    display:inline-block;
+    background:var(--yellow);
+    color:var(--ink);
+    font-weight:700;
+    font-size:clamp(12px,3vw,14px);
+    letter-spacing:.08em;
+    padding:9px 26px;
+    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
+    transform:rotate(-2.5deg);
+    margin-bottom:14px;
+  }
+
+  /* 巨大な赤字の価格 */
+  .pricebox{ margin-bottom:14px }
+  .pricebox .price{
+    display:flex;align-items:flex-end;justify-content:center;gap:.12em;
+    font-family:var(--font-pop);
+    color:var(--red);
+    line-height:1;
+  }
+  .pricebox .yen{ font-size:clamp(20px,5.4vw,32px);transform:rotate(-8deg) translateY(-4px) }
+  .pricebox .num{ font-size:clamp(38px,12vw,88px);white-space:nowrap }
+  .pricebox .unit{
+    margin-top:2px;
+    font-family:var(--font-pop);
+    font-size:clamp(14px,3.6vw,18px);
+    color:var(--red-deep);
+  }
+  .pricebox .note{
+    display:inline-block;margin-top:10px;
+    background:var(--cream);
+    color:var(--ink-soft);
+    font-size:12px;
+    padding:6px 14px;
+    border-radius:999px;
+  }
+
+  .pop-frame .btn{ margin-top:22px;width:100%;max-width:360px }
+
+  /* ── 2. 課題の話 ── */
+  .issue{text-align:center}
+  .issue p{ font-weight:700;font-size:clamp(17px,4.2vw,22px);line-height:2 }
+  .issue .turn{ margin-top:26px;color:var(--red-deep);font-size:clamp(17px,4.4vw,22px) }
+
+  /* ── 3. 変わること ── */
+  .swap{display:grid;gap:16px}
+  @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
+  .box{
+    padding:30px 20px;text-align:center;
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:0 4px 22px rgba(26,26,26,.07);
+  }
+  .box .ribbon-tag{color:var(--yellow-deep);font-size:clamp(13px,3.4vw,15px)}
+  .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
+  .arrow{text-align:center;color:var(--red-deep);font-size:24px;line-height:1}
+  @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
+
+  .note{ margin-top:30px;text-align:center;color:var(--ink-soft);font-size:15px }
+
+  /* ── 4. 導入の流れ ── */
+  .flow-head{ text-align:center;font-size:clamp(21px,4.8vw,28px);margin:0 0 36px;color:var(--ink) }
+  .flow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (min-width:768px){ .flow{grid-template-columns:repeat(4,1fr);gap:14px} }
+  .tag-hole{
+    position:relative;
+    background:var(--yellow);
+    border-radius:var(--r);
+    padding:24px 12px 20px 30px;
+    text-align:center;
+    box-shadow:0 4px 18px rgba(26,26,26,.06);
+  }
+  .tag-hole::before{
+    content:"";position:absolute;left:14px;top:22px;
+    width:9px;height:9px;border-radius:50%;
+    background:#fff;border:1.6px solid var(--ink)
+  }
+  .tag-hole::after{
+    content:"";position:absolute;left:10px;top:6px;
+    width:17px;height:15px;
+    border:1.6px solid var(--ink);border-bottom:none;
+    border-radius:50% 50% 0 0/100% 100% 0 0;
+  }
+  .tag-hole .icon{ display:block;width:38px;height:38px;margin:0 auto 10px;color:var(--red-deep) }
+  .tag-hole .icon svg{ width:100%;height:100% }
+  .tag-hole .txt{ font-weight:700;font-size:clamp(14px,3.4vw,16px);color:var(--ink);margin-bottom:6px }
+  .tag-hole .sub{ font-size:12.5px;color:var(--ink-soft);line-height:1.6 }
+
+  /* ── 5. 実績 ── */
+  .results{display:grid;gap:16px}
+  @media (min-width:768px){ .results{grid-template-columns:repeat(3,1fr);gap:20px} }
+  .result{
+    background:var(--cream);
+    border-radius:var(--r);
+    padding:26px 22px;
+    text-align:center;
+    box-shadow:0 4px 20px rgba(26,26,26,.08);
+    border:2px solid var(--yellow);
+  }
+  .result .label{font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+  .result .fig{
+    font-family:var(--font-pop);
+    font-size:clamp(26px,6.4vw,34px);
+    line-height:1.3;
+    color:var(--red);
+  }
+  .result .fig small{font-size:.42em;font-family:"Zen Maru Gothic",sans-serif;color:var(--ink-soft)}
+
+  /* ── 6. 信頼 ── */
+  .trust{text-align:center}
+  .trust .lead{ font-weight:700;font-size:clamp(21px,5vw,28px);margin-bottom:16px;color:var(--ink) }
+  .trust p{color:var(--ink-soft)}
+
+  /* ── 7. 最終CTA ── */
+  .entry h2{font-size:clamp(23px,5.2vw,32px);text-align:center;margin:0 0 16px;color:var(--ink)}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
+  form{
+    max-width:520px;margin-inline:auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:32px 24px;
+  }
+  .field{margin-bottom:20px}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
+  input{
+    width:100%;padding:15px 16px;font-size:16px;font-family:inherit;
+    color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;
+  }
+  input:focus{outline:2px solid var(--red-deep);outline-offset:1px;border-color:transparent}
+  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  .entry-note{
+    max-width:520px;margin:24px auto 0;font-size:13px;line-height:1.9;
+    color:var(--ink-soft);text-align:center;
+  }
+  .entry-note a{color:var(--red-deep)}
+
+  /* ── フッター ── */
+  footer{ padding:48px 0 40px;text-align:center;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line) }
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--red-deep)}
+  .footer-brand{
+    display:inline-block;margin:0 0 18px;
+    font-family:var(--font-pop);font-size:20px;color:var(--ink);
+  }
+  .footer-brand span{color:var(--red)}
+  .footer-copy{margin-top:14px;font-size:12px}
+
+  /* ── スマホ追従ボタン ── */
+  .sticky{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(255,212,0,.94);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--line);
+  }
+  .sticky .btn{display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px}
+  @media (min-width:768px){ .sticky{display:none} }
+  @media (max-width:767px){ body{padding-bottom:64px} }
+
+  /* ── 動きはフェードインのみ ── */
+  .fade{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .fade.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .fade{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- アイコン置き場 -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+<defs>
+  <g id="iconDiagnose" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-4" cy="-4" r="12"/>
+    <path d="M5 5l10 10"/>
+    <path d="M-9 -4l4 4 7-8"/>
+  </g>
+  <g id="iconLearn" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16 -12c6-3 12-3 16 0v22c-4-3-10-3-16 0z"/>
+    <path d="M16 -12c-6-3-12-3-16 0v22c4-3 10-3 16 0z"/>
+  </g>
+  <g id="iconTalk" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-17 -10h22a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4h-14l-8 7v-7h0a4 4 0 0 1-4-4v-8a4 4 0 0 1 4-4z"/>
+  </g>
+  <g id="iconGo" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16 4h26"/>
+    <path d="M2 -8l14 12-14 12"/>
+  </g>
+  <g id="iconCoin" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="15"/>
+    <path d="M0 -7v14M-5 -3h8a3 3 0 0 1 0 6h-8"/>
+  </g>
+</defs>
+</svg>
+
+<!-- 固定ヘッダー -->
+<div class="site-header" id="site-header">
+  <div class="wrap">
+    <a class="hdr-brand" href="lp-pop.html">REALIZE <span>CLUB</span></a>
+    <nav class="hdr-nav">
+      <a href="lp-pop.html">ホーム</a>
+      <a href="#about">REALIZE CLUBとは</a>
+      <a href="kaisha-pop.html">会社概要</a>
+      <a class="hdr-cta" href="shiryou-pop.html">資料請求する</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 1. ファーストビュー -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="pop-frame">
+      <p class="burst">今、<br>始めどき！</p>
+      <p class="catch">
+        社員思いで、家計にやさしく、会社にも頼れる。<br>
+        福利厚生を、その日から「安心」に変える。
+      </p>
+
+      <div class="brandband" id="about">
+        <span class="brand-badge">導入企業、急増中。</span>
+        <h1 class="brand-name">REALIZE CLUB</h1>
+        <span class="brand-icon" aria-hidden="true"><svg viewBox="-18 -18 36 36"><use href="#iconCoin"/></svg></span>
+      </div>
+
+      <p class="ribbon-tag">1名あたり</p>
+
+      <div class="pricebox">
+        <p class="price">
+          <span class="yen">¥</span><span class="num">2〜3万円</span>
+        </p>
+        <p class="unit">UP／月</p>
+        <span class="note">（社員の実質可処分所得ベース）</span>
+      </div>
+
+      <a class="btn" href="shiryou-pop.html">資料請求する（無料）</a>
+    </div>
+  </div>
+</header>
+
+<!-- 2. 課題の話 -->
+<section class="issue">
+  <div class="wrap fade">
+    <p>社員は、仕事を頑張りながらも将来に不安を抱えている。</p>
+    <p>お金、人間関係、老後。相談できる場所が、社内にない。</p>
+    <p class="turn">→ 困ってから助けるのではなく、困る前に支える仕組みへ。</p>
+  </div>
+</section>
+
+<!-- 3. 変わること -->
+<section class="cream">
+  <div class="wrap fade">
+    <div class="swap">
+      <div class="box">
+        <p class="ribbon-tag">BEFORE</p>
+        <p class="txt">不安を一人で抱えたまま、<br>なんとなく働く社員</p>
+      </div>
+      <p class="arrow" aria-hidden="true">→</p>
+      <div class="box">
+        <p class="ribbon-tag">AFTER</p>
+        <p class="txt">家計にゆとりが生まれ、<br>安心して働ける社員</p>
+      </div>
+    </div>
+    <p class="note">福利厚生費が増えても、離職と採用のコストは減ります。</p>
+  </div>
+</section>
+
+<!-- 4. 導入の流れ -->
+<section>
+  <div class="wrap fade">
+    <h2 class="flow-head">福利厚生を、4つのステップで。</h2>
+    <div class="flow">
+      <div class="tag-hole">
+        <span class="icon" aria-hidden="true"><svg viewBox="-20 -20 40 40"><use href="#iconDiagnose"/></svg></span>
+        <p class="txt">診断する</p>
+        <p class="sub">42の質問で、不安を見える化。</p>
+      </div>
+      <div class="tag-hole">
+        <span class="icon" aria-hidden="true"><svg viewBox="-20 -20 40 40"><use href="#iconLearn"/></svg></span>
+        <p class="txt">学ぶ</p>
+        <p class="sub">人生に必要な知識を、すきま時間で。</p>
+      </div>
+      <div class="tag-hole">
+        <span class="icon" aria-hidden="true"><svg viewBox="-20 -20 40 40"><use href="#iconTalk"/></svg></span>
+        <p class="txt">相談する</p>
+        <p class="sub">専門家とAIが、24時間そばに。</p>
+      </div>
+      <div class="tag-hole">
+        <span class="icon" aria-hidden="true"><svg viewBox="-20 -20 40 40"><use href="#iconGo"/></svg></span>
+        <p class="txt">動き出す</p>
+        <p class="sub">自分だけの人生設計ができる。</p>
+      </div>
+    </div>
+    <p class="note">AIパートナーが、社員一人ひとりに寄り添います。</p>
+  </div>
+</section>
+
+<!-- 5. 実績 -->
+<section class="cream">
+  <div class="wrap fade">
+    <div class="results">
+      <div class="result">
+        <p class="label">社員の家計に</p>
+        <p class="fig">毎月2〜3<small>万円のゆとり</small></p>
+      </div>
+      <div class="result">
+        <p class="label">たった5分でわかる</p>
+        <p class="fig">42<small>問の人生診断</small></p>
+      </div>
+      <div class="result">
+        <p class="label">売上の10％を</p>
+        <p class="fig">子どもたち<small>の支援へ</small></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 信頼 -->
+<section class="trust">
+  <div class="wrap fade">
+    <p class="lead">「人生支援経営法人」認定マークを、貴社に。</p>
+    <p>社員の人生を守り切る、という<br>会社の覚悟の証になります。</p>
+  </div>
+</section>
+
+<!-- 7. 最終CTA -->
+<section class="entry cream" id="entry">
+  <div class="wrap fade">
+    <h2>まずは、資料をご覧ください。</h2>
+    <p class="lead">その場で決めなくて構いません。</p>
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（lp-gift.html と同じ）。
+    -->
+    <form id="entry-form" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">ご担当者名</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <button class="btn submit" type="submit">資料請求する（無料）</button>
+    </form>
+    <p class="entry-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-brand" href="https://n-realize.co.jp/" target="_blank" rel="noopener">REALIZE <span>CLUB</span></a>
+    <nav>
+      <a href="kaisha-pop.html">会社概要</a>
+      <a href="shiryou-pop.html">資料請求</a>
+    </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
+  </div>
+</footer>
+
+<!-- スマホ追従ボタン -->
+<div class="sticky"><a class="btn" href="shiryou-pop.html">資料請求する</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'ご担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      '日本リアライズ株式会社 REALIZE CLUB窓口 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'ご担当者名：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  // 少しでもスクロールしたらヘッダーに下地の境界線を出す
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // フェードインのみ。動きで注意を引かない。
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -10%' });
+  document.querySelectorAll('.fade').forEach(function (el) { io.observe(el); });
+</script>
+
+</body>
+</html>
