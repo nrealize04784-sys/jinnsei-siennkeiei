@@ -199,8 +199,14 @@
     border-radius:var(--r);
     box-shadow:0 4px 22px rgba(120,100,40,.08);
   }
-  .box .tag{width:min(220px,90%);margin:0 auto 16px}
-  .box .ribbon-band{display:block;width:100%;height:auto}
+  .box .tag{width:min(180px,80%);margin:0 auto}
+  .box .chest-tag{display:block;width:100%;height:auto}
+  /* 宝箱の上に見出しとして表示する */
+  .box .tag-label{
+    display:block;margin:0 0 10px;
+    color:var(--turquoise-deep);font-weight:700;font-size:clamp(15px,3.8vw,18px);
+    letter-spacing:.1em;
+  }
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
   .arrow{text-align:center;color:var(--turquoise-deep);font-size:24px;line-height:1}
   @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
@@ -418,30 +424,17 @@
     <div class="swap">
       <div class="box">
         <p class="tag">
-          <svg class="ribbon-band" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#12655B" stroke="#12655B" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <text x="120" y="40" text-anchor="middle" fill="#F8C6D8"
-                  font-size="15" font-weight="700" letter-spacing="3">BEFORE</text>
-          </svg>
+          <!-- BEFORE/AFTERは宝箱イラストの上に見出しとして表示する -->
+          <span class="tag-label">BEFORE</span>
+          <img class="chest-tag" src="gift-chest-icon.png" alt="宝箱">
         </p>
         <p class="txt">物件を探しに来る人</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box">
         <p class="tag">
-          <svg class="ribbon-band" viewBox="0 0 240 64" aria-hidden="true">
-            <g fill="#12655B" stroke="#12655B" stroke-width="2" stroke-linejoin="round">
-              <path d="M56 14 14 4 28 22 14 40 56 44Z"/>
-              <path d="M184 14 226 4 212 22 226 40 184 44Z"/>
-              <path d="M56 12Q120 26 184 12L184 44Q120 58 56 44Z"/>
-            </g>
-            <text x="120" y="40" text-anchor="middle" fill="#F8C6D8"
-                  font-size="15" font-weight="700" letter-spacing="3">AFTER</text>
-          </svg>
+          <span class="tag-label">AFTER</span>
+          <img class="chest-tag" src="gift-chest-icon.png" alt="宝箱">
         </p>
         <p class="txt">贈りものを受け取りに来る人</p>
       </div>
