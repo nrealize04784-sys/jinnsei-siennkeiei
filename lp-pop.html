@@ -119,7 +119,7 @@
   .tagset{position:relative;z-index:1}
 
   /* 吹き出しは雲形。黄色の面＋黒の太フチ＋版ずれの影 */
-  .cloud{position:relative;display:block;width:min(520px,88vw);margin:0 auto 6px}
+  .cloud{position:relative;z-index:2;display:block;width:min(520px,88vw);margin:0 auto 6px}
   .cloud-svg{display:block;width:100%;height:auto}
   .cloud-txt{
     position:absolute;left:50%;top:61%;transform:translate(-50%,-50%);
@@ -416,8 +416,8 @@
     <div class="yu-row">
       <!-- 背景の富士山。装飾なので読み上げ対象から外す -->
       <svg class="fuji-bg" viewBox="0 0 600 290" fill="none" aria-hidden="true">
-        <path d="M300 14 588 276H12z" fill="#FFFFFF" opacity=".22"/>
-        <path d="M300 14 372 80c-24 18-48 18-72 0s-48-18-72 0z" fill="#FFFFFF" opacity=".5"/>
+        <path d="M12 276 250 62l14-16 12 12 13-18 13 14 13-18 13 16 13-8 11 18L588 276z" fill="#FFFFFF" opacity=".22"/>
+        <path d="M250 62l14-16 12 12 13-18 13 14 13-18 13 16 13-8 11 18 25 36-20 6-20-12-20 12-20-12-20 12-20-12-20 10-18-6z" fill="#FFFFFF" opacity=".5"/>
       </svg>
       <span class="tagset l" aria-hidden="true">
         <span class="tg lemon">人生教育</span>
