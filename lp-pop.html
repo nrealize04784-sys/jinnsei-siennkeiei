@@ -251,6 +251,10 @@
     font-size:clamp(23px,6vw,42px);line-height:1.4;letter-spacing:-.01em;
   }
 
+  /* 締めの一行の下に掛ける暖簾。ここをくぐる、という見立て */
+  .soak-noren{display:block;width:min(230px,56vw);margin:26px auto 0}
+  .soak-noren svg{display:block;width:100%;height:auto}
+
   /* ---------- before / after ---------- */
   .cards{display:grid;gap:18px;grid-template-columns:1fr}
   @media (min-width:768px){ .cards{grid-template-columns:1fr 1fr;gap:26px} }
@@ -579,7 +583,7 @@
 </header>
 
 <!-- 2. 問いかけ -->
-<section style="padding-top:0">
+<section style="padding:0 0 56px">
   <!-- 余白に散らす絵。装飾なので読み上げ対象から外す -->
   <span class="deco l" style="top:70px" aria-hidden="true">
     <svg viewBox="0 0 100 122" fill="none">
@@ -606,6 +610,14 @@
       <span class="turn">→ じゃあ、入口を変えよう。</span>
     </p>
     <p class="soak">さぁ、ひとっ風呂あびますか！</p>
+    <span class="soak-noren" aria-hidden="true">
+      <svg viewBox="0 0 116 88" fill="none">
+        <path d="M4 10h108v11H4z" fill="#17627A"/>
+        <path d="M8 21h48.4v44q-12.1 7-24.2 3T8 72z" fill="#17627A"/>
+        <path d="M59.6 21H108v48q-12.1-6-24.2-2T59.6 73z" fill="#17627A"/>
+        <text x="58" y="55" text-anchor="middle" fill="#F7EFDE" font-family="Dela Gothic One, sans-serif" font-size="34">ゆ</text>
+      </svg>
+    </span>
   </div>
 </section>
 
