@@ -240,6 +240,16 @@
   .note{font-size:13px;color:#6B6155;text-align:center;margin:0}
   .after-note{text-align:center;font-weight:700;margin:26px 0 0;font-size:clamp(15px,3.6vw,18px)}
 
+  /* 問いかけの締め。ここだけ札にして強く出す */
+  .soak{
+    display:block;width:fit-content;max-width:100%;margin:30px auto 0;
+    background:var(--lemon);border:var(--line) solid var(--ink);border-radius:var(--r);
+    padding:12px 26px;text-align:center;
+    font-family:"Dela Gothic One","Noto Sans JP",sans-serif;
+    font-size:clamp(17px,4.4vw,30px);line-height:1.4;
+  }
+  @media (min-width:768px){ .soak{padding:14px 40px} }
+
   /* ---------- before / after ---------- */
   .cards{display:grid;gap:18px;grid-template-columns:1fr}
   @media (min-width:768px){ .cards{grid-template-columns:1fr 1fr;gap:26px} }
@@ -594,6 +604,7 @@
       探していない人は、一生入ってこない。<br>
       <span class="turn">→ じゃあ、入口を変えよう。</span>
     </p>
+    <p class="soak">さぁ、ひとっ風呂あびますか！</p>
   </div>
 </section>
 
