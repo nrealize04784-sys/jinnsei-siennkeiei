@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>社員が、溶けていく前に。｜REALIZE CLUB</title>
 <meta name="description" content="頑張る社員も、放っておくと溶けてしまう。困る前に冷やして支える、企業向け福利厚生・人生支援プラットフォームREALIZE CLUB。">
+<link rel="icon" type="image/png" href="realize-club-home-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,10 +80,12 @@
   .site-header.scrolled{ border-bottom-color:var(--line) }
   .site-header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
   .hdr-brand{
+    display:flex;align-items:center;gap:8px;
     text-decoration:none;color:var(--ink);
     font-family:"Yomogi",sans-serif;font-size:19px;
     white-space:nowrap;
   }
+  .hdr-brand img{width:30px;height:30px;object-fit:contain}
   .hdr-nav{display:flex;align-items:center;gap:22px}
   .hdr-nav a{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
   .hdr-nav a:hover{color:var(--turquoise-deep)}
@@ -212,7 +215,11 @@
   footer{padding:48px 0 40px;text-align:center;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line)}
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
   footer a:hover{color:var(--turquoise-deep)}
-  .footer-brand{font-family:"Yomogi",sans-serif;font-size:20px;color:var(--ink);display:block;margin-bottom:18px}
+  .footer-brand{
+    font-family:"Yomogi",sans-serif;font-size:20px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;
+  }
+  .footer-brand img{width:28px;height:28px;object-fit:contain}
   .footer-copy{margin-top:14px;font-size:12px}
 
   .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(251,246,240,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
@@ -270,7 +277,10 @@
 <!-- 固定ヘッダー -->
 <div class="site-header" id="site-header">
   <div class="wrap">
-    <a class="hdr-brand" href="#top">REALIZE CLUB</a>
+    <a class="hdr-brand" href="#top">
+      <img src="realize-club-home-icon.png" alt="" width="30" height="30">
+      REALIZE CLUB
+    </a>
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="#flow">仕組み</a>
@@ -465,7 +475,10 @@
 
 <footer>
   <div class="wrap">
-    <span class="footer-brand">REALIZE CLUB</span>
+    <span class="footer-brand">
+      <img src="realize-club-home-icon.png" alt="" width="28" height="28">
+      REALIZE CLUB
+    </span>
     <nav>
       <a href="#top">ホーム</a>
       <a href="#entry">資料をもらう</a>
