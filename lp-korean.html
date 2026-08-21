@@ -226,6 +226,9 @@
   }
   .flow b{ font-size:18px }
   @media (min-width:900px){ .flow b{ font-size:21px } }
+  /* 4段目は到達点。丸を朱に替えて、ここが行き先だと分かるように */
+  .flow .goal .no{ background:var(--red) }
+  .flow .goal b{ color:var(--red) }
 
   /* ── 04 数字。黒い石鍋の板 ── */
   .pot{ background:var(--pot); color:var(--cream); border-radius:var(--r); padding:34px 24px }
@@ -429,14 +432,14 @@
         </g></svg>
       </div>
       <span class="tag">お品書き<span class="ko">흐름</span></span>
-      <h2 class="brush"><span class="nb">相談から、</span><span class="nb">家までの道のり。</span></h2>
+      <h2 class="brush"><span class="nb">学びから、</span><span class="nb">信頼までの道のり。</span></h2>
     </div>
     <div class="panel fade">
       <ul class="flow">
         <li><span class="no">1</span><b>人生を学ぶ</b></li>
-        <li><span class="no">2</span><b>相談が生まれる</b></li>
-        <li><span class="no">3</span><b>課題が見える</b></li>
-        <li><span class="no">4</span><b>家が答えになる</b></li>
+        <li><span class="no">2</span><b>課題が見える</b></li>
+        <li><span class="no">3</span><b>相談が生まれる</b></li>
+        <li class="goal"><span class="no">4</span><b><span class="nb">地域で一番</span><span class="nb">信頼される存在へ</span></b></li>
       </ul>
       <p class="note" style="margin-top:20px"><span class="nb">相談から始まるので、</span><span class="nb">こちらから追いかけません。</span></p>
     </div>
