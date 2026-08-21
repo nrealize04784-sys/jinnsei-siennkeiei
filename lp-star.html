@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>加盟資格は、人生への愛。ただそれだけ。｜ライフメイクパートナーズ</title>
+<meta name="description" content="物件を探しに来た人ではなく、人生を良くしたい人が集まる場所に。加盟に難しい条件はいりません。1エリア2社限定。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ── 星空タウン・乾杯ビジュアル風の配色 ──
+     地はクリームイエロー〜マスタード（ファーストビューのみグラデーション）。
+     イラストと文字の線は濃紺。黄色べた塗りは縦長バナーと星バッジにのみ。
+     赤はボタンだけに使う。使いすぎない。 */
+  :root{
+    --bg1:#FBEFC4;       /* ファーストビューの地（明） */
+    --bg2:#F5D343;       /* ファーストビューの地（濃） */
+    --cream:#FBF3DD;     /* 2セクション目以降の、休ませる生成り */
+    --ink:#1B2A4A;       /* 濃紺。イラストの線と見出し */
+    --ink-soft:#4A5A78;  /* 本文の紺（やや淡く） */
+    --yellow:#F5C400;    /* 縦長バナー・星バッジのべた塗り */
+    --yellow-deep:#A67B00; /* 生成りの上でも読める、実績の数字用 */
+    --red:#E2352B;       /* ボタンだけ */
+    --red-deep:#B8221B;
+    --line:rgba(27,42,74,.14);
+    --card:#FFFFFF;
+    --r:16px;
+    --pad:80px;      /* セクション間の余白（スマホ） */
+    --hdr:56px;      /* 固定ヘッダーの高さ（スマホ） */
+  }
+  @media (min-width:768px){ :root{ --pad:140px; --hdr:68px } }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.02em;
+  }
+  h1,h2,h3{font-weight:700;line-height:1.6;letter-spacing:.01em}
+  h1,h2,.hero .sub,.ask p,.box .txt,.step .txt,.note,.seats p{word-break:auto-phrase;text-wrap:pretty}
+  p{margin:0}
+  img{max-width:100%;display:block}
+
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
+  /* 隣り合うセクションの padding が足し合わさって --pad になる */
+  section{padding-block:calc(var(--pad) / 2)}
+
+  /* ── ボタン（赤の塗り。使う場所を絞る） ── */
+  .btn{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:18px 40px;
+    border-radius:var(--r);
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .25s ease;
+  }
+  .btn:hover{background:var(--red-deep)}
+
+  /* ── 固定ヘッダー ── */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    height:var(--hdr);
+    background:var(--bg2);
+    border-bottom:1px solid transparent;
+    transition:background .3s ease,border-color .3s ease;
+  }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
+  .site-header .wrap{
+    height:100%;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .hdr-brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;color:var(--ink);
+    font-weight:700;font-size:14px;letter-spacing:.06em;
+    white-space:nowrap;
+  }
+  .hdr-lockup{display:flex;align-items:center;gap:8px}
+  /* ロゴPNGの地は白。マスタード地の上だと白い四角が浮くので乗算で溶かす */
+  .hdr-logo,.hdr-word{width:auto;object-fit:contain;mix-blend-mode:multiply}
+  .hdr-logo{height:32px}
+  .hdr-word{height:13px}
+  @media (min-width:768px){ .hdr-logo{height:38px} .hdr-word{height:15px} }
+  @media (max-width:520px){ .hdr-word{display:none} }
+
+  .hdr-nav{display:flex;align-items:center;gap:22px}
+  .hdr-nav a{
+    color:var(--ink-soft);text-decoration:none;
+    font-size:14px;white-space:nowrap;
+  }
+  .hdr-nav a:hover{color:var(--ink)}
+  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
+  .hdr-cta{background:var(--red);color:#fff !important}
+  .hdr-cta:hover{background:var(--red-deep)}
+  .hdr-cta2{background:var(--cream);border:1px solid var(--ink);color:var(--ink) !important}
+  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
+  @media (max-width:900px){
+    .hdr-nav{gap:14px}
+    .hdr-nav a{font-size:13px}
+    .hdr-cta,.hdr-cta2{padding:8px 14px}
+  }
+  /* スマホは画面下の追従ボタンと重複するので、ヘッダーのボタンは出さない */
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+
+  /* 固定ヘッダーの高さぶん、アンカーの着地点を下げる */
+  #entry{scroll-margin-top:var(--hdr)}
+
+  /* ── 共有アイコン置き場（表示はしない。use で呼び出す） ── */
+  .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* ── 1. ファーストビュー ──
+     地はクリーム→マスタードの緩いグラデーション。以降のセクションでは使わない。 */
+  .hero{
+    position:relative;
+    padding-block:calc(var(--hdr) + 48px) 56px;
+    background:radial-gradient(120% 90% at 50% 0%, var(--bg1) 0%, var(--bg2) 100%);
+    text-align:center;
+    overflow:hidden;
+  }
+  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 84px) 84px} }
+
+  /* 横組みのリボン札。「ようこそ、この輪へ。」を、両端が尖ったリボン帯で見せる。
+     縦組み(writing-mode:vertical-rl)は環境によって縦書き用のグリフ整形が崩れる
+     ことがあるため使わない。横組みなら確実に読める。 */
+  .ribbon-tag{
+    position:absolute;top:calc(var(--hdr) + 16px);right:6%;
+    white-space:nowrap;
+    background:var(--yellow);
+    color:var(--ink);
+    font-weight:700;
+    font-size:clamp(12px,2.6vw,14px);
+    letter-spacing:.12em;
+    padding:11px 22px;
+    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
+    box-shadow:0 6px 16px rgba(74,59,18,.14);
+    z-index:2;
+  }
+  @media (max-width:480px){ .ribbon-tag{top:calc(var(--hdr) + 12px);right:16px;padding:9px 16px;font-size:11px} }
+
+  .hero h1{
+    font-size:clamp(28px,7.2vw,52px);
+    margin:0 0 22px;
+    color:var(--ink);
+  }
+  .hero .sub{
+    color:var(--ink);
+    font-size:clamp(15px,3.6vw,18px);
+    margin-bottom:36px;
+  }
+
+  /* ── 星のステージ・イラスト（CSS/SVGでオリジナル描き起こし） ── */
+  .stage-wrap{
+    max-width:620px;margin:8px auto 0;
+    filter:drop-shadow(0 18px 26px rgba(120,100,40,.18));
+  }
+  .stage-wrap svg{width:100%;height:auto;display:block;color:var(--ink)}
+  .stage-star{fill:var(--yellow);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
+  .stage-glow{fill:#fff;opacity:.35}
+  .deco-star{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;opacity:.55}
+  .deco-star.filled{fill:var(--yellow);stroke:var(--ink);stroke-width:1.6;opacity:.9}
+
+  /* ── 2. 入口の話 ── */
+  .ask{text-align:center}
+  .ask p{
+    font-weight:700;
+    font-size:clamp(19px,4.6vw,26px);
+    line-height:2;
+  }
+  .ask .turn{
+    margin-top:30px;
+    color:var(--ink);
+    font-size:clamp(19px,4.8vw,26px);
+  }
+
+  /* ── 3. 変わること ── */
+  .swap{display:grid;gap:16px}
+  @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
+  .box{
+    padding:30px 20px;text-align:center;
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:0 4px 22px rgba(120,100,40,.08);
+  }
+  .box .badge{
+    width:112px;height:112px;margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--yellow);
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .box .badge svg{width:40px;height:40px;color:var(--ink)}
+  /* 星バッジの上に見出しとして表示する */
+  .box .tag-label{
+    display:block;margin:0 0 10px;
+    color:var(--ink);font-weight:700;font-size:clamp(15px,3.8vw,18px);
+    letter-spacing:.1em;
+  }
+  .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
+  .arrow{text-align:center;color:var(--ink);font-size:24px;line-height:1}
+  @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
+
+  .note{
+    margin-top:30px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+
+  /* ── 4. 流れ ── */
+  .flow-head{
+    text-align:center;
+    font-size:clamp(22px,5vw,30px);
+    margin:0 0 36px;
+    color:var(--ink);
+  }
+  .flow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (min-width:768px){ .flow{grid-template-columns:repeat(4,1fr);gap:14px} }
+  .step{
+    text-align:center;
+    padding:22px 8px;
+    background:var(--card);
+    border-radius:var(--r);
+    box-shadow:0 4px 18px rgba(120,100,40,.06);
+  }
+  .step .num{
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    color:var(--yellow-deep);
+    margin-bottom:8px;
+  }
+  .step .icon{
+    display:block;width:40px;height:40px;margin:0 auto 12px;
+    color:var(--ink);
+  }
+  .step .icon svg{width:100%;height:100%;display:block}
+  .step .txt{font-weight:700;font-size:clamp(14px,3.6vw,16px);color:var(--ink)}
+
+  /* ── 5. 実績（星バッジ） ── */
+  .results{display:grid;gap:16px}
+  @media (min-width:768px){ .results{grid-template-columns:repeat(3,1fr);gap:20px} }
+  .result{
+    text-align:center;
+    background:var(--card);
+    border-radius:var(--r);
+    padding:26px 18px 30px;
+    box-shadow:0 4px 20px rgba(120,100,40,.10);
+  }
+  .result .star-num{
+    width:132px;height:132px;margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    background:#FBF3DD;
+    border:2px solid var(--yellow);
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .result .fig{
+    font-weight:700;
+    font-size:clamp(20px,5.2vw,26px);
+    line-height:1.2;
+    color:var(--ink);
+  }
+  .result .fig small{font-size:.55em;color:var(--ink-soft)}
+  .result .label{font-size:14px;color:var(--ink-soft)}
+
+  /* ── 6. 席の数 ── */
+  .seats{text-align:center}
+  .seats .lead{
+    font-weight:700;
+    font-size:clamp(24px,6vw,34px);
+    margin-bottom:18px;
+    color:var(--ink);
+  }
+  .seats p{color:var(--ink-soft)}
+
+  /* ── 7. 最終CTA ── */
+  .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
+  form{
+    max-width:520px;
+    margin-inline:auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:32px 24px;
+  }
+  .field{margin-bottom:20px}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
+  input{
+    width:100%;
+    padding:15px 16px;
+    font-size:16px;
+    font-family:inherit;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+  }
+  input:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
+  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  .entry-note{
+    max-width:520px;
+    margin:24px auto 0;
+    font-size:13px;
+    line-height:1.9;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+  .entry-note a{color:var(--ink)}
+
+  /* ── フッター ── */
+  footer{
+    padding:48px 0 40px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+  }
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--ink)}
+  .footer-logo-link{display:inline-block;margin:0 0 22px}
+  .footer-logo{width:min(220px,54vw);height:auto;mix-blend-mode:multiply}
+  .footer-copy{margin-top:14px;font-size:12px}
+
+  /* ── スマホ追従ボタン（細く。主張させない） ── */
+  .sticky{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(245,211,67,.94);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--line);
+  }
+  .sticky .btn{display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px}
+  @media (min-width:768px){ .sticky{display:none} }
+  @media (max-width:767px){ body{padding-bottom:64px} }
+
+  /* ── 動きはフェードインのみ ── */
+  .fade{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .fade.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .fade{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- アイコン置き場。use で各所から呼び出す共有パーツ -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+<defs>
+  <!-- 星の下に集う人（輪郭線のみ。グラスを掲げるポーズ） -->
+  <g id="personLine" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="-32" r="6.5"/>
+    <path d="M-9,-24 C-9,-8 -7,10 -8,17 L8,17 C7,10 9,-8 9,-24 C9,-24 5,-27 0,-27 C-5,-27 -9,-24 -9,-24 Z"/>
+    <path d="M-8,-18 L-15,-6"/>
+    <path d="M8,-20 L16,-33"/>
+    <path d="M16,-33 l-3,-4 M16,-33 l3,-4 M16,-33 l0,-5"/>
+  </g>
+  <!-- 5つ角の星。輪郭のみ／塗りつぶしの2種を currentColor / fill で使い分ける -->
+  <polygon id="starShape" points="0,-14 3.3,-4.5 13.3,-4.5 5.2,1.7 8.2,11.3 0,5.4 -8.2,11.3 -5.2,1.7 -13.3,-4.5 -3.3,-4.5"/>
+  <!-- 4ステップ用。線画のみの星アイコン -->
+  <g id="starLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="0,-19 4.4,-6 18,-6 7,2.3 11,15.4 0,7.2 -11,15.4 -7,2.3 -18,-6 -4.4,-6"/>
+  </g>
+  <!-- 変わることボックス用。家の線画（BEFORE） -->
+  <g id="houseLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16,2 L0,-14 L16,2 M-11,2 V16 H11 V2 M-3,16 V6 H3 V16"/>
+  </g>
+  <!-- 変わることボックス用。輪になった人の線画（AFTER） -->
+  <g id="circleLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-11" cy="-6" r="3.2"/>
+    <circle cx="11" cy="-6" r="3.2"/>
+    <circle cx="0" cy="13" r="3.2"/>
+    <path d="M-11,-2.8 C-8,4 -4,8 0,9.8 M11,-2.8 C8,4 4,8 0,9.8"/>
+  </g>
+</defs>
+</svg>
+
+<!-- 固定ヘッダー -->
+<div class="site-header" id="site-header">
+  <div class="wrap">
+    <a class="hdr-brand" href="#">
+      <span class="hdr-lockup">
+        <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+             onerror="this.closest('.hdr-lockup').remove()">
+        <img class="hdr-word" src="logo-lmp-wordmark.png" alt="">
+      </span>
+    </a>
+    <nav class="hdr-nav">
+      <a href="#">ホーム</a>
+      <a href="kaisha.html">会社概要</a>
+      <a class="hdr-cta" href="#entry">話を聞いてみる</a>
+      <a class="hdr-cta2" href="shiryou.html">資料請求</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 1. ファーストビュー -->
+<header class="hero" id="top">
+  <p class="ribbon-tag">ようこそ、この輪へ。</p>
+  <div class="wrap">
+    <h1>加盟資格は、<br>人生への愛。ただそれだけ。</h1>
+    <p class="sub">物件を探しに来た人ではなく、<br>人生を良くしたい人が集まる場所に。</p>
+    <a class="btn" href="#entry">まず話を聞いてみる（無料）</a>
+
+    <div class="stage-wrap">
+      <!-- CSS/SVGで描き起こしたオリジナルイラスト。星のステージに人が集い、
+           乾杯しながら語り合っている情景。人物は輪郭線のみ、グラスは一般的な
+           形にとどめ、特定の飲料・銘柄・ブランドは想起させない。 -->
+      <svg viewBox="-260 -280 520 480" role="img"
+           aria-label="大きな星形のステージの上と周りに、輪郭線で描かれた人々が集まり、グラスを掲げて語り合っている。星の周囲には小さな星がいくつも散りばめられている。">
+        <circle class="stage-glow" cx="0" cy="-20" r="230"/>
+        <!-- 散りばめた小さな星 -->
+        <use href="#starShape" class="deco-star" transform="translate(-215,-235) scale(1.4)"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(195,-250) scale(1.1)"/>
+        <use href="#starShape" class="deco-star" transform="translate(230,-90) scale(1.6)"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(-235,80) scale(1.2)"/>
+        <use href="#starShape" class="deco-star" transform="translate(200,150) scale(1.3)"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(-190,160) scale(1)"/>
+        <use href="#starShape" class="deco-star" transform="translate(0,-262) scale(1.1)"/>
+        <use href="#starShape" class="deco-star" transform="translate(-90,-250) scale(0.9)"/>
+
+        <!-- 星形のステージ -->
+        <polygon class="stage-star" points="0,-190 42,-58 181,-59 68,22 112,154 0,72 -112,154 -68,22 -181,-59 -42,-58"/>
+
+        <!-- ステージの上と周りに集う人々 -->
+        <use href="#personLine" transform="translate(-58,-38) scale(1.15)"/>
+        <use href="#personLine" transform="translate(28,-52) scale(0.95)"/>
+        <use href="#personLine" transform="translate(-108,26) scale(1)"/>
+        <use href="#personLine" transform="translate(96,14) scale(-1.15,1.15)"/>
+        <use href="#personLine" transform="translate(0,64) scale(1.3)"/>
+        <use href="#personLine" transform="translate(-42,96) scale(1.05)"/>
+        <use href="#personLine" transform="translate(58,86) scale(-1,1)"/>
+        <use href="#personLine" transform="translate(-150,-78) scale(0.85)"/>
+        <use href="#personLine" transform="translate(140,-70) scale(-0.85,0.85)"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- 2. 入口の話 -->
+<section class="ask">
+  <div class="wrap fade">
+    <p>物件を探している人だけじゃない。</p>
+    <p>人生を良くしたい人が、この星の下に集まる。</p>
+    <p class="turn">→ 相談のたびに、その人の人生が少し良くなっていく。</p>
+  </div>
+</section>
+
+<!-- 3. 変わること -->
+<section>
+  <div class="wrap fade">
+    <div class="swap">
+      <div class="box">
+        <p class="tag-label">BEFORE</p>
+        <p class="badge"><svg viewBox="-24 -24 48 48"><use href="#houseLine"/></svg></p>
+        <p class="txt">物件で比較される会社</p>
+      </div>
+      <p class="arrow" aria-hidden="true">→</p>
+      <div class="box">
+        <p class="tag-label">AFTER</p>
+        <p class="badge"><svg viewBox="-24 -24 48 48"><use href="#circleLine"/></svg></p>
+        <p class="txt">人生を任せたい会社</p>
+      </div>
+    </div>
+    <p class="note">売り込まないから、価格で比べられない。</p>
+  </div>
+</section>
+
+<!-- 4. 流れ -->
+<section>
+  <div class="wrap fade">
+    <h2 class="flow-head">星を1つ、灯すように。</h2>
+    <div class="flow">
+      <div class="step">
+        <span class="num">01</span>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">輪に入る</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">想いを話す</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">仲間が増える</p>
+      </div>
+      <div class="step">
+        <span class="num">04</span>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">星がつながる</p>
+      </div>
+    </div>
+    <p class="note">まず輪に入るだけ。準備はいりません。</p>
+  </div>
+</section>
+
+<!-- 5. 加盟して得られること -->
+<section>
+  <div class="wrap fade">
+    <div class="results">
+      <div class="result">
+        <p class="star-num"><span class="fig">2〜3<small>万円</small></span></p>
+        <p class="label">社員の家計に、毎月これだけの余白</p>
+      </div>
+      <div class="result">
+        <p class="star-num"><span class="fig">5<small>つ</small></span></p>
+        <p class="label">企業が得られる価値</p>
+      </div>
+      <div class="result">
+        <p class="star-num"><span class="fig">2<small>分</small></span></p>
+        <p class="label">性格診断は、たったこれだけ</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 席の数 -->
+<section class="seats">
+  <div class="wrap fade">
+    <p class="lead">1エリア2社限定。</p>
+    <p>この星は、<br>先に見つけた1社のためのものになります。</p>
+  </div>
+</section>
+
+<!-- 7. 最終CTA -->
+<section class="entry" id="entry">
+  <div class="wrap fade">
+    <h2>まずは、輪に入るところから。</h2>
+    <p class="lead">その場で決めなくて構いません。</p>
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（lp-gift.html と同じ）。
+    -->
+    <form id="entry-form" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お名前</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <button class="btn submit" type="submit">まず話を聞いてみる（無料）</button>
+    </form>
+    <p class="entry-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-link" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.closest('.footer-logo-link').remove()">
+    </a>
+    <nav>
+      <a href="kaisha.html">会社概要</a>
+      <a href="shiryou.html">資料請求</a>
+    </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
+  </div>
+</footer>
+
+<!-- スマホ追従ボタン -->
+<div class="sticky"><a class="btn" href="#entry">まず話を聞いてみる</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      'お話をうかがいたく、連絡いたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('お問い合わせ（まず話を聞いてみる）')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  // 少しでもスクロールしたらヘッダーに下地の境界線を出す
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // フェードインのみ。動きで注意を引かない。
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -10%' });
+  document.querySelectorAll('.fade').forEach(function (el) { io.observe(el); });
+</script>
+
+</body>
+</html>
