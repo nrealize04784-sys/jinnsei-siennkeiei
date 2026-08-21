@@ -27,6 +27,14 @@
     --red-deep:#B8221B;
     --line:rgba(27,42,74,.14);
     --card:#FFFFFF;
+    /* ヒーローイラスト用の追加色 */
+    --gold-deep:#E3A600;
+    --gold-light:#FFE9A8;
+    --brown:#8B5E34;
+    --brown-deep:#6E4726;
+    --green:#7FA86B;
+    --tan1:#F1E6C8;
+    --tan2:#E9DAB2;
     --r:16px;
     --pad:80px;      /* セクション間の余白（スマホ） */
     --hdr:56px;      /* 固定ヘッダーの高さ（スマホ） */
@@ -163,16 +171,23 @@
     margin-bottom:36px;
   }
 
-  /* ── 星のステージ・イラスト（CSS/SVGでオリジナル描き起こし） ── */
+  /* ── 星空タウンのイラスト（CSS/SVGでオリジナル描き起こし） ── */
   .stage-wrap{
-    max-width:620px;margin:8px auto 0;
+    max-width:760px;margin:8px auto 0;
     filter:drop-shadow(0 18px 26px rgba(120,100,40,.18));
   }
   .stage-wrap svg{width:100%;height:auto;display:block;color:var(--ink)}
   .stage-star{fill:var(--yellow);stroke:var(--ink);stroke-width:5;stroke-linejoin:round}
-  .stage-glow{fill:#fff;opacity:.35}
+  .stage-star.small{stroke-width:4}
   .deco-star{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;opacity:.55}
   .deco-star.filled{fill:var(--yellow);stroke:var(--ink);stroke-width:1.6;opacity:.9}
+  .spark{stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.5}
+  .bldg{stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+  .figure rect,.figure path,.figure circle,.figure ellipse{stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+  .glass-body{fill:var(--gold-deep);stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
+  .glass-shine{fill:var(--gold-light);opacity:.55}
+  .foam{fill:#fff;stroke:var(--ink);stroke-width:3}
+  .bubble{fill:#fff;opacity:.6}
 
   /* ── 2. 入口の話 ── */
   .ask{text-align:center}
@@ -361,13 +376,17 @@
 <!-- アイコン置き場。use で各所から呼び出す共有パーツ -->
 <svg class="icon-sprite" aria-hidden="true" focusable="false">
 <defs>
-  <!-- 星の下に集う人（輪郭線のみ。グラスを掲げるポーズ） -->
-  <g id="personLine" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="0" cy="-32" r="6.5"/>
-    <path d="M-9,-24 C-9,-8 -7,10 -8,17 L8,17 C7,10 9,-8 9,-24 C9,-24 5,-27 0,-27 C-5,-27 -9,-24 -9,-24 Z"/>
-    <path d="M-8,-18 L-15,-6"/>
-    <path d="M8,-20 L16,-33"/>
-    <path d="M16,-33 l-3,-4 M16,-33 l3,-4 M16,-33 l0,-5"/>
+  <!-- 星の下に集う人（塗り色は CSS カスタムプロパティで人ごとに変える） -->
+  <g id="beanStand">
+    <rect x="-9" y="-15" width="8" height="15" rx="4" fill="var(--fig-pants,#2C3E63)"/>
+    <rect x="1" y="-15" width="8" height="15" rx="4" fill="var(--fig-pants,#2C3E63)"/>
+    <rect x="-11" y="-40" width="22" height="27" rx="10" fill="var(--fig-shirt,#FBF3DD)"/>
+    <circle cx="0" cy="-46" r="8" fill="var(--fig-skin,#F0C89A)"/>
+  </g>
+  <g id="beanSit">
+    <path d="M-16,-2 C-16,-14 -10,-16 0,-16 C10,-16 16,-14 16,-2 C16,3 10,4 0,4 C-10,4 -16,3 -16,-2 Z" fill="var(--fig-pants,#2C3E63)"/>
+    <rect x="-10" y="-36" width="20" height="24" rx="9" fill="var(--fig-shirt,#FBF3DD)"/>
+    <circle cx="0" cy="-40" r="7.5" fill="var(--fig-skin,#F0C89A)"/>
   </g>
   <!-- 5つ角の星。輪郭のみ／塗りつぶしの2種を currentColor / fill で使い分ける -->
   <polygon id="starShape" points="0,-14 3.3,-4.5 13.3,-4.5 5.2,1.7 8.2,11.3 0,5.4 -8.2,11.3 -5.2,1.7 -13.3,-4.5 -3.3,-4.5"/>
@@ -417,35 +436,117 @@
     <a class="btn" href="#entry">まず話を聞いてみる（無料）</a>
 
     <div class="stage-wrap">
-      <!-- CSS/SVGで描き起こしたオリジナルイラスト。星のステージに人が集い、
-           乾杯しながら語り合っている情景。人物は輪郭線のみ、グラスは一般的な
-           形にとどめ、特定の飲料・銘柄・ブランドは想起させない。 -->
-      <svg viewBox="-260 -280 520 480" role="img"
-           aria-label="大きな星形のステージの上と周りに、輪郭線で描かれた人々が集まり、グラスを掲げて語り合っている。星の周囲には小さな星がいくつも散りばめられている。">
-        <circle class="stage-glow" cx="0" cy="-20" r="230"/>
-        <!-- 散りばめた小さな星 -->
-        <use href="#starShape" class="deco-star" transform="translate(-215,-235) scale(1.4)"/>
-        <use href="#starShape" class="deco-star filled" transform="translate(195,-250) scale(1.1)"/>
-        <use href="#starShape" class="deco-star" transform="translate(230,-90) scale(1.6)"/>
-        <use href="#starShape" class="deco-star filled" transform="translate(-235,80) scale(1.2)"/>
-        <use href="#starShape" class="deco-star" transform="translate(200,150) scale(1.3)"/>
-        <use href="#starShape" class="deco-star filled" transform="translate(-190,160) scale(1)"/>
-        <use href="#starShape" class="deco-star" transform="translate(0,-262) scale(1.1)"/>
-        <use href="#starShape" class="deco-star" transform="translate(-90,-250) scale(0.9)"/>
+      <!-- CSS/SVGで描き起こしたオリジナルイラスト。星の下の小さな町で、人々が
+           思い思いに乾杯し、語り合っている情景。中央に大きなグラスのモニュメント、
+           左右に星形のステージ、まわりに小さな町並みを配置した。特定の飲料・
+           銘柄・ブランドを想起させる文字やロゴは一切入れていない。 -->
+      <svg viewBox="0 0 920 600" role="img"
+           aria-label="星の下の小さな町のイラスト。中央に大きなグラスのモニュメント、左右の星形のステージにはグラスを掲げて乾杯する二人組やギターを弾く人がいて、まわりには小さな建物や木、ベンチで語り合う人、犬などが描かれている。">
 
-        <!-- 星形のステージ -->
-        <polygon class="stage-star" points="0,-190 42,-58 181,-59 68,22 112,154 0,72 -112,154 -68,22 -181,-59 -42,-58"/>
+        <!-- 空に散りばめた小さな星 -->
+        <use href="#starShape" class="deco-star" transform="translate(55,60) scale(1.3)"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(215,28) scale(1)"/>
+        <use href="#starShape" class="deco-star" transform="translate(460,38) scale(1.5)"/>
+        <line class="spark" x1="460" y1="8" x2="460" y2="-6"/>
+        <line class="spark" x1="437" y1="30" x2="423" y2="20"/>
+        <line class="spark" x1="483" y1="30" x2="497" y2="20"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(700,22) scale(1.1)"/>
+        <use href="#starShape" class="deco-star" transform="translate(862,82) scale(1.4)"/>
+        <use href="#starShape" class="deco-star" transform="translate(380,118) scale(0.8)"/>
 
-        <!-- ステージの上と周りに集う人々 -->
-        <use href="#personLine" transform="translate(-58,-38) scale(1.15)"/>
-        <use href="#personLine" transform="translate(28,-52) scale(0.95)"/>
-        <use href="#personLine" transform="translate(-108,26) scale(1)"/>
-        <use href="#personLine" transform="translate(96,14) scale(-1.15,1.15)"/>
-        <use href="#personLine" transform="translate(0,64) scale(1.3)"/>
-        <use href="#personLine" transform="translate(-42,96) scale(1.05)"/>
-        <use href="#personLine" transform="translate(58,86) scale(-1,1)"/>
-        <use href="#personLine" transform="translate(-150,-78) scale(0.85)"/>
-        <use href="#personLine" transform="translate(140,-70) scale(-0.85,0.85)"/>
+        <!-- 左の町並み -->
+        <rect class="bldg" x="26" y="472" width="72" height="106" rx="8" fill="var(--tan1)"/>
+        <circle class="bldg" cx="62" cy="502" r="11" fill="#fff"/>
+        <rect class="bldg" x="100" y="500" width="52" height="78" rx="6" fill="var(--tan2)"/>
+        <rect class="bldg" x="150" y="382" width="13" height="196" fill="var(--tan2)" stroke="var(--ink)" stroke-width="3"/>
+        <circle class="bldg" cx="156" cy="374" r="9" fill="var(--yellow)"/>
+        <circle cx="195" cy="520" r="27" fill="var(--green)" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="189" y="544" width="10" height="34" fill="var(--brown)" stroke="var(--ink)" stroke-width="3"/>
+
+        <!-- 右の町並み -->
+        <rect class="bldg" x="806" y="486" width="58" height="92" rx="8" fill="var(--tan2)"/>
+        <rect class="bldg" x="852" y="452" width="50" height="126" rx="6" fill="var(--tan1)"/>
+        <circle cx="757" cy="524" r="24" fill="var(--green)" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="752" y="546" width="10" height="32" fill="var(--brown)" stroke="var(--ink)" stroke-width="3"/>
+
+        <!-- 中央：グラスのモニュメント -->
+        <ellipse cx="460" cy="577" rx="74" ry="14" fill="var(--brown-deep)" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="406" y="558" width="108" height="22" rx="8" fill="var(--brown)" stroke="var(--ink)" stroke-width="3"/>
+        <path class="glass-body" d="M424,558 L496,558 L512,270 L408,270 Z"/>
+        <rect class="glass-shine" x="424" y="272" width="16" height="282"/>
+        <ellipse class="foam" cx="460" cy="266" rx="56" ry="22"/>
+        <circle class="bubble" cx="440" cy="330" r="4"/>
+        <circle class="bubble" cx="472" cy="380" r="3"/>
+        <circle class="bubble" cx="446" cy="440" r="3.5"/>
+        <circle class="bubble" cx="478" cy="500" r="3"/>
+
+        <!-- 左の星：乾杯する二人 -->
+        <g transform="translate(185,380)">
+          <polygon class="stage-star" points="0,-100 22,-31 95,-31 36,12 59,81 0,38 -59,81 -36,12 -95,-31 -22,-31"/>
+          <g class="figure">
+            <use href="#beanSit" transform="translate(-30,-18)" style="--fig-shirt:var(--tan1);--fig-pants:var(--ink)"/>
+            <use href="#beanSit" transform="translate(28,-18) scale(-1,1)" style="--fig-shirt:#3E6FB0;--fig-pants:var(--ink)"/>
+            <path d="M-16,-52 L-6,-70" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M14,-52 L4,-70" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M-9,-73 v-10 M-9,-83 l-3,-4 M-9,-83 l3,-4" stroke="var(--ink)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <path d="M7,-73 v-10 M7,-83 l-3,-4 M7,-83 l3,-4" stroke="var(--ink)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- 右の星：ギターを弾く人 -->
+        <g transform="translate(735,320)">
+          <polygon class="stage-star" points="0,-100 22,-31 95,-31 36,12 59,81 0,38 -59,81 -36,12 -95,-31 -22,-31"/>
+          <g class="figure">
+            <use href="#beanSit" transform="translate(0,-18)" style="--fig-shirt:#3E6FB0;--fig-pants:var(--ink)"/>
+            <ellipse cx="7" cy="-23" rx="13" ry="17" transform="rotate(-24 7 -23)" fill="var(--tan1)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M-2,-36 L-19,-55" stroke="var(--brown)" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <rect x="-24" y="-60" width="9" height="7" rx="2" fill="var(--brown-deep)" stroke="var(--ink)" stroke-width="2"/>
+            <path d="M-9,-48 L-2,-32 M9,-46 L4,-30" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>
+            <g stroke="var(--ink)" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".65">
+              <circle cx="34" cy="-66" r="3.4" fill="var(--ink)" stroke="none"/>
+              <path d="M37,-66 V-80"/>
+              <circle cx="46" cy="-58" r="3" fill="var(--ink)" stroke="none"/>
+              <path d="M49,-58 V-70"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- 手前の小さな星：グラスを掲げる人 -->
+        <g transform="translate(615,502)">
+          <polygon class="stage-star small" points="0,-70 16,-22 67,-22 26,8 41,57 0,27 -41,57 -26,8 -67,-22 -16,-22"/>
+          <g class="figure">
+            <use href="#beanStand" transform="translate(0,-14) scale(0.9)" style="--fig-shirt:#fff;--fig-pants:#3E6FB0"/>
+            <path d="M8,-52 L20,-74" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M20,-77 v-10 M20,-87 l-3,-4 M20,-87 l3,-4" stroke="var(--ink)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- ベンチで語り合う二人 -->
+        <rect x="262" y="561" width="66" height="7" rx="3" fill="var(--brown)" stroke="var(--ink)" stroke-width="2.4"/>
+        <rect x="268" y="568" width="6" height="12" fill="var(--brown-deep)"/>
+        <rect x="312" y="568" width="6" height="12" fill="var(--brown-deep)"/>
+        <g class="figure" transform="translate(282,560) scale(0.82)">
+          <use href="#beanSit" style="--fig-shirt:var(--tan1);--fig-pants:var(--ink)"/>
+        </g>
+        <g class="figure" transform="translate(313,560) scale(-0.82,0.82)">
+          <use href="#beanSit" style="--fig-shirt:#3E6FB0;--fig-pants:var(--ink)"/>
+        </g>
+
+        <!-- 犬 -->
+        <g stroke="var(--ink)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <ellipse cx="470" cy="580" rx="17" ry="9" fill="#fff"/>
+          <circle cx="489" cy="573" r="7.5" fill="#fff"/>
+          <path d="M485,567 l-3,-8 M493,567 l3,-8" fill="none"/>
+          <path d="M456,586 v8 M464,586 v8 M478,586 v8" fill="none"/>
+          <path d="M453,577 q-8,-4 -10,2" fill="none"/>
+        </g>
+
+        <!-- グラスを手に歩く人 -->
+        <g class="figure" transform="translate(390,580)">
+          <use href="#beanStand" style="--fig-shirt:var(--yellow);--fig-pants:#3E6FB0"/>
+          <path d="M10,-38 L20,-56" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="21" cy="-60" r="5" fill="#fff" stroke="var(--ink)" stroke-width="2.4"/>
+        </g>
       </svg>
     </div>
   </div>
