@@ -289,6 +289,15 @@
     color:var(--ink-soft);
     font-size:15px;
   }
+  /* 締めの1行。太く大きく出して、補足の note はその下に小さく添える */
+  .note-lead{
+    margin-top:32px;
+    text-align:center;
+    font-weight:700;
+    font-size:clamp(19px,5vw,24px);
+    line-height:1.6;
+  }
+  .note-lead + .note{margin-top:8px}
 
   /* ── 4. 流れ ── */
   /* 4ステップの見出し。喫茶店の黒板メニューに見立てる。
@@ -818,6 +827,7 @@
         </svg>
       </div>
     </div>
+    <p class="note-lead">あなたの居心地のいい場所に</p>
     <p class="note">お家を売るだけの会社じゃなく、地域の相談店に。</p>
 
   </div>
