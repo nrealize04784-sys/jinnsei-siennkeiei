@@ -304,20 +304,23 @@
         </defs>
         <!-- コーン -->
         <path d="M95 150 L205 150 L163 300 Q150 312 137 300 Z" fill="url(#waffle)" stroke="#B5453D" stroke-width="2"/>
-        <!-- アイス本体（少し溶けて不揃いな輪郭） -->
-        <path d="M90 150
-                 C82 118 96 78 150 68
-                 C204 78 218 118 210 150
-                 C216 158 210 168 200 164
-                 C196 176 182 174 178 164
-                 C176 178 160 178 156 166
-                 C152 180 136 178 134 164
-                 C128 176 112 174 110 162
-                 C100 168 84 160 90 150 Z"
-              fill="#FFFDF8" stroke="#E7DCC9" stroke-width="2"/>
+        <!-- アイス本体。ソフトクリームらしい3段のスワール（同色の楕円を重ねて継ぎ目を消す） -->
+        <g fill="#FFFDF8">
+          <ellipse cx="150" cy="126" rx="56" ry="32"/>
+          <ellipse cx="142" cy="96" rx="46" ry="30" transform="rotate(-6 142 96)"/>
+          <ellipse cx="158" cy="66" rx="36" ry="26" transform="rotate(8 158 66)"/>
+          <ellipse cx="146" cy="40" rx="24" ry="18" transform="rotate(-10 146 40)"/>
+          <path d="M148 24C158 10 172 10 168 20 165 28 153 30 148 24Z"/>
+        </g>
+        <!-- スワールの渦を示す装飾の筋 -->
+        <g fill="none" stroke="#E7DCC9" stroke-width="2" stroke-linecap="round">
+          <path d="M110 120Q150 108 190 122"/>
+          <path d="M112 80Q150 68 186 82"/>
+          <path d="M118 46Q150 36 176 48"/>
+        </g>
         <!-- 垂れる雫 -->
-        <path d="M118 168c-3 10-3 18 3 18s6-9 3-18z" fill="#FFFDF8" stroke="#E7DCC9" stroke-width="1.6"/>
-        <path d="M182 170c-3 9-3 16 3 16s6-8 3-16z" fill="#FFFDF8" stroke="#E7DCC9" stroke-width="1.6"/>
+        <path d="M116 152c-3 10-3 18 3 18s6-9 3-18z" fill="#FFFDF8" stroke="#E7DCC9" stroke-width="1.6"/>
+        <path d="M186 154c-3 9-3 16 3 16s6-8 3-16z" fill="#FFFDF8" stroke="#E7DCC9" stroke-width="1.6"/>
         <!-- コーンを持つ手 -->
         <path d="M120 300c-6 10-8 22 2 26 14 6 60 6 74 0 10-4 8-16 2-26
                  c-6-10-14-14-18-8-4-8-14-10-18-2-4-6-12-6-16 0-4-6-16-4-26 10z"
