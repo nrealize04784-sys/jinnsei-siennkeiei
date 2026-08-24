@@ -578,17 +578,44 @@
           </g>
         </g>
 
-        <!-- ベンチで語り合う二人 -->
-        <ellipse class="grnd-shadow" cx="295" cy="583" rx="38" ry="7"/>
-        <rect x="262" y="561" width="66" height="7" rx="3" fill="var(--brown)" stroke="var(--ink)" stroke-width="2.4"/>
-        <rect x="268" y="568" width="6" height="12" fill="var(--brown-deep)"/>
-        <rect x="312" y="568" width="6" height="12" fill="var(--brown-deep)"/>
-        <g class="figure" transform="translate(282,560) scale(0.82)">
-          <use href="#beanSit" style="--fig-shirt:var(--tan1);--fig-pants:var(--ink);--fig-hair:#2A2320"/>
+        <!-- 屋台（生成りの日よけ、星のマーク。特定ブランドは想起させない） -->
+        <ellipse class="grnd-shadow" cx="333" cy="492" rx="34" ry="7"/>
+        <rect x="304" y="472" width="62" height="8" rx="2" fill="var(--brown)" stroke="var(--ink)" stroke-width="2.6"/>
+        <rect x="308" y="452" width="54" height="30" rx="4" fill="#fff" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="316" y="458" width="20" height="14" rx="2" fill="var(--tan1)" stroke="var(--ink)" stroke-width="2.4"/>
+        <path d="M300,452 h70 l-6,-12 h-58 Z" fill="var(--yellow)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
+        <use href="#starShape" class="deco-star filled" transform="translate(348,466) scale(0.85)"/>
+        <circle cx="318" cy="486" r="5" fill="var(--ink)"/>
+        <circle cx="352" cy="486" r="5" fill="var(--ink)"/>
+
+        <!-- 頭上の電飾（先の屋台と左の木のあいだに渡す） -->
+        <g fill="none" stroke="var(--brown-deep)" stroke-width="1.6" opacity=".8">
+          <path d="M222,498 Q262,548 302,448"/>
         </g>
-        <g class="figure" transform="translate(313,560) scale(-0.82,0.82)">
-          <use href="#beanSit" style="--fig-shirt:#3E6FB0;--fig-pants:var(--ink);--fig-hair:#6B4A2F"/>
+        <g stroke="var(--ink)" stroke-width="1.6">
+          <circle cx="234" cy="513" r="4" fill="var(--yellow)"/>
+          <circle cx="252" cy="534" r="4" fill="var(--yellow)"/>
+          <circle cx="272" cy="540" r="4" fill="var(--yellow)"/>
+          <circle cx="289" cy="513" r="4" fill="var(--yellow)"/>
+          <circle cx="299" cy="470" r="4" fill="var(--yellow)"/>
         </g>
+
+        <!-- 丸テーブルを囲む3人 -->
+        <ellipse class="grnd-shadow" cx="295" cy="583" rx="44" ry="8"/>
+        <g class="figure" transform="translate(295,548) scale(0.66)">
+          <use href="#beanSit" style="--fig-shirt:#fff;--fig-pants:var(--ink);--fig-hair:#33241a"/>
+        </g>
+        <g class="figure" transform="translate(256,566) scale(0.76)">
+          <use href="#beanSit" style="--fig-shirt:#3E6FB0;--fig-pants:var(--ink);--fig-hair:#2A2320"/>
+        </g>
+        <g class="figure" transform="translate(335,566) scale(-0.76,0.76)">
+          <use href="#beanSit" style="--fig-shirt:var(--tan1);--fig-pants:var(--ink);--fig-hair:#6B4A2F"/>
+        </g>
+        <ellipse cx="295" cy="569" rx="37" ry="11" fill="var(--tan1)" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="291" y="569" width="8" height="16" fill="var(--brown-deep)" stroke="var(--ink)" stroke-width="2.4"/>
+        <ellipse cx="280" cy="567" rx="6" ry="2.4" fill="#fff" stroke="var(--ink)" stroke-width="1.4"/>
+        <ellipse cx="309" cy="568" rx="6" ry="2.4" fill="#fff" stroke="var(--ink)" stroke-width="1.4"/>
+        <rect x="292" y="561" width="6" height="8" rx="1.5" fill="var(--gold-deep)" stroke="var(--ink)" stroke-width="1.4"/>
 
         <!-- 犬 -->
         <ellipse class="grnd-shadow" cx="472" cy="596" rx="26" ry="6"/>
