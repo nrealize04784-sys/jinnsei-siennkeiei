@@ -411,9 +411,10 @@
   .seats .lead{
     font-weight:700;
     font-size:clamp(24px,6vw,34px);
-    margin-bottom:20px;
+    margin-bottom:10px;   /* 次の1行は、見出しにくっつける */
   }
   .seats p{color:var(--ink-soft)}
+  .seats .after{margin-top:26px}   /* ここで1行あける */
 
   /* ── 7. 最終CTA ── */
   .entry{background:var(--cream)}
@@ -860,8 +861,9 @@
 <!-- 6. 席の数 -->
 <section class="seats">
   <div class="wrap fade">
-    <p class="lead">1エリア2社限定。</p>
-    <p>まちの相談窓口は、<br>先に始めた1社の場所になります。</p>
+    <p class="lead">2社限定。</p>
+    <p>まちの相談窓口は、</p>
+    <p class="after">先に始めた1社の場所になります。</p>
   </div>
 </section>
 
