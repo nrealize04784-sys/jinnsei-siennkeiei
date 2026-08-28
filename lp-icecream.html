@@ -156,11 +156,13 @@
   .ask .turn{margin-top:30px;color:var(--turquoise-deep);font-size:clamp(19px,4.8vw,26px)}
 
   .ask .anxiety-eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:20px}
-  .anxieties{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:520px;margin:0 auto 22px}
-  .anxiety{display:flex;flex-direction:column;align-items:center;gap:8px}
-  .anxiety .icon{width:46px;height:46px;color:var(--pink-deep)}
+  .anxieties{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:8px 6px;max-width:640px;margin:0 auto 22px}
+  .anxiety{display:flex;flex-direction:column;align-items:center;gap:8px;width:96px}
+  .anxiety .icon{width:44px;height:44px;color:var(--pink-deep)}
+  .anxiety.dest .icon{color:var(--turquoise-deep)}
   .anxiety .icon svg{width:100%;height:100%;display:block}
-  .ask .anxiety .a-txt{font-size:clamp(13px,3.2vw,15px);font-weight:700;color:var(--ink)}
+  .ask .anxiety .a-txt{font-size:clamp(12px,3.1vw,14px);font-weight:700;color:var(--ink)}
+  .a-arrow{align-self:center;margin-top:14px;color:var(--turquoise-deep);font-size:15px;line-height:1}
   .ask .anxiety-flow{font-size:clamp(13px,3.2vw,15px);font-weight:500;color:var(--ink-soft);margin-bottom:34px}
   .ask .anxiety-flow span{color:var(--turquoise-deep);margin:0 2px}
 
@@ -268,6 +270,11 @@
     <circle cx="-6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
     <circle cx="6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
   </g>
+  <!-- 3大不安の行き着く先。吹き出しに斜線（相談できる環境がない） -->
+  <g id="worryNoOne" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16 -10h32a4 4 0 0 1 4 4v9a4 4 0 0 1 -4 4h-17l-9 9v-9h-6a4 4 0 0 1 -4 -4v-9a4 4 0 0 1 4 -4z"/>
+    <path d="M-17 15L17 -15"/>
+  </g>
   <!-- 4ステップ用。溶け方の異なる4段階 -->
   <g id="stage1" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M-13 -2h26l-6 18h-14z"/>
@@ -334,13 +341,20 @@
         <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryMoney"/></svg></span>
         <p class="a-txt">お金の不安</p>
       </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
       <div class="anxiety">
         <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryRelation"/></svg></span>
         <p class="a-txt">人間関係の不安</p>
       </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
       <div class="anxiety">
         <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryFuture"/></svg></span>
         <p class="a-txt">将来への不安</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryNoOne"/></svg></span>
+        <p class="a-txt">相談できる<br>環境がない</p>
       </div>
     </div>
     <p class="anxiety-flow">困ってから考える<span aria-hidden="true">▶</span>判断を間違える<span aria-hidden="true">▶</span>後悔を生む</p>
