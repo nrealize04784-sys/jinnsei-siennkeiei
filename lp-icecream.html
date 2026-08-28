@@ -155,6 +155,15 @@
   .ask p{font-weight:700;font-size:clamp(19px,4.6vw,26px);line-height:2}
   .ask .turn{margin-top:30px;color:var(--turquoise-deep);font-size:clamp(19px,4.8vw,26px)}
 
+  .ask .anxiety-eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:20px}
+  .anxieties{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:520px;margin:0 auto 22px}
+  .anxiety{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .anxiety .icon{width:46px;height:46px;color:var(--pink-deep)}
+  .anxiety .icon svg{width:100%;height:100%;display:block}
+  .ask .anxiety .a-txt{font-size:clamp(13px,3.2vw,15px);font-weight:700;color:var(--ink)}
+  .ask .anxiety-flow{font-size:clamp(13px,3.2vw,15px);font-weight:500;color:var(--ink-soft);margin-bottom:34px}
+  .ask .anxiety-flow span{color:var(--turquoise-deep);margin:0 2px}
+
   /* ── 3. 変わること ── */
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
@@ -237,6 +246,28 @@
 <!-- アイコン置き場 -->
 <svg class="icon-sprite" aria-hidden="true" focusable="false">
 <defs>
+  <!-- 3大不安用。右肩上がりの折れ線（物価高・お金の不安） -->
+  <g id="worryMoney" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-18 14h36"/>
+    <path d="M-14 8L-2 -2 6 4 16 -12"/>
+    <path d="M6 -14l10 -2 2 10"/>
+  </g>
+  <!-- 3大不安用。うなだれた人（人間関係の疲弊） -->
+  <g id="worryRelation" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-3" cy="-15" r="6"/>
+    <path d="M-3 -9C-1 0 -8 4 -10 14"/>
+    <path d="M-10 14h14"/>
+    <path d="M-10 14l-4 8M4 14l4 8"/>
+  </g>
+  <!-- 3大不安用。不安げな表情の顔（将来への不安） -->
+  <g id="worryFuture" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="16"/>
+    <path d="M-10 -6L-4 -3"/>
+    <path d="M10 -6L4 -3"/>
+    <path d="M-7 10Q-3 7 0 10T7 10"/>
+    <circle cx="-6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+    <circle cx="6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+  </g>
   <!-- 4ステップ用。溶け方の異なる4段階 -->
   <g id="stage1" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M-13 -2h26l-6 18h-14z"/>
@@ -297,8 +328,25 @@
 <!-- 2. 入口の話 -->
 <section class="ask">
   <div class="wrap fade">
+    <p class="anxiety-eyebrow">現代人の3大不安</p>
+    <div class="anxieties">
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryMoney"/></svg></span>
+        <p class="a-txt">お金の不安</p>
+      </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryRelation"/></svg></span>
+        <p class="a-txt">人間関係の不安</p>
+      </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryFuture"/></svg></span>
+        <p class="a-txt">将来への不安</p>
+      </div>
+    </div>
+    <p class="anxiety-flow">困ってから考える<span aria-hidden="true">▶</span>判断を間違える<span aria-hidden="true">▶</span>後悔を生む</p>
     <p>会社は、仕事のやり方は教えてくれる。</p>
     <p>でも、人生の相談先までは用意していない。</p>
+    <p>REALIZE CLUBは、困ってから助けるのではなく、困る前に助けます。</p>
     <p class="turn">→ その空白を埋めるのが、冷たいひと匙。</p>
   </div>
 </section>
