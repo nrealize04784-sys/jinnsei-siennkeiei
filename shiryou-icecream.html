@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料請求｜REALIZE CLUB</title>
+<meta name="description" content="REALIZE CLUBの資料請求はこちらから。社員の人生を支える福利厚生・人生支援プラットフォームの資料をお届けします。">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="realize-club-home-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* 配色・書体・ヘッダー/フッターは lp-icecream.html と完全に揃えている。 */
+  :root{
+    --turquoise:#6FCFC2;
+    --turquoise-deep:#1C7A70;
+    --pink:#F4A6A0;
+    --pink-deep:#D9645C;
+    --cream:#FBF6F0;
+    --card:#FFFFFF;
+    --ink:#1A1A1A;
+    --ink-soft:#4A4A4A;
+    --line:rgba(26,26,26,.12);
+    --r:18px;
+    --hdr:56px;
+  }
+  @media (min-width:768px){ :root{ --hdr:68px } }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.02em;
+  }
+  p{margin:0}
+  img{max-width:100%;display:block}
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
+
+  /* ── 固定ヘッダー（lp-icecream.html と同じ） ── */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    height:var(--hdr);
+    background:var(--cream);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease;
+  }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
+  .site-header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .hdr-brand{
+    display:flex;align-items:center;gap:8px;
+    text-decoration:none;color:var(--ink);
+    font-family:"Yomogi",sans-serif;font-size:19px;
+    white-space:nowrap;
+  }
+  .hdr-brand img{width:30px;height:30px;object-fit:contain}
+  .hdr-nav{display:flex;align-items:center;gap:22px}
+  .hdr-nav a,.hdr-nav [aria-current]{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
+  .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
+  .hdr-nav a:hover{color:var(--turquoise-deep)}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--ink);color:#fff !important}
+  .hdr-cta:hover{background:var(--pink-deep)}
+  @media (max-width:900px){
+    .hdr-nav{gap:14px}
+    .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
+    .hdr-cta{padding:8px 14px}
+  }
+  @media (max-width:767px){ .hdr-cta{display:none} }
+
+  /* ── 本文 ── */
+  main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
+  @media (min-width:768px){ main{padding-top:calc(var(--hdr) + 92px)} }
+
+  /* 見出しの札。lp-icecream.html のリボン札と同じ形 */
+  .page-tag{
+    display:inline-block;
+    background:var(--pink);
+    color:var(--ink);
+    font-weight:700;
+    font-size:clamp(18px,4.6vw,26px);
+    letter-spacing:.16em;
+    padding:14px 44px;
+    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
+    box-shadow:0 6px 16px rgba(26,26,26,.14);
+    margin-bottom:22px;
+  }
+  .lead{color:var(--ink-soft);font-size:15px;margin-bottom:14px}
+  .desc{
+    max-width:520px;margin:0 auto 44px;
+    color:var(--ink-soft);font-size:14px;line-height:1.9;
+  }
+
+  /* ── フォーム（lp-icecream.html の最終CTAと同じ作り） ── */
+  form{
+    max-width:520px;
+    margin-inline:auto;
+    text-align:left;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:32px 24px;
+  }
+  .field{margin-bottom:20px}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
+  input{
+    width:100%;
+    padding:15px 16px;
+    font-size:16px;
+    font-family:inherit;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+  }
+  input:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
+  .btn{
+    display:block;width:100%;
+    background:var(--ink);
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    font-weight:700;
+    font-size:17px;
+    font-family:inherit;
+    padding:20px;
+    margin-top:8px;
+    border:0;
+    border-radius:var(--r);
+    cursor:pointer;
+    transition:background .25s ease;
+  }
+  .btn:hover{background:var(--pink-deep)}
+  .req-note{
+    max-width:520px;margin:24px auto 0;
+    font-size:13px;line-height:1.9;color:var(--ink-soft);
+  }
+  .req-note a{color:var(--turquoise-deep)}
+
+  .back{
+    display:inline-block;margin-top:44px;
+    color:var(--ink-soft);text-decoration:none;font-size:14px;
+  }
+  .back:hover{color:var(--turquoise-deep);text-decoration:underline}
+
+  /* ── フッター（lp-icecream.html と同じ） ── */
+  footer{
+    padding:48px 0 40px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+  }
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--turquoise-deep)}
+  .footer-brand{
+    font-family:"Yomogi",sans-serif;font-size:20px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;
+  }
+  .footer-brand img{width:28px;height:28px;object-fit:contain}
+  .footer-copy{margin-top:14px;font-size:12px}
+
+  /* ── スマホ追従ボタン（lp-icecream.html と同じ、控えめな1本） ── */
+  .sticky{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(251,246,240,.94);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--line);
+  }
+  .sticky .btn{padding:14px;font-size:15px;border-radius:12px}
+  @media (min-width:768px){ .sticky{display:none} }
+  @media (max-width:767px){ body{padding-bottom:64px} }
+</style>
+</head>
+<body>
+
+<!-- 固定ヘッダー -->
+<div class="site-header" id="site-header">
+  <div class="wrap">
+    <a class="hdr-brand" href="lp-icecream.html">
+      <img src="realize-club-home-icon.png" alt="" width="30" height="30">
+      REALIZE CLUB
+    </a>
+    <nav class="hdr-nav">
+      <a href="lp-icecream.html">ホーム</a>
+      <a class="hdr-cta" href="lp-icecream.html#entry">無料説明会に参加</a>
+      <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
+      <span aria-current="page">資料請求</span>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <p class="page-tag">資料請求</p>
+    <p class="lead">社員の人生を支える仕組みをまとめた資料をお送りします。</p>
+    <p class="desc">
+      仕組みと導入の流れ、効果をまとめた資料をお届けします。<br>
+      届いてすぐのご契約や、しつこいご連絡はいたしません。
+    </p>
+
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（lp-icecream.html と同じ）。
+    -->
+    <form id="req-form" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お担当者名</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <button class="btn submit" type="submit">この内容で資料請求する</button>
+    </form>
+
+    <p class="req-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+    </p>
+
+    <a class="back" href="lp-icecream.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="footer-brand">
+      <img src="realize-club-home-icon.png" alt="" width="28" height="28">
+      REALIZE CLUB
+    </span>
+    <nav>
+      <a href="lp-icecream.html">ホーム</a>
+    </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
+  </div>
+</footer>
+
+<!-- スマホ追従ボタン -->
+<div class="sticky"><a class="btn" href="lp-icecream.html#entry">まずは無料説明会に参加</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-icecream.html と同じ仕組み）
+  document.getElementById('req-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'REALIZE CLUB 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お担当者名：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-icecream.html と同じ）
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>
