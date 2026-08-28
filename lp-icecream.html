@@ -284,6 +284,29 @@
     <path d="M-8 -4c0-6 4-10 8-10s8 4 8 10"/>
     <path d="M-6 4v12M0 4v12M6 4v12"/>
   </g>
+  <!-- 仕組み用。在庫の箱（余剰在庫・継続在庫・切迫品で使い回す） -->
+  <g id="stockBox" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-14 -8L0 -15 14 -8 0 -1Z"/>
+    <path d="M-14 -8V8L0 15 14 8V-8"/>
+    <path d="M0 -1V15"/>
+  </g>
+  <!-- 仕組み用。循環の矢印（在庫を活用） -->
+  <g id="flowUse" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-11 -2a12 12 0 0 1 20-8"/>
+    <path d="M5 -15l5 4-5 4"/>
+    <path d="M11 2a12 12 0 0 1 -20 8"/>
+    <path d="M-5 15l-5-4 5-4"/>
+  </g>
+  <!-- 仕組み用。右肩下がりの折れ線（ロスを減らす） -->
+  <g id="flowReduce" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-18 -14h36"/>
+    <path d="M-14 -8L-2 2 6 -4 16 12"/>
+    <path d="M6 10l10 2 2-10"/>
+  </g>
+  <!-- 仕組み用。ハート（収益を寄付） -->
+  <g id="flowGive" fill="currentColor" stroke="none">
+    <path d="M0 15C-16 4 -18 -8 -8 -13C-2 -16 2 -12 0 -6C-2 -12 2 -16 8 -13C18 -8 16 4 0 15Z"/>
+  </g>
 </defs>
 </svg>
 
@@ -398,32 +421,43 @@
   </div>
 </section>
 
-<!-- 5. 効果 -->
-<section>
+<!-- 5. REALIZEマーケットの仕組み -->
+<section class="ask">
   <div class="wrap fade">
-    <div class="results">
-      <div class="result">
-        <svg class="rim" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10V4c8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0v6z"/></svg>
-        <div class="body">
-          <p class="label">可処分所得</p>
-          <p class="fig">毎月2〜3<small>万円UP</small></p>
-        </div>
+    <p class="anxiety-eyebrow">REALIZEマーケットの仕組み</p>
+    <div class="anxieties">
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">余剰在庫</p>
       </div>
-      <div class="result">
-        <svg class="rim" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10V4c8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0v6z"/></svg>
-        <div class="body">
-          <p class="label">日用品</p>
-          <p class="fig">最大90<small>%OFF</small></p>
-        </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">継続在庫</p>
       </div>
-      <div class="result">
-        <svg class="rim" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 10V4c8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0 8-6 17-6 25 0v6z"/></svg>
-        <div class="body">
-          <p class="label">診断のしやすさ</p>
-          <p class="fig">5<small>分でスマホ診断</small></p>
-        </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">切迫品</p>
       </div>
     </div>
+    <p>「今日は何があるかな？」という宝探し感覚で楽しめます。</p>
+    <p class="turn">お得なだけじゃない。社会貢献にもつながる。</p>
+    <div class="anxieties">
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowUse"/></svg></span>
+        <p class="a-txt">在庫を活用</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowReduce"/></svg></span>
+        <p class="a-txt">ロスを減らす</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowGive"/></svg></span>
+        <p class="a-txt">収益を寄付</p>
+      </div>
+    </div>
+    <p class="note">使うほど、社会貢献にもつながる。</p>
   </div>
 </section>
 
