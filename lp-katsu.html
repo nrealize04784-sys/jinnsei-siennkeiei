@@ -251,6 +251,102 @@
   }
   .result .fig small{font-size:.5em;color:#cfcfcf;font-weight:500}
 
+  /* ── 5.5 自動集客の仕組み ── */
+  .eco-head{
+    text-align:center;
+    font-size:clamp(20px,5vw,28px);
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .eco-lead{text-align:center;color:var(--ink-soft);font-size:15px;margin-bottom:40px}
+
+  .eco-platforms{display:grid;gap:16px;margin-bottom:56px}
+  @media (min-width:768px){ .eco-platforms{grid-template-columns:1fr 1fr;gap:20px} }
+  .eco-card{background:var(--card);border:2px solid var(--black);padding:26px 22px;text-align:left}
+  .eco-card .row{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .eco-card .tag{
+    display:inline-block;background:var(--black);color:var(--yellow);
+    font-weight:900;font-size:13px;letter-spacing:.06em;
+    padding:5px 14px;
+  }
+  .eco-card .title{font-weight:900;font-size:clamp(15px,3.8vw,18px);color:var(--ink)}
+  .eco-card .headline{
+    border:2px solid var(--black);padding:10px 14px;
+    font-weight:700;font-size:clamp(14px,3.6vw,16px);color:var(--ink);
+    margin:0 0 16px;text-align:center;
+  }
+  .eco-card ul{list-style:none;margin:0;padding:0}
+  .eco-card li{font-size:14px;line-height:1.9;color:var(--ink-soft)}
+
+  /* 円環図（デスクトップのみ）。中心に自動集客システム、周囲に5つの循環ステップ。 */
+  .eco-diagram{
+    display:none;
+    position:relative;
+    width:min(90%,460px);
+    aspect-ratio:1/1;
+    margin:0 auto 12px;
+  }
+  @media (min-width:768px){ .eco-diagram{display:block} }
+  .eco-ring{
+    position:absolute;inset:8%;
+    border:2px dashed var(--red);
+    border-radius:50%;
+  }
+  .eco-center{
+    position:absolute;top:50%;left:50%;z-index:2;
+    transform:translate(-50%,-50%);
+    width:38%;aspect-ratio:1/1;
+    background:var(--black);
+    border:3px solid var(--yellow);
+    border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:6% 8%;
+  }
+  .eco-center .t1{color:var(--yellow);font-weight:900;font-size:clamp(13px,2.6vw,16px);line-height:1.35;margin:0}
+  .eco-center .t2{color:#fff;font-size:clamp(9px,1.7vw,11px);margin:6px 0 0;line-height:1.5;opacity:.85}
+  .eco-node{
+    position:absolute;z-index:1;
+    transform:translate(-50%,-50%);
+    width:29%;text-align:center;
+  }
+  .eco-node .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:24px;height:24px;
+    background:var(--red);color:#fff;
+    font-weight:900;font-size:12px;
+    margin-bottom:6px;
+  }
+  .eco-node .txt{
+    display:block;
+    font-weight:700;font-size:clamp(10.5px,1.6vw,12px);
+    color:var(--ink);line-height:1.4;
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:6px 6px;
+  }
+  .eco-node .txt small{font-weight:500;color:var(--ink-soft);font-size:.88em}
+
+  /* 同じ内容の縦一本道（モバイル） */
+  .eco-list-mobile{list-style:none;margin:0 auto;padding:0;max-width:420px}
+  @media (min-width:768px){ .eco-list-mobile{display:none} }
+  .eco-list-mobile li{
+    display:flex;gap:14px;align-items:flex-start;text-align:left;
+    background:var(--card);border:2px solid var(--black);
+    padding:16px 18px;margin-bottom:10px;
+  }
+  .eco-list-mobile .num{
+    flex:none;width:28px;height:28px;
+    background:var(--red);color:#fff;font-weight:900;
+    display:flex;align-items:center;justify-content:center;font-size:14px;
+  }
+  .eco-list-mobile .txt{font-weight:700;font-size:15px;color:var(--ink);margin:0 0 2px}
+  .eco-list-mobile .sub{font-size:12.5px;color:var(--ink-soft);margin:0}
+  .eco-list-mobile li.loop{
+    display:block;text-align:center;border:0;background:transparent;
+    color:var(--ink-soft);font-size:13px;font-weight:700;
+    padding:6px 0 0;margin-bottom:0;
+  }
+
   /* ── 6. 席の数（トーンを落とす） ── */
   .seats{text-align:center}
   .seats .lead{
@@ -436,6 +532,72 @@
         <p class="fig">最短2<small>ヶ月で自力契約</small></p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 5.5 自動集客の仕組み -->
+<section class="eco">
+  <div class="wrap fade">
+    <h2 class="eco-head">仕組みは、ひとりでは回らない。</h2>
+    <p class="eco-lead">RCとLMP、二つのプラットフォームが噛み合うから、自動で回る。</p>
+
+    <div class="eco-platforms">
+      <div class="eco-card">
+        <div class="row"><span class="tag">RC</span><span class="title">人生支援プラットフォーム</span></div>
+        <p class="headline">企業や個人に人生教育を届ける</p>
+        <ul>
+          <li>①人生教育を通じて判断軸を持たせる</li>
+          <li>②相談の種を生む</li>
+        </ul>
+      </div>
+      <div class="eco-card">
+        <div class="row"><span class="tag">LMP</span><span class="title">人生支援営業DXプラットフォーム</span></div>
+        <p class="headline">地域の相談窓口</p>
+        <ul>
+          <li>①ライフメイクプランナーを育成する</li>
+          <li>②最適提案・実行支援を行う</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- デスクトップ：円環図。RCが増える→相談が生まれる→LMPが受け止める→信頼が積み上がる→さらにRCが増える、の循環。 -->
+    <div class="eco-diagram" aria-hidden="true">
+      <div class="eco-ring"></div>
+      <div class="eco-center">
+        <p class="t1">自動集客<br>システム</p>
+        <p class="t2">入口（RC）と出口（LMP）が循環する</p>
+      </div>
+      <div class="eco-node" style="left:50%;top:6%">
+        <span class="num">1</span>
+        <span class="txt">RC導入が増える<br><small>企業へ人生支援経営を届ける</small></span>
+      </div>
+      <div class="eco-node" style="left:88%;top:35%">
+        <span class="num">2</span>
+        <span class="txt">人生教育で相談が生まれる<br><small>人生教育・人生診断・人生設計</small></span>
+      </div>
+      <div class="eco-node" style="left:73%;top:83%">
+        <span class="num">3</span>
+        <span class="txt">LMPが相談を受け止める<br><small>地域の相談窓口として提案・実行支援</small></span>
+      </div>
+      <div class="eco-node" style="left:27%;top:83%">
+        <span class="num">4</span>
+        <span class="txt">信頼・成果が積み上がる<br><small>顧客満足・実績・紹介</small></span>
+      </div>
+      <div class="eco-node" style="left:12%;top:35%">
+        <span class="num">5</span>
+        <span class="txt">さらにRCが増える<br><small>企業・地域へ広がる</small></span>
+      </div>
+    </div>
+
+    <!-- モバイル：同じ内容を縦の一本道で -->
+    <ol class="eco-list-mobile">
+      <li><span class="num">1</span><div><p class="txt">RC導入が増える</p><p class="sub">企業へ人生支援経営を届ける</p></div></li>
+      <li><span class="num">2</span><div><p class="txt">人生教育で相談が生まれる</p><p class="sub">人生教育・人生診断・人生設計</p></div></li>
+      <li><span class="num">3</span><div><p class="txt">LMPが相談を受け止める</p><p class="sub">地域の相談窓口として提案・実行支援</p></div></li>
+      <li><span class="num">4</span><div><p class="txt">信頼・成果が積み上がる</p><p class="sub">顧客満足・実績・紹介</p></div></li>
+      <li><span class="num">5</span><div><p class="txt">さらにRCが増える</p><p class="sub">企業・地域へ広がる</p></div></li>
+      <li class="loop">→ そしてまた「①RC導入が増える」へ</li>
+    </ol>
   </div>
 </section>
 
