@@ -159,8 +159,8 @@
   .swap{display:grid;gap:16px}
   @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
   .box{padding:34px 20px 26px;text-align:center;background:var(--card);border-radius:var(--r);box-shadow:0 4px 22px rgba(26,26,26,.07)}
-  .box .icon{width:56px;height:56px;margin:0 auto 14px;color:var(--turquoise-deep)}
-  .box.before .icon{color:var(--pink-deep)}
+  .box .icon{height:130px;margin:0 auto 14px;display:flex;align-items:flex-end;justify-content:center}
+  .box .icon img{height:100%;width:auto;display:block;filter:drop-shadow(0 8px 12px rgba(26,26,26,.14))}
   .box .tag-label{display:block;margin:0 0 6px;font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--ink-soft)}
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
   .arrow{text-align:center;color:var(--turquoise-deep);font-size:24px;line-height:1}
@@ -237,22 +237,6 @@
 <!-- アイコン置き場 -->
 <svg class="icon-sprite" aria-hidden="true" focusable="false">
 <defs>
-  <!-- before/after用。3段のスクープが傾き、雫が垂れている溶けかけのアイス -->
-  <g id="iceMelt" fill="currentColor" stroke="none">
-    <circle cx="-2" cy="4" r="9"/>
-    <circle cx="3" cy="-4.5" r="7"/>
-    <circle cx="1" cy="-12" r="5"/>
-    <path d="M-8 7L8 7 2 25Q0 28 -2 25Z"/>
-    <ellipse cx="-11.5" cy="9" rx="2.8" ry="5" transform="rotate(-20 -11.5 9)"/>
-    <ellipse cx="11" cy="11" rx="2.4" ry="4.4" transform="rotate(18 11 11)"/>
-  </g>
-  <!-- before/after用。3段のスクープがまっすぐ積み上がった、形を保ったアイス -->
-  <g id="iceWhole" fill="currentColor" stroke="none">
-    <circle cx="0" cy="3" r="9.5"/>
-    <circle cx="0" cy="-6.5" r="8"/>
-    <circle cx="0" cy="-15" r="6"/>
-    <path d="M-8 6L8 6 2 25Q0 28 -2 25Z"/>
-  </g>
   <!-- 4ステップ用。溶け方の異なる4段階 -->
   <g id="stage1" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <path d="M-13 -2h26l-6 18h-14z"/>
@@ -324,13 +308,13 @@
   <div class="wrap fade">
     <div class="swap">
       <div class="box before">
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#iceMelt"/></svg></span>
+        <span class="icon" aria-hidden="true"><img src="popsicle-melting.png" alt=""></span>
         <span class="tag-label">BEFORE</span>
         <p class="txt">頑張り続けて、溶けていく人</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box">
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#iceWhole"/></svg></span>
+        <span class="icon" aria-hidden="true"><img src="popsicle-intact.png" alt=""></span>
         <span class="tag-label">AFTER</span>
         <p class="txt">冷やされて、形を保てる人</p>
       </div>
