@@ -268,7 +268,7 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="#flow">仕組み</a>
-      <a class="hdr-cta" href="#entry">資料をもらう</a>
+      <a class="hdr-cta" href="#entry">無料説明会に参加</a>
       <a class="hdr-cta2" href="#entry">導入相談する</a>
     </nav>
   </div>
@@ -286,7 +286,7 @@
 
     <h1>社員が、<br>溶けていく前に。</h1>
     <p class="sub">頑張る社員も、<br>放っておくと溶けてしまう。</p>
-    <a class="btn" href="#entry">まずは資料をもらう（無料）</a>
+    <a class="btn" href="#entry">まずは無料説明会に参加</a>
   </div>
 
   <svg class="drip-divider" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true">
@@ -401,7 +401,7 @@
 <!-- 7. 最終CTA -->
 <section class="entry" id="entry">
   <div class="wrap fade">
-    <h2>まずは、資料をもらうところから。</h2>
+    <h2>まずは、無料説明会に参加するところから。</h2>
     <p class="lead">その場で決めなくて構いません。</p>
     <form id="entry-form" novalidate>
       <div class="field">
@@ -420,7 +420,7 @@
         <label for="email">メールアドレス</label>
         <input id="email" name="email" type="email" autocomplete="email" required>
       </div>
-      <button class="btn submit" type="submit">資料をもらう（無料）</button>
+      <button class="btn submit" type="submit">無料説明会に参加する</button>
     </form>
     <p class="entry-note">
       ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
@@ -438,13 +438,13 @@
     </span>
     <nav>
       <a href="#top">ホーム</a>
-      <a href="#entry">資料をもらう</a>
+      <a href="#entry">無料説明会に参加</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
 </footer>
 
-<div class="sticky"><a class="btn" href="#entry">まずは資料をもらう</a></div>
+<div class="sticky"><a class="btn" href="#entry">まずは無料説明会に参加</a></div>
 
 <script>
   document.getElementById('entry-form').addEventListener('submit', function (e) {
@@ -460,14 +460,14 @@
     }
     var body = [
       'REALIZE CLUB 御中', '',
-      '資料をいただきたく、連絡いたします。', '',
+      '無料説明会に参加したく、連絡いたします。', '',
       '会社名：' + v('company'),
       'お担当者名：' + v('name'),
       '電話番号：' + v('tel'),
       'メールアドレス：' + v('email'), ''
     ].join('\r\n');
     location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
+      + '?subject=' + encodeURIComponent('無料説明会参加希望（REALIZE CLUB）')
       + '&body=' + encodeURIComponent(body);
   });
 
