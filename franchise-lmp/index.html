@@ -510,60 +510,12 @@
     border:2px solid rgba(7,18,40,.45);
     box-shadow:none;
   }
-  /*
-    入力欄はドラクエのコマンドウィンドウに見立てる。
-    黒地・白の角枠・白文字。角は丸めず、影も付けない（実機の枠は平面なので）。
-  */
-  form{
-    max-width:520px;margin:0 auto;text-align:left;
-    background:#000;border:4px solid #fff;
-    /* 上枠に載せた項目名が窓の枠と重ならないよう、上だけ余白を厚くする */
-    padding:42px 28px 32px;
-  }
-  .field{position:relative;margin-bottom:30px}
-  /*
-    項目名は入力欄の上枠に載せる。枠線を切って見せたいので、
-    黒地と同じ background を敷いて白線を隠している。
-  */
-  label{
-    position:absolute;top:0;left:16px;transform:translateY(-50%);z-index:1;
-    font-size:14px;font-weight:400;letter-spacing:.1em;color:#fff;
-    background:#000;padding:0 .7em 0 2.1em;line-height:1;
-  }
-  /* コマンドを指す▶。枠に載せた項目名の頭に置く */
-  label::before{
-    content:"";position:absolute;left:.75em;top:50%;transform:translateY(-50%);
-    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
-  }
-  /* 入力中の項目を、選択中のコマンドとして金色で示す */
-  .field:focus-within label{color:var(--gold)}
-  .field:focus-within label::before{background:var(--gold)}
-  input,textarea{
-    width:100%;padding:16px 18px;border:2px solid #fff;
-    background:#000;color:#fff;
-    font-size:16px;font-family:inherit;
-  }
-  /* 備考。数行書ける高さにし、縦だけ引き伸ばせるようにする */
-  textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
-  input:focus,textarea:focus{outline:3px solid var(--gold);outline-offset:2px}
-  /* Chromeの自動入力は既定で白地・黒文字に戻してしまうため、黒地を上書きする */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus{
-    -webkit-text-fill-color:#fff;
-    -webkit-box-shadow:0 0 0 1000px #000 inset;
-    caret-color:#fff;
-  }
-  .submit{width:100%;margin-top:12px;padding:22px;font-size:18px}
-  /*
-    2つ目のコマンド（資料請求）。同じ枠だが、文字色を白にして
-    主コマンド（金文字の申し込み）より一段控えめに見せる。
-  */
-  .submit-alt{color:#fff;margin-top:14px;font-size:16px;padding:20px}
-  .submit:hover{background:#111;filter:none;transform:none}
-  /* メーラーが開く旨の断り書き。フォームと同じ幅に収める */
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
+  .line-add{margin:8px 0 18px}
+  .line-add a{display:inline-block;line-height:0}
+  /* 断り書き。フォームがあった頃と同じ幅・見た目に揃える */
   .entry-note{
-    max-width:520px;margin:20px auto 0;text-align:left;
+    max-width:520px;margin:0 auto;text-align:left;
     font-size:13px;line-height:2;color:rgba(11,27,58,.62);
   }
   .entry-note a{color:var(--navy-deep)}
@@ -779,43 +731,16 @@
     <!-- 城門へ向かう三人。※公開前に cta-journey.png としてローカル化すること -->
     <img class="cta-journey" alt="橋を渡って城門へ向かう三人の勇者"
          src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_053040_17e1fd91-3ad3-4f0c-ba8a-b9e12cd70690.png">
-    <p class="lead">参加は無料。</p>
-    <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（資料請求ページと同じ）。
-      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
-    -->
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">お名前</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <!-- 備考は任意。書かなくても申し込めるようにする -->
-      <div class="field">
-        <label for="note">備考</label>
-        <textarea id="note" name="note"></textarea>
-      </div>
-      <button class="btn submit" type="submit">事業説明会に申し込む（無料）</button>
-      <!-- 2つ目のコマンド。資料請求ページへ -->
-      <a class="btn submit submit-alt" href="shiryou.html">資料請求（無料）</a>
-    </form>
+    <p class="lead">参加は無料。LINEで友だち追加して、そのままご相談ください。</p>
+    <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
+    <p class="line-add">
+      <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+      </a>
+    </p>
     <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      メールソフトが開かない場合は、お手数ですが
-      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
+      友だち追加後、トークで会社名・お名前・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
     </p>
   </div>
 </section>
@@ -840,34 +765,6 @@
 
 <!-- スマホ追従ボタン -->
 <div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
-
-<script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'ライフメイクパートナーズ 御中', '',
-      '事業説明会への参加を申し込みます。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '備考：' + v('note'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('事業説明会 申し込み')
-      + '&body=' + encodeURIComponent(body);
-  });
-</script>
 
 </body>
 </html>
