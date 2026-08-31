@@ -308,7 +308,7 @@
   }
   .field{margin-bottom:20px}
   label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{
+  input,textarea{
     width:100%;
     padding:15px 16px;
     font-size:16px;
@@ -318,8 +318,9 @@
     border:1px solid var(--card-line);
     border-radius:8px;
   }
-  input:focus{outline:2px solid var(--gold-line);outline-offset:1px;border-color:transparent}
-  input::placeholder{color:var(--ink-faint)}
+  textarea{min-height:84px;resize:vertical;line-height:1.7}
+  input:focus,textarea:focus{outline:2px solid var(--gold-line);outline-offset:1px;border-color:transparent}
+  input::placeholder,textarea::placeholder{color:var(--ink-faint)}
   .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
   .entry-note{
     max-width:520px;
@@ -533,6 +534,10 @@
         <label for="email">メールアドレス</label>
         <input id="email" name="email" type="email" autocomplete="email" required>
       </div>
+      <div class="field">
+        <label for="addr">送付先のご住所</label>
+        <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+      </div>
       <button class="btn submit" type="submit">資料請求・導入相談（無料）</button>
     </form>
     <p class="entry-note">
@@ -577,7 +582,8 @@
       '会社名：' + v('company'),
       'お名前：' + v('name'),
       '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'), ''
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
     ].join('\r\n');
     location.href = 'mailto:RC@n-realize.co.jp'
       + '?subject=' + encodeURIComponent('お問い合わせ（資料請求・導入相談）')
