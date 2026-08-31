@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>資料請求｜REALIZE CLUB</title>
-<meta name="description" content="REALIZE CLUB導入の資料請求はこちらから。困る前に社員の不安を支える福利厚生プラットフォーム。">
+<title>無料説明会お申し込み｜REALIZE CLUB</title>
+<meta name="description" content="REALIZE CLUB導入の無料説明会はこちらから。困る前に社員の不安を支える福利厚生プラットフォームの仕組みを、担当者が直接ご説明します。">
 <meta name="robots" content="noindex">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Yusei+Magic&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-  /* 配色・書体・ヘッダー/フッターは lp-pop.html と完全に揃えている。 */
+  /* 配色・書体・ヘッダー/フッターは lp-pop.html / shiryou-pop.html と完全に揃えている。 */
   :root{
     --bg:#FFFFFF;
     --cream:#FFFBEA;
@@ -91,7 +91,7 @@
     color:var(--ink-soft);font-size:14px;line-height:1.9;
   }
 
-  /* ── フォーム（lp-pop.html の最終CTAと同じ作り） ── */
+  /* ── フォーム（shiryou-pop.html と同じ作り） ── */
   form{
     max-width:520px;
     margin-inline:auto;
@@ -152,12 +152,6 @@
     font-family:var(--font-pop);font-size:20px;color:var(--ink);
   }
   .footer-brand span{color:var(--red)}
-  .footer-cta{
-    display:inline-block;margin:0 0 22px;padding:16px 36px;
-    background:var(--red);color:#fff !important;font-weight:700;
-    text-decoration:none;border-radius:var(--r);
-  }
-  .footer-cta:hover{background:var(--red-deep)}
   .footer-copy{margin-top:14px;font-size:12px}
 </style>
 </head>
@@ -170,24 +164,25 @@
     <nav class="hdr-nav">
       <a href="lp-pop.html">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
-      <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
-      <span aria-current="page">資料請求</span>
+      <a href="shiryou-pop.html">資料請求</a>
+      <!-- 今このページなので、無料説明会はリンクにせず現在地として見せる -->
+      <span aria-current="page">無料説明会</span>
     </nav>
   </div>
 </div>
 
 <main>
   <div class="wrap">
-    <p class="page-tag">資料請求</p>
-    <p class="lead">REALIZE CLUBの概要をまとめた資料をお送りします。</p>
+    <p class="page-tag">無料説明会</p>
+    <p class="lead">REALIZE CLUBの仕組みを、担当者がオンラインで直接ご説明します。</p>
     <p class="desc">
-      仕組みと導入の流れ、家計への効果をまとめた資料をお届けします。<br>
-      届いてすぐのご契約や、しつこいご連絡はいたしません。
+      導入の流れや社員の家計への効果を、30分ほどでわかりやすくお伝えします。<br>
+      その場でのご契約や、しつこいご連絡はいたしません。
     </p>
 
     <!--
       送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-pop.html と同じ）。
+      入力内容から本文を組み立ててメーラーを開く方式（lp-pop.html / shiryou-pop.html と同じ）。
     -->
     <form id="req-form" novalidate>
       <div class="field">
@@ -206,7 +201,7 @@
         <label for="email">メールアドレス</label>
         <input id="email" name="email" type="email" autocomplete="email" required>
       </div>
-      <button class="btn submit" type="submit">この内容で資料請求する</button>
+      <button class="btn submit" type="submit">この内容で無料説明会に申し込む</button>
     </form>
 
     <p class="req-note">
@@ -222,19 +217,17 @@
 <footer>
   <div class="wrap">
     <a class="footer-brand" href="https://n-realize.co.jp/" target="_blank" rel="noopener">REALIZE <span>CLUB</span></a>
-    <div>
-      <a class="footer-cta" href="setsumeikai-pop.html">まずは無料説明会へ</a>
-    </div>
     <nav>
       <a href="lp-pop.html">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
+      <a href="shiryou-pop.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
 </footer>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-pop.html と同じ仕組み）
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-pop.html / shiryou-pop.html と同じ仕組み）
   document.getElementById('req-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var v = function (id) { return document.getElementById(id).value.trim(); };
@@ -248,14 +241,14 @@
     }
     var body = [
       '日本リアライズ株式会社 REALIZE CLUB窓口 御中', '',
-      '資料請求をお願いいたします。', '',
+      '無料説明会への参加を申し込みます。', '',
       '会社名：' + v('company'),
       'ご担当者名：' + v('name'),
       '電話番号：' + v('tel'),
       'メールアドレス：' + v('email'), ''
     ].join('\r\n');
     location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
+      + '?subject=' + encodeURIComponent('無料説明会 申し込み（REALIZE CLUB）')
       + '&body=' + encodeURIComponent(body);
   });
 
