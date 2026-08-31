@@ -23,6 +23,7 @@
     --gold-pale:#F7E7C1;
     --paper:#F4F8FD;
     --font-game:"DotGothic16Local","DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    --font-body:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Noto Sans JP","Meiryo",sans-serif;
     --cursor-clip:polygon(
       0% 0%,   25% 0%,
       25% 12.5%, 50% 12.5%,
@@ -36,8 +37,8 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     background:var(--gold-pale);color:var(--navy);
-    font-family:var(--font-game);font-weight:400;
-    line-height:1.95;letter-spacing:.05em;
+    font-family:var(--font-body);font-weight:400;
+    line-height:1.9;letter-spacing:.02em;
     -webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
@@ -82,6 +83,7 @@
   /* ---- 本文 ---- */
   main{padding:150px 0 96px}
   h1{
+    font-family:var(--font-game);
     font-size:clamp(26px,4.2vw,40px);font-weight:400;line-height:1.5;
     letter-spacing:.04em;text-align:center;margin-bottom:14px;
     text-shadow:4px 4px 0 rgba(11,27,58,.16);

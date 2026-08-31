@@ -186,14 +186,11 @@
     width:.45em;height:.66em;background:currentColor;clip-path:var(--cursor-clip);
   }
   /*
-    メニュー内の資料請求はコマンドウィンドウに見立てる。
-    黒地・白の角枠・▶カーソルという、申し込みフォームと同じ作り。
+    メニュー内のLINEボタンはコマンドウィンドウに見立てる。
+    黒地・白の角枠・▶カーソル・金文字という、最終CTAと同じ作り。
   */
-  .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em}
-  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
-  .hdr-nav a.hdr-cta{color:#fff}
-  .hdr-nav a.hdr-cta-main{color:var(--gold)}
-  .hdr-nav a.hdr-cta:hover{background:#111;text-decoration:none}
+  .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em;color:var(--gold)}
+  .hdr-cta:hover{background:#111;text-decoration:none}
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
@@ -236,10 +233,7 @@
     text-shadow:4px 4px 0 rgba(7,18,40,.75),0 2px 20px rgba(7,18,40,.5);
   }
   .fv h1 em{font-style:normal;color:var(--gold)}
-  /* 2つのコマンドを横に並べる。幅が足りなければ折り返す */
   .fv-actions{display:flex;flex-wrap:wrap;gap:14px}
-  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
-  .btn-sub{color:#fff}
   .fv p{
     font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,.9);margin-bottom:44px;
     text-shadow:0 2px 14px rgba(7,18,40,.8);
@@ -612,8 +606,7 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="kaisha.html">会社概要</a>
-      <a class="btn hdr-cta hdr-cta-main" href="#entry">事業説明会に申し込む</a>
-      <a class="btn hdr-cta" href="shiryou.html">資料請求</a>
+      <a class="btn hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -626,8 +619,7 @@
       <h1><em>RPG</em>から、<br>家が売れる。</h1>
       <p>物件を探している人ではなく、<br>人生を良くしたい人が集まる。</p>
       <div class="fv-actions">
-        <a class="btn" href="#entry">事業説明会に申し込む</a>
-        <a class="btn btn-sub" href="shiryou.html">資料請求</a>
+        <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
       </div>
     </div>
   </div>
@@ -764,7 +756,7 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 </body>
 </html>
