@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>社員が、溶けていく前に。｜REALIZE CLUB</title>
+<meta name="description" content="頑張る社員も、放っておくと溶けてしまう。困る前に冷やして支える、企業向け福利厚生・人生支援プラットフォームREALIZE CLUB。">
+<link rel="icon" type="image/png" href="realize-club-home-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ── アイスクリーム広告風の配色 ──
+     ファーストビューはターコイズ×ピンクの対角線ツートン。
+     以降のセクションは生成りで休ませる。赤は使わず、黒地のボタンで締める。 */
+  :root{
+    --turquoise:#6FCFC2;
+    --turquoise-deep:#1C7A70;
+    --pink:#F4A6A0;
+    --pink-deep:#D9645C;
+    --cream:#FBF6F0;
+    --card:#FFFFFF;
+    --waffle:#E8867E;
+    --ink:#1A1A1A;
+    --ink-soft:#4A4A4A;
+    --line:rgba(26,26,26,.12);
+    --r:18px;
+    --pad:80px;
+    --hdr:56px;
+  }
+  @media (min-width:768px){ :root{ --pad:140px; --hdr:68px } }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.02em;
+  }
+  h1,h2{font-family:"Yomogi","Zen Maru Gothic",sans-serif;font-weight:400;line-height:1.5}
+  h1,h2,.hero .sub,.ask p,.box .txt,.step .txt,.note,.cmp p{word-break:auto-phrase;text-wrap:pretty}
+  p{margin:0}
+  img,svg{max-width:100%;display:block}
+
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
+  section{padding-block:calc(var(--pad) / 2)}
+
+  /* ── ボタン（黒地。使う場所を絞る） ── */
+  .btn{
+    display:inline-block;
+    background:var(--ink);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:18px 40px;
+    border-radius:var(--r);
+    border:0;
+    cursor:pointer;
+    font-family:"Zen Maru Gothic",sans-serif;
+    transition:background .25s ease;
+  }
+  .btn:hover{background:var(--pink-deep)}
+
+  /* ── 固定ヘッダー ── */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    height:var(--hdr);
+    background:var(--cream);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease;
+  }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
+  .site-header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .hdr-brand{
+    display:flex;align-items:center;gap:8px;
+    text-decoration:none;color:var(--ink);
+    font-family:"Yomogi",sans-serif;font-size:19px;
+    white-space:nowrap;
+  }
+  .hdr-brand img{width:30px;height:30px;object-fit:contain}
+  .hdr-nav{display:flex;align-items:center;gap:22px}
+  .hdr-nav a{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
+  .hdr-nav a:hover{color:var(--turquoise-deep)}
+  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
+  .hdr-cta{background:var(--ink);color:#fff !important}
+  .hdr-cta:hover{background:var(--pink-deep)}
+  .hdr-cta2{background:var(--cream);border:1px solid var(--turquoise-deep);color:var(--turquoise-deep) !important}
+  .hdr-cta2:hover{background:var(--turquoise-deep);color:#fff !important}
+  @media (max-width:900px){ .hdr-nav{gap:14px} .hdr-nav a{font-size:13px} .hdr-cta,.hdr-cta2{padding:8px 14px} }
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+  #entry{scroll-margin-top:var(--hdr)}
+
+  .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* ── 1. ファーストビュー ── */
+  .hero{
+    position:relative;
+    padding-block:calc(var(--hdr) + 40px) 0;
+    background:linear-gradient(135deg,var(--turquoise) 0 50%,var(--pink) 50% 100%);
+    text-align:center;
+    overflow:hidden;
+  }
+  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 64px) 0} }
+
+  .ribbon-tag{
+    position:absolute;top:calc(var(--hdr) + 16px);right:6%;
+    white-space:nowrap;
+    background:#fff;color:var(--turquoise-deep);
+    font-weight:700;font-size:clamp(12px,2.6vw,14px);letter-spacing:.12em;
+    padding:11px 22px;
+    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
+    box-shadow:0 6px 16px rgba(26,26,26,.16);
+    z-index:2;
+  }
+  @media (max-width:480px){ .ribbon-tag{top:calc(var(--hdr) + 12px);right:16px;padding:9px 16px;font-size:11px} }
+
+  .hero h1{
+    font-size:clamp(30px,8vw,58px);
+    margin:0 0 20px;color:var(--ink);
+  }
+  .hero .sub{color:var(--ink);font-size:clamp(15px,3.6vw,18px);margin-bottom:32px}
+
+  /* ── 溶けかけのソフトクリーム（CSS/SVGで独自に描き起こす） ── */
+  .cone-wrap{position:relative;max-width:360px;margin:0 auto;padding-bottom:56px}
+  .cone-art{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 22px rgba(26,26,26,.14))}
+
+  /* 隅の正方形タグ。写真の構図だけを借り、文言はブランド名に置き換える */
+  .brand-tag{
+    position:absolute;left:6%;bottom:14px;
+    display:flex;align-items:center;justify-content:center;
+    width:76px;height:76px;
+    background:#fff;border-radius:14px;
+    border:2px solid var(--ink);
+    font-weight:700;font-size:11px;line-height:1.3;letter-spacing:.02em;
+    color:var(--ink);text-align:center;
+    box-shadow:0 6px 14px rgba(26,26,26,.14);
+    transform:rotate(-6deg);
+  }
+  @media (max-width:480px){ .brand-tag{width:62px;height:62px;font-size:9.5px;left:4%} }
+
+  /* 対角線から生成りへ、雫の連続でつなぐ区切り */
+  .drip-divider{display:block;width:100%;height:34px;margin-top:20px}
+  .drip-divider path{fill:var(--cream)}
+
+  /* ── 2. 入口の話 ── */
+  .ask{text-align:center}
+  .ask p{font-weight:700;font-size:clamp(19px,4.6vw,26px);line-height:2}
+  .ask .turn{margin-top:30px;color:var(--turquoise-deep);font-size:clamp(19px,4.8vw,26px)}
+
+  .ask .anxiety-eyebrow{font-weight:700;font-size:14px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:20px}
+  .anxieties{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:8px 6px;max-width:640px;margin:0 auto 22px}
+  .anxiety{display:flex;flex-direction:column;align-items:center;gap:8px;width:96px}
+  .anxiety .icon{width:44px;height:44px;color:var(--pink-deep)}
+  .anxiety.dest .icon{color:var(--turquoise-deep)}
+  .anxiety .icon svg{width:100%;height:100%;display:block}
+  .ask .anxiety .a-txt{font-size:clamp(12px,3.1vw,14px);font-weight:700;color:var(--ink)}
+  .a-arrow{align-self:center;margin-top:14px;color:var(--turquoise-deep);font-size:15px;line-height:1}
+  .ask .anxiety-flow{font-size:clamp(13px,3.2vw,15px);font-weight:500;color:var(--ink-soft);margin-bottom:34px}
+  .ask .anxiety-flow span{color:var(--turquoise-deep);margin:0 2px}
+
+  /* ── 3. 変わること ── */
+  .swap{display:grid;gap:16px}
+  @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
+  .box{padding:34px 20px 26px;text-align:center;background:var(--card);border-radius:var(--r);box-shadow:0 4px 22px rgba(26,26,26,.07)}
+  .box .icon{height:130px;margin:0 auto 14px;display:flex;align-items:flex-end;justify-content:center}
+  .box .icon img{height:100%;width:auto;display:block;filter:drop-shadow(0 8px 12px rgba(26,26,26,.14))}
+  .box .tag-label{display:block;margin:0 0 6px;font-weight:700;font-size:12px;letter-spacing:.14em;color:var(--ink-soft)}
+  .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
+  .arrow{text-align:center;color:var(--turquoise-deep);font-size:24px;line-height:1}
+  @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
+  .note{margin-top:30px;text-align:center;color:var(--ink-soft);font-size:15px}
+
+  /* ── 4. REALIZEマーケット ── */
+  .market-card{max-width:560px;margin:0 auto;padding:40px 28px;background:var(--card);border-radius:var(--r);box-shadow:0 4px 20px rgba(26,26,26,.08);text-align:center}
+  .market-tag{display:inline-block;background:var(--pink);color:var(--ink);font-weight:700;font-size:13px;letter-spacing:.04em;padding:7px 18px;border-radius:999px;margin-bottom:18px}
+  .market-title{display:flex;align-items:center;justify-content:center;gap:10px;font-family:"Yomogi",sans-serif;font-size:clamp(24px,6vw,32px);color:var(--ink);margin:0 0 16px}
+  .market-title .icon{width:34px;height:34px;color:var(--turquoise-deep)}
+  .market-title .icon svg{width:100%;height:100%;display:block}
+  .market-desc{color:var(--ink-soft);font-size:15px;line-height:1.9;margin-bottom:28px}
+  .market-stat{background:var(--cream);border-radius:14px;padding:20px;margin-bottom:16px}
+  .market-stat-label{font-size:13px;color:var(--ink-soft);margin-bottom:6px}
+  .market-stat-fig{font-weight:700;font-size:clamp(26px,6.4vw,34px);color:var(--pink-deep)}
+  .market-stat-fig small{font-size:.5em;color:var(--ink-soft)}
+  .market-note{font-size:14px;color:var(--turquoise-deep);font-weight:700}
+
+  /* ── 5. 効果（コーン型の札） ── */
+  .results{display:grid;gap:16px}
+  @media (min-width:768px){ .results{grid-template-columns:repeat(3,1fr);gap:20px} }
+  .result{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(26,26,26,.09)}
+  .result .rim{display:block;width:100%;height:14px}
+  .result .rim path{fill:var(--turquoise)}
+  .result:nth-child(2) .rim path{fill:var(--pink)}
+  .result:nth-child(3) .rim path{fill:var(--turquoise)}
+  .result .body{padding:22px 22px 28px}
+  .result .label{font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+  .result .fig{font-weight:700;font-size:clamp(24px,6.2vw,32px);line-height:1.3;color:var(--pink-deep)}
+  .result:nth-child(1) .fig,.result:nth-child(3) .fig{color:var(--turquoise-deep)}
+  .result .fig small{font-size:.52em;color:var(--ink-soft)}
+
+  /* ── 6. 従来との違い ── */
+  .cmp{display:grid;gap:16px}
+  @media (min-width:768px){ .cmp{grid-template-columns:1fr 1fr;gap:24px} }
+  .cmp .box2{padding:28px 24px;border-radius:var(--r);background:var(--card);box-shadow:0 4px 18px rgba(26,26,26,.06)}
+  .cmp .box2.now{opacity:.75}
+  .cmp .who{display:block;font-weight:700;font-size:13px;letter-spacing:.08em;margin-bottom:10px;color:var(--ink-soft)}
+  .cmp .box2.club .who{color:var(--turquoise-deep)}
+  .cmp p{font-size:clamp(15px,3.8vw,17px)}
+
+  /* ── 7. 最終CTA ── */
+  .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
+  form{max-width:520px;margin-inline:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:32px 24px}
+  .field{margin-bottom:20px}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
+  input{width:100%;padding:15px 16px;font-size:16px;font-family:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px}
+  input:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
+  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  .entry-note{max-width:520px;margin:24px auto 0;font-size:13px;line-height:1.9;color:var(--ink-soft);text-align:center}
+  .entry-note a{color:var(--turquoise-deep)}
+
+  footer{padding:48px 0 40px;text-align:center;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line)}
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--turquoise-deep)}
+  .footer-brand{
+    font-family:"Yomogi",sans-serif;font-size:20px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;
+  }
+  .footer-brand img{width:28px;height:28px;object-fit:contain}
+  .footer-copy{margin-top:14px;font-size:12px}
+
+  .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(251,246,240,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .sticky .btn{display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px}
+  @media (min-width:768px){ .sticky{display:none} }
+  @media (max-width:767px){ body{padding-bottom:64px} }
+
+  .fade{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .fade.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .fade{opacity:1;transform:none;transition:none} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<!-- アイコン置き場 -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+<defs>
+  <!-- 3大不安用。右肩上がりの折れ線（物価高・お金の不安） -->
+  <g id="worryMoney" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-18 14h36"/>
+    <path d="M-14 8L-2 -2 6 4 16 -12"/>
+    <path d="M6 -14l10 -2 2 10"/>
+  </g>
+  <!-- 3大不安用。うなだれた人（人間関係の疲弊） -->
+  <g id="worryRelation" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-3" cy="-15" r="6"/>
+    <path d="M-3 -9C-1 0 -8 4 -10 14"/>
+    <path d="M-10 14h14"/>
+    <path d="M-10 14l-4 8M4 14l4 8"/>
+  </g>
+  <!-- 3大不安用。不安げな表情の顔（将来への不安） -->
+  <g id="worryFuture" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="16"/>
+    <path d="M-10 -6L-4 -3"/>
+    <path d="M10 -6L4 -3"/>
+    <path d="M-7 10Q-3 7 0 10T7 10"/>
+    <circle cx="-6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+    <circle cx="6" cy="2" r="1.6" fill="currentColor" stroke="none"/>
+  </g>
+  <!-- 3大不安の行き着く先。吹き出しに斜線（相談できる環境がない） -->
+  <g id="worryNoOne" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16 -10h32a4 4 0 0 1 4 4v9a4 4 0 0 1 -4 4h-17l-9 9v-9h-6a4 4 0 0 1 -4 -4v-9a4 4 0 0 1 4 -4z"/>
+    <path d="M-17 15L17 -15"/>
+  </g>
+  <!-- REALIZEマーケット用。買い物かご -->
+  <g id="marketBasket" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-14 -4h28l-4 20a3 3 0 0 1 -3 3h-14a3 3 0 0 1 -3 -3z"/>
+    <path d="M-8 -4c0-6 4-10 8-10s8 4 8 10"/>
+    <path d="M-6 4v12M0 4v12M6 4v12"/>
+  </g>
+  <!-- 仕組み用。在庫の箱（余剰在庫・継続在庫・切迫品で使い回す） -->
+  <g id="stockBox" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-14 -8L0 -15 14 -8 0 -1Z"/>
+    <path d="M-14 -8V8L0 15 14 8V-8"/>
+    <path d="M0 -1V15"/>
+  </g>
+  <!-- 仕組み用。循環の矢印（在庫を活用） -->
+  <g id="flowUse" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-11 -2a12 12 0 0 1 20-8"/>
+    <path d="M5 -15l5 4-5 4"/>
+    <path d="M11 2a12 12 0 0 1 -20 8"/>
+    <path d="M-5 15l-5-4 5-4"/>
+  </g>
+  <!-- 仕組み用。右肩下がりの折れ線（ロスを減らす） -->
+  <g id="flowReduce" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-18 -14h36"/>
+    <path d="M-14 -8L-2 2 6 -4 16 12"/>
+    <path d="M6 10l10 2 2-10"/>
+  </g>
+  <!-- 仕組み用。ハート（収益を寄付） -->
+  <g id="flowGive" fill="currentColor" stroke="none">
+    <path d="M0 15C-16 4 -18 -8 -8 -13C-2 -16 2 -12 0 -6C-2 -12 2 -16 8 -13C18 -8 16 4 0 15Z"/>
+  </g>
+</defs>
+</svg>
+
+<!-- 固定ヘッダー -->
+<div class="site-header" id="site-header">
+  <div class="wrap">
+    <a class="hdr-brand" href="#top">
+      <img src="realize-club-home-icon.png" alt="" width="30" height="30">
+      REALIZE CLUB
+    </a>
+    <nav class="hdr-nav">
+      <a href="#top">ホーム</a>
+      <a href="#flow">仕組み</a>
+      <a class="hdr-cta" href="#entry">無料説明会に参加</a>
+      <a class="hdr-cta2" href="shiryou-icecream.html">資料請求</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 1. ファーストビュー -->
+<header class="hero" id="top">
+  <p class="ribbon-tag">ひんやり相談</p>
+  <div class="wrap">
+    <div class="cone-wrap">
+      <img class="cone-art" src="icecream-hero.png" width="153" height="294"
+           alt="バニラソフトクリームがワッフルコーンに乗ったイラスト">
+      <span class="brand-tag">REALIZE<br>CLUB</span>
+    </div>
+
+    <h1>社員が、<br>溶けていく前に。</h1>
+    <p class="sub">頑張る社員も、<br>放っておくと溶けてしまう。</p>
+    <a class="btn" href="#entry">まずは無料説明会に参加</a>
+  </div>
+
+  <svg class="drip-divider" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0h400v6c-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0-16 14-34 14-50 0V0z"/>
+  </svg>
+</header>
+
+<!-- 2. 入口の話 -->
+<section class="ask">
+  <div class="wrap fade">
+    <p class="anxiety-eyebrow">現代人の3大不安</p>
+    <div class="anxieties">
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryMoney"/></svg></span>
+        <p class="a-txt">お金の不安</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryRelation"/></svg></span>
+        <p class="a-txt">人間関係の不安</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryFuture"/></svg></span>
+        <p class="a-txt">将来への不安</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#worryNoOne"/></svg></span>
+        <p class="a-txt">相談できる<br>環境がない</p>
+      </div>
+    </div>
+    <p class="anxiety-flow">困ってから考える<span aria-hidden="true">▶</span>判断を間違える<span aria-hidden="true">▶</span>後悔を生む</p>
+    <p>会社は、仕事のやり方は教えてくれる。</p>
+    <p>でも、人生の相談先までは用意していない。</p>
+    <p>REALIZE CLUBは、溶けてから助けるのではなく、溶ける前に助けます。</p>
+    <p class="turn">→ その空白を埋めるのが、冷たいひと匙。</p>
+  </div>
+</section>
+
+<!-- 3. 変わること -->
+<section>
+  <div class="wrap fade">
+    <div class="swap">
+      <div class="box before">
+        <span class="icon" aria-hidden="true"><img src="popsicle-melting.png" alt=""></span>
+        <span class="tag-label">BEFORE</span>
+        <p class="txt">頑張り続けて、溶けていく人</p>
+      </div>
+      <p class="arrow" aria-hidden="true">→</p>
+      <div class="box">
+        <span class="icon" aria-hidden="true"><img src="popsicle-intact.png" alt=""></span>
+        <span class="tag-label">AFTER</span>
+        <p class="txt">冷やされて、形を保てる人</p>
+      </div>
+    </div>
+    <p class="note">社員一人ひとりのライフリテラシーを育てる仕組みを提供します。</p>
+  </div>
+</section>
+
+<!-- 4. REALIZEマーケット -->
+<section id="flow">
+  <div class="wrap fade">
+    <div class="market-card">
+      <p class="market-tag">物価高に即効！家計支援サービス</p>
+      <h2 class="market-title">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#marketBasket"/></svg></span>
+        REALIZEマーケット
+      </h2>
+      <p class="market-desc">
+        日用品が最大90％OFFで購入できるECサイト。<br>
+        社員の暮らしを支える家計支援で、家計に余白を作ります。
+      </p>
+      <div class="market-stat">
+        <p class="market-stat-label">社員の実質可処分所得が</p>
+        <p class="market-stat-fig">毎月2〜3<small>万円UP！</small></p>
+      </div>
+      <p class="market-note">つまり、採用にも効く。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. REALIZEマーケットの仕組み -->
+<section class="ask">
+  <div class="wrap fade">
+    <p class="anxiety-eyebrow">REALIZEマーケットの仕組み</p>
+    <div class="anxieties">
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">余剰在庫</p>
+      </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">継続在庫</p>
+      </div>
+      <div class="anxiety">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#stockBox"/></svg></span>
+        <p class="a-txt">切迫品</p>
+      </div>
+    </div>
+    <p>「今日は何があるかな？」という宝探し感覚で楽しめます。</p>
+    <p class="turn">お得なだけじゃない。社会貢献にもつながる。</p>
+    <div class="anxieties">
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowUse"/></svg></span>
+        <p class="a-txt">在庫を活用</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowReduce"/></svg></span>
+        <p class="a-txt">ロスを減らす</p>
+      </div>
+      <span class="a-arrow" aria-hidden="true">▶</span>
+      <div class="anxiety dest">
+        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#flowGive"/></svg></span>
+        <p class="a-txt">収益を寄付</p>
+      </div>
+    </div>
+    <p class="note">使うほど、社会貢献にもつながる。</p>
+  </div>
+</section>
+
+<!-- 6. 従来との違い -->
+<section>
+  <div class="wrap fade">
+    <div class="cmp">
+      <div class="box2 now">
+        <span class="who">従来の福利厚生</span>
+        <p>一部の社員だけが、割引や娯楽で一時的に満足する。</p>
+      </div>
+      <div class="box2 club">
+        <span class="who">REALIZE CLUB</span>
+        <p>全社員が、人生100年を安心して歩めるようになる。</p>
+      </div>
+    </div>
+    <p class="note">制度を増やすのではなく、社員の人生観そのものを変える。</p>
+  </div>
+</section>
+
+<!-- 7. 最終CTA -->
+<section class="entry" id="entry">
+  <div class="wrap fade">
+    <h2>まずは、無料説明会に参加するところから。</h2>
+    <p class="lead">その場で決めなくて構いません。<br>導入後も、いつでも解約できます。</p>
+    <form id="entry-form" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お担当者名</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <button class="btn submit" type="submit">無料説明会に参加する</button>
+    </form>
+    <p class="entry-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="footer-brand">
+      <img src="realize-club-home-icon.png" alt="" width="28" height="28">
+      REALIZE CLUB
+    </span>
+    <nav>
+      <a href="#top">ホーム</a>
+      <a href="#entry">無料説明会に参加</a>
+      <a href="shiryou-icecream.html">資料請求</a>
+    </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
+  </div>
+</footer>
+
+<div class="sticky"><a class="btn" href="#entry">まずは無料説明会に参加</a></div>
+
+<script>
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'REALIZE CLUB 御中', '',
+      '無料説明会に参加したく、連絡いたします。', '',
+      '会社名：' + v('company'),
+      'お担当者名：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('無料説明会参加希望（REALIZE CLUB）')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -10%' });
+  document.querySelectorAll('.fade').forEach(function (el) { io.observe(el); });
+</script>
+
+</body>
+</html>
