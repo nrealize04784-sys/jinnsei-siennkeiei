@@ -71,6 +71,12 @@
     transition:filter .25s ease,box-shadow .25s ease;
   }
   .btn:hover{filter:brightness(1.08);box-shadow:0 10px 30px rgba(198,40,29,.44)}
+  .btn-ghost{
+    background:transparent;color:var(--gold-line) !important;
+    border:1px solid var(--gold-line);box-shadow:none;
+  }
+  .btn-ghost:hover{background:var(--gold-line);color:var(--bg-deep) !important;filter:none;box-shadow:none}
+  .hero-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
 
   /* ── 固定ヘッダー ── */
   .site-header{
@@ -301,43 +307,21 @@
   .vow p{color:var(--ink-soft);font-size:clamp(15px,3.6vw,17px)}
   .vow .small{margin-top:20px;font-size:13px;color:var(--ink-faint)}
 
-  /* ── 7. 最終CTA ── */
+  /* ── 7. 最終CTA：資料請求／導入相談の2択 ── */
   .entry{background:var(--bg-deep)}
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
   .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
-  form{
-    max-width:520px;
-    margin-inline:auto;
+  .cta-choices{display:grid;gap:16px;max-width:640px;margin-inline:auto}
+  @media (min-width:640px){ .cta-choices{grid-template-columns:1fr 1fr;gap:20px} }
+  .cta-card{
+    padding:32px 24px;text-align:center;
     background:var(--card);
     border:1px solid var(--card-line);
     border-radius:var(--r);
-    padding:32px 24px;
   }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input,textarea{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#141010;
-    border:1px solid var(--card-line);
-    border-radius:8px;
-  }
-  textarea{min-height:84px;resize:vertical;line-height:1.7}
-  input:focus,textarea:focus{outline:2px solid var(--gold-line);outline-offset:1px;border-color:transparent}
-  input::placeholder,textarea::placeholder{color:var(--ink-faint)}
-  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
-  .entry-note{
-    max-width:520px;
-    margin:24px auto 0;
-    font-size:13px;
-    line-height:1.9;
-    color:var(--ink-faint);
-    text-align:center;
-  }
-  .entry-note a{color:var(--gold-line)}
+  .cta-card h3{font-size:19px;color:var(--ink);margin-bottom:10px}
+  .cta-card p{color:var(--ink-soft);font-size:14px;margin-bottom:22px;line-height:1.8}
+  .cta-card .btn{width:100%}
 
   /* ── フッター ── */
   footer{
@@ -410,8 +394,8 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="#merit">導入メリット</a>
-      <a class="hdr-ghost" href="hanashi.html">まずは話を聞く</a>
-      <a class="hdr-cta btn" href="#entry">資料請求</a>
+      <a class="hdr-ghost" href="sodan.html">まずは話を聞く</a>
+      <a class="hdr-cta btn" href="shiryou-realize.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -430,7 +414,10 @@
   <div class="wrap">
     <h1>困る前に、<br>灯す。</h1>
     <p class="sub">福利厚生を、社員の人生を支える仕組みに変える。</p>
-    <a class="btn" href="#entry">資料請求・導入相談（無料）</a>
+    <div class="hero-ctas">
+      <a class="btn" href="shiryou-realize.html">資料請求はこちら</a>
+      <a class="btn btn-ghost" href="sodan.html">まずは話を聞く</a>
+    </div>
   </div>
 </header>
 
@@ -516,43 +503,23 @@
   </div>
 </section>
 
-<!-- 7. 最終CTA -->
+<!-- 7. 最終CTA：資料請求と導入相談、それぞれ別のページへ -->
 <section class="entry" id="entry">
   <div class="wrap fade">
     <h2>あなたの会社にも、灯りを。</h2>
-    <p class="lead">まずは資料で、仕組みをご確認ください。</p>
-    <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-gift.html / lp-cafe.html と同じ）。
-    -->
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
+    <p class="lead">まずは資料で確認するか、直接お話しするか、お選びください。</p>
+    <div class="cta-choices">
+      <div class="cta-card">
+        <h3>資料請求</h3>
+        <p>概要をまとめた資料をお送りします。</p>
+        <a class="btn" href="shiryou-realize.html">資料請求はこちら</a>
       </div>
-      <div class="field">
-        <label for="name">お名前</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
+      <div class="cta-card">
+        <h3>導入相談</h3>
+        <p>直接お話しして、疑問にお答えします。</p>
+        <a class="btn btn-ghost" href="sodan.html">まずは話を聞く</a>
       </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="addr">送付先のご住所</label>
-        <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
-      </div>
-      <button class="btn submit" type="submit">資料請求・導入相談（無料）</button>
-    </form>
-    <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
-    </p>
+    </div>
   </div>
 </section>
 
@@ -561,7 +528,8 @@
     <p class="brand"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;flex:none"><use href="#flameIcon"/></svg>REALIZE CLUB</p>
     <nav>
       <a href="kaisha.html">会社概要</a>
-      <a href="#entry">資料請求</a>
+      <a href="shiryou-realize.html">資料請求</a>
+      <a href="sodan.html">導入相談</a>
     </nav>
     <p class="addr">日本リアライズ株式会社<br>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 8F　TEL：03-6380-5978</p>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
@@ -569,35 +537,9 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">資料請求・導入相談</a></div>
+<div class="sticky"><a class="btn" href="shiryou-realize.html">資料請求はこちら</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'REALIZE CLUB 御中', '',
-      '資料請求・導入相談を希望します。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '送付先のご住所：' + v('addr'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('お問い合わせ（資料請求・導入相談）')
-      + '&body=' + encodeURIComponent(body);
-  });
-
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>まずは話を聞く｜REALIZE CLUB</title>
+<title>導入相談｜REALIZE CLUB</title>
 <meta name="description" content="資料を読む前に、直接お話しください。REALIZE CLUBの導入相談窓口です。">
 <meta name="robots" content="noindex">
 
@@ -176,21 +176,21 @@
     </a>
     <nav class="hdr-nav">
       <a href="lp-realize-club.html#top">ホーム</a>
-      <a class="hdr-cta btn" href="lp-realize-club.html#entry">資料請求</a>
+      <a class="hdr-cta btn" href="shiryou-realize.html">資料請求</a>
     </nav>
   </div>
 </div>
 
 <main>
   <div class="wrap">
-    <h1>まずは話を聞く</h1>
+    <h1>導入相談</h1>
     <p class="lead">資料を読む前に、直接お話しさせてください。折り返しご連絡します。</p>
 
     <!--
       送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
       入力内容から本文を組み立ててメーラーを開く方式（lp-realize-club.html と同じ）。
     -->
-    <form id="talk-form" novalidate>
+    <form id="sodan-form" novalidate>
       <div class="field">
         <label for="company">会社名</label>
         <input id="company" name="company" type="text" autocomplete="organization" required>
@@ -228,7 +228,7 @@
     <p class="brand"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;flex:none"><use href="#flameIcon"/></svg>REALIZE CLUB</p>
     <nav>
       <a href="kaisha.html">会社概要</a>
-      <a href="lp-realize-club.html#entry">資料請求</a>
+      <a href="shiryou-realize.html">資料請求</a>
     </nav>
     <p class="addr">日本リアライズ株式会社<br>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 8F　TEL：03-6380-5978</p>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
@@ -236,7 +236,7 @@
 </footer>
 
 <script>
-  document.getElementById('talk-form').addEventListener('submit', function (e) {
+  document.getElementById('sodan-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var v = function (id) { return document.getElementById(id).value.trim(); };
     var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号']];
@@ -249,7 +249,7 @@
     }
     var body = [
       'REALIZE CLUB 御中', '',
-      'まずは話を聞きたく、ご連絡しました。', '',
+      '導入相談を希望します。', '',
       '会社名：' + v('company'),
       'お名前：' + v('name'),
       '電話番号：' + v('tel'),
@@ -257,7 +257,7 @@
       '相談したいこと：' + v('memo'), ''
     ].join('\r\n');
     location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('お問い合わせ（まずは話を聞く）')
+      + '?subject=' + encodeURIComponent('導入相談')
       + '&body=' + encodeURIComponent(body);
   });
 
