@@ -66,8 +66,11 @@
   .hdr-nav a,.hdr-nav [aria-current]{ color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
   .hdr-nav a:hover{color:var(--red)}
-  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} }
-  @media (max-width:600px){ .hdr-nav a{display:none} }
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
+  .hdr-cta:hover{background:var(--red-deep)}
+  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta{padding:8px 13px} }
+  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta){display:none} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
 
   /* ── 本文 ── */
   main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
@@ -170,6 +173,7 @@
     <nav class="hdr-nav">
       <a href="lp-pop.html">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
+      <a class="hdr-cta" href="setsumeikai-pop.html">まずは無料説明会へ</a>
       <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
       <span aria-current="page">資料請求</span>
     </nav>
