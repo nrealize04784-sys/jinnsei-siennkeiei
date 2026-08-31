@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="加盟の概要をまとめた資料をお送りします。ライフメイクパートナーズの資料請求フォーム。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400&family=Yuji+Boku&display=swap" rel="stylesheet">
+
+<style>
+  /* 本編（lp-korean.html）と同じ配色・同じヘッダー */
+  :root{
+    --wood:#C79A67; --cream:#F8F1E2; --ink:#241E1A; --ink-soft:#4A3D33;
+    --navy:#2A3550; --red:#D2402F; --yellow:#F0C33C; --line:#E2D6BE;
+    --side:22px; --hdr:56px;
+  }
+  @media (min-width:900px){ :root{ --side:48px; --hdr:68px } }
+  *{box-sizing:border-box}
+  body{
+    margin:0; color:var(--ink);
+    font-family:"Noto Sans JP","Noto Sans KR",sans-serif; font-size:15px; line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    background-color:var(--wood);
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 118px, rgba(120,78,40,.28) 118px 120px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 3px, transparent 3px 9px),
+      linear-gradient(180deg, rgba(90,58,28,.10), rgba(90,58,28,0) 240px);
+  }
+  a{color:var(--red)}
+  h1{ font-family:"Yuji Boku","Noto Sans JP",serif; font-weight:400; font-size:30px; margin:0; letter-spacing:.04em }
+  @media (min-width:900px){ h1{ font-size:42px } }
+
+  header.site{
+    position:fixed; inset:0 0 auto 0; z-index:30; height:var(--hdr);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 var(--side); background:var(--navy); box-shadow:0 1px 0 rgba(0,0,0,.22);
+  }
+  .wordmark{ color:var(--cream); text-decoration:none; font-size:13px; font-weight:700; letter-spacing:.14em; white-space:nowrap }
+  .hdr-nav{ display:flex; align-items:center; gap:18px }
+  @media (min-width:900px){ .hdr-nav{ gap:28px } }
+  .hdr-nav a{
+    color:rgba(248,241,226,.9); text-decoration:none; font-size:13px; letter-spacing:.06em;
+    white-space:nowrap; display:inline-flex; align-items:center; gap:.5em;
+  }
+  .hdr-nav a::before{
+    content:""; flex:none; width:.42em; height:.62em;
+    background:currentColor; clip-path:polygon(0 0,100% 50%,0 100%);
+  }
+  .hdr-nav a:hover{ color:#fff }
+  .hdr-cta{ border:1px solid rgba(248,241,226,.85); border-radius:5px; padding:8px 16px }
+  .hdr-nav a.hdr-cta-main{ color:var(--yellow) }
+  .hdr-cta:hover{ background:rgba(255,255,255,.1) }
+  @media (max-width:899px){
+    .hdr-nav a.hdr-cta{ display:none }
+    .hdr-nav a{ font-size:12px; letter-spacing:0 }
+    .wordmark{ font-size:11px; letter-spacing:.1em }
+  }
+
+  main{ padding:calc(var(--hdr) + 56px) var(--side) 80px }
+  .wrap{ max-width:720px; margin:0 auto }
+  .tag{
+    display:inline-block; background:var(--navy); color:var(--cream);
+    font-size:12px; font-weight:500; letter-spacing:.08em; padding:5px 14px; border-radius:6px;
+    box-shadow:0 2px 0 rgba(0,0,0,.18);
+  }
+  .tag .ko{ font-family:"Noto Sans KR",sans-serif; margin-left:.5em; opacity:.85 }
+  .head{ text-align:center; margin-bottom:28px }
+  .head h1{ margin-top:16px }
+  .head p{ margin:10px 0 0; color:var(--cream) }
+  .panel{
+    background:var(--cream); border-radius:14px; padding:28px 22px;
+    box-shadow:0 4px 0 rgba(90,58,28,.18);
+  }
+  @media (min-width:900px){ .panel{ padding:40px } }
+  dl{ margin:0 }
+  dl div{ display:grid; grid-template-columns:1fr; gap:2px; padding:14px 0; border-bottom:1px dashed var(--line) }
+  @media (min-width:600px){ dl div{ grid-template-columns:120px 1fr; gap:16px } }
+  dl div:last-child{ border-bottom:0 }
+  dt{ font-size:13px; color:var(--ink-soft) }
+  dd{ margin:0 }
+  .field{ margin-top:18px }
+  .field label{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px }
+  .field input,.field textarea{
+    width:100%; font-family:inherit; font-size:15px; color:var(--ink);
+    background:#fff; border:1px solid var(--line); border-radius:8px; padding:11px 12px;
+  }
+  .field textarea{ min-height:88px; resize:vertical }
+  .field input:focus,.field textarea:focus{ outline:0; border-color:var(--red) }
+  .btn{
+    display:block; width:100%; margin-top:26px;
+    background:var(--red); color:#fff; text-decoration:none; text-align:center;
+    font-family:inherit; font-size:15px; font-weight:500; letter-spacing:.03em;
+    padding:15px 20px; border:0; border-radius:999px; cursor:pointer;
+    box-shadow:0 3px 0 #9E2C1F; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
+  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
+  .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
+  .back:hover{ text-decoration:underline }
+  /* まちなみの絵。面は敷かず、木の地にそのまま置く */
+  .scene{ margin-top:32px }
+  .scene svg{ width:100%; height:auto; display:block }
+  /* 本編と同じ線画の飾り。輪郭だけで、塗りはなし */
+  .line{ stroke:var(--ink); fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; opacity:.8 }
+  .ornament{ display:flex; justify-content:center; margin-bottom:18px }
+  .ornament svg{ width:92px; height:52px }
+  .home-btn{
+    display:block; width:fit-content; margin:32px auto 0;
+    color:var(--cream); text-decoration:none;
+    font-size:15px; letter-spacing:.04em;
+    border:1px solid rgba(248,241,226,.85); border-radius:999px;
+    padding:13px 30px;
+    display:flex; align-items:center; gap:.6em;
+  }
+  .home-btn::before{
+    content:""; flex:none; width:.42em; height:.62em;
+    background:currentColor; clip-path:polygon(100% 0,0 50%,100% 100%);
+  }
+  .home-btn:hover{ background:var(--cream); color:var(--ink) }
+  footer{ background:var(--ink); color:#CFC4B2; padding:44px var(--side); text-align:center }
+  footer .wordmark{ color:var(--cream) }
+  footer p{ font-size:13px; margin:16px 0 0; line-height:2 }
+  footer a{ color:#CFC4B2 }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <a class="wordmark" data-home href="lp-korean.html">LIFE MAKE PARTNER'S</a>
+  <nav class="hdr-nav">
+    <a data-home href="lp-korean.html">ホーム</a>
+    <a href="kaisha-korean.html">会社概要</a>
+    <a class="hdr-cta hdr-cta-main" href="lp-korean.html#entry">まず話を聞いてみる</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="head">
+      <!-- 持ち帰りの紙袋。塗りの料理と違い、輪郭だけで軽く添える -->
+      <div class="ornament" aria-hidden="true">
+        <svg viewBox="0 0 120 52"><g class="line">
+          <path d="M44 20c0-11 16-11 16 0"/>
+          <path d="M36 20h48l-5 26a4 4 0 0 1-4 3H45a4 4 0 0 1-4-3z"/>
+          <path d="M33 20h54"/>
+          <path d="M56 32h8"/>
+        </g></svg>
+      </div>
+      <span class="tag">お持ち帰り<span class="ko">자료 신청</span></span>
+      <h1>資料請求</h1>
+      <p>加盟の概要をまとめた資料をお送りします。</p>
+    </div>
+
+
+
+    <div class="panel">
+      <!--
+        送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+        入力内容から本文を組み立ててメーラーを開く方式（shiryou.html と同じ）。
+        ※ フォーム送信サービスを使う場合は、この form と下の script を差し替えること。
+      -->
+      <form id="req" novalidate>
+        <div class="field">
+          <label for="company">会社名</label>
+          <input id="company" name="company" type="text" autocomplete="organization" required>
+        </div>
+        <div class="field">
+          <label for="name">お名前</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="tel">電話番号</label>
+          <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="addr">送付先のご住所</label>
+          <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+        </div>
+        <button class="btn" type="submit">この内容で資料請求する</button>
+      </form>
+
+      <p class="note">
+        ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+        内容をご確認のうえ、そのまま送信してください。<br>
+        開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      </p>
+    </div>
+
+    <!-- 韓国のまちなみ。輪郭線なしのべた塗りで、写真を使わずに描いている -->
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 620 214">
+        <!-- 雲 -->
+        <g fill="#CFE6F0">
+          <ellipse cx="70" cy="52" rx="26" ry="13"/><ellipse cx="92" cy="54" rx="17" ry="10"/><ellipse cx="52" cy="55" rx="15" ry="9"/>
+          <ellipse cx="236" cy="42" rx="27" ry="14"/><ellipse cx="258" cy="45" rx="17" ry="10"/>
+          <ellipse cx="540" cy="66" rx="23" ry="12"/><ellipse cx="558" cy="68" rx="15" ry="9"/>
+        </g>
+
+        <!-- 地面 -->
+        <rect x="0" y="196" width="620" height="6" fill="#D6D1C7"/>
+        <rect x="236" y="190" width="176" height="6" fill="#C9CDD2"/>
+
+        <!-- 左のまちなみ -->
+        <g>
+          <rect x="26" y="136" width="46" height="60" fill="#6EC1D9"/><rect x="24" y="130" width="50" height="7" fill="#4FA6C0"/>
+          <g fill="#F8F1E2"><rect x="34" y="146" width="9" height="11"/><rect x="49" y="146" width="9" height="11"/><rect x="34" y="165" width="9" height="11"/><rect x="49" y="165" width="9" height="11"/></g>
+          <rect x="72" y="110" width="28" height="86" fill="#DDE6EA"/><rect x="70" y="104" width="32" height="7" fill="#BFCED6"/>
+          <g fill="#6E8A99"><rect x="79" y="118" width="7" height="9"/><rect x="89" y="118" width="7" height="9"/><rect x="79" y="134" width="7" height="9"/><rect x="89" y="134" width="7" height="9"/><rect x="79" y="150" width="7" height="9"/><rect x="89" y="150" width="7" height="9"/></g>
+          <rect x="100" y="122" width="36" height="74" fill="#F08A5D"/><rect x="98" y="116" width="40" height="7" fill="#D9713F"/>
+          <g fill="#F8F1E2"><rect x="107" y="130" width="9" height="11"/><rect x="121" y="130" width="9" height="11"/><rect x="107" y="149" width="9" height="11"/><rect x="121" y="149" width="9" height="11"/></g>
+          <rect x="136" y="144" width="28" height="52" fill="#B0413E"/><rect x="134" y="138" width="32" height="7" fill="#8E2F2D"/>
+          <g fill="#F8F1E2"><rect x="143" y="152" width="8" height="10"/><rect x="143" y="169" width="8" height="10"/></g>
+          <rect x="164" y="162" width="22" height="34" fill="#F0C33C"/><rect x="162" y="156" width="26" height="7" fill="#D6A821"/>
+          <rect x="170" y="172" width="9" height="10" fill="#F8F1E2"/>
+          <!-- 石段 -->
+          <path d="M196 196h34l-6-8h-22z" fill="#C9CDD2"/>
+        </g>
+
+        <!-- 光化門。石垣に3つのアーチ、上に瓦屋根を2段 -->
+        <g>
+          <rect x="258" y="148" width="124" height="48" fill="#C9CDD2"/>
+          <g fill="#2B2724">
+            <path d="M275 196v-20a13 13 0 0 1 26 0v20z"/>
+            <path d="M307 196v-20a13 13 0 0 1 26 0v20z"/>
+            <path d="M339 196v-20a13 13 0 0 1 26 0v20z"/>
+          </g>
+          <rect x="258" y="140" width="124" height="8" fill="#D2402F"/>
+          <path d="M254 124h132l14 22H240z" fill="#2A3550"/>
+          <rect x="236" y="142" width="168" height="6" rx="3" fill="#1F2839"/>
+          <rect x="284" y="110" width="72" height="14" fill="#D2402F"/>
+          <g fill="#F0C33C"><rect x="292" y="114" width="6" height="6"/><rect x="317" y="114" width="6" height="6"/><rect x="342" y="114" width="6" height="6"/></g>
+          <path d="M286 88h68l12 20H274z" fill="#2A3550"/>
+          <rect x="270" y="104" width="100" height="6" rx="3" fill="#1F2839"/>
+          <rect x="292" y="82" width="56" height="6" rx="3" fill="#2A3550"/>
+        </g>
+
+        <!-- Nソウルタワー -->
+        <g>
+          <path d="M424 196h32l-7-30h-18z" fill="#C9CDD2"/>
+          <rect x="434" y="118" width="12" height="50" fill="#C9CDD2"/>
+          <rect x="424" y="100" width="32" height="18" rx="4" fill="#A9B0B8"/>
+          <rect x="420" y="106" width="40" height="6" rx="3" fill="#8E979F"/>
+          <rect x="438" y="70" width="4" height="30" fill="#A9B0B8"/>
+          <circle cx="440" cy="68" r="5" fill="#D2402F"/>
+        </g>
+
+        <!-- 太極旗 -->
+        <g transform="translate(-14,0)">
+          <rect x="472" y="132" width="3" height="64" fill="#8A6039"/>
+          <rect x="475" y="132" width="48" height="32" fill="#FFFFFF"/>
+          <circle cx="499" cy="148" r="9" fill="#0F4FA8"/>
+          <path d="M490 148a9 9 0 0 1 18 0z" fill="#D2402F"/>
+          <circle cx="494.5" cy="148" r="4.5" fill="#D2402F"/>
+          <circle cx="503.5" cy="148" r="4.5" fill="#0F4FA8"/>
+          <g fill="#241E1A">
+            <g transform="translate(481,138) rotate(-33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(511,140) rotate(33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(479,153) rotate(33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+            <g transform="translate(514,152) rotate(-33)"><rect width="8" height="1.6"/><rect y="3" width="8" height="1.6"/><rect y="6" width="8" height="1.6"/></g>
+          </g>
+        </g>
+
+        <!-- 楼閣 -->
+        <g transform="translate(16,0)">
+          <rect x="524" y="178" width="64" height="18" fill="#C9CDD2"/>
+          <rect x="530" y="148" width="7" height="30" fill="#D2402F"/>
+          <rect x="575" y="148" width="7" height="30" fill="#D2402F"/>
+          <rect x="537" y="148" width="38" height="30" fill="#F8F1E2"/>
+          <g fill="#2A3550"><rect x="543" y="154" width="26" height="2"/><rect x="543" y="162" width="26" height="2"/><rect x="543" y="170" width="26" height="2"/></g>
+          <path d="M528 128h56l12 20H516z" fill="#2A3550"/>
+          <rect x="512" y="144" width="88" height="6" rx="3" fill="#1F2839"/>
+          <rect x="540" y="114" width="32" height="14" fill="#D2402F"/>
+          <path d="M536 96h40l10 18H526z" fill="#2A3550"/>
+          <rect x="522" y="110" width="68" height="6" rx="3" fill="#1F2839"/>
+          <circle cx="556" cy="92" r="5" fill="#2A3550"/>
+        </g>
+
+        <!-- 木 -->
+        <g>
+          <g><rect x="12" y="184" width="5" height="12" fill="#8A6039"/><circle cx="14" cy="180" r="12" fill="#4C8B48"/></g>
+          <g><rect x="204" y="184" width="5" height="12" fill="#8A6039"/><circle cx="206" cy="178" r="13" fill="#3E7A3C"/></g>
+          <g><rect x="408" y="186" width="5" height="10" fill="#8A6039"/><circle cx="410" cy="182" r="11" fill="#4C8B48"/></g>
+          <g><rect x="510" y="186" width="5" height="10" fill="#8A6039"/><circle cx="512" cy="182" r="11" fill="#3E7A3C"/></g>
+        </g>
+      </svg>
+    </div>
+
+    <a class="home-btn" data-home href="lp-korean.html">ホームに戻る</a>
+  </div>
+</main>
+
+<footer>
+  <a class="wordmark" href="https://n-realize.co.jp/" target="_blank" rel="noopener">LIFE MAKE PARTNER'S</a>
+  <p>
+    日本リアライズ株式会社<br>
+    <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a>
+  </p>
+  <p>© 日本リアライズ株式会社</p>
+</footer>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('req').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
+
+<script>
+  // 「ホーム」を押したら必ずホームへ戻す。
+  // 埋め込み表示（iframe）では外側の窓ごと移動させ、
+  // 相対リンクを辿れない環境では履歴を1つ戻る、の順に試す。
+  document.querySelectorAll('[data-home]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      // 外側の窓に渡すので、相対パスのままではなく絶対URLにしておく
+      var url = new URL(a.getAttribute('href'), location.href).href;
+      e.preventDefault();
+      try {
+        if (window.top !== window.self) { window.top.location.href = url; return; }
+      } catch (err) { /* 別ドメインに埋め込まれている場合はここに来る */ }
+      var before = location.href;
+      location.href = url;
+      setTimeout(function () {
+        if (location.href === before && history.length > 1) history.back();
+      }, 700);
+    });
+  });
+</script>
+
+</body>
+</html>
