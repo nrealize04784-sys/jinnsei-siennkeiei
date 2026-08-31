@@ -8,30 +8,29 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ── REALIZE CLUB の配色（深緑）。rc-presentation デザインシステムに準拠。
-     60〜70%は白、25%は深緑・主緑、残りを淡緑。青とオレンジは使わない。 */
+  /* ── 星空タウン（lp-star.html）と同じ配色・書体・パーツをそのまま使う。
+     イラスト（star-hero.png）とビジュアルの雰囲気は変えず、コピーだけを
+     REALIZE CLUB（法人向け・人生支援プラットフォーム）に差し替える。 */
   :root{
-    --g:#0E3D2B;         /* 主色。帯、強調ボックス、見出し */
-    --gd:#06241A;        /* 表紙・締めセクションの全面背景 */
-    --gm:#2C7A57;         /* 主緑。アイコン、ラベル、強調コピー */
-    --gs:#6FA98D;         /* 中間緑。矢印、深緑地の上の小さい文字 */
-    --gp:#EAF2ED;         /* 淡緑の面。カード・ピルの塗り */
-    --gl:#C7DCD0;         /* 淡緑の線。枠線 */
-    --ink:#111418;
-    --gray:#76808C;
-    --gray-l:#A8B1BA;
-    --cmp-fill:#F2F5F3;
-    --cmp-line:#DFE6E1;
-    --cream:#FBFAF6;
+    --bg1:#FBEFC4;
+    --bg2:#F5D343;
+    --cream:#FBF3DD;
+    --ink:#1B2A4A;
+    --ink-soft:#4A5A78;
+    --yellow:#F5C400;
+    --yellow-deep:#A67B00;
+    --red:#E2352B;
+    --red-deep:#B8221B;
+    --line:rgba(27,42,74,.14);
     --card:#FFFFFF;
     --r:16px;
-    --pad:72px;
+    --pad:80px;
     --hdr:56px;
   }
-  @media (min-width:768px){ :root{ --pad:120px; --hdr:68px } }
+  @media (min-width:768px){ :root{ --pad:140px; --hdr:68px } }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -39,23 +38,23 @@
     margin:0;
     background:var(--cream);
     color:var(--ink);
-    font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
     font-size:16px;
     line-height:1.9;
     -webkit-font-smoothing:antialiased;
     letter-spacing:.02em;
   }
-  h1,h2,h3{font-family:"Noto Serif JP",serif;font-weight:700;line-height:1.55;letter-spacing:.02em;color:var(--g)}
-  h1,h2,.hero .sub,.lead,.card p,.step p{word-break:auto-phrase;text-wrap:pretty}
+  h1,h2,h3{font-weight:700;line-height:1.6;letter-spacing:.01em}
+  h1,h2,.hero .sub,.ask p,.box .txt,.step .txt,.note,.seats p{word-break:auto-phrase;text-wrap:pretty}
   p{margin:0}
   img{max-width:100%;display:block}
 
-  .wrap{width:min(100% - 40px,920px);margin-inline:auto}
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
   section{padding-block:calc(var(--pad) / 2)}
 
   .btn{
     display:inline-block;
-    background:var(--g);
+    background:var(--red);
     color:#fff;
     text-decoration:none;
     font-weight:700;
@@ -67,43 +66,40 @@
     font-family:inherit;
     transition:background .25s ease;
   }
-  .btn:hover{background:var(--gd)}
-  .btn.ghost{background:transparent;color:var(--g);border:1.5px solid var(--g)}
-  .btn.ghost:hover{background:var(--gp)}
+  .btn:hover{background:var(--red-deep)}
 
   /* ── 固定ヘッダー ── */
   .site-header{
     position:fixed;top:0;left:0;right:0;z-index:30;
     height:var(--hdr);
-    background:var(--cream);
+    background:var(--bg2);
     border-bottom:1px solid transparent;
-    transition:border-color .3s ease;
+    transition:background .3s ease,border-color .3s ease;
   }
-  .site-header.scrolled{ border-bottom-color:var(--gl) }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
   .site-header .wrap{
     height:100%;
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
   .hdr-brand{
     display:flex;align-items:center;gap:8px;
-    text-decoration:none;color:var(--g);
-    font-family:"Noto Serif JP",serif;
-    font-weight:700;font-size:17px;letter-spacing:.08em;
+    text-decoration:none;color:var(--ink);
+    font-weight:700;font-size:15px;letter-spacing:.08em;
     white-space:nowrap;
   }
-  .hdr-brand .dot{color:var(--gm)}
+  .hdr-brand .dot{color:var(--red)}
 
   .hdr-nav{display:flex;align-items:center;gap:22px}
   .hdr-nav a{
-    color:var(--gray);text-decoration:none;
+    color:var(--ink-soft);text-decoration:none;
     font-size:14px;white-space:nowrap;
   }
-  .hdr-nav a:hover{color:var(--g)}
+  .hdr-nav a:hover{color:var(--ink)}
   .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--g);color:#fff !important}
-  .hdr-cta:hover{background:var(--gd)}
-  .hdr-cta2{background:transparent;border:1px solid var(--g);color:var(--g) !important}
-  .hdr-cta2:hover{background:var(--gp)}
+  .hdr-cta{background:var(--red);color:#fff !important}
+  .hdr-cta:hover{background:var(--red-deep)}
+  .hdr-cta2{background:var(--cream);border:1px solid var(--ink);color:var(--ink) !important}
+  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a{font-size:13px}
@@ -113,171 +109,177 @@
 
   #entry{scroll-margin-top:var(--hdr)}
 
+  .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
+
   /* ── 1. ファーストビュー ── */
   .hero{
     position:relative;
-    padding-block:calc(var(--hdr) + 56px) 64px;
-    background:radial-gradient(120% 90% at 50% 0%, var(--gp) 0%, var(--cream) 62%);
+    padding-block:calc(var(--hdr) + 48px) 56px;
+    background:radial-gradient(120% 90% at 50% 0%, var(--bg1) 0%, var(--bg2) 100%);
     text-align:center;
     overflow:hidden;
   }
-  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 88px) 92px} }
-  .hero .eyebrow{
-    display:inline-block;
-    color:var(--gm);font-weight:700;font-size:14px;letter-spacing:.16em;
-    margin-bottom:18px;
+  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 84px) 84px} }
+
+  .ribbon-tag{
+    position:absolute;top:calc(var(--hdr) + 16px);right:6%;
+    white-space:nowrap;
+    background:var(--yellow);
+    color:var(--ink);
+    font-weight:700;
+    font-size:clamp(12px,2.6vw,14px);
+    letter-spacing:.12em;
+    padding:11px 22px;
+    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
+    box-shadow:0 6px 16px rgba(74,59,18,.14);
+    z-index:2;
   }
+  @media (max-width:480px){ .ribbon-tag{top:calc(var(--hdr) + 12px);right:16px;padding:9px 16px;font-size:11px} }
+
   .hero h1{
-    font-size:clamp(26px,6.4vw,44px);
-    margin:0 0 20px;
+    font-size:clamp(28px,7.2vw,52px);
+    margin:0 0 22px;
+    color:var(--ink);
   }
   .hero .sub{
     color:var(--ink);
     font-size:clamp(15px,3.6vw,18px);
     margin-bottom:36px;
   }
-  .hero .btn-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:52px}
 
-  /* 抽象の羅針盤モチーフ。人物イラストは使わず、線画の記号だけで上質さを出す */
-  .compass{width:min(220px,44vw);margin:0 auto;color:var(--g)}
-  .compass svg{width:100%;height:auto;display:block}
+  .stage-wrap{
+    max-width:760px;margin:8px auto 0;
+    filter:drop-shadow(0 18px 26px rgba(120,100,40,.18));
+  }
+  .stage-img{width:100%;height:auto;display:block;border-radius:var(--r)}
 
-  /* ── 共通の見出し ── */
-  .sec-head{text-align:center;margin-bottom:44px}
-  .sec-head .kicker{display:block;color:var(--gm);font-weight:700;font-size:13px;letter-spacing:.16em;margin-bottom:12px}
-  .sec-head h2{font-size:clamp(22px,5.2vw,32px);margin:0 0 14px}
-  .sec-head .lead{color:var(--gray);font-size:15px;max-width:560px;margin-inline:auto}
-
-  /* ── 2. 社員の不安 ── */
-  .worry-grid{display:grid;gap:16px}
-  @media (min-width:768px){ .worry-grid{grid-template-columns:repeat(3,1fr);gap:20px} }
-  .worry{
-    background:var(--card);
-    border-radius:var(--r);
-    padding:30px 20px;
-    text-align:center;
-    box-shadow:0 4px 20px rgba(14,61,43,.06);
-  }
-  .worry .icon{width:52px;height:52px;margin:0 auto 16px;color:var(--gm)}
-  .worry .icon svg{width:100%;height:100%}
-  .worry .tt{font-weight:700;font-size:16px;margin-bottom:8px;color:var(--g)}
-  .worry .dd{color:var(--gray);font-size:14px}
-
-  .worry-chain{
-    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
-    gap:10px;margin-top:36px;text-align:center;
-  }
-  .worry-chain span{
-    font-weight:700;color:var(--g);font-size:clamp(14px,3.6vw,17px);
-  }
-  .worry-chain .arrow{color:var(--gs);font-size:18px}
-  .worry-result{
-    margin-top:22px;text-align:center;
-    font-weight:700;font-size:clamp(17px,4.2vw,22px);color:var(--gd);
-  }
-
-  /* ── 3. ソリューション帯 ── */
-  .solution{
-    background:var(--g);
-    color:#fff;
-    text-align:center;
-    border-radius:var(--r);
-    padding:44px 26px;
-  }
-  .solution p.big{
-    font-family:"Noto Serif JP",serif;
+  /* ── 2. 課題提起 ── */
+  .ask{text-align:center}
+  .ask p{
     font-weight:700;
-    font-size:clamp(19px,4.6vw,27px);
-    line-height:1.8;
-    margin:0 0 16px;
+    font-size:clamp(19px,4.6vw,26px);
+    line-height:2;
   }
-  .solution p.small{color:var(--gl);font-size:14px;max-width:520px;margin-inline:auto}
+  .ask .turn{
+    margin-top:14px;
+    color:var(--ink-soft);
+    font-size:clamp(15px,3.8vw,18px);
+    font-weight:500;
+  }
 
-  /* ── 4. 6ステップ ── */
-  .flow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media (min-width:768px){ .flow{grid-template-columns:repeat(3,1fr);gap:18px} }
+  /* ── 汎用カードグリッド（3つの不安／6ステップ／5つの価値で共用） ── */
+  .flow-head{
+    text-align:center;
+    font-size:clamp(22px,5vw,30px);
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .flow-lead{text-align:center;color:var(--ink-soft);font-size:14px;margin-bottom:36px}
+  .flow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (min-width:768px){ .flow.cols-3{grid-template-columns:repeat(3,1fr)} .flow.cols-4{grid-template-columns:repeat(4,1fr)} }
   .step{
+    text-align:center;
+    padding:22px 14px;
     background:var(--card);
     border-radius:var(--r);
-    padding:24px 18px;
-    box-shadow:0 4px 18px rgba(14,61,43,.06);
+    box-shadow:0 4px 18px rgba(120,100,40,.06);
   }
   .step .num{
-    display:inline-block;
-    color:var(--gm);font-weight:700;font-size:11px;letter-spacing:.14em;
-    background:var(--gp);border-radius:20px;padding:4px 12px;margin-bottom:12px;
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    color:var(--yellow-deep);
+    margin-bottom:8px;
   }
-  .step h3{font-size:16px;margin:0 0 8px;color:var(--g)}
-  .step p{color:var(--gray);font-size:13.5px}
+  .step .icon{
+    display:block;width:40px;height:40px;margin:0 auto 12px;
+    color:var(--ink);
+  }
+  .step .icon svg{width:100%;height:100%;display:block}
+  .step .txt{font-weight:700;font-size:clamp(14px,3.6vw,16px);color:var(--ink)}
+  .step .sub{margin-top:6px;color:var(--ink-soft);font-size:12.5px}
 
-  /* ── 5. AIミオ先生 比較 ── */
-  .ai-panel{
-    background:var(--gp);
+  .flow-result{
+    margin-top:30px;text-align:center;
+    font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink);
+  }
+
+  /* ── 3. 変わること／AI比較（Before・After 2ボックス） ── */
+  .swap{display:grid;gap:16px}
+  @media (min-width:768px){ .swap{grid-template-columns:1fr auto 1fr;align-items:center;gap:28px} }
+  .box{
+    padding:30px 20px;text-align:center;
+    background:var(--card);
     border-radius:var(--r);
-    padding:36px 24px;
-    text-align:center;
+    box-shadow:0 4px 22px rgba(120,100,40,.08);
   }
-  .ai-panel h3{font-size:clamp(18px,4.4vw,22px);margin:0 0 10px}
-  .ai-panel .lead{color:var(--gray);font-size:14px;margin-bottom:30px}
-  .ai-compare{display:grid;gap:14px;text-align:left;max-width:640px;margin-inline:auto}
-  @media (min-width:640px){ .ai-compare{grid-template-columns:1fr 1fr} }
-  .ai-col{background:#fff;border-radius:12px;padding:22px}
-  .ai-col.mio{border:1.5px solid var(--gm)}
-  .ai-col .cap{font-weight:700;font-size:14px;margin-bottom:12px;color:var(--gray)}
-  .ai-col.mio .cap{color:var(--gm)}
-  .ai-col ul{margin:0;padding:0;list-style:none}
-  .ai-col li{font-size:13.5px;color:var(--ink);padding:6px 0;border-top:1px solid var(--cmp-line)}
-  .ai-col li:first-child{border-top:0}
+  .box.mio{box-shadow:0 4px 22px rgba(120,100,40,.08),0 0 0 2px var(--yellow) inset}
+  .box .badge{
+    width:96px;height:96px;margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--cream);
+    border-radius:50%;
+  }
+  .box .badge.star{
+    background:var(--yellow);
+    border-radius:0;
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .box .badge svg{width:36px;height:36px;color:var(--ink)}
+  .box .tag-label{
+    display:block;margin:0 0 10px;
+    color:var(--ink);font-weight:700;font-size:clamp(15px,3.8vw,18px);
+    letter-spacing:.08em;
+  }
+  .box .txt{font-weight:500;font-size:clamp(14px,3.6vw,16px);color:var(--ink-soft);line-height:1.9}
+  .arrow{text-align:center;color:var(--ink);font-size:24px;line-height:1;font-weight:700}
+  .arrow.vs{font-size:15px;letter-spacing:.1em;color:var(--yellow-deep)}
+  @media (max-width:767px){ .arrow:not(.vs){transform:rotate(90deg)} }
 
-  /* ── 6. 比較表 ── */
-  .compare{display:grid;gap:0;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(14,61,43,.06)}
+  .note{
+    margin-top:30px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+
+  /* ── 従来の福利厚生との違い（比較テーブル） ── */
+  .compare{display:grid;gap:0;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 22px rgba(120,100,40,.10)}
   @media (min-width:640px){ .compare{grid-template-columns:1fr 1fr} }
-  .compare .col{padding:28px 24px}
-  .compare .old{background:var(--cmp-fill)}
-  .compare .new{background:var(--g);color:#fff}
+  .compare .col{padding:28px 26px}
+  .compare .old{background:var(--card)}
+  .compare .new{background:var(--ink);color:#fff}
   .compare .col .head{font-weight:700;font-size:16px;margin-bottom:18px;text-align:center}
-  .compare .old .head{color:var(--gray)}
-  .compare dl{margin:0;display:grid;grid-template-columns:72px 1fr;row-gap:14px;column-gap:10px}
-  .compare dt{font-size:12.5px;color:inherit;opacity:.72;align-self:start;padding-top:1px}
+  .compare .old .head{color:var(--ink-soft)}
+  .compare .new .head{color:var(--yellow)}
+  .compare dl{margin:0;display:grid;grid-template-columns:64px 1fr;row-gap:14px;column-gap:10px}
+  .compare dt{font-size:12.5px;opacity:.68;align-self:start;padding-top:1px}
   .compare dd{margin:0;font-size:14px;font-weight:500}
 
-  /* ── 7. 企業の価値 ── */
-  .benefits{display:grid;gap:14px}
-  @media (min-width:640px){ .benefits{grid-template-columns:repeat(3,1fr)} }
-  .benefit{
-    background:var(--card);border-radius:var(--r);
-    padding:24px 18px;text-align:center;
-    box-shadow:0 4px 18px rgba(14,61,43,.06);
+  /* ── 6. 価格 ── */
+  .seats{text-align:center}
+  .seats .lead{
+    font-weight:700;
+    font-size:clamp(24px,6vw,34px);
+    margin-bottom:18px;
+    color:var(--ink);
   }
-  .benefit .n{font-family:"Noto Serif JP",serif;font-weight:700;color:var(--gm);font-size:13px;margin-bottom:8px}
-  .benefit .t{font-weight:700;font-size:15px;color:var(--g)}
+  .seats p{color:var(--ink-soft)}
+  .seats .btn{margin-top:32px}
 
-  /* ── 8. 価格 ── */
-  .price{
-    background:var(--gd);
-    color:#fff;
-    border-radius:var(--r);
-    padding:48px 26px;
-    text-align:center;
-  }
-  .price .catch{font-family:"Noto Serif JP",serif;font-weight:700;font-size:clamp(19px,4.8vw,26px);margin-bottom:14px}
-  .price .note{color:var(--gl);font-size:13.5px;max-width:480px;margin:0 auto 30px}
-  .price .btn{background:#fff;color:var(--gd)}
-  .price .btn:hover{background:var(--gp)}
-
-  /* ── 9. 最終CTA ── */
-  .entry h2{font-size:clamp(22px,5.2vw,30px);text-align:center;margin:0 0 14px}
-  .entry .lead{text-align:center;color:var(--gray);margin-bottom:40px}
+  /* ── 7. 最終CTA ── */
+  .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
   form{
     max-width:520px;
     margin-inline:auto;
     background:var(--card);
-    border:1px solid var(--gl);
+    border:1px solid var(--line);
     border-radius:var(--r);
     padding:32px 24px;
   }
   .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--gray)}
+  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
   input,textarea{
     width:100%;
     padding:15px 16px;
@@ -285,35 +287,42 @@
     font-family:inherit;
     color:var(--ink);
     background:#fff;
-    border:1px solid var(--gl);
+    border:1px solid var(--line);
     border-radius:12px;
   }
   textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
-  input:focus,textarea:focus{outline:2px solid var(--g);outline-offset:1px;border-color:transparent}
+  input:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
   .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
   .entry-note{
-    max-width:520px;margin:24px auto 0;
-    font-size:13px;line-height:1.9;color:var(--gray);text-align:center;
+    max-width:520px;
+    margin:24px auto 0;
+    font-size:13px;
+    line-height:1.9;
+    color:var(--ink-soft);
+    text-align:center;
   }
-  .entry-note a{color:var(--g)}
+  .entry-note a{color:var(--ink)}
 
   /* ── フッター ── */
   footer{
-    padding:48px 0 40px;text-align:center;font-size:13px;
-    color:var(--gray);border-top:1px solid var(--gl);
+    padding:48px 0 40px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
   }
-  footer a{color:var(--gray);text-decoration:none;margin:0 12px}
-  footer a:hover{color:var(--g)}
-  .footer-brand{font-family:"Noto Serif JP",serif;font-weight:700;color:var(--g);font-size:16px;margin-bottom:14px}
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--ink)}
+  .footer-brand{font-weight:700;color:var(--ink);font-size:16px;margin-bottom:14px;letter-spacing:.06em}
   .footer-copy{margin-top:14px;font-size:12px}
 
   /* ── スマホ追従ボタン ── */
   .sticky{
     position:fixed;left:0;right:0;bottom:0;z-index:20;
     padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-    background:rgba(251,250,246,.94);
+    background:rgba(245,211,67,.94);
     backdrop-filter:blur(6px);
-    border-top:1px solid var(--gl);
+    border-top:1px solid var(--line);
   }
   .sticky .btn{display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px}
   @media (min-width:768px){ .sticky{display:none} }
@@ -328,6 +337,40 @@
 </style>
 </head>
 <body>
+
+<!-- アイコン置き場。use で各所から呼び出す共有パーツ（lp-star.html と同じ線画の作法） -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+<defs>
+  <g id="starLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="0,-19 4.4,-6 18,-6 7,2.3 11,15.4 0,7.2 -11,15.4 -7,2.3 -18,-6 -4.4,-6"/>
+  </g>
+  <g id="circleLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-11" cy="-6" r="3.2"/>
+    <circle cx="11" cy="-6" r="3.2"/>
+    <circle cx="0" cy="13" r="3.2"/>
+    <path d="M-11,-2.8 C-8,4 -4,8 0,9.8 M11,-2.8 C8,4 4,8 0,9.8"/>
+  </g>
+  <!-- お金の不安。棒グラフ -->
+  <g id="moneyLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-18,17h36M-12,17V4M-2,17V-8M8,17V0M16,17V-14"/>
+  </g>
+  <!-- 人間関係の不安。うつむいた人 -->
+  <g id="reluLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-3" cy="-13" r="5"/>
+    <path d="M-16,17c0-7.5 5-13 11-13.6M2,3c7,2 8,8 8,14"/>
+  </g>
+  <!-- 将来の不安。頭を抱える人 -->
+  <g id="futureLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="6" r="10"/>
+    <path d="M-6,-3l-4.5-6.5M6,-3l4.5-6.5M0,-4v-7"/>
+  </g>
+  <!-- 一般的なAI。素っ気ない丸 -->
+  <g id="genAiLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="15"/>
+    <line x1="-6" y1="0" x2="6" y2="0"/>
+  </g>
+</defs>
+</svg>
 
 <!-- 固定ヘッダー -->
 <div class="site-header" id="site-header">
@@ -344,156 +387,148 @@
 
 <!-- 1. ファーストビュー -->
 <header class="hero" id="top">
+  <p class="ribbon-tag">困る前に、支える。</p>
   <div class="wrap">
-    <p class="eyebrow">人生支援プラットフォーム</p>
-    <h1>会社が、<br>社員の人生を支える時代へ。</h1>
-    <p class="sub">社員一人ひとりのライフリテラシーを育てる、<br>REALIZE CLUB。</p>
-    <div class="btn-row">
-      <a class="btn" href="#entry">導入を相談する</a>
-      <a class="btn ghost" href="shiryou-rc.html">資料をもらう</a>
-    </div>
+    <h1>社員の人生に、<br>会社という伴走者を。</h1>
+    <p class="sub">社員一人ひとりのライフリテラシーを育てる、<br>人生支援プラットフォーム「REALIZE CLUB」。</p>
+    <a class="btn" href="#entry">導入を相談する（無料）</a>
 
-    <!-- 人物イラストは使わず、線画の羅針盤モチーフだけで上質さを出す -->
-    <div class="compass" aria-hidden="true">
-      <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="100" cy="100" r="92" stroke-width="2.4"/>
-        <circle cx="100" cy="100" r="70"/>
-        <g stroke-width="1.6" opacity=".55">
-          <line x1="100" y1="14" x2="100" y2="30"/>
-          <line x1="100" y1="170" x2="100" y2="186"/>
-          <line x1="14" y1="100" x2="30" y2="100"/>
-          <line x1="170" y1="100" x2="186" y2="100"/>
-        </g>
-        <polygon points="100,46 112,100 100,154 88,100" fill="currentColor" stroke="none" opacity=".9"/>
-        <circle cx="100" cy="100" r="6" fill="currentColor" stroke="none"/>
-      </svg>
+    <div class="stage-wrap">
+      <!-- lp-star.html と同じイラスト（star-hero.png）。星のステージに人が集い、
+           中央の大きなグラスのモニュメントを囲む町の情景。人が支え合い、
+           集う場所というイメージを、REALIZE CLUBの世界観としてそのまま使う。 -->
+      <img class="stage-img" src="star-hero.png" width="2000" height="1342"
+           alt="クリーム色の空の下、星形のステージが3つ浮かび、それぞれで乾杯する二人組、ギターを弾く人、グラスを掲げて喜ぶ人が描かれている。中央には大きなグラスのモニュメントが台座の上に立ち、まわりには時計台のある建物やタワー、移動販売車、ピクニックテーブルを囲む友人たち、ベンチで語り合う二人、犬などが描かれた賑やかな町の情景。">
     </div>
   </div>
 </header>
 
-<!-- 2. 社員の不安 -->
-<section>
+<!-- 2. 課題提起 -->
+<section class="ask">
   <div class="wrap fade">
-    <div class="sec-head">
-      <span class="kicker">CURRENT SITUATION</span>
-      <h2>社員さんは仕事を頑張りながらも、<br>将来への不安を抱えています。</h2>
-      <p class="lead">現代人の3大不安。それでも、相談できる環境がありません。</p>
-    </div>
-    <div class="worry-grid">
-      <div class="worry">
-        <span class="icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 40h36M12 40V26M22 40V16M32 40V22M42 40V10"/><path d="M32 10l10 0 0 10"/></svg></span>
-        <p class="tt">お金の不安</p>
-        <p class="dd">物価高で生活が厳しい</p>
-      </div>
-      <div class="worry">
-        <span class="icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="13" r="7"/><path d="M10 41c0-9 6-15 14-15s14 6 14 15"/></svg></span>
-        <p class="tt">人間関係の不安</p>
-        <p class="dd">人間関係に疲弊</p>
-      </div>
-      <div class="worry">
-        <span class="icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="26" r="12"/><path d="M17 21l-6-9M31 21l6-9M24 14V6"/></svg></span>
-        <p class="tt">将来への不安</p>
-        <p class="dd">結婚・老後 等</p>
-      </div>
-    </div>
-    <div class="worry-chain">
-      <span>相談できる環境がない</span>
-    </div>
-    <p class="worry-result">困ってから考える → 判断を間違える → 後悔を生む</p>
+    <p>社員さんは仕事を頑張りながらも、<br>将来への不安を抱えています。</p>
+    <p class="turn">それでも、相談できる環境がありません。</p>
   </div>
 </section>
 
-<!-- 3. ソリューション帯 -->
+<!-- 3. 現代人の3大不安 -->
 <section>
   <div class="wrap fade">
-    <div class="solution">
-      <p class="big">「困ってから助ける」のではなく、<br>「困る前に助ける」。</p>
-      <p class="small">REALIZE CLUBは、社員一人ひとりのライフリテラシーを育てる仕組みを提供します。</p>
+    <p class="flow-head">現代人の3大不安</p>
+    <div class="flow cols-3">
+      <div class="step">
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#moneyLine"/></svg></span>
+        <p class="txt">お金の不安</p>
+        <p class="sub">物価高で生活が厳しい</p>
+      </div>
+      <div class="step">
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#reluLine"/></svg></span>
+        <p class="txt">人間関係の不安</p>
+        <p class="sub">人間関係に疲弊</p>
+      </div>
+      <div class="step">
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#futureLine"/></svg></span>
+        <p class="txt">将来への不安</p>
+        <p class="sub">結婚・老後 等</p>
+      </div>
     </div>
+    <p class="flow-result">困ってから考える → 判断を間違える → 後悔を生む</p>
   </div>
 </section>
 
-<!-- 4. 6ステップ -->
+<!-- 4. 変わること -->
 <section>
   <div class="wrap fade">
-    <div class="sec-head">
-      <span class="kicker">HOW IT WORKS</span>
-      <h2>教育だけで終わらない。<br>相談だけで終わらない。</h2>
-      <p class="lead">自己理解から実行支援まで、人生に伴走する6つのステップ。</p>
+    <p class="flow-head">「困ってから助ける」のではなく、<br>「困る前に助ける」。</p>
+    <div class="swap">
+      <div class="box">
+        <span class="badge"><svg viewBox="-24 -24 48 48"><use href="#moneyLine"/></svg></span>
+        <span class="tag-label">Before</span>
+        <p class="txt">知らない／相談できない／<br>なんとなく不安で、つい後回し。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <span class="badge star"><svg viewBox="-24 -24 48 48"><use href="#circleLine"/></svg></span>
+        <span class="tag-label">After</span>
+        <p class="txt">知る／相談できる／<br>何をすればいいかわかり、行動できる。</p>
+      </div>
     </div>
-    <div class="flow">
+    <p class="note">社員の私生活が安定すれば、仕事への集中力が変わる。社員を守ることは、会社を強くすることです。</p>
+  </div>
+</section>
+
+<!-- 5. 6ステップ -->
+<section>
+  <div class="wrap fade">
+    <p class="flow-head">教育だけで終わらない。<br>相談だけで終わらない。</p>
+    <p class="flow-lead">自己理解から実行支援まで、人生に伴走する6つのステップ。</p>
+    <div class="flow cols-3">
       <div class="step">
         <span class="num">STEP 1</span>
-        <h3>性格波形診断</h3>
-        <p>たった2分で、自己理解・他者理解へ。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">性格波形診断</p>
+        <p class="sub">2分で自己理解・他者理解へ</p>
       </div>
       <div class="step">
         <span class="num">STEP 2</span>
-        <h3>REALIZEマーケット</h3>
-        <p>日用品が最大90％OFF。物価高対策で家計に余白を。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">REALIZEマーケット</p>
+        <p class="sub">日用品が最大90%OFF。物価高対策</p>
       </div>
       <div class="step">
         <span class="num">STEP 3</span>
-        <h3>人生教育プログラム</h3>
-        <p>お金・住まい・万が一・老後・健康・災害。判断軸を手に入れる。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">人生教育プログラム</p>
+        <p class="sub">6大テーマを学び、判断軸を持つ</p>
       </div>
       <div class="step">
         <span class="num">STEP 4</span>
-        <h3>人生健康診断</h3>
-        <p>スマホで5分。理想と現実を可視化する。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">人生健康診断</p>
+        <p class="sub">スマホで5分。理想と現実を可視化</p>
       </div>
       <div class="step">
         <span class="num">STEP 5</span>
-        <h3>人生設計書</h3>
-        <p>診断と学びをもとに、自分だけの人生の地図を描く。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">人生設計書</p>
+        <p class="sub">診断と学びから、人生の地図を描く</p>
       </div>
       <div class="step">
         <span class="num">STEP 6</span>
-        <h3>人生相談窓口</h3>
-        <p>専門家へつなぎ、人生を動かすところまで支える。</p>
+        <span class="icon"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">人生相談窓口</p>
+        <p class="sub">専門家へつなぎ、人生を動かす</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 5. AIミオ先生 -->
+<!-- 6. AIミオ先生 -->
 <section>
   <div class="wrap fade">
-    <div class="ai-panel">
-      <h3>人生伴走型AI「ミオ先生」</h3>
-      <p class="lead">感情・情報・性格を整理し、24時間、社員を一人にしない人生コンシェルジュ。</p>
-      <div class="ai-compare">
-        <div class="ai-col">
-          <p class="cap">一般的なAI</p>
-          <ul>
-            <li>聞かれたことに答える</li>
-            <li>全員に一律の対応</li>
-            <li>ハルシネーションがある</li>
-            <li>相談して終わり</li>
-          </ul>
-        </div>
-        <div class="ai-col mio">
-          <p class="cap">ミオ先生</p>
-          <ul>
-            <li>相談から行動までつなぐ</li>
-            <li>性格を踏まえたアドバイス</li>
-            <li>ハルシネーションが起きにくい設計</li>
-            <li>最適な窓口まで案内</li>
-          </ul>
-        </div>
+    <p class="flow-head">人生伴走型AI「ミオ先生」</p>
+    <p class="flow-lead">感情・情報・性格を整理し、24時間、社員を一人にしない人生コンシェルジュ。</p>
+    <div class="swap">
+      <div class="box">
+        <span class="badge"><svg viewBox="-24 -24 48 48"><use href="#genAiLine"/></svg></span>
+        <span class="tag-label">一般的なAI</span>
+        <p class="txt">聞かれたことに答えるだけ。<br>全員に一律の対応で、相談して終わり。</p>
+      </div>
+      <div class="arrow vs">VS</div>
+      <div class="box mio">
+        <span class="badge star"><svg viewBox="-24 -24 48 48"><use href="#starLine"/></svg></span>
+        <span class="tag-label">ミオ先生</span>
+        <p class="txt">性格を踏まえてアドバイス。<br>相談から行動まで、最適な窓口につなぐ。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 6. 従来の福利厚生との違い -->
+<!-- 7. 従来の福利厚生との違い -->
 <section>
   <div class="wrap fade">
-    <div class="sec-head">
-      <span class="kicker">DIFFERENCE</span>
-      <h2>福利厚生の概念が変わる。</h2>
-      <p class="lead">もう、福利厚生ではありません。人生支援プラットフォームです。</p>
-    </div>
+    <p class="flow-head">福利厚生の概念が変わる。</p>
+    <p class="flow-lead">もう、福利厚生ではありません。人生支援プラットフォームです。</p>
     <div class="compare">
       <div class="col old">
         <p class="head">従来の福利厚生</p>
@@ -517,36 +552,31 @@
   </div>
 </section>
 
-<!-- 7. 企業が得られる5つの価値 -->
+<!-- 8. 企業が得られる5つの価値 -->
 <section>
   <div class="wrap fade">
-    <div class="sec-head">
-      <span class="kicker">FOR YOUR COMPANY</span>
-      <h2>社員を守ることは、<br>会社を強くすることです。</h2>
-      <p class="lead">社員のライフリテラシー向上が、企業に5つの価値をもたらします。</p>
-    </div>
-    <div class="benefits">
-      <div class="benefit"><p class="n">01</p><p class="t">離職率低下</p></div>
-      <div class="benefit"><p class="n">02</p><p class="t">採用力UP</p></div>
-      <div class="benefit"><p class="n">03</p><p class="t">生産性向上</p></div>
-      <div class="benefit"><p class="n">04</p><p class="t">エンゲージメントUP</p></div>
-      <div class="benefit"><p class="n">05</p><p class="t">企業価値向上</p></div>
+    <p class="flow-head">社員を守ることは、<br>会社を強くすることです。</p>
+    <p class="flow-lead">社員のライフリテラシー向上が、企業に5つの価値をもたらします。</p>
+    <div class="flow cols-4">
+      <div class="step"><span class="num">01</span><p class="txt">離職率低下</p></div>
+      <div class="step"><span class="num">02</span><p class="txt">採用力UP</p></div>
+      <div class="step"><span class="num">03</span><p class="txt">生産性向上</p></div>
+      <div class="step"><span class="num">04</span><p class="txt">エンゲージメントUP</p></div>
+      <div class="step"><span class="num">05</span><p class="txt">企業価値向上</p></div>
     </div>
   </div>
 </section>
 
-<!-- 8. 価格 -->
-<section>
+<!-- 9. 価格 -->
+<section class="seats">
   <div class="wrap fade">
-    <div class="price">
-      <p class="catch">コーヒー1杯分の値段で、<br>社員の人生不安を解消。</p>
-      <p class="note">いつでも解約可。それくらい自信があります。<br>システム導入費用として補助金対象プランもございます。</p>
-      <a class="btn" href="#entry">導入を相談する</a>
-    </div>
+    <p class="lead">コーヒー1杯分の値段で、<br>社員の人生不安を解消。</p>
+    <p>いつでも解約可。それくらい自信があります。<br>システム導入費用として補助金対象プランもございます。</p>
+    <a class="btn" href="#entry">導入を相談する</a>
   </div>
 </section>
 
-<!-- 9. 最終CTA -->
+<!-- 10. 最終CTA -->
 <section class="entry" id="entry">
   <div class="wrap fade">
     <h2>まずは、話を聞いてみませんか。</h2>
