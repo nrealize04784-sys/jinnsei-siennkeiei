@@ -3,33 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>人生に、贈りものを。｜ライフメイクパートナーズ</title>
-<meta name="description" content="物件を探しに来た人に、人生を変える気づきを贈る。宝箱を開けるように、相談のたびに気づきが出てくる不動産フランチャイズ。1エリア2社限定。">
+<title>加盟資格は、人生への愛。ただそれだけ。｜ライフメイクパートナーズ</title>
+<meta name="description" content="物件を探しに来た人ではなく、人生を良くしたい人が集まる場所に。加盟に難しい条件はいりません。1エリア2社限定。">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-  /* ── 宝箱ギフト風の配色 ──
-     地はマスタードイエローに白の細いグリッド（ファーストビューのみ）。
-     宝箱はターコイズ、縁飾りは金、内側と差し色はさくら色。
-     赤は「リボン1本」と「主要ボタン」だけに使う。使いすぎない。 */
+  /* ── 星空タウン・乾杯ビジュアル風の配色 ──
+     地はクリームイエロー〜マスタード（ファーストビューのみグラデーション）。
+     イラストと文字の線は濃紺。黄色べた塗りは縦長バナーと星バッジにのみ。
+     赤はボタンだけに使う。使いすぎない。 */
   :root{
-    --bg:#F5D343;        /* マスタードイエロー。ファーストビューの地 */
+    --bg1:#FBEFC4;       /* ファーストビューの地（明） */
+    --bg2:#F5D343;       /* ファーストビューの地（濃） */
     --cream:#FBF3DD;     /* 2セクション目以降の、休ませる生成り */
-    --turquoise:#1B9C8C; /* 宝箱の外側 */
-    --turquoise-deep:#12655B; /* 宝箱の陰・アイコンの線 */
-    --gold:#E8B64C;      /* 縁飾り・金唐草 */
-    --gold-deep:#9C6B12; /* 生成りの上でも読める、実績の数字用の金 */
-    --sakura:#F8C6D8;    /* 蓋の裏地・差し色 */
-    --red:#E2352B;       /* リボン1本とボタンだけ */
+    --ink:#1B2A4A;       /* 濃紺。イラストの線と見出し */
+    --ink-soft:#4A5A78;  /* 本文の紺（やや淡く） */
+    --yellow:#F5C400;    /* 縦長バナー・星バッジのべた塗り */
+    --yellow-deep:#A67B00; /* 生成りの上でも読める、実績の数字用 */
+    --red:#E2352B;       /* ボタンだけ */
     --red-deep:#B8221B;
-    --ink:#22352F;
-    --ink-soft:#3C5850;
-    --line:rgba(34,53,47,.14);
+    --line:rgba(27,42,74,.14);
     --card:#FFFFFF;
-    --kraft:#F3E6C4;     /* ギフトタグの紙の色 */
     --r:16px;
     --pad:80px;      /* セクション間の余白（スマホ） */
     --hdr:56px;      /* 固定ヘッダーの高さ（スマホ） */
@@ -78,7 +75,7 @@
   .site-header{
     position:fixed;top:0;left:0;right:0;z-index:30;
     height:var(--hdr);
-    background:var(--bg);
+    background:var(--bg2);
     border-bottom:1px solid transparent;
     transition:background .3s ease,border-color .3s ease;
   }
@@ -106,12 +103,12 @@
     color:var(--ink-soft);text-decoration:none;
     font-size:14px;white-space:nowrap;
   }
-  .hdr-nav a:hover{color:var(--turquoise-deep)}
+  .hdr-nav a:hover{color:var(--ink)}
   .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
   .hdr-cta{background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  .hdr-cta2{background:var(--cream);border:1px solid var(--turquoise-deep);color:var(--turquoise-deep) !important}
-  .hdr-cta2:hover{background:var(--turquoise-deep);color:#fff !important}
+  .hdr-cta2{background:var(--cream);border:1px solid var(--ink);color:var(--ink) !important}
+  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a{font-size:13px}
@@ -127,28 +124,24 @@
   .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
 
   /* ── 1. ファーストビュー ──
-     地はマスタード＋白グリッド。以降のセクションでは使わない。 */
+     地はクリーム→マスタードの緩いグラデーション。以降のセクションでは使わない。 */
   .hero{
     position:relative;
-    padding-block:calc(var(--hdr) + 48px) 72px;
-    background-color:var(--bg);
-    background-image:
-      linear-gradient(0deg, rgba(255,255,255,.6) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
-    background-size:44px 44px;
+    padding-block:calc(var(--hdr) + 48px) 56px;
+    background:radial-gradient(120% 90% at 50% 0%, var(--bg1) 0%, var(--bg2) 100%);
     text-align:center;
     overflow:hidden;
   }
-  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 84px) 100px} }
+  @media (min-width:768px){ .hero{padding-block:calc(var(--hdr) + 84px) 84px} }
 
-  /* 横組みのリボン札。「ふと、相談。」を、両端が尖ったリボン帯で見せる。
+  /* 横組みのリボン札。「ようこそ、この輪へ。」を、両端が尖ったリボン帯で見せる。
      縦組み(writing-mode:vertical-rl)は環境によって縦書き用のグリフ整形が崩れる
      ことがあるため使わない。横組みなら確実に読める。 */
   .ribbon-tag{
     position:absolute;top:calc(var(--hdr) + 16px);right:6%;
     white-space:nowrap;
-    background:var(--sakura);
-    color:var(--turquoise-deep);
+    background:var(--yellow);
+    color:var(--ink);
     font-weight:700;
     font-size:clamp(12px,2.6vw,14px);
     letter-spacing:.12em;
@@ -160,7 +153,7 @@
   @media (max-width:480px){ .ribbon-tag{top:calc(var(--hdr) + 12px);right:16px;padding:9px 16px;font-size:11px} }
 
   .hero h1{
-    font-size:clamp(28px,7.4vw,54px);
+    font-size:clamp(28px,7.2vw,52px);
     margin:0 0 22px;
     color:var(--ink);
   }
@@ -170,12 +163,12 @@
     margin-bottom:36px;
   }
 
-  /* ── 宝箱イラスト（AI生成のオリジナル画像 gift-hero.png。透過PNG） ── */
-  .chest-wrap{
-    max-width:560px;margin:8px auto 0;
+  /* ── 星空タウンのイラスト（AI生成のオリジナル画像 star-hero.png） ── */
+  .stage-wrap{
+    max-width:760px;margin:8px auto 0;
     filter:drop-shadow(0 18px 26px rgba(120,100,40,.18));
   }
-  .chest{width:100%;height:auto;display:block}
+  .stage-img{width:100%;height:auto;display:block;border-radius:var(--r)}
 
   /* ── 2. 入口の話 ── */
   .ask{text-align:center}
@@ -186,7 +179,7 @@
   }
   .ask .turn{
     margin-top:30px;
-    color:var(--turquoise-deep);
+    color:var(--ink);
     font-size:clamp(19px,4.8vw,26px);
   }
 
@@ -199,16 +192,21 @@
     border-radius:var(--r);
     box-shadow:0 4px 22px rgba(120,100,40,.08);
   }
-  .box .tag{width:min(180px,80%);margin:0 auto}
-  .box .chest-tag{display:block;width:100%;height:auto}
-  /* 宝箱の上に見出しとして表示する */
+  .box .badge{
+    width:112px;height:112px;margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--yellow);
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  }
+  .box .badge svg{width:40px;height:40px;color:var(--ink)}
+  /* 星バッジの上に見出しとして表示する */
   .box .tag-label{
     display:block;margin:0 0 10px;
-    color:var(--turquoise-deep);font-weight:700;font-size:clamp(15px,3.8vw,18px);
+    color:var(--ink);font-weight:700;font-size:clamp(15px,3.8vw,18px);
     letter-spacing:.1em;
   }
   .box .txt{font-weight:700;font-size:clamp(17px,4.2vw,21px);color:var(--ink)}
-  .arrow{text-align:center;color:var(--turquoise-deep);font-size:24px;line-height:1}
+  .arrow{text-align:center;color:var(--ink);font-size:24px;line-height:1}
   @media (max-width:767px){ .arrow{transform:rotate(90deg)} }
 
   .note{
@@ -238,70 +236,41 @@
     display:block;
     font-size:11px;
     letter-spacing:.14em;
-    color:var(--gold-deep);
+    color:var(--yellow-deep);
     margin-bottom:8px;
   }
   .step .icon{
-    display:block;width:44px;height:44px;margin:0 auto 12px;
-    color:var(--turquoise-deep);
+    display:block;width:40px;height:40px;margin:0 auto 12px;
+    color:var(--ink);
   }
   .step .icon svg{width:100%;height:100%;display:block}
   .step .txt{font-weight:700;font-size:clamp(14px,3.6vw,16px);color:var(--ink)}
 
-  /* ── 5. 自動集客システム ── */
-  .engine-head{text-align:center;font-size:clamp(22px,5vw,30px);margin:0 0 14px;color:var(--ink)}
-  .engine-lead{text-align:center;color:var(--ink-soft);font-size:14px;line-height:1.9;margin-bottom:8px}
-
-  .engine-body{display:flex;flex-direction:column;align-items:center;gap:32px;margin:36px 0 40px}
-  @media (min-width:860px){
-    .engine-body{flex-direction:row;align-items:center;justify-content:center;gap:28px}
-    .engine-cards{flex:0 0 260px}
-    .wheel{flex:0 0 auto}
+  /* ── 5. 実績（星バッジ） ── */
+  .results{display:grid;gap:16px}
+  @media (min-width:768px){ .results{grid-template-columns:repeat(3,1fr);gap:20px} }
+  .result{
+    text-align:center;
+    background:var(--card);
+    border-radius:var(--r);
+    padding:26px 18px 30px;
+    box-shadow:0 4px 20px rgba(120,100,40,.10);
   }
-
-  .engine-cards{width:100%;max-width:420px}
-  .engine-card{background:var(--card);border-radius:var(--r);padding:22px 20px;box-shadow:0 4px 18px rgba(120,100,40,.08)}
-  .engine-card + .engine-card{margin-top:16px}
-  .engine-tag{
-    display:inline-block;font-weight:700;font-size:12px;letter-spacing:.06em;
-    color:#fff;padding:3px 10px;border-radius:999px;margin-right:8px;
+  .result .star-num{
+    width:132px;height:132px;margin:0 auto 14px;
+    display:flex;align-items:center;justify-content:center;
+    background:#FBF3DD;
+    border:2px solid var(--yellow);
+    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
   }
-  .engine-card--rc .engine-tag{background:var(--turquoise-deep)}
-  .engine-card--lmp .engine-tag{background:var(--gold-deep)}
-  .engine-card-head{font-size:13px;color:var(--ink-soft);margin-bottom:10px}
-  .engine-card-title{font-weight:700;font-size:clamp(16px,3.6vw,18px);color:var(--ink);margin-bottom:10px}
-  .engine-card-list{margin:0;padding:0;list-style:none;color:var(--ink-soft);font-size:14px;line-height:1.9}
-
-  /* 中央から5つの手順が円環でつながる関係図。位置は五角形の頂点を percent で計算 */
-  .wheel{position:relative;width:clamp(300px,80vw,440px);aspect-ratio:1/1;margin-inline:auto}
-  .wheel-ring{position:absolute;inset:6%;border:2px dashed var(--gold);border-radius:50%}
-  .wheel-center{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:38%;aspect-ratio:1/1;background:var(--turquoise-deep);color:#fff;
-    border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:6%;box-shadow:0 8px 24px rgba(18,101,91,.35);
+  .result .fig{
+    font-weight:700;
+    font-size:clamp(20px,5.2vw,26px);
+    line-height:1.2;
+    color:var(--ink);
   }
-  .wheel-center-title{font-weight:700;font-size:clamp(13px,2.8vw,16px);line-height:1.4;margin-bottom:4px}
-  .wheel-center-sub{font-size:clamp(9.5px,1.9vw,11px);color:var(--sakura);line-height:1.5}
-  .wheel-step{position:absolute;transform:translate(-50%,-50%);width:clamp(100px,30%,140px);text-align:center}
-  .wheel-step--1{top:12%;left:50%}
-  .wheel-step--2{top:38.3%;left:86.1%}
-  .wheel-step--3{top:80.7%;left:72.3%}
-  .wheel-step--4{top:80.7%;left:27.7%}
-  .wheel-step--5{top:38.3%;left:13.9%}
-  .wheel-num{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:26px;height:26px;border-radius:50%;
-    background:var(--gold);color:var(--ink);font-weight:700;font-size:13px;margin-bottom:6px;
-  }
-  .wheel-step-title{font-weight:700;font-size:clamp(11.5px,2.4vw,13.5px);color:var(--ink);line-height:1.5}
-  .wheel-step-txt{font-size:clamp(9.5px,2vw,11px);color:var(--ink-soft);line-height:1.5;margin-top:2px}
-
-  .engine-banner{
-    margin-top:8px;background:var(--ink);color:#fff;text-align:center;
-    padding:28px 24px;border-radius:var(--r);font-size:clamp(14px,3.4vw,16px);line-height:1.9;
-  }
-  .engine-banner strong{display:block;margin-top:6px;font-size:clamp(17px,4.4vw,22px);color:var(--gold)}
+  .result .fig small{font-size:.55em;color:var(--ink-soft)}
+  .result .label{font-size:14px;color:var(--ink-soft)}
 
   /* ── 6. 席の数 ── */
   .seats{text-align:center}
@@ -326,7 +295,7 @@
   }
   .field{margin-bottom:20px}
   label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{
+  input,textarea{
     width:100%;
     padding:15px 16px;
     font-size:16px;
@@ -336,23 +305,9 @@
     border:1px solid var(--line);
     border-radius:12px;
   }
-  input:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
   /* 備考。数行書ける高さにし、縦だけ引き伸ばせるようにする */
-  textarea{
-    width:100%;
-    min-height:96px;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    line-height:1.7;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-    resize:vertical;
-    display:block;
-  }
-  textarea:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
+  textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
+  input:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
   .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
   .entry-note{
     max-width:520px;
@@ -362,7 +317,7 @@
     color:var(--ink-soft);
     text-align:center;
   }
-  .entry-note a{color:var(--turquoise-deep)}
+  .entry-note a{color:var(--ink)}
 
   /* ── フッター ── */
   footer{
@@ -373,7 +328,7 @@
     border-top:1px solid var(--line);
   }
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
-  footer a:hover{color:var(--turquoise-deep)}
+  footer a:hover{color:var(--ink)}
   .footer-logo-link{display:inline-block;margin:0 0 22px}
   .footer-logo{width:min(220px,54vw);height:auto;mix-blend-mode:multiply}
   .footer-copy{margin-top:14px;font-size:12px}
@@ -404,11 +359,20 @@
 <!-- アイコン置き場。use で各所から呼び出す共有パーツ -->
 <svg class="icon-sprite" aria-hidden="true" focusable="false">
 <defs>
-  <!-- 4ステップ用。線画のみのギフトボックス -->
-  <g id="giftboxLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="-19" y="-19" width="38" height="38" rx="6"/>
-    <path d="M-19 0h38M0 -19v38"/>
-    <path d="M-7 -19c-1-6 4-9 7-6 3-3 8 0 7 6"/>
+  <!-- 4ステップ用。線画のみの星アイコン -->
+  <g id="starLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="0,-19 4.4,-6 18,-6 7,2.3 11,15.4 0,7.2 -11,15.4 -7,2.3 -18,-6 -4.4,-6"/>
+  </g>
+  <!-- 変わることボックス用。家の線画（BEFORE） -->
+  <g id="houseLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-16,2 L0,-14 L16,2 M-11,2 V16 H11 V2 M-3,16 V6 H3 V16"/>
+  </g>
+  <!-- 変わることボックス用。輪になった人の線画（AFTER） -->
+  <g id="circleLine" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="-11" cy="-6" r="3.2"/>
+    <circle cx="11" cy="-6" r="3.2"/>
+    <circle cx="0" cy="13" r="3.2"/>
+    <path d="M-11,-2.8 C-8,4 -4,8 0,9.8 M11,-2.8 C8,4 4,8 0,9.8"/>
   </g>
 </defs>
 </svg>
@@ -425,26 +389,27 @@
     </a>
     <nav class="hdr-nav">
       <a href="#">ホーム</a>
-      <a href="kaisha-gift.html">会社概要</a>
+      <a href="kaisha-star.html">会社概要</a>
       <a class="hdr-cta" href="#entry">話を聞いてみる</a>
-      <a class="hdr-cta2" href="shiryou-gift.html">資料請求</a>
+      <a class="hdr-cta2" href="shiryou-star.html">資料請求</a>
     </nav>
   </div>
 </div>
 
 <!-- 1. ファーストビュー -->
 <header class="hero" id="top">
-  <p class="ribbon-tag">ふと、相談。</p>
+  <p class="ribbon-tag">ようこそ、この輪へ。</p>
   <div class="wrap">
-    <h1>人生に、<br>贈りものを。</h1>
-    <p class="sub">物件を探しに来た人に、<br>人生を変える気づきを贈る。</p>
+    <h1>加盟資格は、<br>人生への愛。ただそれだけ。</h1>
+    <p class="sub">物件を探しに来た人ではなく、<br>人生を良くしたい人が集まる場所に。</p>
     <a class="btn" href="#entry">まず話を聞いてみる（無料）</a>
 
-    <div class="chest-wrap">
-      <!-- AI生成のオリジナルイラスト（gift-hero.png）。PARCOの参考画像はトレースせず、
-           構図・色使いの雰囲気だけを参考にして新規生成したもの。透過PNG。 -->
-      <img class="chest" src="gift-hero.png" width="1200" height="884"
-           alt="ターコイズの宝箱のふたが開き、金の唐草縁とさくら色の裏地から、白いギフトボックスが山になってあふれている。山の上では、ドレスの女性とベストの男性が向き合って立ち、小さなギフトボックスを手渡ししている。蓋の上には大きな赤いリボンの蝶結び、箱の根もとからは赤と金のリボンが流れ出ている。">
+    <div class="stage-wrap">
+      <!-- AI生成のオリジナルイラスト（star-hero.png）。星のステージに人が集い、
+           中央の大きなグラスのモニュメントを囲む町の情景。文字・ロゴ・特定
+           ブランドの商標は一切含まない、構図とテイストだけを参考にした新規生成。 -->
+      <img class="stage-img" src="star-hero.png" width="2000" height="1342"
+           alt="クリーム色の空の下、星形のステージが3つ浮かび、それぞれで乾杯する二人組、ギターを弾く人、グラスを掲げて喜ぶ人が描かれている。中央には大きなグラスのモニュメントが台座の上に立ち、まわりには時計台のある建物やタワー、移動販売車、ピクニックテーブルを囲む友人たち、ベンチで語り合う二人、犬などが描かれた賑やかな町の情景。">
     </div>
   </div>
 </header>
@@ -453,8 +418,8 @@
 <section class="ask">
   <div class="wrap fade">
     <p>物件を探している人だけじゃない。</p>
-    <p>人生を良くしたい人が集まる。</p>
-    <p class="turn">→ 相談のたびに、気づきという贈りものが出てくる。</p>
+    <p>人生を良くしたい人が、この星の下に集まる。</p>
+    <p class="turn">→ 相談のたびに、その人の人生が少し良くなっていく。</p>
   </div>
 </section>
 
@@ -463,20 +428,15 @@
   <div class="wrap fade">
     <div class="swap">
       <div class="box">
-        <p class="tag">
-          <!-- BEFORE/AFTERはイラストの上に見出しとして表示する -->
-          <span class="tag-label">BEFORE</span>
-          <img class="chest-tag" src="gift-house-icon.png" alt="家">
-        </p>
-        <p class="txt">物件を探しに来る人</p>
+        <p class="tag-label">BEFORE</p>
+        <p class="badge"><svg viewBox="-24 -24 48 48"><use href="#houseLine"/></svg></p>
+        <p class="txt">物件で比較される会社</p>
       </div>
       <p class="arrow" aria-hidden="true">→</p>
       <div class="box">
-        <p class="tag">
-          <span class="tag-label">AFTER</span>
-          <img class="chest-tag" src="gift-chest-icon.png" alt="宝箱">
-        </p>
-        <p class="txt">贈りものを受け取りに来る人</p>
+        <p class="tag-label">AFTER</p>
+        <p class="badge"><svg viewBox="-24 -24 48 48"><use href="#circleLine"/></svg></p>
+        <p class="txt">人生を任せたい会社</p>
       </div>
     </div>
     <p class="note">売り込まないから、価格で比べられない。</p>
@@ -486,101 +446,50 @@
 <!-- 4. 流れ -->
 <section>
   <div class="wrap fade">
-    <h2 class="flow-head">宝箱を開けるように、答えが出てくる。</h2>
+    <h2 class="flow-head">星を1つ、灯すように。</h2>
     <div class="flow">
       <div class="step">
         <span class="num">01</span>
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#giftboxLine"/></svg></span>
-        <p class="txt">学びを贈る</p>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">輪に入る</p>
       </div>
       <div class="step">
         <span class="num">02</span>
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#giftboxLine"/></svg></span>
-        <p class="txt">気づきを贈る</p>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">想いを話す</p>
       </div>
       <div class="step">
         <span class="num">03</span>
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#giftboxLine"/></svg></span>
-        <p class="txt">相談が生まれる</p>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">仲間が増える</p>
       </div>
       <div class="step">
         <span class="num">04</span>
-        <span class="icon" aria-hidden="true"><svg viewBox="-26 -28 52 54"><use href="#giftboxLine"/></svg></span>
-        <p class="txt">信頼が積み重なる</p>
+        <span class="icon" aria-hidden="true"><svg viewBox="-24 -26 48 48"><use href="#starLine"/></svg></span>
+        <p class="txt">星がつながる</p>
       </div>
     </div>
-    <p class="note">地域の不動産会社が「人生支援の相談窓口」になる。</p>
+    <p class="note">まず輪に入るだけ。準備はいりません。</p>
   </div>
 </section>
 
-<!-- 5. 自動集客システム -->
+<!-- 5. 加盟して得られること -->
 <section>
   <div class="wrap fade">
-    <h2 class="engine-head">最強の自動集客システムが手に入る</h2>
-    <p class="engine-lead">
-      LMPはRCを増やせる。RCが増えると人生相談が増える。<br>
-      相談が増えるほどLMPの価値が高まり、さらにRCが増える仕組み。
-    </p>
-
-    <div class="engine-body">
-      <div class="engine-cards">
-        <div class="engine-card engine-card--rc">
-          <p class="engine-card-head"><span class="engine-tag">RC</span>人生支援プラットフォーム</p>
-          <p class="engine-card-title">企業や個人に人生教育を届ける</p>
-          <ul class="engine-card-list">
-            <li>①人生教育を通じて判断軸を持たせる</li>
-            <li>②相談の種を生む</li>
-          </ul>
-        </div>
-        <div class="engine-card engine-card--lmp">
-          <p class="engine-card-head"><span class="engine-tag">LMP</span>人生支援営業DXプラットフォーム</p>
-          <p class="engine-card-title">地域の相談窓口</p>
-          <ul class="engine-card-list">
-            <li>①ライフメイクプランナーを育成する</li>
-            <li>②最適提案・実行支援を行う</li>
-          </ul>
-        </div>
+    <div class="results">
+      <div class="result">
+        <p class="star-num"><span class="fig">2〜3<small>万円</small></span></p>
+        <p class="label">社員の家計に、毎月これだけの余白</p>
       </div>
-
-      <!-- 中央から5つの手順が円環でつながる関係図 -->
-      <div class="wheel">
-        <div class="wheel-ring" aria-hidden="true"></div>
-        <div class="wheel-center">
-          <p class="wheel-center-title">自動集客<br>システム</p>
-          <p class="wheel-center-sub">入口（RC）と出口（LMP）が循環する</p>
-        </div>
-        <div class="wheel-step wheel-step--1">
-          <span class="wheel-num">1</span>
-          <p class="wheel-step-title">RC導入が増える</p>
-          <p class="wheel-step-txt">企業へ人生支援経営を届ける</p>
-        </div>
-        <div class="wheel-step wheel-step--2">
-          <span class="wheel-num">2</span>
-          <p class="wheel-step-title">人生教育で相談が生まれる</p>
-          <p class="wheel-step-txt">人生教育・人生診断・人生設計</p>
-        </div>
-        <div class="wheel-step wheel-step--3">
-          <span class="wheel-num">3</span>
-          <p class="wheel-step-title">LMPが相談を受け止める</p>
-          <p class="wheel-step-txt">地域の相談窓口として提案・実行支援</p>
-        </div>
-        <div class="wheel-step wheel-step--4">
-          <span class="wheel-num">4</span>
-          <p class="wheel-step-title">信頼・成果が積み上がる</p>
-          <p class="wheel-step-txt">顧客満足・実績・紹介</p>
-        </div>
-        <div class="wheel-step wheel-step--5">
-          <span class="wheel-num">5</span>
-          <p class="wheel-step-title">さらにRCが増える</p>
-          <p class="wheel-step-txt">企業・地域へ広がる</p>
-        </div>
+      <div class="result">
+        <p class="star-num"><span class="fig">5<small>つ</small></span></p>
+        <p class="label">企業が得られる価値</p>
+      </div>
+      <div class="result">
+        <p class="star-num"><span class="fig">2<small>分</small></span></p>
+        <p class="label">性格診断は、たったこれだけ</p>
       </div>
     </div>
-
-    <p class="engine-banner">
-      入口（人生教育）と出口（相談・実行）がつながるから
-      <strong>地域で最も信頼され、最も社員と家庭を守る存在へ。</strong>
-    </p>
   </div>
 </section>
 
@@ -588,18 +497,18 @@
 <section class="seats">
   <div class="wrap fade">
     <p class="lead">1エリア2社限定。</p>
-    <p>この贈りものは、<br>先に受け取った1社だけのものになります。</p>
+    <p>この星は、<br>先に見つけた1社のためのものになります。</p>
   </div>
 </section>
 
 <!-- 7. 最終CTA -->
 <section class="entry" id="entry">
   <div class="wrap fade">
-    <h2>まずは、話を聞くところから。</h2>
+    <h2>まずは、輪に入るところから。</h2>
     <p class="lead">その場で決めなくて構いません。</p>
     <!--
       送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-cafe.html と同じ）。
+      入力内容から本文を組み立ててメーラーを開く方式（lp-gift.html と同じ）。
     -->
     <form id="entry-form" novalidate>
       <div class="field">
@@ -618,7 +527,7 @@
         <label for="email">メールアドレス</label>
         <input id="email" name="email" type="email" autocomplete="email" required>
       </div>
-      <!-- 備考は任意。書かなくても送れるようにする -->
+      <!-- 備考は任意。書かなくても申し込めるようにする -->
       <div class="field">
         <label for="note">備考</label>
         <textarea id="note" name="note"></textarea>
@@ -640,8 +549,8 @@
            onerror="this.closest('.footer-logo-link').remove()">
     </a>
     <nav>
-      <a href="kaisha-gift.html">会社概要</a>
-      <a href="shiryou-gift.html">資料請求</a>
+      <a href="kaisha-star.html">会社概要</a>
+      <a href="shiryou-star.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>

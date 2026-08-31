@@ -289,6 +289,17 @@
     color:var(--ink-soft);
     font-size:15px;
   }
+  /* 締めの1行。太く大きく出して、補足の note はその下に小さく添える */
+  .note-lead{
+    margin-top:32px;
+    text-align:center;
+    font-weight:700;
+    font-size:clamp(19px,5vw,24px);
+    line-height:1.6;
+  }
+  .note-lead + .note{margin-top:8px}
+  /* 2行になるときは、読点で折る。「地域で一番」の途中で切らない */
+  .note span{display:inline-block}
 
   /* ── 4. 流れ ── */
   /* 4ステップの見出し。喫茶店の黒板メニューに見立てる。
@@ -397,14 +408,86 @@
   }
   .result .fig small{font-size:.5em;color:#EBDECB}
 
+  /* ── 5-2. 循環の図 ──
+     中央に丸い看板、そのまわりに5枚のカードを五角形に置く。
+     広い画面は輪、狭い画面は縦一列。輪の矢印は広い画面だけ出す。 */
+  .cycle{display:grid;gap:14px}
+  .cycle .hub{
+    position:relative;
+    display:grid;place-items:center;
+    aspect-ratio:1;
+    width:min(100%,290px);
+    margin-inline:auto;
+  }
+  /* 破線の輪と5つの矢印。カードの内側、看板の外側を回る */
+  .cycle .ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .hub-in{
+    width:78%;aspect-ratio:1;
+    border-radius:50%;
+    background:var(--brown);
+    /* 吊り看板と同じ、濃茶→生成り→濃茶の重ねぶち */
+    box-shadow:0 0 0 5px var(--cream),0 0 0 9px var(--brown);
+    display:grid;place-content:center;
+    text-align:center;
+    padding:8%;
+  }
+  .hub-t{font-weight:700;line-height:1.35;color:#FBF3E4;font-size:clamp(19px,5.2vw,26px)}
+  .hub-s{margin-top:10px;line-height:1.65;color:#E7D3B4;font-size:clamp(10px,2.7vw,12px)}
+  .node{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r);
+    padding:16px 14px;
+    text-align:center;
+    box-shadow:0 2px 20px rgba(62,51,43,.05);
+  }
+  .node .ttl{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;line-height:1.5;
+    font-size:clamp(14px,3.7vw,16px);
+  }
+  .node .no{
+    flex:none;
+    display:grid;place-content:center;
+    width:23px;aspect-ratio:1;border-radius:50%;
+    background:var(--brown);color:#FBF3E4;
+    font-size:13px;line-height:1;
+  }
+  .node .sub{margin-top:6px;color:var(--ink-soft);line-height:1.7;font-size:clamp(11px,3vw,12.5px)}
+  /* カードの絵。フッターのスイーツと同じ、輪郭線なしのべた塗り。
+     縦横比が絵ごとに違うので、高さでそろえて幅は成り行きにする */
+  .node .ico{height:28px;width:auto;display:block;margin:12px auto 0}
+  /* 狭い画面は輪にできないので、戻り先を1行で添える */
+  .cycle-loop{margin-top:16px;text-align:center;color:var(--ink-soft);font-size:13px}
+  @media (max-width:819px){ .cycle .ring{display:none} }
+  @media (min-width:820px){
+    .cycle{
+      grid-template-columns:1fr 1.06fr 1fr;
+      align-items:center;
+      gap:22px 26px;
+      grid-template-areas:
+        ".  n1  ."
+        "n5 hub n2"
+        "n4 .   n3";
+    }
+    .cycle .hub{grid-area:hub;width:100%}
+    .cycle .n1{grid-area:n1}
+    .cycle .n2{grid-area:n2}
+    .cycle .n3{grid-area:n3}
+    .cycle .n4{grid-area:n4}
+    .cycle .n5{grid-area:n5}
+    .cycle-loop{display:none}
+  }
+
   /* ── 6. 席の数 ── */
   .seats{text-align:center}
   .seats .lead{
     font-weight:700;
     font-size:clamp(24px,6vw,34px);
-    margin-bottom:20px;
+    margin-bottom:10px;   /* 次の1行は、見出しにくっつける */
   }
   .seats p{color:var(--ink-soft)}
+  .seats .after{margin-top:26px}   /* ここで1行あける */
 
   /* ── 7. 最終CTA ── */
   .entry{background:var(--cream)}
@@ -420,7 +503,7 @@
   }
   .field{margin-bottom:20px}
   label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{
+  input,textarea{
     width:100%;
     padding:15px 16px;
     font-size:16px;
@@ -430,7 +513,11 @@
     border:1px solid var(--line);
     border-radius:12px;
   }
-  input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  /* 備考。任意入力なので、高さは3行ぶんだけ。縦にだけ伸ばせる */
+  textarea{line-height:1.8;resize:vertical;min-height:96px;display:block}
+  textarea::placeholder{color:#8A6A52}
+  input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  label .opt{font-size:12px;color:var(--ink-soft);margin-left:6px}
   .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
   .entry-note{
     max-width:520px;
@@ -754,22 +841,23 @@
     </div>
     <div class="flow">
       <div class="step">
-        <span class="num"></span><p class="txt">気軽に相談</p>
-        <svg class="cup" viewBox="0 0 60 56" aria-hidden="true">
-          <g fill="none" stroke="#C9B69E" stroke-width="3" stroke-linecap="round">
-            <path d="M23 12q0-5 4.5-5t4.5-5.5"/>
-            <path d="M34 10q0-4 4-4t4-4.5"/>
+        <span class="num"></span><p class="txt">気軽に入る</p>
+        <!-- プリン。フッターのスイーツと同じ形 -->
+        <svg class="cup" viewBox="0 0 80 106" aria-hidden="true">
+          <ellipse cx="36" cy="96" rx="34" ry="9" fill="#FFF8EC"/>
+          <g transform="translate(-70,-52)">
+            <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFCF92"/>
+            <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C07A3A"/>
+            <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#DDB47A" opacity=".55"/>
+            <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
+            <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
+            <circle cx="104" cy="80" r="8" fill="#D8483A"/>
+            <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="3" stroke-linecap="round"/>
           </g>
-          <ellipse cx="30" cy="46" rx="25" ry="7" fill="#EBDECB"/>
-          <ellipse cx="30" cy="44.5" rx="19" ry="5" fill="#DCCBB2"/>
-          <path d="M45 26q10 1 10 7 0 6-9 7" fill="none" stroke="#F7EAD2" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M15 20h30l-3 20q-.5 4-5 4h-14q-4.5 0-5-4z" fill="#F7EAD2"/>
-          <ellipse cx="30" cy="20" rx="15" ry="4.2" fill="#7A4A24"/>
-          <ellipse cx="30" cy="20" rx="11" ry="2.8" fill="#8B5A30"/>
         </svg>
       </div>
       <div class="step">
-        <span class="num"></span><p class="txt">暮らしが見える</p>
+        <span class="num"></span><p class="txt">メニューを開く</p>
         <!-- クリームソーダ。ファーストビューの並びと同じ形 -->
         <svg class="cup" viewBox="0 0 40 62" aria-hidden="true">
           <path d="M12 4l5 14" stroke="#C25A32" stroke-width="3" stroke-linecap="round"/>
@@ -787,23 +875,22 @@
         </svg>
       </div>
       <div class="step">
-        <span class="num"></span><p class="txt">課題が見つかる</p>
-        <!-- プリン。フッターのスイーツと同じ形 -->
-        <svg class="cup" viewBox="0 0 80 106" aria-hidden="true">
-          <ellipse cx="36" cy="96" rx="34" ry="9" fill="#FFF8EC"/>
-          <g transform="translate(-70,-52)">
-            <path d="M78 96h52l-7 44a6 6 0 0 1-6 5H91a6 6 0 0 1-6-5z" fill="#EFCF92"/>
-            <ellipse cx="104" cy="96" rx="26" ry="8" fill="#C07A3A"/>
-            <path d="M84 118c6 4 14 6 20 6s14-2 20-6l-2 12c-5 3-11 5-18 5s-13-2-18-5z" fill="#DDB47A" opacity=".55"/>
-            <circle cx="134" cy="140" r="10" fill="#FFFDF7"/>
-            <circle cx="123" cy="145" r="7" fill="#FFFDF7"/>
-            <circle cx="104" cy="80" r="8" fill="#D8483A"/>
-            <path d="M104 72c2-8 8-11 13-11" fill="none" stroke="#C9A57E" stroke-width="3" stroke-linecap="round"/>
+        <span class="num"></span><p class="txt">珈琲をたのしむ</p>
+        <svg class="cup" viewBox="0 0 60 56" aria-hidden="true">
+          <g fill="none" stroke="#C9B69E" stroke-width="3" stroke-linecap="round">
+            <path d="M23 12q0-5 4.5-5t4.5-5.5"/>
+            <path d="M34 10q0-4 4-4t4-4.5"/>
           </g>
+          <ellipse cx="30" cy="46" rx="25" ry="7" fill="#EBDECB"/>
+          <ellipse cx="30" cy="44.5" rx="19" ry="5" fill="#DCCBB2"/>
+          <path d="M45 26q10 1 10 7 0 6-9 7" fill="none" stroke="#F7EAD2" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M15 20h30l-3 20q-.5 4-5 4h-14q-4.5 0-5-4z" fill="#F7EAD2"/>
+          <ellipse cx="30" cy="20" rx="15" ry="4.2" fill="#7A4A24"/>
+          <ellipse cx="30" cy="20" rx="11" ry="2.8" fill="#8B5A30"/>
         </svg>
       </div>
       <div class="step">
-        <span class="num"></span><p class="txt">家が答えになる</p>
+        <span class="num"></span><p class="txt">行きつけになる</p>
         <!-- パンケーキ。ファーストビューの並びと同じ形 -->
         <svg class="cup" viewBox="0 0 140 104" aria-hidden="true">
           <g transform="translate(-560,-88)">
@@ -818,7 +905,8 @@
         </svg>
       </div>
     </div>
-    <p class="note">お家を売るだけの会社じゃなく、地域の相談店に。</p>
+    <p class="note-lead">あなたの居心地のいい場所に</p>
+    <p class="note">お家を売るだけの会社じゃなく、<span>地域で一番信頼される存在へ。</span></p>
 
   </div>
 </section>
@@ -843,11 +931,112 @@
   </div>
 </section>
 
+<!-- 5-2. 循環の図。中央に丸い看板、まわりに5枚のカードを時計回りに置く -->
+<section>
+  <div class="wrap fade">
+    <div class="cycle">
+      <div class="hub">
+        <!-- 破線の輪と5つの矢印。時計回りに回っていることを見せる -->
+        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="94" fill="none" stroke="#A8452A" stroke-width="2.2"
+                  stroke-dasharray="7 9" stroke-linecap="round" opacity=".65"/>
+          <g fill="#A8452A" opacity=".9">
+            <path d="M93 0.5 107 6 93 11.5Z" transform="rotate(36 100 100)"/>
+            <path d="M93 0.5 107 6 93 11.5Z" transform="rotate(108 100 100)"/>
+            <path d="M93 0.5 107 6 93 11.5Z" transform="rotate(180 100 100)"/>
+            <path d="M93 0.5 107 6 93 11.5Z" transform="rotate(252 100 100)"/>
+            <path d="M93 0.5 107 6 93 11.5Z" transform="rotate(324 100 100)"/>
+          </g>
+        </svg>
+        <div class="hub-in">
+          <p class="hub-t">自動集客<br>システム</p>
+          <p class="hub-s">入口（RC）と出口（LMP）が<br>循環する</p>
+        </div>
+      </div>
+
+      <div class="node n1">
+        <p class="ttl"><span class="no">1</span><span>RC導入が増える</span></p>
+        <p class="sub">企業へ人生支援経営を届ける</p>
+        <!-- ビル。輪郭線なしのべた塗り -->
+        <svg class="ico" viewBox="0 0 44 34" aria-hidden="true">
+          <rect x="2" y="8" width="16" height="26" rx="2" fill="#6B5A4C"/>
+          <rect x="22" y="2" width="20" height="32" rx="2" fill="#A8452A"/>
+          <g fill="#FFF8EC">
+            <rect x="5" y="12" width="4" height="4"/><rect x="11" y="12" width="4" height="4"/>
+            <rect x="5" y="20" width="4" height="4"/><rect x="11" y="20" width="4" height="4"/>
+            <rect x="26" y="7" width="4" height="4"/><rect x="34" y="7" width="4" height="4"/>
+            <rect x="26" y="15" width="4" height="4"/><rect x="34" y="15" width="4" height="4"/>
+            <rect x="26" y="23" width="4" height="4"/><rect x="34" y="23" width="4" height="4"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="node n2">
+        <p class="ttl"><span class="no">2</span><span>人生教育で相談が生まれる</span></p>
+        <p class="sub">人生教育・人生診断・人生設計</p>
+        <!-- 開いた本 -->
+        <svg class="ico" viewBox="0 0 44 32" aria-hidden="true">
+          <path d="M22 7C17 3 9 3 4 5v22c5-2 13-2 18 2z" fill="#C9A57E"/>
+          <path d="M22 7c5-4 13-4 18-2v22c-5-2-13-2-18 2z" fill="#E8D6BC"/>
+          <path d="M20 7h4v22h-4z" fill="#6B5A4C"/>
+          <g fill="#FFF8EC">
+            <rect x="8" y="11" width="10" height="2" rx="1"/><rect x="8" y="16" width="10" height="2" rx="1"/>
+          </g>
+          <g fill="#B08B62">
+            <rect x="26" y="11" width="10" height="2" rx="1"/><rect x="26" y="16" width="10" height="2" rx="1"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="node n3">
+        <p class="ttl"><span class="no">3</span><span>LMPが相談を受け止める</span></p>
+        <p class="sub">地域の相談窓口として提案・実行支援</p>
+        <!-- 相談の吹き出し2つ -->
+        <svg class="ico" viewBox="0 0 46 34" aria-hidden="true">
+          <path d="M3 2h21a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H13l-6 5v-5H3a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z" fill="#6B5A4C"/>
+          <path d="M22 14h21a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-4v4l-5-4H22a3 3 0 0 1-3-3V17a3 3 0 0 1 3-3z"
+                fill="#A8452A" stroke="#FFF8EC" stroke-width="2.4"/>
+        </svg>
+      </div>
+
+      <div class="node n4">
+        <p class="ttl"><span class="no">4</span><span>信頼・成果が積み上がる</span></p>
+        <p class="sub">顧客満足・実績・紹介</p>
+        <!-- 盾 -->
+        <svg class="ico" viewBox="0 0 30 34" aria-hidden="true">
+          <path d="M15 1 29 6v12c0 8-6 13-14 15C7 31 1 26 1 18V6z" fill="#6B5A4C"/>
+          <path d="m9 17 4.5 4.5L22 13" fill="none" stroke="#F7EAD2"
+                stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="node n5">
+        <p class="ttl"><span class="no">5</span><span>さらにRCが増える</span></p>
+        <p class="sub">企業・地域へ広がる</p>
+        <!-- 街並み -->
+        <svg class="ico" viewBox="0 0 52 30" aria-hidden="true">
+          <path d="M2 30V16l8-6 8 6v14z" fill="#A8452A"/>
+          <rect x="21" y="6" width="12" height="24" rx="1.5" fill="#6B5A4C"/>
+          <path d="M36 30V14l7-5 7 5v16z" fill="#C9A57E"/>
+          <g fill="#FFF8EC">
+            <rect x="7" y="18" width="6" height="5"/>
+            <rect x="24" y="10" width="3" height="3"/><rect x="29" y="10" width="3" height="3"/>
+            <rect x="24" y="16" width="3" height="3"/><rect x="29" y="16" width="3" height="3"/>
+            <rect x="40" y="17" width="6" height="5"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <p class="cycle-loop">5 から 1 へ戻り、また回ります。</p>
+  </div>
+</section>
+
 <!-- 6. 席の数 -->
 <section class="seats">
   <div class="wrap fade">
-    <p class="lead">1エリア2社限定。</p>
-    <p>まちの相談窓口は、<br>先に始めた1社の場所になります。</p>
+    <p class="lead">2社限定。</p>
+    <p>まちの相談窓口は、</p>
+    <p class="after">先に始めた1社の場所になります。</p>
   </div>
 </section>
 
@@ -877,6 +1066,10 @@
       <div class="field">
         <label for="email">メールアドレス</label>
         <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="note">備考<span class="opt">（任意）</span></label>
+        <textarea id="note" name="note" rows="3" placeholder="ご質問やご相談があればお書きください。"></textarea>
       </div>
       <button class="btn submit" type="submit">まず話を聞いてみる（無料）</button>
     </form>
@@ -951,14 +1144,17 @@
         return;
       }
     }
-    var body = [
+    var lines = [
       'ライフメイクパートナーズ 御中', '',
       'お話をうかがいたく、連絡いたします。', '',
       '会社名：' + v('company'),
       'お名前：' + v('name'),
       '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'), ''
-    ].join('\r\n');
+      'メールアドレス：' + v('email')
+    ];
+    // 備考は任意。書かれたときだけ、1行あけて末尾に足す
+    if (v('note')) { lines.push('', '備考：', v('note')); }
+    var body = lines.concat(['']).join('\r\n');
     location.href = 'mailto:RC@n-realize.co.jp'
       + '?subject=' + encodeURIComponent('お問い合わせ（まず話を聞いてみる）')
       + '&body=' + encodeURIComponent(body);
