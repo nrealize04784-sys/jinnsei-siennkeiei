@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPGから、家が売れる。｜不動産フランチャイズ加盟募集</title>
+<meta name="description" content="物件を探している人ではなく、人生を良くしたい人が集まる。エリア2社限定の加盟募集。">
+<!-- 日本語対応のドット絵フォント。ページ全体の書体として使う -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  /*
+    ドット絵フォント本体をリポジトリに同梱している。
+    fonts/DotGothic16-subset.woff2 は、このページで実際に使う文字だけに
+    絞り込んだもの（約24KB）。Google Fonts が読めない環境でもドット調が崩れない。
+    ※ 文言に新しい漢字を足した場合、この同梱分に無ければ上の Google Fonts 側が拾う。
+      恒久的に載せるなら、サブセットを作り直して差し替えること。
+  */
+  @font-face{
+    font-family:'DotGothic16Local';
+    src:url('fonts/DotGothic16-subset.woff2') format('woff2');
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+  :root{
+    --navy:#0B1B3A;          /* 文字色。濃紺は信頼感の担保として残す */
+    --navy-deep:#071228;
+    --blue:#1E5FBF;          /* アクセント。背景の空の色から採る */
+    --gold:#E8B64C;
+    /* 最終CTAの地色。--gold は文字色にも使うので、背景専用に淡い方を分けている */
+    --gold-pale:#F7E7C1;
+    --paper:#F4F8FD;         /* ベースの明るい地色 */
+    --paper-2:#E7F1FF;
+    --white:#FFFFFF;
+    --muted:#4A5C7A;
+    --line:rgba(11,27,58,.12);
+    --maxw:1040px;
+    /* ドット絵フォント。太字を持たないので font-weight は 400 で使うこと */
+    --font-game:"DotGothic16Local","DotGothic16","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+    /*
+      ドット絵のカーソル（縦8マス×横4マスの階段状の三角）。
+      ▶ は DotGothic16 に無く別フォントに落ちてしまうため、文字ではなく形で描く。
+    */
+    --cursor-clip:polygon(
+      0% 0%,   25% 0%,
+      25% 12.5%, 50% 12.5%,
+      50% 25%,   75% 25%,
+      75% 37.5%, 100% 37.5%,
+      100% 62.5%, 75% 62.5%,
+      75% 75%,   50% 75%,
+      50% 87.5%, 25% 87.5%,
+      25% 100%,  0% 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--navy);
+    font-family:var(--font-game);
+    font-weight:400;      /* この書体は太字を持たない。疑似太字を避けるため全体を400で統一 */
+    line-height:1.95;
+    letter-spacing:.05em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:112px 0;position:relative}
+
+  /*
+    背景：ドット絵の街を全面に固定。
+    1層目 bg-town.png（ローカル）を優先し、無ければ2層目の生成画像URLを表示する。
+    ※ 公開前に画像を bg-town.png としてリポジトリに置き、2層目のURLは削除すること。
+  */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-color:var(--paper);  /* 画像が両方読めない場合のフォールバック */
+    background-image:url("bg-town.png"),
+                     url("https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_051624_7cbf2893-3471-44c4-a27d-74407820bd42.png");
+    background-position:center top;
+    background-repeat:no-repeat;
+    background-size:cover;
+    image-rendering:pixelated;      /* ドット絵をぼかさない */
+    image-rendering:crisp-edges;
+  }
+  .wrap,header,footer{position:relative;z-index:1}
+  /* 本文セクションは白基調の膜。背景をほのかに透かしつつ、文字は濃紺で読ませる */
+  section{background:rgba(255,255,255,.93)}
+
+  /* ---- 共通パーツ ---- */
+  .label{
+    font-family:var(--font-game);
+    font-size:13px;letter-spacing:.3em;color:var(--gold);
+    display:inline-block;margin-bottom:28px;font-weight:400;
+  }
+  /*
+    ボタンはすべてドラクエのコマンドウィンドウに見立てる。
+    黒地・白の角枠・金文字・先頭に▶のカーソル。角は落とさず、影も付けない
+    （実機の枠は平面なので、浮かせると見え方が離れる）。
+  */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:.7em;
+    background:#000;color:var(--gold);
+    border:2px solid #fff;
+    font-weight:400;font-size:17px;letter-spacing:.1em;
+    padding:19px 40px;text-decoration:none;cursor:pointer;
+    font-family:inherit;
+    transition:background .15s ease;
+  }
+  /* 選択中のコマンドを指す▶。文字ではなく形で描く（書体に▶が無いため） */
+  .btn::before{
+    content:"";flex:none;
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
+  }
+  .btn:hover{background:#111}
+  .ph{
+    border:1px dashed var(--line);color:rgba(11,27,58,.35);
+    font-size:12px;letter-spacing:.2em;display:flex;align-items:center;
+    justify-content:center;text-align:center;background:rgba(255,255,255,.5);
+  }
+  /*
+    大きく見せる文字だけ、輪郭の平滑化を切ってドットの角を立てる。
+    本文や項目名まで切ると小さい字が荒れて読みにくくなるので、対象は絞っている。
+  */
+  .fv h1,h2,.levelup,.limited .big,.stat b{
+    -webkit-font-smoothing:none;
+    -moz-osx-font-smoothing:unset;
+  }
+  h2{
+    font-family:var(--font-game);
+    font-size:clamp(25px,3.8vw,38px);font-weight:400;line-height:1.55;
+    letter-spacing:.04em;margin-bottom:56px;
+    /* FVの見出しと同じ硬い落ち影。白地で文字が潰れないよう濃度だけ落としている */
+    text-shadow:4px 4px 0 rgba(11,27,58,.16);
+  }
+
+  /* ---- 0. 固定ヘッダー ---- */
+  /*
+    常時最上部に固定。ファーストビューは濃紺の膜が掛かっているので、
+    その上に重ねても社名とボタンが読める。
+  */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    background:rgba(7,18,40,.72);
+    border-bottom:1px solid rgba(255,255,255,.14);
+    backdrop-filter:blur(8px);
+  }
+  .site-header .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding-top:14px;padding-bottom:14px;
+  }
+  .hdr-brand{
+    display:flex;align-items:center;gap:12px;
+    color:var(--gold);text-decoration:none;
+    font-size:15px;letter-spacing:.1em;white-space:nowrap;
+  }
+  .hdr-brand:hover span{text-decoration:underline}
+  /* ロゴは緑と赤。濃紺に直接置くと沈むので、白い小さな台紙に載せる */
+  /* ロゴと欧文を1枚の白い台紙に載せる。濃紺に直接置くと緑と赤が沈むため */
+  .hdr-lockup{
+    display:inline-flex;align-items:center;gap:14px;
+    background:#fff;border-radius:5px;padding:6px 16px 6px 12px;
+  }
+  .hdr-logo{height:48px;width:auto;object-fit:contain;display:block}
+  .hdr-wordmark{height:18px;width:auto;object-fit:contain;display:block}
+  /* ロゴが出ているときは、同じ内容のカタカナ社名を重ねて出さない。
+     読み込みに失敗して台紙ごと消えると、この指定が外れて社名が復活する */
+  .hdr-lockup + span{display:none}
+  /*
+    ロゴとメニューの間を歩く三人。背景は透過済みなので濃紺にそのまま溶ける。
+    ロゴと同じ高さに収め、ヘッダーの高さは変えない。
+  */
+  .hdr-party{
+    height:48px;width:auto;flex:none;display:block;
+    opacity:.92;
+  }
+  /* メニュー。等間隔で並べ、狭い画面では文字だけ詰める */
+  .hdr-nav{display:flex;align-items:center;gap:34px}
+  .hdr-nav a{
+    color:rgba(255,255,255,.88);text-decoration:none;
+    font-size:14px;letter-spacing:.08em;white-space:nowrap;
+  }
+  .hdr-nav a:hover{color:var(--gold);text-decoration:underline}
+  /* 文字リンクにもコマンドのカーソルを立てる。色は文字色に追従させる */
+  .hdr-nav > a:not(.hdr-cta){display:inline-flex;align-items:center;gap:.5em}
+  .hdr-nav > a:not(.hdr-cta)::before{
+    content:"";flex:none;
+    width:.45em;height:.66em;background:currentColor;clip-path:var(--cursor-clip);
+  }
+  /*
+    メニュー内の資料請求はコマンドウィンドウに見立てる。
+    黒地・白の角枠・▶カーソルという、申し込みフォームと同じ作り。
+  */
+  .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em}
+  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
+  .hdr-nav a.hdr-cta{color:#fff}
+  .hdr-nav a.hdr-cta-main{color:var(--gold)}
+  .hdr-nav a.hdr-cta:hover{background:#111;text-decoration:none}
+  /*
+    固定ヘッダーの高さぶん、アンカーの着地点を下げる。
+    これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
+  */
+  #entry{scroll-margin-top:92px}
+  /* ロゴとメニューを優先する。横幅が足りなくなったら三人は出さない */
+  @media(max-width:1100px){
+    .hdr-party{display:none}
+  }
+  @media(max-width:640px){
+    /* 幅が足りないので、ロゴを小さくして社名テキストは出さない */
+    .hdr-brand > span:not(.hdr-lockup){display:none}
+    /* 幅が足りないので欧文は出さず、ロゴだけにする */
+    .hdr-wordmark{display:none}
+    .hdr-lockup{padding:4px 7px}
+    .hdr-logo{height:34px}
+    .site-header .wrap{padding-top:10px;padding-bottom:10px}
+    /* 幅が足りず、画面下の追従ボタンとも重複するので出さない */
+    .hdr-cta{display:none}
+    .hdr-nav{gap:13px}
+    .hdr-nav a{font-size:12px;letter-spacing:0}
+    .hdr-nav > a:not(.hdr-cta){gap:.4em}
+    #entry{scroll-margin-top:66px}
+  }
+
+  /* ---- 1. ファーストビュー ---- */
+  /* 左に濃紺を寄せて文字を読ませ、右は街の絵をそのまま見せる */
+  .fv{
+    padding:150px 0 130px;
+    background:linear-gradient(100deg,
+      rgba(7,18,40,.88) 0%,rgba(7,18,40,.7) 38%,
+      rgba(7,18,40,.22) 70%,rgba(7,18,40,0) 100%);
+  }
+  .fv-inner{max-width:660px;color:var(--white)}
+  .fv h1{
+    font-family:var(--font-game);
+    font-size:clamp(38px,6.4vw,72px);line-height:1.32;font-weight:400;
+    letter-spacing:.04em;margin-bottom:32px;
+    /* RPGの文字らしく、硬い落ち影を1枚重ねる */
+    text-shadow:4px 4px 0 rgba(7,18,40,.75),0 2px 20px rgba(7,18,40,.5);
+  }
+  .fv h1 em{font-style:normal;color:var(--gold)}
+  /* 2つのコマンドを横に並べる。幅が足りなければ折り返す */
+  .fv-actions{display:flex;flex-wrap:wrap;gap:14px}
+  /* 資料請求は白文字。金文字の申し込みより一段控えめに見せる */
+  .btn-sub{color:#fff}
+  .fv p{
+    font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,.9);margin-bottom:44px;
+    text-shadow:0 2px 14px rgba(7,18,40,.8);
+  }
+
+  /* ---- 2. 課題 ---- */
+  .issue{background:rgba(244,248,253,.95)}
+  /* 勇者・メッセージウィンドウ・勇者の3カラム。本文より広く取って絵を大きく見せる */
+  .issue-row{
+    /* フェードで外周が消える分、画像カラムを広めに取って見た目の大きさを保つ */
+    display:grid;grid-template-columns:1.3fr minmax(0,2fr) 1.3fr;
+    gap:0;align-items:center;max-width:1360px;
+  }
+  /*
+    枠を外し、四辺を白へフェードさせて紙面に溶け込ませる。
+    横方向・縦方向の2枚を掛け合わせる（intersect）ことで、
+    円形の輪郭が出ず、四隅だけが二重に薄くなって自然に消える。
+    停止点を細かく刻み、直線的な減衰に見えないようにしている。
+  */
+  .hero-cut{
+    --fade-x:linear-gradient(to right,
+      transparent 0%,rgba(0,0,0,.1) 5%,rgba(0,0,0,.34) 9%,rgba(0,0,0,.62) 13%,
+      rgba(0,0,0,.85) 17%,#000 22%,
+      #000 78%,rgba(0,0,0,.85) 83%,rgba(0,0,0,.62) 87%,rgba(0,0,0,.34) 91%,
+      rgba(0,0,0,.1) 95%,transparent 100%);
+    --fade-y:linear-gradient(to bottom,
+      transparent 0%,rgba(0,0,0,.1) 5%,rgba(0,0,0,.34) 9%,rgba(0,0,0,.62) 13%,
+      rgba(0,0,0,.85) 17%,#000 22%,
+      #000 78%,rgba(0,0,0,.85) 83%,rgba(0,0,0,.62) 87%,rgba(0,0,0,.34) 91%,
+      rgba(0,0,0,.1) 95%,transparent 100%);
+    width:100%;height:auto;display:block;aspect-ratio:1/1;object-fit:cover;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    -webkit-mask-image:var(--fade-x),var(--fade-y);
+    mask-image:var(--fade-x),var(--fade-y);
+    -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
+    mask-composite:intersect;
+  }
+  /* 門の絵の上に、RPGのメッセージウィンドウを重ねる */
+  .gate{position:relative;line-height:0}
+  /*
+    扉も四辺を白へフェードさせる。ただし勇者の絵より減衰を浅くしている
+    （画面いっぱいにアーチが入っているため、深く消すと門の形が崩れるため）
+  */
+  .gate-img{
+    --gate-fade-x:linear-gradient(to right,
+      transparent 0%,rgba(0,0,0,.14) 3%,rgba(0,0,0,.42) 6%,rgba(0,0,0,.7) 9%,
+      rgba(0,0,0,.9) 11%,#000 14%,
+      #000 86%,rgba(0,0,0,.9) 89%,rgba(0,0,0,.7) 91%,rgba(0,0,0,.42) 94%,
+      rgba(0,0,0,.14) 97%,transparent 100%);
+    --gate-fade-y:linear-gradient(to bottom,
+      transparent 0%,rgba(0,0,0,.14) 3%,rgba(0,0,0,.42) 6%,rgba(0,0,0,.7) 9%,
+      rgba(0,0,0,.9) 11%,#000 14%,
+      #000 86%,rgba(0,0,0,.9) 89%,rgba(0,0,0,.7) 91%,rgba(0,0,0,.42) 94%,
+      rgba(0,0,0,.14) 97%,transparent 100%);
+    width:100%;height:auto;display:block;
+    image-rendering:pixelated;image-rendering:crisp-edges;
+    -webkit-mask-image:var(--gate-fade-x),var(--gate-fade-y);
+    mask-image:var(--gate-fade-x),var(--gate-fade-y);
+    -webkit-mask-composite:source-in;   /* 旧WebKit向けの記法 */
+    mask-composite:intersect;
+  }
+  /* 角を大きく丸めた、生成りの紙のような柔らかいパネル */
+  .gate-text{
+    position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:86%;max-width:580px;
+    background:rgba(255,252,246,.72);
+    border:none;border-radius:clamp(18px,2.4vw,32px);
+    padding:clamp(20px,2.6vw,36px) clamp(16px,2.2vw,30px);
+    text-align:center;line-height:2;
+    box-shadow:0 8px 26px rgba(11,27,58,.14);
+    /* 地を透かす分、背後をぼかして文字の可読性を保つ */
+    backdrop-filter:blur(5px);
+  }
+  .gate-text p{
+    font-family:var(--font-game);
+    font-size:clamp(13px,1.85vw,21px);font-weight:400;color:var(--navy);
+    letter-spacing:.03em;
+    text-shadow:0 1px 2px rgba(255,255,255,.8);
+    text-wrap:pretty;   /* 行末に1文字だけ残る折り返しを避ける */
+  }
+  .gate-text .then{color:var(--blue);margin-top:.7em}
+
+  /* ---- 3. 仕組み ---- */
+  .flow{background:rgba(231,241,255,.93)}
+  /* 絵を大きく見せたいセクションなので、本文（1040px）より横幅を広く取る */
+  .flow .wrap{max-width:1240px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:8px}
+  /* 見出しの行数が違ってもICON枠の高さが揃うよう、縦方向のflexにする */
+  .step{
+    background:var(--white);border-top:4px solid var(--blue);
+    padding:32px 18px 30px;box-shadow:0 4px 20px rgba(11,27,58,.07);
+    display:flex;flex-direction:column;
+  }
+  .step span{
+    font-family:var(--font-game);
+    font-size:14px;color:var(--blue);letter-spacing:.16em;
+    display:block;margin-bottom:16px;font-weight:400;
+  }
+  .step p{
+    font-family:var(--font-game);
+    font-size:clamp(15px,1.9vw,20px);font-weight:400;line-height:1.65;
+    letter-spacing:.02em;text-wrap:pretty;margin-bottom:26px;
+    position:relative;padding-left:1.35em;
+  }
+  /*
+    RPGのメニューカーソルを模した三角矢印。
+    斜辺を4段の階段にして、ドット絵のカーソルらしい輪郭にしている
+    （縦8マス×横4マスのドットを clip-path で再現）
+  */
+  .step p::before{
+    content:"";position:absolute;left:0;top:.38em;
+    width:.62em;height:.9em;background:var(--blue);
+    clip-path:var(--cursor-clip);
+  }
+  /* margin-top:auto で下端に寄せ、見出しが1行でも2行でもICON枠が揃う */
+  .step .ph{height:150px;margin-top:auto}
+  /*
+    絵を入れたSTEPは枠線を消し、白地に溶かす。
+    元画像は2752×1536。カード幅まで大きく縮小するので image-rendering は指定しない
+    （pixelated は拡大用。縮小に使うと最近傍補間になり線がガタつく）。
+    枠は元画像と同じ16:9。object-fit:contain と合わせ、絵は決して切り取らない。
+  */
+  .step-art{
+    margin-top:auto;width:100%;aspect-ratio:16/9;
+    object-fit:contain;object-position:center;
+    mix-blend-mode:multiply;   /* 白背景の画像をカードに馴染ませる */
+  }
+  .note{
+    font-family:var(--font-game);
+    margin-top:52px;font-size:clamp(14px,1.9vw,18px);color:var(--muted);
+    letter-spacing:.04em;
+  }
+
+  /* ---- 4. 実績 ---- */
+  .proof{background:rgba(255,255,255,.95);overflow:hidden}
+  /* 中央から広がる金色の光 */
+  .proof::before{
+    content:"";position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
+    width:min(1200px,130%);aspect-ratio:1;pointer-events:none;
+    background:radial-gradient(circle,
+      rgba(232,182,76,.34) 0%,rgba(232,182,76,.15) 32%,
+      rgba(232,182,76,.05) 55%,transparent 72%);
+  }
+  /* 放射状の光条。ゆっくり回して生きた光にする */
+  .proof::after{
+    content:"";position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
+    width:min(1100px,120%);aspect-ratio:1;pointer-events:none;
+    background:repeating-conic-gradient(from 0deg,
+      rgba(232,182,76,.17) 0deg 3.5deg,transparent 3.5deg 13deg);
+    -webkit-mask-image:radial-gradient(circle,#000 5%,rgba(0,0,0,.45) 34%,transparent 62%);
+    mask-image:radial-gradient(circle,#000 5%,rgba(0,0,0,.45) 34%,transparent 62%);
+    animation:rays 26s linear infinite;
+  }
+  @keyframes rays{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  /* 舞う粒子。1要素の box-shadow を並べてドット状に散らす */
+  .sparks{
+    position:absolute;left:50%;top:56%;width:4px;height:4px;
+    pointer-events:none;background:transparent;
+    box-shadow:
+      -430px -150px 0 var(--gold),   -300px   70px 0 rgba(255,255,255,.95),
+      -210px -190px 0 rgba(255,255,255,.9), -120px  140px 0 var(--gold),
+       -30px -230px 0 var(--gold),     70px  160px 0 rgba(255,255,255,.95),
+       180px -180px 0 rgba(255,255,255,.9),  260px   90px 0 var(--gold),
+       360px -140px 0 var(--gold),    440px   40px 0 rgba(255,255,255,.95),
+      -380px   10px 0 rgba(255,255,255,.8),  400px -220px 0 rgba(255,255,255,.8);
+    animation:twinkle 2.4s ease-in-out infinite;
+  }
+  @keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+  /* レベルアップの合図。光をまとわせて明滅させる */
+  .levelup{
+    text-align:center;
+    /* 白地に金は contrast が足りないため、一段濃い琥珀にする */
+    color:#C8901F;
+    font-size:clamp(17px,2.4vw,26px);letter-spacing:.24em;
+    margin-bottom:30px;
+    text-shadow:0 0 18px rgba(232,182,76,.9),0 0 40px rgba(232,182,76,.55),
+                2px 2px 0 rgba(11,27,58,.22);
+    animation:levelup-pulse 1.8s ease-in-out infinite;
+  }
+  /* 消えかけて読めなくならないよう、下限は .68 で止める */
+  @keyframes levelup-pulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.68;transform:scale(.985)}
+  }
+  /* 動きを好まない利用者には止める */
+  @media(prefers-reduced-motion:reduce){
+    .levelup,.proof::after,.sparks,.stat{animation:none}
+  }
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  /* RPGのステータス窓を模した枠 */
+  .stat{
+    position:relative;background:var(--white);
+    border:2px solid var(--navy);
+    padding:34px 20px;text-align:center;
+    display:flex;flex-direction:column;justify-content:center;gap:14px;
+    /* 金色の光を吸ったように、枠の外へにじませる */
+    animation:stat-glow 2.6s ease-in-out infinite;
+  }
+  @keyframes stat-glow{
+    0%,100%{box-shadow:0 0 0 5px var(--white),0 0 0 7px rgba(11,27,58,.16),
+                       0 0 24px rgba(232,182,76,.35)}
+    50%    {box-shadow:0 0 0 5px var(--white),0 0 0 7px rgba(11,27,58,.16),
+                       0 0 46px rgba(232,182,76,.8)}
+  }
+  /* 3枚を少しずつずらして光らせ、順に上がっていくように見せる */
+  .stat:nth-child(2){animation-delay:.25s}
+  .stat:nth-child(3){animation-delay:.5s}
+  /* 右上の上昇マーク。斜辺を階段状にしてドット絵に揃える */
+  .stat::before{
+    content:"";position:absolute;top:12px;right:12px;
+    width:15px;height:13px;background:var(--gold);
+    clip-path:polygon(
+      37.5% 0,62.5% 0,
+      62.5% 25%,75% 25%,
+      75% 50%,87.5% 50%,
+      87.5% 75%,100% 75%,
+      100% 100%,0 100%,
+      0 75%,12.5% 75%,
+      12.5% 50%,25% 50%,
+      25% 25%,37.5% 25%);
+  }
+  .stat small{
+    order:-1;   /* 項目名をステータス欄のように数値の上へ */
+    display:block;color:var(--muted);font-size:13px;letter-spacing:.12em;
+  }
+  .stat b{
+    display:block;color:var(--blue);font-weight:400;
+    font-size:clamp(18px,2.6vw,28px);line-height:1.3;letter-spacing:.02em;
+    white-space:nowrap;   /* 数値を途中で折り返さない */
+    text-shadow:3px 3px 0 rgba(30,95,191,.18);
+  }
+  .stat b em{font-style:normal;color:var(--gold);margin:0 .3em}
+
+  /* ---- 5. 希少性 ---- */
+  /* ここだけ白い膜を薄くし、街の絵をパステル調に透かして見せる */
+  /* 下は次の「冒険をはじめる」に続くので、余白を空けすぎない */
+  .limited{text-align:center;background:rgba(255,255,255,.62);padding-bottom:64px}
+  .limited .big{
+    font-size:clamp(34px,6.6vw,74px);font-weight:400;color:var(--navy);
+    line-height:1.3;margin-bottom:28px;
+    text-shadow:4px 4px 0 rgba(11,27,58,.15),0 2px 18px rgba(255,255,255,.95);
+  }
+  .limited .big em{font-style:normal;color:var(--blue)}
+  .limited p{
+    font-size:clamp(15px,2.1vw,20px);color:var(--navy);font-weight:400;
+    text-shadow:0 2px 14px rgba(255,255,255,.95);
+  }
+
+  /* ---- 6. 最終CTA ---- */
+  /*
+    前の希少性セクションの下余白と合わさって見出しの上が空きすぎるので、
+    ここだけ上の余白を詰める（下はフォームの逃げとして残す）。
+  */
+  .cta{background:var(--gold-pale);color:var(--navy-deep);text-align:center;padding-top:48px}
+  .cta h2{color:var(--navy-deep);margin-bottom:10px}
+  .cta .lead{color:rgba(11,27,58,.72);margin-bottom:18px;font-size:16px}
+  /*
+    冒険に発つ一枚。見出しの矢印が指す先に置く。
+    参照した実機画面に寄せて、溶かさず濃紺の枠で囲んだゲーム画面として見せる。
+  */
+  .cta-journey{
+    display:block;width:100%;max-width:250px;margin:0 auto 16px;
+    /* 元画像は2K。ここまで縮小するので image-rendering は指定しない
+       （pixelated は拡大用。縮小に使うと最近傍補間になり線がガタつく） */
+    height:auto;
+    /* 見出しとフォームを主役にしたいので、絵は一段引いて見せる */
+    opacity:.62;
+    border:2px solid rgba(7,18,40,.45);
+    box-shadow:none;
+  }
+  /*
+    入力欄はドラクエのコマンドウィンドウに見立てる。
+    黒地・白の角枠・白文字。角は丸めず、影も付けない（実機の枠は平面なので）。
+  */
+  form{
+    max-width:520px;margin:0 auto;text-align:left;
+    background:#000;border:4px solid #fff;
+    /* 上枠に載せた項目名が窓の枠と重ならないよう、上だけ余白を厚くする */
+    padding:42px 28px 32px;
+  }
+  .field{position:relative;margin-bottom:30px}
+  /*
+    項目名は入力欄の上枠に載せる。枠線を切って見せたいので、
+    黒地と同じ background を敷いて白線を隠している。
+  */
+  label{
+    position:absolute;top:0;left:16px;transform:translateY(-50%);z-index:1;
+    font-size:14px;font-weight:400;letter-spacing:.1em;color:#fff;
+    background:#000;padding:0 .7em 0 2.1em;line-height:1;
+  }
+  /* コマンドを指す▶。枠に載せた項目名の頭に置く */
+  label::before{
+    content:"";position:absolute;left:.75em;top:50%;transform:translateY(-50%);
+    width:.5em;height:.72em;background:#fff;clip-path:var(--cursor-clip);
+  }
+  /* 入力中の項目を、選択中のコマンドとして金色で示す */
+  .field:focus-within label{color:var(--gold)}
+  .field:focus-within label::before{background:var(--gold)}
+  input,textarea{
+    width:100%;padding:16px 18px;border:2px solid #fff;
+    background:#000;color:#fff;
+    font-size:16px;font-family:inherit;
+  }
+  /* 備考。数行書ける高さにし、縦だけ引き伸ばせるようにする */
+  textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
+  input:focus,textarea:focus{outline:3px solid var(--gold);outline-offset:2px}
+  /* Chromeの自動入力は既定で白地・黒文字に戻してしまうため、黒地を上書きする */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus{
+    -webkit-text-fill-color:#fff;
+    -webkit-box-shadow:0 0 0 1000px #000 inset;
+    caret-color:#fff;
+  }
+  .submit{width:100%;margin-top:12px;padding:22px;font-size:18px}
+  /*
+    2つ目のコマンド（資料請求）。同じ枠だが、文字色を白にして
+    主コマンド（金文字の申し込み）より一段控えめに見せる。
+  */
+  .submit-alt{color:#fff;margin-top:14px;font-size:16px;padding:20px}
+  .submit:hover{background:#111;filter:none;transform:none}
+  /* メーラーが開く旨の断り書き。フォームと同じ幅に収める */
+  .entry-note{
+    max-width:520px;margin:20px auto 0;text-align:left;
+    font-size:13px;line-height:2;color:rgba(11,27,58,.62);
+  }
+  .entry-note a{color:var(--navy-deep)}
+  /* ---- 7. フッター ---- */
+  footer{
+    background:var(--navy-deep);color:rgba(255,255,255,.82);
+    padding:56px 0;font-size:14px;letter-spacing:.04em;text-align:center;
+  }
+  /*
+    コーポレートロゴ。緑のマークに濃色の社名なので、濃紺の地に直接置くと
+    文字が沈む。白い台紙を敷いてブランドの色をそのまま見せる。
+    ※ 読み込みに失敗した場合は onerror で台紙ごと消える。
+  */
+  .footer-logo-plate{
+    display:inline-block;background:#fff;
+    padding:20px 26px;margin-bottom:30px;border-radius:5px;
+  }
+  .footer-logo{display:block;width:min(300px,64vw);height:auto}
+  /* 会社概要とメールアドレスの2つだけ。横に並べ、狭い画面では縦に落とす */
+  .footer-links{
+    display:flex;justify-content:center;align-items:center;
+    gap:14px 34px;flex-wrap:wrap;
+  }
+  .footer-links a{color:rgba(255,255,255,.88);text-decoration:none}
+  .footer-links a:hover{color:var(--gold);text-decoration:underline}
+
+  /* ---- スマホ追従ボタン ---- */
+  .sticky{display:none}
+  @media(max-width:820px){
+    section{padding:76px 0}
+    .limited{padding-bottom:44px}
+    .cta{padding-top:34px}
+    /* 縦長画面では上下グラデーションに切り替え、文字を下に寄せる */
+    .fv{
+      padding:96px 0 80px;min-height:86vh;display:flex;align-items:flex-end;
+      background:linear-gradient(180deg,
+        rgba(7,18,40,.18) 0%,rgba(7,18,40,.55) 45%,
+        rgba(7,18,40,.86) 78%,rgba(7,18,40,.92) 100%);
+    }
+    .steps{grid-template-columns:1fr 1fr;gap:20px}
+    .stats{grid-template-columns:1fr}
+    /* 粒子の散らし幅を画面に合わせて詰める。PCの座標のままだと画面外で見えない */
+    .sparks{
+      box-shadow:
+        -150px -190px 0 var(--gold),   -105px  110px 0 rgba(255,255,255,.95),
+         -72px -250px 0 rgba(255,255,255,.9),  -40px  200px 0 var(--gold),
+         -10px -320px 0 var(--gold),     28px  260px 0 rgba(255,255,255,.95),
+          62px -230px 0 rgba(255,255,255,.9),   96px  150px 0 var(--gold),
+         128px -300px 0 var(--gold),    150px   60px 0 rgba(255,255,255,.95),
+        -132px   20px 0 rgba(255,255,255,.8),  140px -120px 0 rgba(255,255,255,.8);
+    }
+    /* スマホは門を上に、勇者2体を下に横並び */
+    .issue-row{grid-template-columns:1fr 1fr;gap:16px}
+    .issue-row .gate{order:-1;grid-column:1 / -1;margin-bottom:20px}
+    .gate-text{width:86%}
+    body{padding-bottom:84px}
+    .sticky{
+      display:block;position:fixed;left:0;right:0;bottom:0;z-index:20;
+      /* 黒いコマンド枠を載せるので、地は白ではなく濃紺にする */
+      background:rgba(7,18,40,.96);padding:12px 16px;
+      border-top:1px solid rgba(255,255,255,.14);
+    }
+    .sticky .btn{display:flex;width:100%;padding:16px;font-size:16px}
+    /* 追従ボタンはフッター最下部に重なる。法定表記が隠れないよう逃がす */
+    footer{padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+  }
+  @media(max-width:460px){
+    .steps{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- 0. 固定ヘッダー -->
+<div class="site-header">
+  <div class="wrap">
+    <!--
+      ロゴ（正規データ）。
+      未設置の間はマークだけ消え、社名のテキストは残る（壊れた画像は出ない）。
+    -->
+    <a class="hdr-brand" href="#top">
+      <span class="hdr-lockup">
+        <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+             onerror="this.closest('.hdr-lockup').remove()">
+        <!-- 正規ロゴ下部の欧文を切り出したもの。狭い画面では出さない -->
+        <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
+      </span>
+      <span>ライフメイクパートナーズ</span>
+    </a>
+    <!-- 横向きに歩く三人（背景透過）。読み込めなければ自分ごと消える -->
+    <img class="hdr-party" alt=""
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260807_003819_36e8ea05-8822-4aaa-8732-7a1b956c2e79.png"
+         onerror="this.remove()">
+    <nav class="hdr-nav">
+      <a href="#top">ホーム</a>
+      <a href="kaisha.html">会社概要</a>
+      <a class="btn hdr-cta hdr-cta-main" href="#entry">事業説明会に申し込む</a>
+      <a class="btn hdr-cta" href="shiryou.html">資料請求</a>
+    </nav>
+  </div>
+</div>
+
+<!-- 1. ファーストビュー -->
+<header class="fv" id="top">
+  <div class="wrap">
+    <div class="fv-inner">
+      <span class="label">不動産フランチャイズ 加盟募集</span>
+      <h1><em>RPG</em>から、<br>家が売れる。</h1>
+      <p>物件を探している人ではなく、<br>人生を良くしたい人が集まる。</p>
+      <div class="fv-actions">
+        <a class="btn" href="#entry">事業説明会に申し込む</a>
+        <a class="btn btn-sub" href="shiryou.html">資料請求</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 2. 課題 -->
+<section class="issue">
+  <div class="wrap issue-row">
+    <!-- 左：物件を見比べる勇者。右の勇者と同一人物になるよう作り直したもの。
+         ※公開前に hero-bukken.png としてローカル化すること -->
+    <img class="hero-cut" alt="物件の看板を前に立ち止まる勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_023928_85266113-593b-40db-a0fa-c0bd0a45d0e5.png">
+    <div class="gate">
+      <!-- 門の絵。※公開前に gate.png としてローカル化すること -->
+      <img class="gate-img" alt="石造りのアーチと大きな木の扉の門"
+           src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_061341_5cc3ef2d-0184-403f-b47f-e9ac3b7cc7cc.png">
+      <div class="gate-text">
+        <p>ポータル頼みの集客。<br>物件で比べられ、価格で削られる。</p>
+        <p class="then">だから、集客の入口そのものを変える。</p>
+      </div>
+    </div>
+    <!-- 右：価格を斬る勇者。※公開前に hero-cut-kakaku.png としてローカル化すること -->
+    <img class="hero-cut" alt="価格を剣で斬る勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260731_054700_71311b1c-691f-46ec-b039-06d593b7060d.png">
+  </div>
+</section>
+
+<!-- 3. 仕組み -->
+<section class="flow">
+  <div class="wrap">
+    <h2>売り込まない。<br>相談から、家へ。</h2>
+    <div class="steps">
+      <div class="step">
+        <span>STEP 1</span>
+        <p>RPGで人生を学ぶ</p>
+        <!-- 勇者三人。※公開前に step1-party.png としてローカル化すること -->
+        <img class="step-art" alt="三人の勇者パーティー"
+             src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_030354_b913addd-189b-4f9b-b7a9-c44175b4e24f.png">
+      </div>
+      <div class="step">
+        <span>STEP 2</span>
+        <p>人生の課題が<br>見つかる</p>
+        <!-- 地図を囲む三人。※公開前に step2-chizu.png としてローカル化すること -->
+        <img class="step-art" alt="地図を見て話し合う三人の勇者"
+             src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_031525_4cc7ffd5-d08f-4588-bca3-61edfc5b5b3c.png">
+      </div>
+      <div class="step">
+        <span>STEP 3</span>
+        <p>相談が生まれる</p>
+        <!-- 商人に相談する三人。※公開前に step3-soudan.png としてローカル化すること -->
+        <img class="step-art" alt="商人に相談する三人の勇者"
+             src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_070116_9b01b2b1-3458-4fd3-b376-3bf22e5693b4.png">
+      </div>
+      <div class="step">
+        <span>STEP 4</span>
+        <p>家が答えになる</p>
+        <!-- 家の前で喜ぶ三人。※公開前に step4-ie.png としてローカル化すること -->
+        <img class="step-art" alt="家の前で喜ぶ三人の勇者"
+             src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_030354_959616c1-13bb-4353-905c-8847b7b01b58.png">
+      </div>
+    </div>
+    <p class="note">相談から始まる。だから、値段で戦わない。</p>
+  </div>
+</section>
+
+<!-- 4. 実績 -->
+<section class="proof">
+  <span class="sparks" aria-hidden="true"></span>
+  <div class="wrap">
+    <h2>入口を変えた者は、<br>こうなった。</h2>
+    <p class="levelup">LEVEL UP ！</p>
+    <div class="stats">
+      <div class="stat">
+        <b>2件 <em>→</em> 12件</b>
+        <small>年間契約数</small>
+      </div>
+      <div class="stat">
+        <b>3億6,000万円</b>
+        <small>年商</small>
+      </div>
+      <div class="stat">
+        <b>最短2ヶ月</b>
+        <small>営業未経験から自力契約まで</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 希少性 -->
+<section class="limited">
+  <div class="wrap">
+    <p class="big">エリア <em>2社</em> 限定</p>
+    <p>地域の「人生相談窓口」から<br>第一想起を独占しませんか？</p>
+  </div>
+</section>
+
+<!-- 6. 最終CTA -->
+<section class="cta" id="entry">
+  <div class="wrap">
+    <h2>冒険をはじめる↓</h2>
+    <!-- 城門へ向かう三人。※公開前に cta-journey.png としてローカル化すること -->
+    <img class="cta-journey" alt="橋を渡って城門へ向かう三人の勇者"
+         src="https://d8j0ntlcm91z4.cloudfront.net/user_3ETVMnl9mcy8ATnypcTbbj2Dnkq/hf_20260805_053040_17e1fd91-3ad3-4f0c-ba8a-b9e12cd70690.png">
+    <p class="lead">参加は無料。</p>
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（資料請求ページと同じ）。
+      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+    -->
+    <form id="entry-form" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お名前</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <!-- 備考は任意。書かなくても申し込めるようにする -->
+      <div class="field">
+        <label for="note">備考</label>
+        <textarea id="note" name="note"></textarea>
+      </div>
+      <button class="btn submit" type="submit">事業説明会に申し込む（無料）</button>
+      <!-- 2つ目のコマンド。資料請求ページへ -->
+      <a class="btn submit submit-alt" href="shiryou.html">資料請求（無料）</a>
+    </form>
+    <p class="entry-note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      メールソフトが開かない場合は、お手数ですが
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
+    </p>
+  </div>
+</section>
+
+<!-- 7. フッター -->
+<footer>
+  <div class="wrap">
+    <!--
+      コーポレートロゴ（正規データ）。
+      ファイルが無い間は台紙ごと消え、下の2リンクだけが残る（壊れた画像は出ない）。
+    -->
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener"
+       onerror="this.remove()">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.closest('.footer-logo-plate').remove()">
+    </a>
+    <nav class="footer-links">
+      <a href="kaisha.html">会社概要</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- スマホ追従ボタン -->
+<div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
+
+<script>
+  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
+  document.getElementById('entry-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '事業説明会への参加を申し込みます。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '備考：' + v('note'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('事業説明会 申し込み')
+      + '&body=' + encodeURIComponent(body);
+  });
+</script>
+
+</body>
+</html>
