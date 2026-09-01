@@ -492,33 +492,27 @@
   /* ── 7. 最終CTA ── */
   .entry{background:var(--cream)}
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:48px}
-  form{
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:36px}
+  /* 狭い画面で2行になるときは、読点で折る。語の途中で切らない */
+  .entry .lead span{display:inline-block}
+  /*
+    申込は入力フォームをやめ、LINE公式アカウントの友だち追加に一本化した。
+    受け口は Lステップ側にあるので、このページに送信処理は持たない。
+  */
+  .entry-line{
     max-width:520px;
     margin-inline:auto;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--r);
-    padding:32px 24px;
+    padding:36px 24px;
+    text-align:center;
   }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input,textarea{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  /* 備考。任意入力なので、高さは3行ぶんだけ。縦にだけ伸ばせる */
-  textarea{line-height:1.8;resize:vertical;min-height:96px;display:block}
-  textarea::placeholder{color:#8A6A52}
-  input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
-  label .opt{font-size:12px;color:var(--ink-soft);margin-left:6px}
-  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  /* 大きいほうのボタン。他のCTAと同じテラコッタの塗り */
+  .entry-line .btn{width:100%;font-size:17px;padding:20px 24px}
+  /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
+  .line-add{margin:20px 0 0}
+  .line-add a{display:inline-block;line-height:0}
   .entry-note{
     max-width:520px;
     margin:24px auto 0;
@@ -604,7 +598,7 @@
     <nav class="hdr-nav">
       <a href="#">ホーム</a>
       <a href="kaisha-cafe.html">会社概要</a>
-      <a class="hdr-cta" href="#entry">話を聞いてみる</a>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
       <a class="hdr-cta2" href="shiryou-cafe.html">資料請求</a>
     </nav>
   </div>
@@ -658,7 +652,7 @@
       </div>
       <h1>入りにくい不動産屋を、<br>やめる。</h1>
       <p class="sub">まちの人が、コーヒーを飲むように相談にくる。</p>
-      <a class="btn" href="#entry">まず話を聞いてみる</a>
+      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
 
 
       </div></div></div></div>
@@ -1044,39 +1038,24 @@
 <section class="entry" id="entry">
   <div class="wrap fade">
     <h2>まずは、話を聞くところから。</h2>
-    <p class="lead">その場で決めなくて構いません。</p>
+    <p class="lead">その場で決めなくて構いません。<br>LINEで友だち追加して、<span>そのままご相談ください。</span></p>
     <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-franchise.html と同じ）。
-      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする。
+      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること
+      　（ヘッダー・ファーストビュー・ここ・スマホ追従ボタンの4箇所）。
     -->
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">お名前</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="note">備考<span class="opt">（任意）</span></label>
-        <textarea id="note" name="note" rows="3" placeholder="ご質問やご相談があればお書きください。"></textarea>
-      </div>
-      <button class="btn submit" type="submit">まず話を聞いてみる（無料）</button>
-    </form>
+    <div class="entry-line">
+      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
+               onerror="this.closest('.line-add').remove()">
+        </a>
+      </p>
+    </div>
     <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
     </p>
   </div>
 </section>
@@ -1129,36 +1108,10 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">まず話を聞いてみる</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var lines = [
-      'ライフメイクパートナーズ 御中', '',
-      'お話をうかがいたく、連絡いたします。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email')
-    ];
-    // 備考は任意。書かれたときだけ、1行あけて末尾に足す
-    if (v('note')) { lines.push('', '備考：', v('note')); }
-    var body = lines.concat(['']).join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('お問い合わせ（まず話を聞いてみる）')
-      + '&body=' + encodeURIComponent(body);
-  });
+  // 申込はLINEの友だち追加に一本化したので、送信処理は持たない。
 
   // 少しでもスクロールしたらヘッダーに下地を出す
   var hdr = document.getElementById('site-header');
