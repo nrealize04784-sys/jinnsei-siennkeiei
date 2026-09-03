@@ -25,6 +25,8 @@
     --sakura:#F8C6D8;    /* 蓋の裏地・差し色 */
     --red:#E2352B;       /* リボン1本とボタンだけ */
     --red-deep:#B8221B;
+    --line-brand:#06C755; /* LINE公式のブランドカラー。友だち追加ボタン専用 */
+    --line-brand-deep:#04994A;
     --ink:#22352F;
     --ink-soft:#3C5850;
     --line:rgba(34,53,47,.14);
@@ -108,8 +110,9 @@
   }
   .hdr-nav a:hover{color:var(--turquoise-deep)}
   .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--red);color:#fff !important}
-  .hdr-cta:hover{background:var(--red-deep)}
+  /* ヘッダーのCTAはフォームへの導線ではなく、LINE友だち追加への導線 */
+  .hdr-cta{background:var(--line-brand);color:#fff !important;display:inline-flex;align-items:center;gap:6px}
+  .hdr-cta:hover{background:var(--line-brand-deep)}
   .hdr-cta2{background:var(--cream);border:1px solid var(--turquoise-deep);color:var(--turquoise-deep) !important}
   .hdr-cta2:hover{background:var(--turquoise-deep);color:#fff !important}
   @media (max-width:900px){
@@ -387,6 +390,9 @@
     border-top:1px solid var(--line);
   }
   .sticky .btn{display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px}
+  /* スマホ追従ボタンも、フォームではなくLINE友だち追加への導線にする */
+  .btn--line{background:var(--line-brand)}
+  .btn--line:hover{background:var(--line-brand-deep)}
   @media (min-width:768px){ .sticky{display:none} }
   @media (max-width:767px){ body{padding-bottom:64px} }
 
@@ -426,7 +432,7 @@
     <nav class="hdr-nav">
       <a href="#">ホーム</a>
       <a href="kaisha-gift.html">会社概要</a>
-      <a class="hdr-cta" href="#entry">話を聞いてみる</a>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで話を聞く</a>
       <a class="hdr-cta2" href="shiryou-gift.html">資料請求</a>
     </nav>
   </div>
@@ -647,8 +653,8 @@
   </div>
 </footer>
 
-<!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">まず話を聞いてみる</a></div>
+<!-- スマホ追従ボタン。フォームではなくLINE友だち追加へ誘導する -->
+<div class="sticky"><a class="btn btn--line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで話を聞いてみる</a></div>
 
 <script>
   // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
