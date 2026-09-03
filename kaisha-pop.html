@@ -11,6 +11,7 @@
   /* 本体LPと同じ約束。黒フチ＋ベタ塗り＋影なし。ぼかす影とグラデーションは使わない */
   :root{
     --paper:#F7EFDE;--ink:#141414;--pink:#F5378F;--cyan:#27C0D4;--lemon:#FFD84D;
+    --green:#06C755;   /* LINE。ブランド色なので他に転用しない */
     --line:4px;--r:18px;--hdr:60px;
   }
   *{box-sizing:border-box}
@@ -33,6 +34,14 @@
   .site-header nav a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
   .hdr-cta1,.hdr-cta2{border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800!important;font-family:"M PLUS Rounded 1c",sans-serif}
   .hdr-cta1{background:var(--pink);color:#fff!important}
+
+  /* ---------- LINE（Lステップ）CTA ---------- */
+  .line-mark{width:1.3em;height:1.3em;flex:none}
+  .hdr-line{
+    background:var(--green)!important;color:var(--ink)!important;
+    display:inline-flex;align-items:center;gap:.35em;
+  }
+  .hdr-line .line-mark{width:1.15em;height:1.15em;fill:var(--ink)}
   @media (max-width:767px){.hdr-cta1,.hdr-cta2{display:none}.site-header nav{gap:15px}}
 
   /* 見出し帯。地はタイル壁 */
@@ -70,6 +79,13 @@
 
   .btn{display:inline-block;background:var(--pink);color:#fff;border:var(--line) solid var(--ink);border-radius:999px;padding:15px 32px;font-size:17px;text-decoration:none;transition:transform .15s ease}
   .btn:hover{transform:translateY(-2px)}
+  /* .btn より後ろに置く。前に置くと背景がピンクに戻る */
+  .btn-line{
+    display:inline-flex;align-items:center;justify-content:center;gap:.45em;
+    background:var(--green);color:#fff;
+    -webkit-text-stroke:4px var(--ink);paint-order:stroke fill;
+  }
+  .btn-line .line-mark{fill:#fff;-webkit-text-stroke:0}
   .back{display:block;text-align:center;margin-top:36px;color:var(--ink);font-size:14px}
 
   footer{padding:36px 0;text-align:center}
@@ -107,7 +123,7 @@
     <nav>
       <a href="lp-pop.html">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
-      <a class="hdr-cta1" href="lp-pop.html#entry">説明会に申し込む</a>
+      <a class="hdr-cta1 hdr-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
       <a class="hdr-cta2" href="shiryou-pop.html">資料請求</a>
     </nav>
   </div>

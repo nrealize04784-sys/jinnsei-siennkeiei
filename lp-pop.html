@@ -23,6 +23,7 @@
     --deep:#17627A;     /* 絵の線がわりに使う濃い青 */
     --blue:#27C0D4;     /* 締めの一行。ページのシアンと同じ明るい水色 */
     --dim:#E7DCC6;      /* before の札 */
+    --green:#06C755;    /* LINE。ブランド色なので他に転用しない */
     --line:4px;
     --r:18px;
     --hdr:60px;
@@ -49,6 +50,50 @@
   }
   .btn:hover{transform:translateY(-2px)}
   .btn:active{transform:translateY(0)}
+
+  /* ---------- LINE（Lステップ）CTA ---------- */
+  .line-mark{width:1.3em;height:1.3em;flex:none}
+  .btn-line{
+    display:inline-flex;align-items:center;justify-content:center;gap:.45em;
+    background:var(--green);color:#fff;
+    /* 白抜き文字は緑に対して 2.2:1 しかない。ページ共通の黒フチで読ませる */
+    -webkit-text-stroke:4px var(--ink);paint-order:stroke fill;
+  }
+  .btn-line .line-mark{fill:#fff;-webkit-text-stroke:0}
+  .hdr-line{
+    background:var(--green)!important;color:var(--ink)!important;
+    display:inline-flex;align-items:center;gap:.35em;
+  }
+  .hdr-line .line-mark{width:1.15em;height:1.15em;fill:var(--ink)}
+
+  .line-card{
+    max-width:560px;margin:0 auto 20px;text-align:center;
+    background:var(--paper);border:var(--line) solid var(--ink);
+    border-radius:var(--r);padding:26px 18px;
+  }
+  @media (min-width:768px){ .line-card{padding:32px 30px} }
+  .line-lead{
+    margin:0 0 16px;font-family:"Dela Gothic One","Noto Sans JP",sans-serif;
+    font-size:clamp(19px,5vw,26px);line-height:1.45;
+  }
+  .line-card .btn-line{width:100%;max-width:400px;padding:15px 20px;font-size:clamp(16px,4.2vw,19px)}
+  .line-steps{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+    margin:18px 0 0;padding:0;list-style:none;
+  }
+  .line-steps li{
+    display:flex;align-items:center;gap:.4em;padding:6px 13px;
+    font-size:13px;font-weight:700;border:3px solid var(--ink);border-radius:999px;
+  }
+  .line-steps b{
+    display:grid;place-items:center;width:19px;height:19px;flex:none;
+    border-radius:50%;background:var(--cyan);color:var(--ink);font-size:12px;
+  }
+  .line-note{margin:16px 0 0;font-size:13px;line-height:1.8;color:#6B6155}
+
+  /* 申込みはLINEに一本化。メールは連絡先として1行だけ残す */
+  .entry-mail{margin:0;text-align:center;font-size:14px;font-weight:700;color:var(--ink)}
+  .entry-mail a{color:var(--ink)}
 
   /* ---------- ヘッダー ---------- */
   .site-header{
@@ -189,6 +234,7 @@
   .fv .sub{color:var(--ink);font-weight:700;margin:0 0 24px;font-size:15px;line-height:1.8}
   @media (min-width:768px){ .fv .sub{font-size:18px} }
   .sign .btn{background:var(--pink);color:#fff}
+  .sign .btn-line{background:var(--green)}
 
   /* 絵札。ポスターの詰め込み感はここで出す */
   /* 絵札は1行だけ。狭い画面では後ろ2枚を隠して6枚にする */
@@ -310,20 +356,6 @@
   .entry{background:var(--pink);border-top:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink)}
   .entry h2{color:#fff;margin-bottom:12px;-webkit-text-stroke:6px var(--ink);paint-order:stroke fill}
   .entry .say{text-align:center;margin:0 0 30px;font-weight:700;color:#fff}
-  .form{max-width:520px;margin-inline:auto;background:var(--paper);border:var(--line) solid var(--ink);border-radius:var(--r);padding:26px 20px}
-  @media (min-width:768px){ .form{padding:34px 32px} }
-  .field{margin-bottom:17px}
-  .field label{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
-  .field input{
-    width:100%;padding:12px 14px;font-size:16px;font-family:inherit;color:var(--ink);
-    background:#fff;border:3px solid var(--ink);border-radius:10px;
-  }
-  .field input:focus{outline:3px solid var(--cyan);outline-offset:1px}
-  /* button要素なので、枠が消えないよう太枠を明示し直す */
-  .form .btn{width:100%;text-align:center;margin-top:6px;padding-inline:18px;cursor:pointer;font-size:17px;
-    border:var(--line) solid var(--ink);background:var(--lemon);color:var(--ink)}
-  .form .mail{font-size:13px;color:#6B6155;text-align:center;margin:14px 0 0;line-height:1.8}
-  .form .mail a{color:var(--ink)}
 
   /* ---------- フッター ---------- */
   footer{padding:40px 0 96px;text-align:center}
@@ -339,6 +371,7 @@
   /* ---------- スマホ追従ボタン ---------- */
   .sticky{position:fixed;left:0;right:0;bottom:0;z-index:29;padding:10px 14px;background:var(--paper);border-top:var(--line) solid var(--ink)}
   .sticky .btn{display:block;text-align:center;padding:13px}
+  .sticky .btn-line{display:flex}
   @media (min-width:768px){ .sticky{display:none} }
 
   /* ---------- 動きはフェードインだけ ---------- */
@@ -363,7 +396,7 @@
     <nav>
       <a href="#">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
-      <a class="hdr-cta1" href="#entry">説明会に申し込む</a>
+      <a class="hdr-cta1 hdr-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
       <a class="hdr-cta2" href="shiryou-pop.html">資料請求</a>
     </nav>
   </div>
@@ -462,7 +495,7 @@
         <h1><span class="small">不動産屋が、</span>まちの相談窓口になる。</h1>
         <p class="xline">LIFE MAKE PARTNER'S × 地域の不動産会社</p>
         <p class="sub">物件を探している人じゃなく、<br>人生を良くしたい人が集まる。</p>
-        <a class="btn" href="#entry">事業説明会に申し込む</a>
+        <a class="btn btn-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
         <!-- シャンプー3本と洗面器 -->
         <span class="corner r" aria-hidden="true">
           <svg viewBox="0 0 214 132" fill="none">
@@ -753,19 +786,21 @@
   <div class="wrap fade">
     <h2>まずは、話を聞くところから。</h2>
     <p class="say">その場で決めなくて構いません。</p>
-    <div class="form">
-      <form id="entry-form" novalidate>
-        <div class="field"><label for="company">会社名</label><input id="company" name="company" type="text" autocomplete="organization" required></div>
-        <div class="field"><label for="name">お名前</label><input id="name" name="name" type="text" autocomplete="name" required></div>
-        <div class="field"><label for="tel">電話番号</label><input id="tel" name="tel" type="tel" autocomplete="tel" required></div>
-        <div class="field"><label for="email">メールアドレス</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-        <button class="btn" type="submit">事業説明会に申し込む（無料）</button>
-      </form>
-      <p class="mail">
-        送信するとメールソフトが開きます。<br>
-        開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
-      </p>
+
+    <div class="line-card">
+      <p class="line-lead">LINEで、ひとっ風呂ぶんの<br>手間もかかりません。</p>
+      <a class="btn btn-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで説明会に申し込む</a>
+      <ol class="line-steps">
+        <li><b>1</b>友だち追加</li>
+        <li><b>2</b>3つの質問に答える</li>
+        <li><b>3</b>日程が届く</li>
+      </ol>
+      <p class="line-note">受付は24時間。追加してすぐ資料も届きます。<br>しつこい営業はしません。</p>
     </div>
+
+    <p class="entry-mail">
+      メールでのご連絡は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> へ。
+    </p>
   </div>
 </section>
 
@@ -785,33 +820,9 @@
 <div class="footer-band" aria-hidden="true"></div>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">事業説明会に申し込む</a></div>
+<div class="sticky"><a class="btn btn-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'ライフメイクパートナーズ 御中', '',
-      '事業説明会に申し込みます。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('事業説明会のお申し込み')
-      + '&body=' + encodeURIComponent(body);
-  });
 
   // 少しでもスクロールしたらヘッダーに輪郭線を出す
   var hdr = document.getElementById('site-header');
