@@ -32,7 +32,7 @@
   @media (max-width:520px){.hdr-word{display:none}}
   .site-header nav{display:flex;align-items:center;gap:18px}
   .site-header nav a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
-  .hdr-cta1,.hdr-cta2{border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800!important;font-family:"M PLUS Rounded 1c",sans-serif}
+  .hdr-cta1{border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800!important;font-family:"M PLUS Rounded 1c",sans-serif}
   .hdr-cta1{background:var(--pink);color:#fff!important}
 
   /* ---------- LINE（Lステップ）CTA ---------- */
@@ -42,7 +42,8 @@
     display:inline-flex;align-items:center;gap:.35em;
   }
   .hdr-line .line-mark{width:1.15em;height:1.15em;fill:var(--ink)}
-  @media (max-width:767px){.hdr-cta1{display:none}.site-header nav{gap:13px}.hdr-cta2{padding:5px 11px;font-size:13px}}
+  /* 下の追従バーと重なるので、スマホではヘッダーのボタンを出さない */
+  @media (max-width:767px){.hdr-cta1{display:none}.site-header nav{gap:15px}}
 
   /* 見出し帯。地はタイル壁 */
   .ph{
@@ -128,7 +129,6 @@
       <a href="lp-pop.html">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
       <a class="hdr-cta1 hdr-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
-      <a class="hdr-cta2" href="shiryou-pop.html">資料請求</a>
     </nav>
   </div>
 </div>
