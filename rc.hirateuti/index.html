@@ -359,29 +359,23 @@
 
   /* ── 7. 最終CTA ── */
   .entry h2{font-size:clamp(22px,5.4vw,32px);text-align:center;margin:0 0 16px;color:var(--ink)}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:40px}
-  form{
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:36px}
+  /*
+    申込は入力フォームをやめ、LINE公式アカウントの友だち追加に一本化した。
+    受け口は Lステップ側にあるので、このページに送信処理は持たない。
+  */
+  .entry-line{
     max-width:520px;
     margin-inline:auto;
     background:var(--card);
     border:2px solid var(--black);
     padding:32px 24px;
+    text-align:center;
   }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input,textarea{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:0;
-  }
-  textarea{resize:vertical}
-  input:focus,textarea:focus{outline:2px solid var(--red);outline-offset:1px;border-color:transparent}
-  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  .entry-line .btn{width:100%;font-size:17px;padding:20px}
+  /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
+  .line-add{margin:20px 0 0}
+  .line-add a{display:inline-block;line-height:0}
   .entry-note{
     max-width:520px;
     margin:24px auto 0;
@@ -441,7 +435,7 @@
     <nav class="hdr-nav">
       <a href="#">ホーム</a>
       <a href="../kaisha-katsu.html">会社概要</a>
-      <a class="hdr-cta" href="#entry">話を聞いてみる</a>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
       <a class="hdr-cta2" href="../shiryou-katsu.html">資料請求</a>
     </nav>
   </div>
@@ -452,7 +446,7 @@
   <div class="wrap">
     <h1><span class="line2">いつも同じ集客ばっか</span><br><span class="line2">やってんじゃねぇ！</span></h1>
     <p class="sub">ポータルに頼って、値引きで消耗して、それでいいんですか。</p><br>
-    <a class="btn" href="#entry">まず話を聞いてみる（無料）</a>
+    <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
 
     <div class="hero-photo-wrap">
       <img class="hero-photo" src="../katsu-hero.webp" width="1508" height="1043"
@@ -613,34 +607,24 @@
 <section class="entry" id="entry">
   <div class="wrap fade">
     <h2>まずは、話を聞くところから。</h2>
-    <p class="lead">その場で決めなくて構いません。</p>
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">お名前</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="note">備考（任意）</label>
-        <textarea id="note" name="note" rows="4"></textarea>
-      </div>
-      <button class="btn submit" type="submit">まず話を聞いてみる（無料）</button>
-    </form>
+    <p class="lead">その場で決めなくて構いません。<br>LINEで友だち追加して、そのままご相談ください。</p>
+    <!--
+      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする。
+      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること
+      　（ヘッダー・ファーストビュー・ここ・スマホ追従ボタンの4箇所）。
+    -->
+    <div class="entry-line">
+      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
+               onerror="this.closest('.line-add').remove()">
+        </a>
+      </p>
+    </div>
     <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
     </p>
   </div>
 </section>
@@ -660,33 +644,10 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">まず話を聞いてみる</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'ライフメイクパートナーズ 御中', '',
-      'お話をうかがいたく、連絡いたします。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '備考：' + (v('note') || 'なし'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('お問い合わせ（まず話を聞いてみる）')
-      + '&body=' + encodeURIComponent(body);
-  });
+  // 申込はLINEの友だち追加に一本化したので、送信処理は持たない。
 
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
