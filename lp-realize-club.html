@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>困る前に、灯す。｜REALIZE CLUB</title>
-<meta name="description" content="福利厚生を、社員の人生を支える仕組みに変える。REALIZE CLUBは、困ってから助けるのではなく、困る前に灯りを掲げます。資料請求・導入相談はこちらから。">
+<meta name="description" content="福利厚生を、社員の人生を支える仕組みに変える。REALIZE CLUBは、困ってから助けるのではなく、困る前に灯りを掲げます。LINEで友だち追加してご相談ください。">
 <meta name="robots" content="noindex">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,12 +71,9 @@
     transition:filter .25s ease,box-shadow .25s ease;
   }
   .btn:hover{filter:brightness(1.08);box-shadow:0 10px 30px rgba(198,40,29,.44)}
-  .btn-ghost{
-    background:transparent;color:var(--gold-line) !important;
-    border:1px solid var(--gold-line);box-shadow:none;
-  }
-  .btn-ghost:hover{background:var(--gold-line);color:var(--bg-deep) !important;filter:none;box-shadow:none}
-  .hero-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
+  .line-add{margin:8px 0 18px}
+  .line-add a{display:inline-block;line-height:0}
 
   /* ── 固定ヘッダー ── */
   .site-header{
@@ -116,18 +113,11 @@
     font-size:14px;white-space:nowrap;
   }
   .hdr-nav a:hover{color:var(--gold-line)}
-  .hdr-cta{border-radius:9px;padding:9px 20px;color:#fff !important;font-size:14px}
-  .hdr-ghost{
-    border:1px solid var(--gold-line);border-radius:9px;
-    padding:8px 19px;color:var(--gold-line) !important;font-size:14px;
-    transition:background .2s ease,color .2s ease;
-  }
-  .hdr-ghost:hover{background:var(--gold-line);color:var(--bg-deep) !important}
+  .hdr-cta{padding:9px 18px;font-size:14px}
   @media (max-width:900px){
     .hdr-nav{gap:12px}
     .hdr-nav a{font-size:12.5px}
     .hdr-cta{padding:8px 14px}
-    .hdr-ghost{padding:7px 13px}
   }
   @media (max-width:600px){ .hdr-nav a:not(.hdr-cta){display:none} }
 
@@ -307,21 +297,14 @@
   .vow p{color:var(--ink-soft);font-size:clamp(15px,3.6vw,17px)}
   .vow .small{margin-top:20px;font-size:13px;color:var(--ink-faint)}
 
-  /* ── 7. 最終CTA：資料請求／導入相談の2択 ── */
-  .entry{background:var(--bg-deep)}
-  .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
-  .cta-choices{display:grid;gap:16px;max-width:640px;margin-inline:auto}
-  @media (min-width:640px){ .cta-choices{grid-template-columns:1fr 1fr;gap:20px} }
-  .cta-card{
-    padding:32px 24px;text-align:center;
-    background:var(--card);
-    border:1px solid var(--card-line);
-    border-radius:var(--r);
+  /* ── 7. 最終CTA：LINEの友だち追加ひとつに絞る ── */
+  .entry{background:var(--bg-deep);text-align:center}
+  .entry h2{font-size:clamp(24px,5.6vw,34px);margin:0 0 16px;color:var(--ink)}
+  .entry .lead{color:var(--ink-soft);margin-bottom:8px}
+  .entry-note{
+    max-width:440px;margin:0 auto;
+    font-size:13px;line-height:1.9;color:var(--ink-faint);
   }
-  .cta-card h3{font-size:19px;color:var(--ink);margin-bottom:10px}
-  .cta-card p{color:var(--ink-soft);font-size:14px;margin-bottom:22px;line-height:1.8}
-  .cta-card .btn{width:100%}
 
   /* ── フッター ── */
   footer{
@@ -394,8 +377,7 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="#merit">導入メリット</a>
-      <a class="hdr-ghost" href="sodan.html">まずは話を聞く</a>
-      <a class="hdr-cta btn" href="shiryou-realize.html">資料請求</a>
+      <a class="hdr-cta btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -414,10 +396,7 @@
   <div class="wrap">
     <h1>困る前に、<br>灯す。</h1>
     <p class="sub">福利厚生を、社員の人生を支える仕組みに変える。</p>
-    <div class="hero-ctas">
-      <a class="btn" href="shiryou-realize.html">資料請求はこちら</a>
-      <a class="btn btn-ghost" href="sodan.html">まずは話を聞く</a>
-    </div>
+    <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
   </div>
 </header>
 
@@ -503,23 +482,21 @@
   </div>
 </section>
 
-<!-- 7. 最終CTA：資料請求と導入相談、それぞれ別のページへ -->
+<!-- 7. 最終CTA：LINEの友だち追加ひとつに絞る -->
 <section class="entry" id="entry">
   <div class="wrap fade">
     <h2>あなたの会社にも、灯りを。</h2>
-    <p class="lead">まずは資料で確認するか、直接お話しするか、お選びください。</p>
-    <div class="cta-choices">
-      <div class="cta-card">
-        <h3>資料請求</h3>
-        <p>概要をまとめた資料をお送りします。</p>
-        <a class="btn" href="shiryou-realize.html">資料請求はこちら</a>
-      </div>
-      <div class="cta-card">
-        <h3>導入相談</h3>
-        <p>直接お話しして、疑問にお答えします。</p>
-        <a class="btn btn-ghost" href="sodan.html">まずは話を聞く</a>
-      </div>
-    </div>
+    <p class="lead">参加は無料。LINEで友だち追加して、そのままご相談ください。</p>
+    <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
+    <p class="line-add">
+      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+      </a>
+    </p>
+    <p class="entry-note">
+      友だち追加後、トークで会社名・ご担当者名・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
+    </p>
   </div>
 </section>
 
@@ -528,8 +505,6 @@
     <p class="brand"><svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;flex:none"><use href="#flameIcon"/></svg>REALIZE CLUB</p>
     <nav>
       <a href="kaisha.html">会社概要</a>
-      <a href="shiryou-realize.html">資料請求</a>
-      <a href="sodan.html">導入相談</a>
     </nav>
     <p class="addr">日本リアライズ株式会社<br>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 8F　TEL：03-6380-5978</p>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
@@ -537,7 +512,7 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="shiryou-realize.html">資料請求はこちら</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す
