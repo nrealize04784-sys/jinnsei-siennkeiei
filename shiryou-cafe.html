@@ -111,8 +111,13 @@
     text-align:center;
   }
   /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
-  .line-add{margin:20px 0 0}
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま、他のボタンより大きく置く */
+  .req-line{text-align:center}
+  .line-add{margin:0}
   .line-add a{display:inline-block;line-height:0}
+  /* 資料請求の二の矢。友だち追加の案内から一段空けて置く */
+  .doc-btn{margin-top:28px}
+  .doc-note{margin-top:14px}
   .btn{
     display:block;width:100%;
     background:var(--accent);
@@ -180,9 +185,10 @@
     <nav class="hdr-nav">
       <a href="lp-cafe.html">ホーム</a>
       <a href="kaisha-cafe.html">会社概要</a>
-      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
       <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
       <span aria-current="page">資料請求</span>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta2" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -193,22 +199,29 @@
     <p class="lead">加盟の概要をまとめた資料をお送りします。<br>LINEで友だち追加してお受け取りください。</p>
 
     <!--
-      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする。
-      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること。
+      受け口はLINE公式アカウント（Lステップ）。「資料請求をする」はトーク欄に
+      「資料請求」が入った状態でLINEを開き、送信すると自動応答が資料を返す。
+      ※ 宛先を変える場合は、このページ内の lin.ee（友だち追加）と
+      　line.me/R/oaMessage（資料請求）のURLをそれぞれ差し替えること。
     -->
     <div class="req-line">
-      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a>
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').remove()">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
         </a>
       </p>
     </div>
 
     <p class="note">
-      友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
-      折り返し資料をお届けします。
+      友だち追加のあと、トークで会社名・お名前をお送りください。<br>
+      折り返しこちらからご連絡します。
+    </p>
+
+    <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+    <a class="btn doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="note doc-note">
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+そのまま送信すると、自動的に資料をお届けします。
     </p>
 
     <a class="back" href="lp-cafe.html">← 前のページにもどる</a>

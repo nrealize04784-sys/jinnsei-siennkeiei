@@ -114,28 +114,26 @@
   }
 
   /* ── フォーム（lp-gift.html の最終CTAと同じ作り） ── */
-  form{
+  /* 資料請求はフォームをやめ、LINE公式アカウントに一本化した。
+     受け口はLステップ側にあるので、このページに送信処理は持たない。 */
+  main .wrap{text-align:center}
+  .req-line{
     max-width:520px;
     margin-inline:auto;
-    text-align:left;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--r);
     padding:32px 24px;
   }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  input:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま、他のボタンより大きく置く */
+  .line-add{margin:0}
+  .line-add a{display:inline-block;line-height:0}
+  /* 資料請求の二の矢。友だち追加の案内から一段空けて置く */
+  .doc-btn{max-width:520px;margin-inline:auto;margin-top:28px}
+  .doc-note{margin-top:14px}
+  /* ヘッダーの資料請求は白抜き。赤い友だち追加より一段控えめに見せる */
+  .hdr-cta2{background:var(--cream);border:1px solid var(--turquoise-deep);color:var(--turquoise-deep) !important}
+  .hdr-cta2:hover{background:var(--turquoise-deep);color:#fff !important}
   .btn{
     display:block;width:100%;
     background:var(--red);
@@ -207,9 +205,10 @@
     <nav class="hdr-nav">
       <a href="lp-gift.html">ホーム</a>
       <a href="kaisha-gift.html">会社概要</a>
-      <a class="hdr-cta" href="lp-gift.html#entry">話を聞いてみる</a>
       <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
       <span aria-current="page">資料請求</span>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta hdr-cta2" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -224,33 +223,29 @@
     </p>
 
     <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-gift.html と同じ）。
+      受け口はLINE公式アカウント（Lステップ）。「資料請求をする」はトーク欄に
+      「資料請求」が入った状態でLINEを開き、送信すると自動応答が資料を返す。
+      ※ 宛先を変える場合は、このページ内の lin.ee（友だち追加）と
+      　line.me/R/oaMessage（資料請求）のURLをそれぞれ差し替えること。
     -->
-    <form id="req-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">お名前</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <button class="btn submit" type="submit">この内容で資料請求する</button>
-    </form>
+    <div class="req-line">
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
+        </a>
+      </p>
+    </div>
 
     <p class="req-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加のあと、トークで会社名・お名前をお送りください。<br>
+      折り返しこちらからご連絡します。
+    </p>
+
+    <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+    <a class="btn doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="req-note doc-note">
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+そのまま送信すると、自動的に資料をお届けします。
     </p>
 
     <a class="back" href="lp-gift.html">← 前のページにもどる</a>
@@ -272,33 +267,10 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="lp-gift.html#entry">まず話を聞いてみる</a></div>
+<div class="sticky"><a class="btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-gift.html と同じ仕組み）
-  document.getElementById('req-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'ライフメイクパートナーズ 御中', '',
-      '資料請求をお願いいたします。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求')
-      + '&body=' + encodeURIComponent(body);
-  });
+  // 資料請求はLINEの自動応答に任せたので、このページに送信処理は持たない。
 
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-gift.html と同じ）
   var hdr = document.getElementById('site-header');

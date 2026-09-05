@@ -79,6 +79,9 @@
   .hdr-nav a:hover{color:var(--ink)}
   .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
+  /* 資料請求は白抜き。赤い友だち追加より一段控えめに見せる */
+  .hdr-cta2{background:var(--card) !important;border:1px solid var(--red);color:var(--red) !important}
+  .hdr-cta2:hover{background:var(--red) !important;color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
@@ -184,6 +187,7 @@
       <!-- 今このページなので、会社概要はリンクにせず現在地として見せる -->
       <span aria-current="page">会社概要</span>
       <a class="hdr-cta btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta btn hdr-cta2" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>

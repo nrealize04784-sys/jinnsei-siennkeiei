@@ -60,6 +60,13 @@
     -webkit-text-stroke:4px var(--ink);paint-order:stroke fill;
   }
   .btn-line .line-mark{fill:#fff;-webkit-text-stroke:0}
+  /* 資料請求は白地。緑のLINEボタンより一段控えめに見せる */
+  .btn-doc{background:#fff;color:var(--ink)}
+  /* 資料請求の二の矢。カードの外に一段空けて置く */
+  .doc-btn{margin-top:26px}
+  /* 桃色の地では #6B6155 が沈むので、断り書きは黒文字にする。
+     小さい字なので、ページ共通の黒フチはかけない（つぶれて読めなくなる） */
+  .doc-note{max-width:600px;margin:14px auto 26px;text-align:center;color:var(--ink)}
   .hdr-line{
     background:var(--green)!important;color:var(--ink)!important;
     display:inline-flex;align-items:center;gap:.35em;
@@ -114,6 +121,8 @@
   .hdr-cta1{background:var(--pink);color:#fff!important}
   /* 追従バーと重複するLINEだけ隠す。資料請求はスマホでも並べる */
   /* 下の追従バーと重なるので、スマホではヘッダーのボタンを出さない */
+  /* 資料請求は白地。.hdr-cta1 の桃色を上書きするので、必ずその後ろに置く */
+  .hdr-cta1.hdr-doc{background:#fff!important;color:var(--ink)!important}
   @media (max-width:767px){ .hdr-cta1{display:none} .site-header nav{gap:15px} }
 
   /* ---------- ファーストビュー ---------- */
@@ -368,7 +377,7 @@
   }
 
   /* ---------- 最終CTA。ここだけ地をピンクに反転 ---------- */
-  .entry{background:var(--pink);border-top:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink)}
+  .entry{text-align:center;background:var(--pink);border-top:var(--line) solid var(--ink);border-bottom:var(--line) solid var(--ink)}
   .entry h2{color:#fff;margin-bottom:12px;-webkit-text-stroke:6px var(--ink);paint-order:stroke fill}
   .entry .say{text-align:center;margin:0 0 30px;font-weight:700;color:#fff}
 
@@ -412,6 +421,7 @@
       <a href="#">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
       <a class="hdr-cta1 hdr-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
+      <a class="hdr-cta1 hdr-doc" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -510,6 +520,7 @@
         <p class="xline">LIFE MAKE PARTNER'S × 地域の不動産会社</p>
         <p class="sub">物件を探している人じゃなく、<br>人生を良くしたい人が集まる。</p>
         <a class="btn btn-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
+        <a class="btn btn-doc" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
         <!-- シャンプー3本と洗面器 -->
         <span class="corner r" aria-hidden="true">
           <svg viewBox="0 0 214 132" fill="none">
@@ -812,6 +823,13 @@
       <p class="line-note">受付は24時間。追加してすぐ資料も届きます。<br>しつこい営業はしません。</p>
     </div>
 
+    <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+    <a class="btn btn-doc doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="line-note doc-note">
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+そのまま送信すると、自動的に資料をお届けします。
+    </p>
+
     <p class="entry-mail">
       メールでのご連絡は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> へ。
     </p>
@@ -826,7 +844,7 @@
     </a>
     <nav>
       <a href="kaisha-pop.html">会社概要</a>
-      <a href="shiryou-pop.html">資料請求</a>
+      <a href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
