@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="不動産フランチャイズ加盟の資料請求はこちらから。1エリア2社限定の加盟募集。">
+<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* 配色・書体・ヘッダー/フッターは lp-katsu.html（喝・挑発ポスター風）と完全に揃えている。
+     角丸は使わず直線の帯で言い切る、赤×黄×黒のトーンをそのまま踏襲。 */
+  :root{
+    --red:#E2352B;
+    --red-deep:#B8221B;
+    --yellow:#FFE100;
+    --black:#111111;
+    --ink:#1A1A1A;
+    --ink-soft:#4A4A4A;
+    --paper:#FFF3D6;
+    --card:#FFFFFF;
+    --line:rgba(17,17,17,.12);
+    --hdr:56px;
+  }
+  @media (min-width:768px){ :root{ --hdr:68px } }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:.01em;
+  }
+  p{margin:0}
+  img{max-width:100%;display:block}
+  .wrap{width:min(100% - 40px,880px);margin-inline:auto}
+
+  /* ── 固定ヘッダー（lp-katsu.html と同じ） ── */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    height:var(--hdr);
+    background:var(--card);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease;
+  }
+  .site-header.scrolled{ border-bottom-color:var(--line) }
+  .site-header .wrap{
+    height:100%;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .hdr-brand{
+    display:flex;align-items:center;gap:10px;
+    text-decoration:none;color:var(--ink);
+  }
+  .hdr-logo{height:32px;width:auto;object-fit:contain}
+  .hdr-word{height:13px;width:auto;object-fit:contain;margin-left:8px}
+  @media (min-width:768px){ .hdr-logo{height:38px} .hdr-word{height:15px} }
+  @media (max-width:520px){ .hdr-word{display:none} }
+
+  .hdr-nav{display:flex;align-items:center;gap:22px}
+  .hdr-nav a,.hdr-nav [aria-current]{
+    color:var(--ink-soft);text-decoration:none;
+    font-size:14px;white-space:nowrap;
+  }
+  .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
+  .hdr-nav a:hover{color:var(--red)}
+  .hdr-cta{padding:9px 20px;background:var(--black);color:var(--yellow) !important}
+  .hdr-cta:hover{background:var(--red);color:#fff !important}
+  @media (max-width:900px){
+    .hdr-nav{gap:14px}
+    .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
+    .hdr-cta{padding:8px 14px}
+  }
+  @media (max-width:767px){ .hdr-cta{display:none} }
+
+  /* ── 本文 ── */
+  main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
+  @media (min-width:768px){ main{padding-top:calc(var(--hdr) + 92px)} }
+
+  /* 見出しの札。lp-katsu.html の BEFORE/AFTER タグと同じ、黒地に黄文字の直線バー */
+  .page-tag{
+    display:inline-block;
+    background:var(--black);
+    color:var(--yellow);
+    font-weight:900;
+    font-size:clamp(16px,4vw,20px);
+    letter-spacing:.14em;
+    padding:12px 40px;
+    margin-bottom:22px;
+  }
+  .lead{color:var(--ink-soft);font-size:15px;margin-bottom:14px}
+  .desc{
+    max-width:520px;margin:0 auto 44px;
+    color:var(--ink-soft);font-size:14px;line-height:1.9;
+  }
+
+  /* ── 申込口。フォームをやめ、LINEの友だち追加に一本化した（直線の黒枠は踏襲） ── */
+  .req-line{
+    max-width:520px;
+    margin-inline:auto;
+    background:var(--card);
+    border:2px solid var(--black);
+    padding:32px 24px;
+  }
+  .btn{
+    display:block;width:100%;
+    background:var(--black);
+    color:var(--yellow);
+    text-align:center;
+    text-decoration:none;
+    font-weight:700;
+    font-size:17px;
+    font-family:inherit;
+    padding:20px;
+    margin-top:8px;
+    border:0;
+    border-radius:0;
+    cursor:pointer;
+    transition:background .25s ease,color .25s ease;
+  }
+  .btn:hover{background:var(--red);color:#fff}
+  /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
+  .line-add{margin:20px 0 0}
+  .line-add a{display:inline-block;line-height:0}
+  .req-note{
+    max-width:520px;margin:24px auto 0;
+    font-size:13px;line-height:1.9;color:var(--ink-soft);
+  }
+  .req-note a{color:var(--red)}
+
+  .back{
+    display:inline-block;margin-top:44px;
+    color:var(--ink-soft);text-decoration:none;font-size:14px;
+  }
+  .back:hover{color:var(--red);text-decoration:underline}
+
+  /* ── フッター（lp-katsu.html と同じ） ── */
+  footer{
+    padding:48px 0 40px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--line);
+  }
+  footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
+  footer a:hover{color:var(--red)}
+  .footer-logo-link{display:inline-block;margin:0 0 22px}
+  .footer-logo{width:min(220px,54vw);height:auto}
+  .footer-copy{margin-top:14px;font-size:12px}
+
+  /* ── スマホ追従ボタン（lp-katsu.html と同じ） ── */
+  .sticky{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(17,17,17,.96);
+    border-top:1px solid var(--line);
+  }
+  .sticky .btn{padding:14px;font-size:15px}
+  @media (min-width:768px){ .sticky{display:none} }
+  @media (max-width:767px){ body{padding-bottom:64px} }
+</style>
+</head>
+<body>
+
+<!-- 固定ヘッダー -->
+<div class="site-header" id="site-header">
+  <div class="wrap">
+    <a class="hdr-brand" href="lp-katsu.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.style.display='none'">
+      <img class="hdr-word" src="logo-lmp-wordmark.png" alt="">
+    </a>
+    <nav class="hdr-nav">
+      <a href="lp-katsu.html">ホーム</a>
+      <a href="kaisha-katsu.html">会社概要</a>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
+      <span aria-current="page">資料請求</span>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <p class="page-tag">資料請求</p>
+    <p class="lead">加盟の概要をまとめた資料をお送りします。</p>
+    <p class="desc">
+      仕組みと相談の流れ、実績をまとめた資料をお届けします。<br>
+      届いてすぐのご契約や、しつこいご連絡はいたしません。
+    </p>
+
+    <!--
+      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする。
+      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること。
+    -->
+    <div class="req-line">
+      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a>
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
+               onerror="this.closest('.line-add').remove()">
+        </a>
+      </p>
+    </div>
+
+    <p class="req-note">
+      友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
+      折り返し資料をお届けします。
+    </p>
+
+    <a class="back" href="lp-katsu.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-link" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.closest('.footer-logo-link').remove()">
+    </a>
+    <nav>
+      <a href="lp-katsu.html">ホーム</a>
+      <a href="kaisha-katsu.html">会社概要</a>
+    </nav>
+    <p class="footer-copy">© 日本リアライズ株式会社</p>
+  </div>
+</footer>
+
+<!-- スマホ追従ボタン -->
+<div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
+
+<script>
+  // 資料請求はLINEの友だち追加に一本化したので、送信処理は持たない。
+
+  // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-katsu.html と同じ）
+  var hdr = document.getElementById('site-header');
+  var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>

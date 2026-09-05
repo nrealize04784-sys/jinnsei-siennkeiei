@@ -9,22 +9,21 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-  /* 配色・書体・ヘッダー/フッターは lp-star.html と完全に揃えている。 */
+  /* 配色・書体・ヘッダー/フッターは lp-katsu.html（喝・挑発ポスター風）と完全に揃えている。
+     角丸は使わず直線の帯で言い切る、赤×黄×黒のトーンをそのまま踏襲。 */
   :root{
-    --bg2:#F5D343;       /* ヘッダーの地。lp-star.html のファーストビューと同じマスタード */
-    --cream:#FBF3DD;
-    --ink:#1B2A4A;
-    --ink-soft:#4A5A78;
-    --yellow:#F5C400;
-    --yellow-deep:#A67B00;
     --red:#E2352B;
     --red-deep:#B8221B;
-    --line:rgba(27,42,74,.14);
+    --yellow:#FFE100;
+    --black:#111111;
+    --ink:#1A1A1A;
+    --ink-soft:#4A4A4A;
+    --paper:#FFF3D6;
     --card:#FFFFFF;
-    --r:16px;
+    --line:rgba(17,17,17,.12);
     --hdr:56px;
   }
   @media (min-width:768px){ :root{ --hdr:68px } }
@@ -32,25 +31,25 @@
   *{box-sizing:border-box}
   body{
     margin:0;
-    background:var(--cream);
+    background:var(--paper);
     color:var(--ink);
-    font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+    font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
     font-size:16px;
     line-height:1.9;
     -webkit-font-smoothing:antialiased;
-    letter-spacing:.02em;
+    letter-spacing:.01em;
   }
   p{margin:0}
   img{max-width:100%;display:block}
   .wrap{width:min(100% - 40px,880px);margin-inline:auto}
 
-  /* ── 固定ヘッダー（lp-star.html と同じ） ── */
+  /* ── 固定ヘッダー（lp-katsu.html と同じ） ── */
   .site-header{
     position:fixed;top:0;left:0;right:0;z-index:30;
     height:var(--hdr);
-    background:var(--bg2);
+    background:var(--card);
     border-bottom:1px solid transparent;
-    transition:background .3s ease,border-color .3s ease;
+    transition:border-color .3s ease;
   }
   .site-header.scrolled{ border-bottom-color:var(--line) }
   .site-header .wrap{
@@ -60,13 +59,9 @@
   .hdr-brand{
     display:flex;align-items:center;gap:10px;
     text-decoration:none;color:var(--ink);
-    font-weight:700;font-size:14px;letter-spacing:.06em;
-    white-space:nowrap;
   }
-  .hdr-lockup{display:flex;align-items:center;gap:8px}
-  .hdr-logo,.hdr-word{width:auto;object-fit:contain;mix-blend-mode:multiply}
-  .hdr-logo{height:32px}
-  .hdr-word{height:13px}
+  .hdr-logo{height:32px;width:auto;object-fit:contain}
+  .hdr-word{height:13px;width:auto;object-fit:contain;margin-left:8px}
   @media (min-width:768px){ .hdr-logo{height:38px} .hdr-word{height:15px} }
   @media (max-width:520px){ .hdr-word{display:none} }
 
@@ -76,43 +71,43 @@
     font-size:14px;white-space:nowrap;
   }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
-  .hdr-nav a:hover{color:var(--ink)}
-  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
-  .hdr-cta:hover{background:var(--red-deep)}
+  .hdr-nav a:hover{color:var(--red)}
+  .hdr-cta,.hdr-cta2{padding:9px 20px}
+  .hdr-cta{background:var(--black);color:var(--yellow) !important}
+  .hdr-cta:hover{background:var(--red);color:#fff !important}
+  .hdr-cta2{background:var(--card);border:1px solid var(--ink);color:var(--ink) !important}
+  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
-    .hdr-cta{padding:8px 14px}
+    .hdr-cta,.hdr-cta2{padding:8px 14px}
   }
-  @media (max-width:767px){ .hdr-cta{display:none} }
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
 
   /* ── 本文 ── */
   main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
   @media (min-width:768px){ main{padding-top:calc(var(--hdr) + 92px)} }
 
-  /* 見出しの札。lp-star.html のリボン札（ようこそ、この輪へ。）と同じ横組みの帯 */
+  /* 見出しの札。lp-katsu.html の BEFORE/AFTER タグと同じ、黒地に黄文字の直線バー */
   .page-tag{
     display:inline-block;
-    background:var(--yellow);
-    color:var(--ink);
-    font-weight:700;
-    font-size:clamp(18px,4.6vw,26px);
-    letter-spacing:.16em;
-    padding:14px 44px;
-    clip-path:polygon(5% 0,95% 0,100% 50%,95% 100%,5% 100%,0 50%);
-    box-shadow:0 6px 16px rgba(74,59,18,.14);
+    background:var(--black);
+    color:var(--yellow);
+    font-weight:900;
+    font-size:clamp(16px,4vw,20px);
+    letter-spacing:.14em;
+    padding:12px 40px;
     margin-bottom:22px;
   }
   .lead{color:var(--ink-soft);font-size:15px;margin-bottom:48px}
 
-  /* ── 会社情報。lp-star.html のカード（白地・淡い影）と同じ質感 ── */
+  /* ── 会社情報。lp-katsu.html のカードと同じ、直線の黒枠 ── */
   dl.kaisha-table{
     max-width:640px;margin:0 auto;text-align:left;
     display:grid;grid-template-columns:130px 1fr;
     background:var(--card);
-    border-radius:var(--r);
+    border:2px solid var(--black);
     padding:8px 28px;
-    box-shadow:0 4px 22px rgba(120,100,40,.08);
   }
   dl.kaisha-table dt,dl.kaisha-table dd{
     padding:15px 6px;font-size:15px;line-height:1.9;margin:0;
@@ -122,7 +117,7 @@
   dl.kaisha-table dd:nth-last-of-type(1){border-bottom:0}
   dl.kaisha-table dt{color:var(--ink-soft);letter-spacing:.06em}
   dl.kaisha-table dd{color:var(--ink)}
-  dl.kaisha-table dd a{color:var(--ink);text-decoration:none}
+  dl.kaisha-table dd a{color:var(--red);text-decoration:none}
   dl.kaisha-table dd a:hover{text-decoration:underline}
   @media (max-width:600px){
     dl.kaisha-table{grid-template-columns:1fr;padding:6px 22px}
@@ -134,9 +129,9 @@
     display:inline-block;margin-top:48px;
     color:var(--ink-soft);text-decoration:none;font-size:14px;
   }
-  .back:hover{color:var(--ink);text-decoration:underline}
+  .back:hover{color:var(--red);text-decoration:underline}
 
-  /* ── フッター（lp-star.html と同じ） ── */
+  /* ── フッター（lp-katsu.html と同じ） ── */
   footer{
     padding:48px 0 40px;
     text-align:center;
@@ -145,24 +140,23 @@
     border-top:1px solid var(--line);
   }
   footer a{color:var(--ink-soft);text-decoration:none;margin:0 12px}
-  footer a:hover{color:var(--ink)}
+  footer a:hover{color:var(--red)}
   .footer-logo-link{display:inline-block;margin:0 0 22px}
-  .footer-logo{width:min(220px,54vw);height:auto;mix-blend-mode:multiply}
+  .footer-logo{width:min(220px,54vw);height:auto}
   .footer-copy{margin-top:14px;font-size:12px}
 
-  /* ── スマホ追従ボタン（lp-star.html と同じ、控えめな1本） ── */
+  /* ── スマホ追従ボタン（lp-katsu.html と同じ） ── */
   .sticky{
     position:fixed;left:0;right:0;bottom:0;z-index:20;
     padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-    background:rgba(245,211,67,.94);
-    backdrop-filter:blur(6px);
+    background:rgba(17,17,17,.96);
     border-top:1px solid var(--line);
   }
   .sticky .btn{
-    display:block;text-align:center;padding:14px;font-size:15px;border-radius:12px;
-    background:var(--red);color:#fff;text-decoration:none;font-weight:700;
+    display:block;text-align:center;padding:14px;font-size:15px;
+    background:var(--black);color:var(--yellow);text-decoration:none;font-weight:700;
   }
-  .sticky .btn:hover{background:var(--red-deep)}
+  .sticky .btn:hover{background:var(--red);color:#fff}
   @media (min-width:768px){ .sticky{display:none} }
   @media (max-width:767px){ body{padding-bottom:64px} }
 </style>
@@ -172,18 +166,17 @@
 <!-- 固定ヘッダー -->
 <div class="site-header" id="site-header">
   <div class="wrap">
-    <a class="hdr-brand" href="lp-star.html">
-      <span class="hdr-lockup">
-        <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
-             onerror="this.closest('.hdr-lockup').remove()">
-        <img class="hdr-word" src="logo-lmp-wordmark.png" alt="">
-      </span>
+    <a class="hdr-brand" href="lp-katsu.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ"
+           onerror="this.style.display='none'">
+      <img class="hdr-word" src="logo-lmp-wordmark.png" alt="">
     </a>
     <nav class="hdr-nav">
-      <a href="lp-star.html">ホーム</a>
+      <a href="lp-katsu.html">ホーム</a>
       <!-- 今このページなので、会社概要はリンクにせず現在地として見せる -->
       <span aria-current="page">会社概要</span>
-      <a class="hdr-cta btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta2" href="shiryou-katsu.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -199,7 +192,7 @@
       <dt>所在地</dt><dd>東京都新宿区新宿1丁目36番7号　新宿内野ビルII 3F、8F</dd>
       <dt>電話番号</dt><dd><a href="tel:0363805978">03-6380-5978</a>（代表）</dd>
     </dl>
-    <a class="back" href="lp-star.html">← 前のページにもどる</a>
+    <a class="back" href="lp-katsu.html">← 前のページにもどる</a>
   </div>
 </main>
 
@@ -210,7 +203,8 @@
            onerror="this.closest('.footer-logo-link').remove()">
     </a>
     <nav>
-      <a href="lp-star.html">ホーム</a>
+      <a href="lp-katsu.html">ホーム</a>
+      <a href="shiryou-katsu.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
@@ -220,7 +214,7 @@
 <div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-star.html と同じ）
+  // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-katsu.html と同じ）
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
   addEventListener('scroll', onScroll, { passive: true });

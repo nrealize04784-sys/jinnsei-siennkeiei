@@ -81,23 +81,20 @@
   dl div:last-child{ border-bottom:0 }
   dt{ font-size:13px; color:var(--ink-soft) }
   dd{ margin:0 }
-  .field{ margin-top:18px }
-  .field label{ display:block; font-size:13px; color:var(--ink-soft); margin-bottom:6px }
-  .field input,.field textarea{
-    width:100%; font-family:inherit; font-size:15px; color:var(--ink);
-    background:#fff; border:1px solid var(--line); border-radius:8px; padding:11px 12px;
-  }
-  .field textarea{ min-height:88px; resize:vertical }
-  .field input:focus,.field textarea:focus{ outline:0; border-color:var(--red) }
+  .panel{ text-align:center }
+  .lead{ color:var(--ink-soft); margin:0 0 18px }
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
+  .line-add{ margin:8px 0 18px }
+  .line-add a{ display:inline-block; line-height:0 }
   .btn{
-    display:block; width:100%; margin-top:26px;
+    display:block; width:100%; margin-top:22px; font-size:17px;
     background:var(--red); color:#fff; text-decoration:none; text-align:center;
     font-family:inherit; font-size:15px; font-weight:500; letter-spacing:.03em;
     padding:15px 20px; border:0; border-radius:999px; cursor:pointer;
     box-shadow:0 3px 0 #9E2C1F; transition:transform .15s ease, box-shadow .15s ease;
   }
   .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
-  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
+  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px; line-height:2 }
   .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
   .back:hover{ text-decoration:underline }
   /* まちなみの絵。面は敷かず、木の地にそのまま置く */
@@ -133,7 +130,7 @@
   <nav class="hdr-nav">
     <a data-home href="lp-korean.html">ホーム</a>
     <a href="kaisha-korean.html">会社概要</a>
-    <a class="hdr-cta hdr-cta-main" href="lp-korean.html#entry">まず話を聞いてみる</a>
+    <a class="hdr-cta hdr-cta-main" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
   </nav>
 </header>
 
@@ -157,39 +154,22 @@
 
 
     <div class="panel">
-      <!--
-        送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-        入力内容から本文を組み立ててメーラーを開く方式（shiryou.html と同じ）。
-        ※ フォーム送信サービスを使う場合は、この form と下の script を差し替えること。
-      -->
-      <form id="req" novalidate>
-        <div class="field">
-          <label for="company">会社名</label>
-          <input id="company" name="company" type="text" autocomplete="organization" required>
-        </div>
-        <div class="field">
-          <label for="name">お名前</label>
-          <input id="name" name="name" type="text" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="tel">電話番号</label>
-          <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-        </div>
-        <div class="field">
-          <label for="email">メールアドレス</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="addr">送付先のご住所</label>
-          <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
-        </div>
-        <button class="btn" type="submit">この内容で資料請求する</button>
-      </form>
+      <p class="lead">加盟の概要をまとめた資料は、LINEでお送りしています。</p>
+
+      <!-- 送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする -->
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
+               onerror="this.closest('.line-add').hidden=true;document.getElementById('line-fallback').hidden=false">
+        </a>
+      </p>
+      <!-- バッジの画像が届かない環境向けの控え。届いていれば出さない -->
+      <p id="line-fallback" hidden><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a></p>
 
       <p class="note">
-        ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-        内容をご確認のうえ、そのまま送信してください。<br>
-        開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+        友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
+        折り返し資料をお届けします。<br>
+        LINEをお使いでない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
       </p>
     </div>
 
@@ -304,34 +284,6 @@
   </p>
   <p>© 日本リアライズ株式会社</p>
 </footer>
-
-<script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('req').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'ライフメイクパートナーズ 御中', '',
-      '資料請求をお願いいたします。', '',
-      '会社名：' + v('company'),
-      'お名前：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '送付先のご住所：' + v('addr'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求')
-      + '&body=' + encodeURIComponent(body);
-  });
-</script>
 
 <script>
   // 「ホーム」を押したら必ずホームへ戻す。
