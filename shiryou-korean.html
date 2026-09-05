@@ -82,9 +82,9 @@
   dt{ font-size:13px; color:var(--ink-soft) }
   dd{ margin:0 }
   .panel{ text-align:center }
-  .lead{ color:var(--ink-soft) }
-  /* LINE公式の友だち追加バッジ。上の大きいボタンの控えとして小さく添える */
-  .line-add{ margin-top:18px }
+  .lead{ color:var(--ink-soft); margin:0 0 18px }
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
+  .line-add{ margin:8px 0 18px }
   .line-add a{ display:inline-block; line-height:0 }
   .btn{
     display:block; width:100%; margin-top:22px; font-size:17px;
@@ -94,7 +94,7 @@
     box-shadow:0 3px 0 #9E2C1F; transition:transform .15s ease, box-shadow .15s ease;
   }
   .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
-  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px }
+  .note{ font-size:13px; color:var(--ink-soft); margin-top:18px; line-height:2 }
   .back{ display:inline-block; margin-top:28px; color:var(--cream); text-decoration:none; font-size:14px }
   .back:hover{ text-decoration:underline }
   /* まちなみの絵。面は敷かず、木の地にそのまま置く */
@@ -154,23 +154,20 @@
 
 
     <div class="panel">
-      <!--
-        受け口はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお渡しする。
-        ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること
-        　（ヘッダー・ここのボタン・その下の友だち追加バッジの3箇所）。
-      -->
       <p class="lead">加盟の概要をまとめた資料は、LINEでお送りしています。</p>
-      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a>
+
+      <!-- 送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする -->
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <!-- LINE公式が配っているバッジ。読み込めない環境では消して、上のボタンだけ残す -->
           <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').remove()">
+               onerror="this.closest('.line-add').hidden=true;document.getElementById('line-fallback').hidden=false">
         </a>
       </p>
+      <!-- バッジの画像が届かない環境向けの控え。届いていれば出さない -->
+      <p id="line-fallback" hidden><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a></p>
 
       <p class="note">
-        友だち追加のあと、トークで会社名・お名前をお送りください。<br>
+        友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
         折り返し資料をお届けします。<br>
         LINEをお使いでない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
       </p>

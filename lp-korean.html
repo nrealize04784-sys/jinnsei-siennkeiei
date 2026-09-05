@@ -252,10 +252,16 @@
 
   /* ── 06 問い合わせ ── */
   .entry .panel{ max-width:560px; margin:0 auto; text-align:center }
-  .entry .btn{ margin-top:26px; width:100%; font-size:17px; padding:19px 24px }
-  /* LINE公式の友だち追加バッジ。上の大きいボタンの控えとして小さく添える */
-  .line-add{ margin-top:18px }
+  .entry .lead{ margin-bottom:18px }
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
+  .line-add{ margin:8px 0 18px }
   .line-add a{ display:inline-block; line-height:0 }
+  /* 断り書き。フォームがあった頃と同じ幅・見た目に揃える */
+  .entry-note{
+    max-width:520px; margin:0 auto;
+    font-size:13px; line-height:2; color:var(--ink-soft);
+  }
+  .entry-note a{ color:var(--red) }
 
   footer{ background:var(--ink); color:#CFC4B2; padding:52px var(--side) 40px; text-align:center }
   footer .wordmark{ color:var(--cream) }
@@ -495,22 +501,18 @@
       <h2 class="brush"><span class="nb">まずは、</span><span class="nb">話を聞くところから。</span></h2>
     </div>
     <div class="panel fade">
-      <p class="lead" style="text-align:center"><span class="nb">その場で決めなくて構いません。</span><span class="nb">LINEで友だち追加して、</span><span class="nb">そのままご相談ください。</span></p>
-      <!--
-        受け口はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする。
-        ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること
-        　（ヘッダー・ファーストビュー・ここ・スマホ追従ボタンの4箇所）。
-      -->
-      <p style="text-align:center"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></p>
+      <p class="lead"><span class="nb">参加は無料。</span><span class="nb">LINEで友だち追加して、</span><span class="nb">そのままご相談ください。</span></p>
+      <!-- 送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする -->
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <!-- LINE公式が配っているバッジ。読み込めない環境では消して、上のボタンだけ残す -->
           <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').remove()">
+               onerror="this.closest('.line-add').hidden=true;document.getElementById('line-fallback').hidden=false">
         </a>
       </p>
-      <p class="note" style="margin-top:20px;text-align:center">
-        <span class="nb">友だち追加のあと、</span><span class="nb">トークで会社名・お名前・</span><span class="nb">ご相談内容をお送りください。</span><br>
+      <!-- バッジの画像が届かない環境向けの控え。届いていれば出さない -->
+      <p id="line-fallback" hidden><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></p>
+      <p class="entry-note">
+        友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
         折り返しこちらからご連絡します。
       </p>
     </div>
