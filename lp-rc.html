@@ -95,17 +95,14 @@
     font-size:14px;white-space:nowrap;
   }
   .hdr-nav a:hover{color:var(--ink)}
-  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--red);color:#fff !important}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  .hdr-cta2{background:var(--cream);border:1px solid var(--ink);color:var(--ink) !important}
-  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a{font-size:13px}
-    .hdr-cta,.hdr-cta2{padding:8px 14px}
+    .hdr-cta{padding:8px 14px}
   }
-  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
 
   #entry{scroll-margin-top:var(--hdr)}
 
@@ -276,30 +273,10 @@
 
   /* ── 7. 最終CTA ── */
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
-  form{
-    max-width:520px;
-    margin-inline:auto;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    padding:32px 24px;
-  }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input,textarea{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
-  input:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
-  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:36px}
+  /* LINE公式アカウントの友だち追加バッジ。フォームは持たず、トークで直接やり取りする */
+  .line-add{text-align:center;margin:8px 0 22px}
+  .line-add a{display:inline-block;line-height:0}
   .entry-note{
     max-width:520px;
     margin:24px auto 0;
@@ -386,8 +363,7 @@
     <nav class="hdr-nav">
       <a href="lp-rc.html">ホーム</a>
       <a href="kaisha-rc.html">会社概要</a>
-      <a class="hdr-cta" href="lp-rc.html#entry">導入を相談する</a>
-      <a class="hdr-cta2" href="shiryou-rc.html">資料請求</a>
+      <a class="hdr-cta btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -399,7 +375,7 @@
     <h1>社員の人生に、<br>会社という伴走者を。</h1>
     <p class="sub">社員一人ひとりのライフリテラシーを育てる、<br>人生支援プラットフォーム「REALIZE CLUB」。</p>
     <p class="toast">さぁ、乾杯しよう。</p>
-    <a class="btn" href="#entry">導入を相談する（無料）</a>
+    <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
 
     <div class="stage-wrap">
       <!-- lp-star.html と同じイラスト（star-hero.png）。星のステージに人が集い、
@@ -580,7 +556,7 @@
   <div class="wrap fade">
     <p class="lead">コーヒー1杯分の値段で、<br>社員の人生不安を解消。</p>
     <p>いつでも解約可。それくらい自信があります。<br>システム導入費用として補助金対象プランもございます。</p>
-    <a class="btn" href="#entry">導入を相談する</a>
+    <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
   </div>
 </section>
 
@@ -589,37 +565,15 @@
   <div class="wrap fade">
     <h2>まずは、話を聞いてみませんか。</h2>
     <p class="lead">その場で決めなくて構いません。</p>
-    <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-star.html と同じ）。
-    -->
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">ご担当者名</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="note">備考</label>
-        <textarea id="note" name="note"></textarea>
-      </div>
-      <button class="btn submit" type="submit">この内容で相談する（無料）</button>
-    </form>
+    <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
+    <p class="line-add">
+      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+      </a>
+    </p>
     <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加後、トークで会社名・ご担当者名・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
     </p>
   </div>
 </section>
@@ -630,42 +584,15 @@
     <nav>
       <a href="lp-rc.html">ホーム</a>
       <a href="kaisha-rc.html">会社概要</a>
-      <a href="shiryou-rc.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 株式会社REALIZE OS</p>
   </div>
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="#entry">導入を相談する</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'ご担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'REALIZE CLUB 御中', '',
-      '導入についてお話をうかがいたく、連絡いたします。', '',
-      '会社名：' + v('company'),
-      'ご担当者名：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '備考：' + v('note'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('お問い合わせ（REALIZE CLUB 導入相談）')
-      + '&body=' + encodeURIComponent(body);
-  });
-
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };

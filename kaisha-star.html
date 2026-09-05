@@ -77,17 +77,14 @@
   }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
   .hdr-nav a:hover{color:var(--ink)}
-  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--red);color:#fff !important}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  .hdr-cta2{background:var(--cream);border:1px solid var(--ink);color:var(--ink) !important}
-  .hdr-cta2:hover{background:var(--ink);color:#fff !important}
   @media (max-width:900px){
     .hdr-nav{gap:14px}
     .hdr-nav a,.hdr-nav [aria-current]{font-size:13px}
-    .hdr-cta,.hdr-cta2{padding:8px 14px}
+    .hdr-cta{padding:8px 14px}
   }
-  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
 
   /* ── 本文 ── */
   main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
@@ -186,8 +183,7 @@
       <a href="lp-star.html">ホーム</a>
       <!-- 今このページなので、会社概要はリンクにせず現在地として見せる -->
       <span aria-current="page">会社概要</span>
-      <a class="hdr-cta" href="lp-star.html#entry">話を聞いてみる</a>
-      <a class="hdr-cta2" href="shiryou-star.html">資料請求</a>
+      <a class="hdr-cta btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -215,14 +211,13 @@
     </a>
     <nav>
       <a href="lp-star.html">ホーム</a>
-      <a href="shiryou-star.html">資料請求</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="lp-star.html#entry">まず話を聞いてみる</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-star.html と同じ）
