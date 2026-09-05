@@ -71,6 +71,19 @@
     transition:filter .25s ease,box-shadow .25s ease;
   }
   .btn:hover{filter:brightness(1.08);box-shadow:0 10px 30px rgba(198,40,29,.44)}
+  /*
+    資料請求は2つめの入口。炎のグラデーションは主役の友だち追加だけに使い、
+    こちらは暗い地に金の枠だけで、一段引いて見せる。
+  */
+  .btn-outline{
+    background:transparent;color:var(--gold-line);
+    border:1px solid var(--gold-line);
+    box-shadow:none;
+  }
+  .btn-outline:hover{background:var(--gold-line);color:var(--bg);filter:none;box-shadow:none}
+  /* ファーストビューの2ボタン。入りきらなくなったら縦に落とす */
+  .fv-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+  .doc-btn{margin-top:22px}
   /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
   .line-add{margin:8px 0 18px}
   .line-add a{display:inline-block;line-height:0}
@@ -378,6 +391,7 @@
       <a href="#top">ホーム</a>
       <a href="#merit">導入メリット</a>
       <a class="hdr-cta btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta btn btn-outline" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -396,7 +410,10 @@
   <div class="wrap">
     <h1>困る前に、<br>灯す。</h1>
     <p class="sub">福利厚生を、社員の人生を支える仕組みに変える。</p>
-    <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+    <div class="fv-actions">
+      <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="btn btn-outline" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    </div>
   </div>
 </header>
 
@@ -496,6 +513,12 @@
     <p class="entry-note">
       友だち追加後、トークで会社名・ご担当者名・ご相談内容をお送りください。<br>
       折り返しこちらからご連絡します。
+    </p>
+    <!-- 資料だけ欲しい人向け。トーク欄に「資料請求」が入った状態でLINEが開く -->
+    <a class="btn btn-outline doc-btn" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="entry-note doc-note">
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。
     </p>
   </div>
 </section>

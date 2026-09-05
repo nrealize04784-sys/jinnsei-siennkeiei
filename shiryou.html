@@ -97,6 +97,22 @@
   /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
   .line-add{text-align:center;margin:8px 0 18px}
   .line-add a{display:inline-block;line-height:0}
+  /*
+    資料請求。本編のコマンドボタンと同じ、黒地・金文字・白枠。
+    トーク欄に「資料請求」が入った状態でLINEが開く。
+    （親が中央寄せではないので、自分で真ん中に置く）
+  */
+  .doc-btn{
+    display:flex;width:fit-content;margin:26px auto 0;
+    align-items:center;justify-content:center;gap:.7em;
+    background:#000;color:var(--gold);
+    border:2px solid #fff;
+    font-family:var(--font-game);
+    font-weight:400;font-size:16px;letter-spacing:.1em;
+    padding:18px 34px;text-decoration:none;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .doc-btn:hover{background:#111}
   .note{
     max-width:520px;margin:22px auto 0;
     font-size:13px;line-height:2;color:rgba(11,27,58,.62);
@@ -169,9 +185,14 @@
       </a>
     </p>
 
+    <p class="note">まだ友だちでない方は、先にこちらから追加してください。</p>
+
+    <!-- 資料だけ欲しい人向け。トーク欄に「資料請求」が入った状態でLINEが開く -->
+    <a class="doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+
     <p class="note">
-      友だち追加後、トークで「資料請求」とお送りください。<br>
-      ステップ配信で自動的に資料をお届けします。
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。
     </p>
 
     <!--

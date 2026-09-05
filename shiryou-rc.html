@@ -103,30 +103,17 @@
     color:var(--ink-soft);font-size:14px;line-height:1.9;
   }
 
-  /* ── フォーム（lp-rc.html の最終CTAと同じ作り） ── */
-  form{
+  /* ── 申込口（lp-rc.html の最終CTAと同じ作り）。
+        フォームはやめ、LINEの友だち追加と資料請求の2ボタンにした ── */
+  .req-line{
     max-width:520px;
     margin-inline:auto;
-    text-align:left;
+    text-align:center;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--r);
-    padding:32px 24px;
+    padding:36px 24px;
   }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input,textarea{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  textarea{min-height:96px;resize:vertical;line-height:1.7;display:block}
-  input:focus,textarea:focus{outline:2px solid var(--ink);outline-offset:1px;border-color:transparent}
   .btn{
     display:block;width:100%;
     background:var(--red);
@@ -144,6 +131,16 @@
     transition:background .25s ease;
   }
   .btn:hover{background:var(--red-deep)}
+  /* 主役の友だち追加。ここだけ一段大きくして、資料請求と差をつける */
+  .btn-line{font-size:19px;padding:28px 24px}
+  /* 資料請求は2つめの入口。白地に赤枠 */
+  .btn-outline{background:var(--card);color:var(--red);border:1px solid var(--red)}
+  .btn-outline:hover{background:var(--red);color:#fff}
+  .doc-btn{margin-top:22px}
+  /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
+  .line-add{margin:18px 0 0}
+  .line-add a{display:inline-block;line-height:0}
+  .lead-note{margin:16px 0 0;font-size:13px;line-height:1.9;color:var(--ink-soft)}
   .req-note{
     max-width:520px;margin:24px auto 0;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
@@ -191,7 +188,7 @@
     <nav class="hdr-nav">
       <a href="lp-rc.html">ホーム</a>
       <a href="kaisha-rc.html">会社概要</a>
-      <a class="hdr-cta" href="lp-rc.html#entry">導入を相談する</a>
+      <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
       <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
       <span aria-current="page">資料請求</span>
     </nav>
@@ -208,38 +205,25 @@
     </p>
 
     <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-rc.html と同じ）。
-      lp-rc.html の「導入を相談する」フォームと同じ5項目（備考を含む）で揃える。
+      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする。
+      ※ 宛先を変える場合は、このページ内の lin.ee と line.me のURLをすべて差し替えること。
     -->
-    <form id="req-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">ご担当者名</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="note">備考</label>
-        <textarea id="note" name="note"></textarea>
-      </div>
-      <button class="btn submit" type="submit">この内容で資料請求する</button>
-    </form>
+    <div class="req-line">
+      <a class="btn btn-line" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <p class="line-add">
+        <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
+               onerror="this.closest('.line-add').remove()">
+        </a>
+      </p>
+      <p class="lead-note">まだ友だちでない方は、先にこちらから追加してください。</p>
+      <!-- 資料だけ欲しい人向け。トーク欄に「資料請求」が入った状態でLINEが開く -->
+      <a class="btn btn-outline doc-btn" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    </div>
 
     <p class="req-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。
     </p>
 
     <a class="back" href="lp-rc.html">← 前のページにもどる</a>
@@ -258,34 +242,10 @@
 </footer>
 
 <!-- スマホ追従ボタン -->
-<div class="sticky"><a class="btn" href="lp-rc.html#entry">導入を相談する</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-rc.html と同じ仕組み）
-  document.getElementById('req-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'ご担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'REALIZE CLUB 御中', '',
-      '資料請求をお願いいたします。', '',
-      '会社名：' + v('company'),
-      'ご担当者名：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '備考：' + v('note'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
-      + '&body=' + encodeURIComponent(body);
-  });
+  // 資料請求はLINEに一本化したので、送信処理は持たない。
 
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-rc.html と同じ）
   var hdr = document.getElementById('site-header');
