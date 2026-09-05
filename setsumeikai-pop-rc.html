@@ -66,11 +66,14 @@
   .hdr-nav a,.hdr-nav [aria-current]{ color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
   .hdr-nav a:hover{color:var(--red)}
-  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
+  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
+  .hdr-cta{background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta{padding:8px 13px} }
-  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta){display:none} }
-  @media (max-width:767px){ .hdr-cta{display:none} }
+  .hdr-cta2{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .hdr-cta2:hover{background:var(--red);color:#fff !important}
+  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta,.hdr-cta2{padding:8px 13px} }
+  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not(.hdr-cta2){display:none} }
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
 
   /* ── 本文 ── */
   main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
@@ -94,9 +97,26 @@
     color:var(--ink-soft);font-size:14px;line-height:1.9;
   }
 
-  /* 申込みはLINEに一本化。友だち追加ボタンはLINE公式のバッジをそのまま使う */
-  .line-add{text-align:center;margin:8px 0 18px}
-  .line-add a{display:inline-block;line-height:0}
+  /* 予約はLINEで。塗りボタン（友だちになる）とアウトライン（資料請求をする）の2択 */
+  .btn{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:18px 40px;
+    border-radius:var(--r);
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .25s ease,transform .15s ease;
+  }
+  .btn:hover{background:var(--red-deep)}
+  .btn-outline{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .btn-outline:hover{background:var(--red);color:#fff !important}
+  .req-line{display:flex;flex-direction:column;gap:14px;align-items:center;margin:8px 0 18px}
+  .req-line .btn{width:100%;max-width:360px}
   .req-note{
     max-width:520px;margin:0 auto;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
@@ -133,6 +153,7 @@
       <!-- 今このページなので、無料説明会はリンクにせず現在地として見せる -->
       <span aria-current="page">無料説明会</span>
       <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta2" href="shiryou-pop-rc.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -147,15 +168,14 @@
     </p>
 
     <!-- 送信先はLINE公式アカウント。友だち追加後、トークで日程調整する -->
-    <p class="line-add">
-      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
-      </a>
-    </p>
+    <div class="req-line">
+      <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="btn btn-outline" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    </div>
 
     <p class="req-note">
-      友だち追加後、トークで会社名・ご担当者名・ご希望の日程をお送りください。<br>
-      折り返しこちらからご連絡します。
+      友だち追加後、トークで会社名・ご担当者名・ご希望の日程をお送りください。折り返しこちらからご連絡します。<br>
+      資料だけ先にご覧になりたい場合は「資料請求をする」を押してそのまま送信すると、自動的にお届けします。
     </p>
 
     <a class="back" href="lp-pop-rc.html">← 前のページにもどる</a>

@@ -68,6 +68,8 @@
     transition:background .25s ease,transform .15s ease;
   }
   .btn:hover{background:var(--red-deep)}
+  .btn-outline{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .btn-outline:hover{background:var(--red);color:#fff !important}
 
   /* ── 固定ヘッダー ── */
   .site-header{
@@ -90,11 +92,14 @@
   .hdr-nav a,.hdr-nav [aria-current]{ color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
   .hdr-nav a:hover{color:var(--red)}
-  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
+  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
+  .hdr-cta{background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta{padding:8px 13px} }
-  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not([aria-current]){display:none} }
-  @media (max-width:767px){ .hdr-cta{display:none} }
+  .hdr-cta2{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .hdr-cta2:hover{background:var(--red);color:#fff !important}
+  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta,.hdr-cta2{padding:8px 13px} }
+  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not(.hdr-cta2):not([aria-current]){display:none} }
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
 
   #entry{scroll-margin-top:var(--hdr)}
 
@@ -366,9 +371,9 @@
   /* ── 7. 最終CTA ── */
   .entry h2{font-size:clamp(23px,5.2vw,32px);text-align:center;margin:0 0 16px;color:var(--ink)}
   .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:32px}
-  /* 申込みはLINEに一本化。友だち追加ボタンはLINE公式のバッジをそのまま使う */
-  .line-add{text-align:center;margin:8px 0 18px}
-  .line-add a{display:inline-block;line-height:0}
+  /* 資料請求はLINE経由。オレンジの塗りボタン＋アウトラインの2択にする */
+  .entry-line{display:flex;flex-direction:column;gap:14px;align-items:center;margin:8px 0 18px}
+  .entry-line .btn{width:100%;max-width:360px}
   .entry-note{
     max-width:520px;margin:0 auto;font-size:13px;line-height:1.9;
     color:var(--ink-soft);text-align:center;
@@ -449,6 +454,7 @@
       <a href="#about">REALIZE CLUBとは</a>
       <a href="kaisha-pop-rc.html">会社概要</a>
       <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta2" href="shiryou-pop-rc.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -501,6 +507,7 @@
         </p>
 
         <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+        <a class="btn btn-outline" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
       </div>
     </div>
   </div>
@@ -594,17 +601,21 @@
 <!-- 7. 最終CTA -->
 <section class="entry cream" id="entry">
   <div class="wrap fade">
-    <h2>まずは、LINEで友だちになってください。</h2>
-    <p class="lead">資料のご案内も、その後のご相談も、LINEでやり取りできます。</p>
-    <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
-    <p class="line-add">
-      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
-      </a>
-    </p>
+    <h2>まずは、資料をご覧ください。</h2>
+    <p class="lead">その場で決めなくて構いません。</p>
+    <!--
+      送信先はLINE公式アカウント。「資料請求をする」はトーク欄に「資料請求」と入力済みの
+      状態でLINEを開くリンクで、公式アカウント側の自動応答が反応して資料のURLを送る。
+      ※ 宛先を変える場合は、このページ内の lin.ee / line.me のURLをすべて差し替えること。
+    -->
+    <div class="entry-line">
+      <a class="btn" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      <a class="btn btn-outline" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+    </div>
     <p class="entry-note">
-      友だち追加後、トークで会社名・ご担当者名・ご相談内容をお送りください。<br>
-      折り返しこちらからご連絡します。
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。<br>
+      ご相談は「LINEで友だちになる」から、そのままトークでどうぞ。
     </p>
   </div>
 </section>

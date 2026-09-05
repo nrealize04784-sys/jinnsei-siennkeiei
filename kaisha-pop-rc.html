@@ -66,11 +66,14 @@
   .hdr-nav a,.hdr-nav [aria-current]{ color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap }
   .hdr-nav [aria-current]{color:var(--ink);font-weight:700}
   .hdr-nav a:hover{color:var(--red)}
-  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--red);color:#fff !important}
+  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
+  .hdr-cta{background:var(--red);color:#fff !important}
   .hdr-cta:hover{background:var(--red-deep)}
-  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta{padding:8px 13px} }
-  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not([aria-current]){display:none} }
-  @media (max-width:767px){ .hdr-cta{display:none} }
+  .hdr-cta2{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .hdr-cta2:hover{background:var(--red);color:#fff !important}
+  @media (max-width:900px){ .hdr-nav{gap:12px} .hdr-nav a,.hdr-nav [aria-current]{font-size:12.5px} .hdr-cta,.hdr-cta2{padding:8px 13px} }
+  @media (max-width:600px){ .hdr-nav a:not(.hdr-cta):not(.hdr-cta2):not([aria-current]){display:none} }
+  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
 
   /* ── 本文 ── */
   main{padding:calc(var(--hdr) + 56px) 0 96px;text-align:center}
@@ -160,6 +163,7 @@
       <!-- 今このページなので、会社概要はリンクにせず現在地として見せる -->
       <span aria-current="page">会社概要</span>
       <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="hdr-cta2" href="shiryou-pop-rc.html">資料請求</a>
     </nav>
   </div>
 </div>
