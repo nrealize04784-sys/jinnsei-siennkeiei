@@ -94,48 +94,11 @@
     color:var(--ink-soft);font-size:14px;line-height:1.9;
   }
 
-  /* ── フォーム（lp-pop-rc.html の最終CTAと同じ作り） ── */
-  form{
-    max-width:520px;
-    margin-inline:auto;
-    text-align:left;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--r);
-    padding:32px 24px;
-  }
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{
-    width:100%;
-    padding:15px 16px;
-    font-size:16px;
-    font-family:inherit;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-  }
-  input:focus{outline:2px solid var(--red-deep);outline-offset:1px;border-color:transparent}
-  .btn{
-    display:block;width:100%;
-    background:var(--red);
-    color:#fff;
-    text-align:center;
-    text-decoration:none;
-    font-weight:700;
-    font-size:17px;
-    font-family:inherit;
-    padding:20px;
-    margin-top:8px;
-    border:0;
-    border-radius:var(--r);
-    cursor:pointer;
-    transition:background .25s ease;
-  }
-  .btn:hover{background:var(--red-deep)}
+  /* 申込みはLINEに一本化。友だち追加ボタンはLINE公式のバッジをそのまま使う */
+  .line-add{text-align:center;margin:8px 0 18px}
+  .line-add a{display:inline-block;line-height:0}
   .req-note{
-    max-width:520px;margin:24px auto 0;
+    max-width:520px;margin:0 auto;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
   }
   .req-note a{color:var(--red-deep)}
@@ -155,12 +118,6 @@
     font-family:var(--font-pop);font-size:20px;color:var(--ink);
   }
   .footer-brand span{color:var(--red)}
-  .footer-cta{
-    display:inline-block;margin:0 0 22px;padding:16px 36px;
-    background:var(--red);color:#fff !important;font-weight:700;
-    text-decoration:none;border-radius:var(--r);
-  }
-  .footer-cta:hover{background:var(--red-deep)}
   .footer-copy{margin-top:14px;font-size:12px}
 </style>
 </head>
@@ -173,9 +130,9 @@
     <nav class="hdr-nav">
       <a href="lp-pop-rc.html">ホーム</a>
       <a href="kaisha-pop-rc.html">会社概要</a>
-      <a class="hdr-cta" href="setsumeikai-pop-rc.html">まずは無料説明会へ</a>
       <!-- 今このページなので、資料請求はリンクにせず現在地として見せる -->
       <span aria-current="page">資料請求</span>
+      <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -189,38 +146,16 @@
       届いてすぐのご契約や、しつこいご連絡はいたしません。
     </p>
 
-    <!--
-      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
-      入力内容から本文を組み立ててメーラーを開く方式（lp-pop-rc.html と同じ）。
-    -->
-    <form id="req-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">ご担当者名</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field">
-        <label for="address">送付先住所</label>
-        <input id="address" name="address" type="text" autocomplete="street-address" required>
-      </div>
-      <button class="btn submit" type="submit">この内容で資料請求する</button>
-    </form>
+    <!-- 送信先はLINE公式アカウント。友だち追加後、トークで資料をお届けする -->
+    <p class="line-add">
+      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+      </a>
+    </p>
 
     <p class="req-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加後、トークで会社名・ご担当者名・送付先のご住所をお送りください。<br>
+      折り返し資料をお届けします。
     </p>
 
     <a class="back" href="lp-pop-rc.html">← 前のページにもどる</a>
@@ -230,9 +165,6 @@
 <footer>
   <div class="wrap">
     <a class="footer-brand" href="https://n-realize.co.jp/" target="_blank" rel="noopener">REALIZE <span>CLUB</span></a>
-    <div>
-      <a class="footer-cta" href="setsumeikai-pop-rc.html">まずは無料説明会へ</a>
-    </div>
     <nav>
       <a href="lp-pop-rc.html">ホーム</a>
       <a href="kaisha-pop-rc.html">会社概要</a>
@@ -242,32 +174,6 @@
 </footer>
 
 <script>
-  // 入力内容からメール本文を組み立て、RC@n-realize.co.jp 宛でメーラーを開く（lp-pop-rc.html と同じ仕組み）
-  document.getElementById('req-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'ご担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス'], ['address', '送付先住所']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      '日本リアライズ株式会社 REALIZE CLUB窓口 御中', '',
-      '資料請求をお願いいたします。', '',
-      '会社名：' + v('company'),
-      'ご担当者名：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'),
-      '送付先住所：' + v('address'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('資料請求（REALIZE CLUB）')
-      + '&body=' + encodeURIComponent(body);
-  });
-
   // 少しでもスクロールしたらヘッダーに下地の境界線を出す（lp-pop-rc.html と同じ）
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
