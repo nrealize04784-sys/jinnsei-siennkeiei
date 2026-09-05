@@ -89,13 +89,10 @@
   .hdr-nav{display:flex;align-items:center;gap:22px}
   .hdr-nav a{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
   .hdr-nav a:hover{color:var(--turquoise-deep)}
-  .hdr-cta,.hdr-cta2{border-radius:10px;padding:9px 20px}
-  .hdr-cta{background:var(--ink);color:#fff !important}
+  .hdr-cta{border-radius:10px;padding:9px 20px;background:var(--ink);color:#fff !important}
   .hdr-cta:hover{background:var(--pink-deep)}
-  .hdr-cta2{background:var(--cream);border:1px solid var(--turquoise-deep);color:var(--turquoise-deep) !important}
-  .hdr-cta2:hover{background:var(--turquoise-deep);color:#fff !important}
-  @media (max-width:900px){ .hdr-nav{gap:14px} .hdr-nav a{font-size:13px} .hdr-cta,.hdr-cta2{padding:8px 14px} }
-  @media (max-width:767px){ .hdr-cta,.hdr-cta2{display:none} }
+  @media (max-width:900px){ .hdr-nav{gap:14px} .hdr-nav a{font-size:13px} .hdr-cta{padding:8px 14px} }
+  @media (max-width:767px){ .hdr-cta{display:none} }
   #entry{scroll-margin-top:var(--hdr)}
 
   .icon-sprite{position:absolute;width:0;height:0;overflow:hidden}
@@ -216,14 +213,10 @@
 
   /* ── 7. 最終CTA ── */
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px;color:var(--ink)}
-  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:44px}
-  form{max-width:520px;margin-inline:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:32px 24px}
-  .field{margin-bottom:20px}
-  label{display:block;font-size:14px;margin-bottom:8px;color:var(--ink-soft)}
-  input{width:100%;padding:15px 16px;font-size:16px;font-family:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px}
-  input:focus{outline:2px solid var(--turquoise-deep);outline-offset:1px;border-color:transparent}
-  .submit{width:100%;margin-top:8px;font-size:17px;padding:20px}
-  .entry-note{max-width:520px;margin:24px auto 0;font-size:13px;line-height:1.9;color:var(--ink-soft);text-align:center}
+  .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:32px}
+  .line-add{margin:8px 0 18px;text-align:center}
+  .line-add a{display:inline-block;line-height:0}
+  .entry-note{max-width:420px;margin:0 auto;font-size:13px;line-height:1.9;color:var(--ink-soft);text-align:center}
   .entry-note a{color:var(--turquoise-deep)}
 
   footer{padding:48px 0 40px;text-align:center;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--line)}
@@ -320,8 +313,7 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="#flow">仕組み</a>
-      <a class="hdr-cta" href="#entry">無料説明会に参加</a>
-      <a class="hdr-cta2" href="shiryou-icecream.html">資料請求</a>
+      <a class="hdr-cta" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
     </nav>
   </div>
 </div>
@@ -338,7 +330,7 @@
 
     <h1>社員が、<br>溶けていく前に。</h1>
     <p class="sub">頑張る社員も、<br>放っておくと溶けてしまう。</p>
-    <a class="btn" href="#entry">まずは無料説明会に参加</a>
+    <a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
   </div>
 
   <svg class="drip-divider" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true">
@@ -481,31 +473,17 @@
 <!-- 7. 最終CTA -->
 <section class="entry" id="entry">
   <div class="wrap fade">
-    <h2>まずは、無料説明会に参加するところから。</h2>
+    <h2>まずは、LINEで友だちになるところから。</h2>
     <p class="lead">その場で決めなくて構いません。<br>導入後も、いつでも解約できます。</p>
-    <form id="entry-form" novalidate>
-      <div class="field">
-        <label for="company">会社名</label>
-        <input id="company" name="company" type="text" autocomplete="organization" required>
-      </div>
-      <div class="field">
-        <label for="name">お担当者名</label>
-        <input id="name" name="name" type="text" autocomplete="name" required>
-      </div>
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
-      </div>
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <button class="btn submit" type="submit">無料説明会に参加する</button>
-    </form>
+    <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
+    <p class="line-add">
+      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+      </a>
+    </p>
     <p class="entry-note">
-      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
-      内容をご確認のうえ、そのまま送信してください。<br>
-      開かない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
+      友だち追加後、トークで会社名・お担当者名・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
     </p>
   </div>
 </section>
@@ -518,40 +496,15 @@
     </span>
     <nav>
       <a href="#top">ホーム</a>
-      <a href="#entry">無料説明会に参加</a>
-      <a href="shiryou-icecream.html">資料請求</a>
+      <a href="#entry">LINEで友だちになる</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
 </footer>
 
-<div class="sticky"><a class="btn" href="#entry">まずは無料説明会に参加</a></div>
+<div class="sticky"><a class="btn" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a></div>
 
 <script>
-  document.getElementById('entry-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = function (id) { return document.getElementById(id).value.trim(); };
-    var required = [['company', '会社名'], ['name', 'お担当者名'], ['tel', '電話番号'], ['email', 'メールアドレス']];
-    for (var i = 0; i < required.length; i++) {
-      if (!v(required[i][0])) {
-        alert(required[i][1] + 'をご入力ください。');
-        document.getElementById(required[i][0]).focus();
-        return;
-      }
-    }
-    var body = [
-      'REALIZE CLUB 御中', '',
-      '無料説明会に参加したく、連絡いたします。', '',
-      '会社名：' + v('company'),
-      'お担当者名：' + v('name'),
-      '電話番号：' + v('tel'),
-      'メールアドレス：' + v('email'), ''
-    ].join('\r\n');
-    location.href = 'mailto:RC@n-realize.co.jp'
-      + '?subject=' + encodeURIComponent('無料説明会参加希望（REALIZE CLUB）')
-      + '&body=' + encodeURIComponent(body);
-  });
-
   var hdr = document.getElementById('site-header');
   var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 8); };
   addEventListener('scroll', onScroll, { passive: true });
