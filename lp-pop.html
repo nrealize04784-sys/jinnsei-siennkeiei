@@ -110,9 +110,11 @@
   @media (max-width:520px){ .hdr-word{display:none} }
   .site-header nav{display:flex;align-items:center;gap:18px}
   .site-header nav a{color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap}
-  .hdr-cta1,.hdr-cta2{border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800!important;font-family:"M PLUS Rounded 1c",sans-serif}
+  .hdr-cta1{border:3px solid var(--ink);border-radius:999px;padding:6px 16px;font-weight:800!important;font-family:"M PLUS Rounded 1c",sans-serif}
   .hdr-cta1{background:var(--pink);color:#fff!important}
-  @media (max-width:767px){ .hdr-cta1,.hdr-cta2{display:none} .site-header nav{gap:15px} }
+  /* 追従バーと重複するLINEだけ隠す。資料請求はスマホでも並べる */
+  /* 下の追従バーと重なるので、スマホではヘッダーのボタンを出さない */
+  @media (max-width:767px){ .hdr-cta1{display:none} .site-header nav{gap:15px} }
 
   /* ---------- ファーストビュー ---------- */
   .fv{
@@ -183,13 +185,16 @@
   }
   .sign-inner{
     border:3px solid var(--ink);border-radius:10px;
-    padding:30px 10px 28px;
+    /* 900px 未満は角の絵をボタンの下に置くので、その分の余白を足す */
+    padding:30px 10px 92px;
     /* 明るい地に細かい点。ポスターの刷り面の見立て */
     background-color:var(--paper);
     background-image:radial-gradient(circle 2px at center,rgba(245,55,143,.35) 0 2px,transparent 2px);
     background-size:16px 16px;
   }
-  @media (min-width:768px){ .sign{padding:16px} .sign-inner{padding:48px 34px 42px} }
+  @media (min-width:768px){ .sign{padding:16px} .sign-inner{padding:48px 34px 96px} }
+  /* 900px からは絵が左右に収まるので、下の余白は元に戻す */
+  @media (min-width:900px){ .sign-inner{padding-bottom:42px} }
   /* 枠のふちに並ぶ電球。幅が変われば数が増える */
   .bulbs{position:absolute;pointer-events:none}
   .bulbs.t,.bulbs.b{left:22px;right:22px;height:20px;
@@ -203,11 +208,11 @@
 
   /* 看板の中の左右下に置く絵。文字とぶつかる幅では出さない */
   .sign-inner{position:relative}
-  .corner{position:absolute;bottom:14px;width:150px;display:none;pointer-events:none}
+  .corner{position:absolute;bottom:14px;width:clamp(78px,22vw,110px);pointer-events:none}
   .corner svg{width:100%;height:auto;display:block}
-  .corner.l{left:16px}
-  .corner.r{right:16px}
-  @media (min-width:900px){ .corner{display:block} }
+  .corner.l{left:10px}
+  .corner.r{right:10px}
+  @media (min-width:900px){ .corner{width:150px} .corner.l{left:16px} .corner.r{right:16px} }
   @media (min-width:1100px){ .corner{width:176px} }
 
   /* POP UP SENTO の位置。欧文は白抜きに黒フチ */
@@ -237,17 +242,14 @@
   .sign .btn-line{background:var(--green)}
 
   /* 絵札。ポスターの詰め込み感はここで出す */
-  /* 絵札は1行だけ。狭い画面では後ろ2枚を隠して6枚にする */
+  /* 絵札は8枚を1行で。狭い画面では札を小さくして詰める */
   .fuda{
-    display:grid;grid-template-columns:repeat(6,1fr);gap:8px;
+    display:grid;grid-template-columns:repeat(8,1fr);gap:5px;
     padding:40px 0 26px;
   }
-  .fuda .f:nth-child(n+7){display:none}
-  @media (min-width:768px){
-    .fuda{grid-template-columns:repeat(8,1fr);gap:14px;padding:52px 0 30px}
-    .fuda .f:nth-child(n+7){display:grid}
-  }
-  .fuda .f{border:3px solid var(--ink);border-radius:12px;aspect-ratio:1;display:grid;place-items:center;padding:12%}
+  @media (min-width:768px){ .fuda{gap:14px;padding:52px 0 30px} }
+  .fuda .f{border:2px solid var(--ink);border-radius:8px;aspect-ratio:1;display:grid;place-items:center;padding:11%}
+  @media (min-width:768px){ .fuda .f{border-width:3px;border-radius:12px;padding:12%} }
   /* 絵をフチなしのベタ塗りにしたので、地は全部クリーム。
      色地だと絵が沈んで見えなくなる */
   .fuda .f{background:var(--paper)}
@@ -272,11 +274,19 @@
   .totonou em{font-style:normal;color:var(--pink)}
 
   /* 余白に散らす絵。文字とぶつからない幅のときだけ出す */
-  .deco{position:absolute;width:104px;display:none;pointer-events:none}
+  .deco{position:absolute;width:104px;pointer-events:none;top:var(--t)}
   .deco svg{width:100%;height:auto;display:block}
-  @media (min-width:1240px){ .deco{display:block} }
   .deco.l{left:calc(50% - 610px)}
   .deco.r{right:calc(50% - 610px)}
+  /* 本文の外に余白が取れるのは1240px以上だけ。
+     それより狭い画面では、本文とぶつからない上下の余白に寄せて、画面の端から半分のぞかせる */
+  @media (max-width:1239px){
+    /* 高さで抑える。上を0にしているセクションがあるので、まとめて下の余白に置く */
+    .deco{width:auto;height:clamp(40px,8vw,56px);top:auto;bottom:9px}
+    .deco svg{width:auto;height:100%}
+    .deco.l{left:2px}
+    .deco.r{right:2px}
+  }
 
   /* ---------- 湯気の区切り。多くて3箇所 ---------- */
   .wave{display:block;width:100%;height:32px}
@@ -319,7 +329,11 @@
 
   /* ---------- 4ステップ ---------- */
   .steps{display:flex;flex-direction:column;align-items:center}
-  @media (min-width:768px){ .steps{flex-direction:row;justify-content:center;align-items:flex-start} }
+  @media (min-width:768px){
+    .steps{flex-direction:row;justify-content:center;align-items:flex-start}
+    /* 164px×4＋矢印×3 は768px幅に収まらない。縮められるようにしておく */
+    .step{flex:1 1 0;min-width:0;width:auto;max-width:164px}
+  }
   .step{display:flex;flex-direction:column;align-items:center;gap:12px;flex:0 0 auto;width:164px}
   .step-no{
     width:56px;height:56px;border-radius:50%;background:var(--pink);color:#fff;
@@ -328,7 +342,8 @@
   .step .label{font-size:17px;text-align:center;line-height:1.5}
   .arrow{display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .arrow.pc{display:none}
-  @media (min-width:768px){ .arrow.pc{display:flex;width:56px;height:56px} .arrow.sp{display:none} }
+  @media (min-width:768px){ .arrow.pc{display:flex;width:clamp(26px,4.6vw,56px);height:56px} .arrow.sp{display:none} }
+  .arrow.pc svg{width:100%;height:auto}
   .arrow.sp{height:42px}
 
   /* ---------- 実績 ---------- */
@@ -397,7 +412,6 @@
       <a href="#">ホーム</a>
       <a href="kaisha-pop.html">会社概要</a>
       <a class="hdr-cta1 hdr-line" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener"><svg class="line-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.99.33.07.77.22.88.5.1.26.07.66.03.92l-.14.86c-.04.26-.2 1.02.9.56 1.1-.46 5.93-3.49 8.09-5.98C21.5 14.28 22 12.77 22 11.1 22 6.63 17.52 3 12 3z"/></svg>LINEで申し込む</a>
-      <a class="hdr-cta2" href="shiryou-pop.html">資料請求</a>
     </nav>
   </div>
 </div>
@@ -618,7 +632,7 @@
 <!-- 2. 問いかけ -->
 <section style="padding:0 0 56px">
   <!-- 余白に散らす絵。装飾なので読み上げ対象から外す -->
-  <span class="deco l" style="top:70px" aria-hidden="true">
+  <span class="deco l" style="--t:70px" aria-hidden="true">
     <svg viewBox="0 0 100 122" fill="none">
       <path d="M26 40 32 10 56 32zM74 40 68 10 44 32z" fill="#F5378F"/>
       <path d="M24 56c0-16 12-28 26-28s26 12 26 28v40c0 9-6 14-14 14H38c-8 0-14-5-14-14z" fill="#7FE0EC"/>
@@ -630,7 +644,7 @@
       <circle cx="82" cy="50" r="11" fill="#7FE0EC"/>
     </svg>
   </span>
-  <span class="deco r" style="top:120px" aria-hidden="true">
+  <span class="deco r" style="--t:120px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <path d="M50 16c-15 0-24 20-26 40h52c-2-20-11-40-26-40z" fill="#27C0D4"/>
       <path d="M12 56h76v16a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z" fill="#17627A"/>
@@ -662,7 +676,7 @@
 
 <!-- 3. 変わること -->
 <section>
-  <span class="deco r" style="top:90px" aria-hidden="true">
+  <span class="deco r" style="--t:90px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <path d="M20 44h60l-7 36a6 6 0 0 1-6 5H33a6 6 0 0 1-6-5z" fill="#FFD84D"/>
       <ellipse cx="50" cy="44" rx="32" ry="9" fill="#FFD84D"/>
@@ -670,7 +684,7 @@
       <path d="M24 62h52l-2 10H26z" fill="#FFFFFF" opacity=".75"/>
     </svg>
   </span>
-  <span class="deco l" style="top:150px" aria-hidden="true">
+  <span class="deco l" style="--t:150px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <path d="M18 12h64v9H18zM18 79h64v9H18z" fill="#17627A"/>
       <path d="M28 21h44c0 18-22 24-22 29s22 11 22 29H28c0-18 22-24 22-29s-22-11-22-29z" fill="#7FE0EC"/>
@@ -696,7 +710,7 @@
 
 <!-- 4. 流れ -->
 <section style="padding-top:0">
-  <span class="deco l" style="top:60px" aria-hidden="true">
+  <span class="deco l" style="--t:60px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <path d="M8 20h84v9H8z" fill="#17627A"/>
       <path d="M11 29h38.4v45q-9.6 7-19.2 3T11 78z" fill="#17627A"/>
@@ -704,7 +718,7 @@
       <text x="50" y="62" text-anchor="middle" fill="#F7EFDE" font-family="Dela Gothic One, sans-serif" font-size="32">ゆ</text>
         </svg>
   </span>
-  <span class="deco r" style="top:130px" aria-hidden="true">
+  <span class="deco r" style="--t:130px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <path d="M44 8h12v10H44z" fill="#17627A"/>
       <circle cx="50" cy="56" r="38" fill="#17627A"/>
@@ -738,14 +752,14 @@
 
 <!-- 5. 実績 -->
 <section>
-  <span class="deco r" style="top:80px" aria-hidden="true">
+  <span class="deco r" style="--t:80px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <circle cx="76" cy="24" r="12" fill="#F5378F"/>
       <path d="M50 26 90 88H10z" fill="#27C0D4"/>
       <path d="M50 26 68 54c-7 5-11 5-18 0s-11-5-18 0z" fill="#F7EFDE"/>
     </svg>
   </span>
-  <span class="deco l" style="top:150px" aria-hidden="true">
+  <span class="deco l" style="--t:150px" aria-hidden="true">
     <svg viewBox="0 0 100 100" fill="none">
       <ellipse cx="48" cy="64" rx="34" ry="20" fill="#FFD84D"/>
       <circle cx="66" cy="36" r="17" fill="#FFD84D"/>
