@@ -110,9 +110,6 @@
     padding:36px 24px;
     text-align:center;
   }
-  /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
-  .line-add{margin:20px 0 0}
-  .line-add a{display:inline-block;line-height:0}
   .btn{
     display:block;width:100%;
     background:var(--accent);
@@ -129,6 +126,9 @@
     transition:background .25s ease;
   }
   .btn:hover{background:#8E3A22}
+  /* 資料請求は主、友だち追加は副。塗りと枠で優先順位を分ける */
+  .btn-outline{background:var(--card);border:1px solid var(--accent);color:var(--accent)}
+  .btn-outline:hover{background:var(--accent);color:#fff}
   .note{
     max-width:520px;margin:24px auto 0;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
@@ -190,25 +190,22 @@
 <main>
   <div class="wrap">
     <p class="plaque"><span>資料請求</span></p>
-    <p class="lead">加盟の概要をまとめた資料をお送りします。<br>LINEで友だち追加してお受け取りください。</p>
+    <p class="lead">加盟の概要をまとめた資料をお送りします。<br>下のボタンからLINEでお受け取りください。</p>
 
     <!--
-      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする。
-      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること。
+      送信先はLINE公式アカウント。「資料請求」ボタンはトーク欄に「資料請求」と入力済みの
+      状態でLINEを開くリンクで、公式アカウント側の自動応答が反応して資料のURLを送る。
+      ※ 宛先を変える場合は、このページ内の lin.ee / line.me のURLをすべて差し替えること。
     -->
     <div class="req-line">
-      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a>
-      <p class="line-add">
-        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').remove()">
-        </a>
-      </p>
+      <a class="btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      <a class="btn btn-outline" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
     </div>
 
     <p class="note">
-      友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
-      折り返し資料をお届けします。
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。<br>
+      そのほかのご相談は「LINEで友だちになる」から、そのままトークでどうぞ。
     </p>
 
     <a class="back" href="lp-cafe.html">← 前のページにもどる</a>
