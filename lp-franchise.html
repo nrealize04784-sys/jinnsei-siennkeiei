@@ -187,10 +187,13 @@
   }
   /*
     メニュー内のLINEボタンはコマンドウィンドウに見立てる。
-    黒地・白の角枠・▶カーソル・金文字という、最終CTAと同じ作り。
+    黒地・白の角枠・▶カーソルという、最終CTAと同じ作り。
   */
-  .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em;color:var(--gold)}
-  .hdr-cta:hover{background:#111;text-decoration:none}
+  .hdr-cta{padding:9px 18px;font-size:14px;letter-spacing:.06em;gap:.6em}
+  /* 資料請求は白文字。金文字の友だち追加より一段控えめに見せる */
+  .hdr-nav a.hdr-cta{color:#fff}
+  .hdr-nav a.hdr-cta-main{color:var(--gold)}
+  .hdr-nav a.hdr-cta:hover{background:#111;text-decoration:none}
   /*
     固定ヘッダーの高さぶん、アンカーの着地点を下げる。
     これが無いと #entry へ飛んだとき見出しがヘッダーの裏に隠れる。
@@ -234,6 +237,8 @@
   }
   .fv h1 em{font-style:normal;color:var(--gold)}
   .fv-actions{display:flex;flex-wrap:wrap;gap:14px}
+  /* 資料請求は白文字。金文字の友だち追加より一段控えめに見せる */
+  .btn-sub{color:#fff}
   .fv p{
     font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,.9);margin-bottom:44px;
     text-shadow:0 2px 14px rgba(7,18,40,.8);
@@ -507,6 +512,9 @@
   /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
   .line-add{margin:8px 0 18px}
   .line-add a{display:inline-block;line-height:0}
+  /* 資料請求だけを求める人向けの二の矢。友だち追加より一段控えめに見せる */
+  .doc-btn{color:#fff;font-size:16px;padding:18px 34px;margin-top:28px}
+  .doc-note{margin-top:14px}
   /* 断り書き。フォームがあった頃と同じ幅・見た目に揃える */
   .entry-note{
     max-width:520px;margin:0 auto;text-align:left;
@@ -606,7 +614,8 @@
     <nav class="hdr-nav">
       <a href="#top">ホーム</a>
       <a href="kaisha.html">会社概要</a>
-      <a class="btn hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="btn hdr-cta hdr-cta-main" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="btn hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -620,6 +629,7 @@
       <p>物件を探している人ではなく、<br>人生を良くしたい人が集まる。</p>
       <div class="fv-actions">
         <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+        <a class="btn btn-sub" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">資料請求をする</a>
       </div>
     </div>
   </div>
@@ -727,12 +737,18 @@
     <!-- 送信先はLINE公式アカウント。友だち追加後、トークでそのままやり取りする -->
     <p class="line-add">
       <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
+        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
       </a>
     </p>
     <p class="entry-note">
       友だち追加後、トークで会社名・お名前・ご相談内容をお送りください。<br>
       折り返しこちらからご連絡します。
+    </p>
+    <!-- 資料だけ欲しい人向け。LINEのステップ配信で自動的に資料が届く -->
+    <a class="btn doc-btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="entry-note doc-note">
+      「資料請求をする」からLINEを開き、トークで「資料請求」とお送りください。<br>
+      ステップ配信で自動的に資料をお届けします。
     </p>
   </div>
 </section>
