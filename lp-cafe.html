@@ -69,11 +69,11 @@
     transition:background .25s ease;
   }
   .btn:hover{background:#8E3A22}
-  /* 資料請求は主、友だち追加は副。塗りと枠で優先順位を分ける */
-  .btn-outline{background:var(--cream);border:1px solid var(--accent);color:var(--accent)}
-  .btn-outline:hover{background:var(--accent);color:#fff}
-  /* 円形の看板は面積が狭いので、資料請求はボタンではなく小さな下線リンクで添える */
-  .fv-sub-link{display:block;margin-top:10px;font-size:12px;color:var(--ink-soft);text-decoration:underline}
+  /* 資料請求はテラコッタの白抜き。友だち追加より一段控えめに見せる */
+  .btn-sub{background:var(--cream);color:var(--accent);border:1px solid var(--accent)}
+  .btn-sub:hover{background:var(--accent);color:#fff}
+  /* ボタンを2つ並べる。入りきらない幅では縦に積む */
+  .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 
   /* ── 固定ヘッダー ──
      最上部は地の色で、ヒーローとの境目が見えない。
@@ -495,7 +495,7 @@
   .seats .after{margin-top:26px}   /* ここで1行あける */
 
   /* ── 7. 最終CTA ── */
-  .entry{background:var(--cream)}
+  .entry{background:var(--cream);text-align:center}
   .entry h2{font-size:clamp(24px,5.6vw,34px);text-align:center;margin:0 0 16px}
   .entry .lead{text-align:center;color:var(--ink-soft);margin-bottom:36px}
   /* 狭い画面で2行になるときは、読点で折る。語の途中で切らない */
@@ -513,9 +513,13 @@
     padding:36px 24px;
     text-align:center;
   }
-  /* 資料請求と友だち追加、2本を縦に並べる。資料請求が主、友だち追加が副 */
-  .entry-line .btn{width:100%;font-size:17px;padding:20px 24px}
-  .entry-line .btn + .btn{margin-top:14px}
+  /* 大きいほうのボタン。他のCTAと同じテラコッタの塗り */
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま、他のボタンより大きく置く */
+  .line-add{margin:0}
+  .line-add a{display:inline-block;line-height:0}
+  /* 資料請求の二の矢。バッジの下に一段空けて置く */
+  .doc-btn{margin-top:28px}
+  .doc-note{margin-top:14px}
   .entry-note{
     max-width:520px;
     margin:24px auto 0;
@@ -602,7 +606,7 @@
       <a href="#">ホーム</a>
       <a href="kaisha-cafe.html">会社概要</a>
       <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
-      <a class="hdr-cta2" href="shiryou-cafe.html">資料請求</a>
+      <a class="hdr-cta2" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -655,8 +659,10 @@
       </div>
       <h1>入りにくい不動産屋を、<br>やめる。</h1>
       <p class="sub">まちの人が、コーヒーを飲むように相談にくる。</p>
-      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
-      <a class="fv-sub-link" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求はこちら</a>
+      <div class="btns">
+        <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+        <a class="btn btn-sub" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      </div>
 
 
       </div></div></div></div>
@@ -1044,19 +1050,26 @@
     <h2>まずは、話を聞くところから。</h2>
     <p class="lead">その場で決めなくて構いません。<br>LINEで友だち追加して、<span>そのままご相談ください。</span></p>
     <!--
-      送信先はLINE公式アカウント。「資料請求」ボタンはトーク欄に「資料請求」と入力済みの
-      状態でLINEを開くリンクで、公式アカウント側の自動応答が反応して資料のURLを送る。
-      ※ 宛先を変える場合は、このページ内の lin.ee / line.me のURLをすべて差し替えること
-      　（ヘッダー・ファーストビュー・ここ・スマホ追従ボタンの4箇所）。
+      送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする。
+      ※ 宛先を変える場合は、このページ内の lin.ee（友だち追加）と
+      　line.me/R/oaMessage（資料請求）のURLをそれぞれすべて差し替えること。
     -->
     <div class="entry-line">
-      <a class="btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
-      <a class="btn btn-outline" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <p class="line-add">
+        <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
+        </a>
+      </p>
     </div>
     <p class="entry-note">
+      友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
+      折り返しこちらからご連絡します。
+    </p>
+    <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+    <a class="btn btn-sub doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="entry-note doc-note">
       「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
-      そのまま送信すると、自動的に資料をお届けします。<br>
-      ご相談は「LINEで友だちになる」から、そのままトークでどうぞ。
+そのまま送信すると、自動的に資料をお届けします。
     </p>
   </div>
 </section>

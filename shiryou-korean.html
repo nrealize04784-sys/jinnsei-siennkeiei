@@ -85,7 +85,12 @@
   .lead{ color:var(--ink-soft); margin:0 0 18px }
   /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
   .line-add{ margin:8px 0 18px }
-  .line-add a{ display:inline-block; line-height:0 }
+  .line-add a{ display:inline-block; line-height:0; max-width:100% }
+  /* このページには img の共通指定が無いので、バッジ自身に折り返しを持たせる */
+  .line-add img{ max-width:100%; height:auto }
+  /* 資料請求の二の矢。友だち追加の案内から一段空けて置く */
+  .doc-btn{ margin-top:28px }
+  .doc-note{ margin-top:14px }
   .btn{
     display:block; width:100%; margin-top:22px; font-size:17px;
     background:var(--red); color:#fff; text-decoration:none; text-align:center;
@@ -131,6 +136,7 @@
     <a data-home href="lp-korean.html">ホーム</a>
     <a href="kaisha-korean.html">会社概要</a>
     <a class="hdr-cta hdr-cta-main" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+    <a class="hdr-cta" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
   </nav>
 </header>
 
@@ -159,16 +165,19 @@
       <!-- 送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークで資料をお届けする -->
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').hidden=true;document.getElementById('line-fallback').hidden=false">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
         </a>
       </p>
-      <!-- バッジの画像が届かない環境向けの控え。届いていれば出さない -->
-      <p id="line-fallback" hidden><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで資料を受け取る</a></p>
-
       <p class="note">
-        友だち追加のあと、トークで会社名・お名前・送付先のご住所をお送りください。<br>
-        折り返し資料をお届けします。<br>
+        友だち追加のあと、トークで会社名・お名前をお送りください。<br>
+        折り返しこちらからご連絡します。
+      </p>
+
+      <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+      <a class="btn doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      <p class="note doc-note">
+        「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+        そのまま送信すると、自動的に資料をお届けします。<br>
         LINEをお使いでない場合は <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> までご連絡ください。
       </p>
     </div>

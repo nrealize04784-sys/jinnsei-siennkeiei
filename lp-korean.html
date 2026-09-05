@@ -98,6 +98,11 @@
     transition:transform .15s ease, box-shadow .15s ease;
   }
   .btn:hover{ transform:translateY(2px); box-shadow:0 1px 0 #9E2C1F }
+  /* 資料請求は生成りの白抜き。コチュジャンの赤より一段控えめに見せる */
+  .btn-sub{ background:var(--cream); color:var(--red); box-shadow:0 3px 0 rgba(90,58,28,.28) }
+  .btn-sub:hover{ box-shadow:0 1px 0 rgba(90,58,28,.28) }
+  /* ボタンを2つ並べる。入りきらない幅では縦に積む */
+  .btns{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center }
 
   /* ── ヘッダー。紺のバーに、▶カーソルとコマンドウィンドウ風の枠 ── */
   header.site{
@@ -256,6 +261,9 @@
   /* 友だち追加ボタン。LINE公式のバッジをそのまま使う */
   .line-add{ margin:8px 0 18px }
   .line-add a{ display:inline-block; line-height:0 }
+  /* 資料請求の二の矢。友だち追加の案内から一段空けて置く */
+  .doc-btn{ margin-top:28px }
+  .doc-note{ margin-top:14px }
   /* 断り書き。フォームがあった頃と同じ幅・見た目に揃える */
   .entry-note{
     max-width:520px; margin:0 auto;
@@ -298,7 +306,7 @@
     <a href="#top">ホーム</a>
     <a href="kaisha-korean.html">会社概要</a>
     <a class="hdr-cta hdr-cta-main" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
-    <a class="hdr-cta" href="shiryou-korean.html">資料請求</a>
+    <a class="hdr-cta" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
   </nav>
 </header>
 
@@ -330,7 +338,10 @@
       <span class="tag">はじまりの一杯<span class="ko">인생 상담</span></span>
       <h1 class="brush">家より先に、<br>人生の話を。</h1>
       <p class="lead"><span class="nb">物件を探す人ではなく、</span><span class="nb">暮らしを整えたい人が集まる。</span></p>
-      <p><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></p>
+      <p class="btns">
+        <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+        <a class="btn btn-sub" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      </p>
     </div>
 
     <!-- 看板の下に並べる料理。輪郭線なしのべた塗り -->
@@ -505,15 +516,18 @@
       <!-- 送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする -->
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').hidden=true;document.getElementById('line-fallback').hidden=false">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
         </a>
       </p>
-      <!-- バッジの画像が届かない環境向けの控え。届いていれば出さない -->
-      <p id="line-fallback" hidden><a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a></p>
       <p class="entry-note">
         友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
         折り返しこちらからご連絡します。
+      </p>
+      <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+      <a class="btn btn-sub doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      <p class="entry-note doc-note">
+        「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+        そのまま送信すると、自動的に資料をお届けします。
       </p>
     </div>
   </div>

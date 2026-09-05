@@ -65,6 +65,11 @@
     transition:background .25s ease,color .25s ease;
   }
   .btn:hover{background:var(--red);color:#fff}
+  /* 資料請求は白抜き。黒地に黄文字の友だち追加より一段控えめに見せる */
+  .btn-sub{background:var(--card);color:var(--ink);border:2px solid var(--ink)}
+  .btn-sub:hover{background:var(--ink);color:#fff}
+  /* ボタンを2つ並べる。入りきらない幅では縦に積む */
+  .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 
   /* ── 固定ヘッダー ── */
   .site-header{
@@ -364,6 +369,7 @@
     申込は入力フォームをやめ、LINE公式アカウントの友だち追加に一本化した。
     受け口は Lステップ側にあるので、このページに送信処理は持たない。
   */
+  .entry{text-align:center}
   .entry-line{
     max-width:520px;
     margin-inline:auto;
@@ -372,10 +378,14 @@
     padding:32px 24px;
     text-align:center;
   }
-  .entry-line .btn{width:100%;font-size:17px;padding:20px}
+
   /* LINE公式の友だち追加バッジ。画像は公式が配っているものをそのまま置く */
-  .line-add{margin:20px 0 0}
+  /* 友だち追加ボタン。LINE公式のバッジをそのまま、他のボタンより大きく置く */
+  .line-add{margin:0}
   .line-add a{display:inline-block;line-height:0}
+  /* 資料請求の二の矢。友だち追加の案内から一段空けて置く */
+  .doc-btn{margin-top:28px}
+  .doc-note{margin-top:14px}
   .entry-note{
     max-width:520px;
     margin:24px auto 0;
@@ -436,7 +446,7 @@
       <a href="#">ホーム</a>
       <a href="kaisha-katsu.html">会社概要</a>
       <a class="hdr-cta" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
-      <a class="hdr-cta2" href="shiryou-katsu.html">資料請求</a>
+      <a class="hdr-cta2" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
   </div>
 </div>
@@ -446,7 +456,10 @@
   <div class="wrap">
     <h1><span class="line2">いつも同じ集客ばっか</span><br><span class="line2">やってんじゃねぇ！</span></h1>
     <p class="sub">ポータルに頼って、値引きで消耗して、それでいいんですか。</p><br>
-    <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+    <div class="btns">
+      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
+      <a class="btn btn-sub" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    </div>
 
     <div class="hero-photo-wrap">
       <img class="hero-photo" src="katsu-hero.webp" width="1508" height="1043"
@@ -610,21 +623,27 @@
     <p class="lead">その場で決めなくて構いません。<br>LINEで友だち追加して、そのままご相談ください。</p>
     <!--
       送信先はLINE公式アカウント（Lステップ）。友だち追加後、トークでそのままやり取りする。
-      ※ 宛先を変える場合は、このページ内の lin.ee のURLをすべて差し替えること
-      　（ヘッダー・ファーストビュー・ここ・スマホ追従ボタンの4箇所）。
+      「資料請求をする」はトーク欄に「資料請求」が入った状態でLINEを開き、
+      送信すると自動応答が資料を返す。
+      ※ 宛先を変える場合は、このページ内の lin.ee（友だち追加）と
+      　line.me/R/oaMessage（資料請求）のURLをそれぞれすべて差し替えること。
     -->
     <div class="entry-line">
-      <a class="btn" href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">LINEで友だちになる</a>
       <p class="line-add">
         <a href="https://lin.ee/WHYApuM" target="_blank" rel="noopener">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"
-               onerror="this.closest('.line-add').remove()">
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="108" border="0">
         </a>
       </p>
     </div>
     <p class="entry-note">
       友だち追加のあと、トークで会社名・お名前・ご相談内容をお送りください。<br>
       折り返しこちらからご連絡します。
+    </p>
+    <!-- 資料だけ欲しい人向けの二の矢。トーク欄に「資料請求」が入った状態で開く -->
+    <a class="btn btn-sub doc-btn" href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+    <p class="entry-note doc-note">
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+そのまま送信すると、自動的に資料をお届けします。
     </p>
   </div>
 </section>
@@ -637,7 +656,7 @@
     </a>
     <nav>
       <a href="kaisha-katsu.html">会社概要</a>
-      <a href="shiryou-katsu.html">資料請求</a>
+      <a href="https://line.me/R/oaMessage/%40179gucaj/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
     </nav>
     <p class="footer-copy">© 日本リアライズ株式会社</p>
   </div>
