@@ -94,9 +94,26 @@
     color:var(--ink-soft);font-size:14px;line-height:1.9;
   }
 
-  /* 申込みはLINEに一本化。友だち追加ボタンはLINE公式のバッジをそのまま使う */
-  .line-add{text-align:center;margin:8px 0 18px}
-  .line-add a{display:inline-block;line-height:0}
+  /* 資料請求はLINE経由。塗りボタン（資料請求をする）とアウトライン（LINEで友だちになる）の2択 */
+  .btn{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    padding:18px 40px;
+    border-radius:var(--r);
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .25s ease,transform .15s ease;
+  }
+  .btn:hover{background:var(--red-deep)}
+  .btn-outline{background:#fff;border:1px solid var(--red);color:var(--red) !important}
+  .btn-outline:hover{background:var(--red);color:#fff !important}
+  .req-line{display:flex;flex-direction:column;gap:14px;align-items:center;margin:8px 0 18px}
+  .req-line .btn{width:100%;max-width:360px}
   .req-note{
     max-width:520px;margin:0 auto;
     font-size:13px;line-height:1.9;color:var(--ink-soft);
@@ -143,19 +160,23 @@
     <p class="lead">REALIZE CLUBの概要をまとめた資料をお送りします。</p>
     <p class="desc">
       仕組みと導入の流れ、家計への効果をまとめた資料をお届けします。<br>
-      届いてすぐのご契約や、しつこいご連絡はいたしません。
+      下のボタンからLINEでお受け取りください。
     </p>
 
-    <!-- 送信先はLINE公式アカウント。友だち追加後、トークで資料をお届けする -->
-    <p class="line-add">
-      <a href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
-      </a>
-    </p>
+    <!--
+      送信先はLINE公式アカウント。「資料請求をする」はトーク欄に「資料請求」と入力済みの
+      状態でLINEを開くリンクで、公式アカウント側の自動応答が反応して資料のURLを送る。
+      ※ 宛先を変える場合は、このページ内の lin.ee / line.me のURLをすべて差し替えること。
+    -->
+    <div class="req-line">
+      <a class="btn" href="https://line.me/R/oaMessage/%40557ibnui/?%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82" target="_blank" rel="noopener">資料請求をする</a>
+      <a class="btn btn-outline" href="https://lin.ee/ZXLuI95" target="_blank" rel="noopener">LINEで友だちになる</a>
+    </div>
 
     <p class="req-note">
-      友だち追加後、トークで会社名・ご担当者名・送付先のご住所をお送りください。<br>
-      折り返し資料をお届けします。
+      「資料請求をする」を押すと、LINEのトーク欄に「資料請求」と入力された状態で開きます。<br>
+      そのまま送信すると、自動的に資料をお届けします。<br>
+      そのほかのご相談は「LINEで友だちになる」から、そのままトークでどうぞ。
     </p>
 
     <a class="back" href="lp-pop-rc.html">← 前のページにもどる</a>
