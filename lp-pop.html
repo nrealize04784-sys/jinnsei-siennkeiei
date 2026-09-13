@@ -366,7 +366,8 @@
   }
   /* 増減を並べる欄は文字数が倍近いので、3列に収まるところまで落とす。
      字が小さくなるぶん、黒フチも細くしないとつぶれる */
-  .stat .num.range{font-size:clamp(26px,7vw,40px);line-height:1.2;-webkit-text-stroke:5px var(--ink);text-shadow:4px 4px 0 var(--pink)}
+  /* 2行に折るので、行間も開ける。1.2 のままだと黒フチと版ずれの影が上の行に重なる */
+  .stat .num.range{font-size:clamp(26px,7vw,40px);line-height:1.75;-webkit-text-stroke:5px var(--ink);text-shadow:4px 4px 0 var(--pink)}
   .stat .num .unit{font-size:.4em;margin-left:.12em}
   .stat .cap{font-size:15px;font-weight:700;margin:12px 0 0}
 
