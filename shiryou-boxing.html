@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>資料請求｜ライフメイクパートナーズ</title>
+<meta name="description" content="不動産フランチャイズ加盟の資料請求はこちらから。エリア2社限定の加盟募集。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  /* 書体・配色は lp-boxing.html と揃えている */
+  :root{
+    --ink:#0B0B0F;--panel-2:#1F1418;
+    --red:#C8102E;--red-deep:#8C0C20;--gold:#D4AF37;--gold-soft:#E9CD7A;
+    --paper:#F5F1EA;--muted:rgba(245,241,234,.64);
+    --font:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--ink);color:var(--paper);
+    font-family:var(--font);font-weight:400;
+    line-height:1.9;letter-spacing:.03em;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* ---- ヘッダー ---- */
+  .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    background:rgba(11,11,15,.86);
+    border-bottom:1px solid rgba(245,241,234,.1);
+    backdrop-filter:blur(8px);
+  }
+  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:12px}
+  .hdr-lockup{display:inline-flex;align-items:center;gap:14px;background:#fff;border-radius:5px;padding:6px 16px 6px 12px}
+  .hdr-logo{height:44px;width:auto;object-fit:contain;display:block}
+  .hdr-wordmark{height:16px;width:auto;object-fit:contain;display:block}
+  .hdr-nav{display:flex;align-items:center;gap:26px}
+  .hdr-nav a{color:rgba(245,241,234,.86);text-decoration:none;font-size:14px;letter-spacing:.04em;white-space:nowrap}
+  .hdr-nav a:hover{color:var(--gold)}
+  @media(max-width:640px){
+    .hdr-wordmark{display:none}
+    .hdr-lockup{padding:4px 7px}
+    .hdr-logo{height:32px}
+    .hdr-nav{gap:12px}
+    .hdr-nav a{font-size:12px}
+  }
+
+  /* ---- 本文 ---- */
+  main{padding:150px 0 96px}
+  h1{
+    font-size:clamp(26px,4.2vw,40px);font-weight:900;line-height:1.5;
+    letter-spacing:.02em;text-align:center;margin-bottom:14px;color:#fff;
+  }
+  .lead{text-align:center;font-size:16px;color:var(--muted);margin-bottom:44px}
+
+  form{
+    max-width:520px;margin:0 auto;text-align:left;
+    background:var(--panel-2);border:2px solid rgba(245,241,234,.16);
+    padding:36px 26px 30px;
+  }
+  .field{margin-bottom:26px}
+  label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--gold-soft);margin-bottom:8px}
+  input,textarea{
+    width:100%;padding:15px 16px;border:1px solid rgba(245,241,234,.24);
+    background:var(--ink);color:var(--paper);
+    font-size:16px;font-family:inherit;
+  }
+  textarea{min-height:88px;resize:vertical;line-height:1.7}
+  input:focus,textarea:focus{outline:2px solid var(--red);outline-offset:2px}
+  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus{
+    -webkit-text-fill-color:var(--paper);
+    -webkit-box-shadow:0 0 0 1000px var(--ink) inset;
+    caret-color:var(--paper);
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:100%;background:var(--red);color:#fff;border:2px solid var(--red);
+    font-family:inherit;font-weight:700;font-size:18px;letter-spacing:.06em;
+    padding:20px;cursor:pointer;text-decoration:none;
+    clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);
+    transition:background .15s ease,border-color .15s ease;
+  }
+  .btn:hover{background:var(--red-deep);border-color:var(--red-deep)}
+  .note{max-width:520px;margin:22px auto 0;font-size:13px;line-height:2;color:var(--muted)}
+  .note a{color:var(--gold-soft)}
+  .back{display:block;text-align:center;margin-top:44px;color:var(--paper);font-size:14px;letter-spacing:.04em}
+  .back:hover{color:var(--gold)}
+
+  /* ---- フッター ---- */
+  footer{background:#08070A;color:rgba(245,241,234,.75);padding:56px 0;font-size:14px;text-align:center}
+  .footer-logo-plate{display:inline-block;background:#fff;padding:20px 26px;margin-bottom:26px;border-radius:5px}
+  .footer-logo{display:block;width:min(280px,60vw);height:auto}
+  .footer-links{display:flex;justify-content:center;gap:14px 30px;flex-wrap:wrap}
+  .footer-links a{color:rgba(245,241,234,.85);text-decoration:none}
+  .footer-links a:hover{color:var(--gold)}
+
+  @media(max-width:640px){main{padding:110px 0 72px}}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="wrap">
+    <a class="hdr-lockup" href="lp-boxing.html">
+      <img class="hdr-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+      <img class="hdr-wordmark" src="logo-lmp-wordmark.png" alt="">
+    </a>
+    <nav class="hdr-nav">
+      <a href="lp-boxing.html">ホーム</a>
+      <a href="kaisha-boxing.html">会社概要</a>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <h1>資料請求</h1>
+    <p class="lead">加盟の概要をまとめた資料をお送りします。</p>
+
+    <!--
+      送信先はメール（RC@n-realize.co.jp）。サーバー側の受け口が無いため、
+      入力内容から本文を組み立ててメーラーを開く方式（RPG版・喫茶店版と同じ）。
+      ※ フォーム送信サービスを使う場合は、この form の action と下の script を差し替えること。
+    -->
+    <form id="req" novalidate>
+      <div class="field">
+        <label for="company">会社名</label>
+        <input id="company" name="company" type="text" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="name">お名前</label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input id="tel" name="tel" type="tel" autocomplete="tel" required>
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="addr">送付先のご住所</label>
+        <textarea id="addr" name="addr" autocomplete="street-address"></textarea>
+      </div>
+      <button class="btn" type="submit">この内容で資料請求する</button>
+    </form>
+
+    <p class="note">
+      ボタンを押すと、入力内容が入った状態でメールソフトが開きます。<br>
+      内容をご確認のうえ、そのまま送信してください。<br>
+      メールソフトが開かない場合は、お手数ですが
+      <a href="mailto:RC@n-realize.co.jp">RC@n-realize.co.jp</a> まで直接ご連絡ください。
+    </p>
+
+    <a class="back" id="back-link" href="lp-boxing.html">← 前のページにもどる</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="footer-logo-plate" href="https://n-realize.co.jp/" target="_blank" rel="noopener">
+      <img class="footer-logo" src="logo-lmp.png" alt="ライフメイクパートナーズ">
+    </a>
+    <nav class="footer-links">
+      <a href="kaisha-boxing.html">会社概要</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // 入力内容からメール本文を組み立て、メーラーを開く
+  document.getElementById('req').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    var required = [['company', '会社名'], ['name', 'お名前'], ['tel', '電話番号'], ['email', 'メールアドレス']];
+    for (var i = 0; i < required.length; i++) {
+      if (!v(required[i][0])) {
+        alert(required[i][1] + 'をご入力ください。');
+        document.getElementById(required[i][0]).focus();
+        return;
+      }
+    }
+    var body = [
+      'ライフメイクパートナーズ 御中', '',
+      '資料請求をお願いいたします。', '',
+      '会社名：' + v('company'),
+      'お名前：' + v('name'),
+      '電話番号：' + v('tel'),
+      'メールアドレス：' + v('email'),
+      '送付先のご住所：' + v('addr'), ''
+    ].join('\r\n');
+    location.href = 'mailto:RC@n-realize.co.jp'
+      + '?subject=' + encodeURIComponent('資料請求')
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  // 直前のページが同じサイト内なら、そこへ戻す
+  document.getElementById('back-link').addEventListener('click', function (e) {
+    var sameSite = false;
+    try {
+      sameSite = !!document.referrer && new URL(document.referrer).origin === location.origin;
+    } catch (err) { sameSite = false; }
+    if (sameSite) {
+      e.preventDefault();
+      history.back();
+    }
+  });
+</script>
+
+</body>
+</html>
