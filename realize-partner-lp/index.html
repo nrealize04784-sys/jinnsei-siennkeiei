@@ -311,6 +311,33 @@ body{overflow-x:clip}
   .brand{font-size:.95rem}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* OSMA four-feature introduction */
+.osma-four{background:#f7f5ee;scroll-margin-top:92px}
+.osma-four-head{max-width:820px;margin-bottom:52px}
+.osma-four .section-title{font-size:clamp(2rem,3.3vw,3.35rem)}
+.osma-four .osma-lead{color:var(--muted);font-size:1.06rem;line-height:2}
+.osma-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.osma-feature{padding:34px 34px 32px;background:#fff;border:1px solid #ddd9cc;border-left:3px solid #b48a39;min-width:0}
+.osma-feature-top{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.osma-feature-num{font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif;color:#b48a39;font-size:2.5rem;line-height:1;flex:none}
+.osma-feature h3{margin:0;font-size:clamp(1.12rem,2vw,1.43rem);line-height:1.5;color:#0c4b3b}
+.osma-feature p{margin-bottom:0;color:#52665c;font-size:1rem;line-height:1.95}
+.osma-feature-foot{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-top:34px;border-top:1px solid #d7d5ca;padding-top:24px}
+.osma-feature-foot p{max-width:700px;color:var(--muted);font-size:.88rem;margin:0}
+.osma-feature-foot .btn{flex:none}
+@media(max-width:760px){
+ .osma-four{scroll-margin-top:74px}
+ .osma-four-head{margin-bottom:30px}
+ .osma-four .section-title{font-size:1.85rem}
+ .osma-feature-grid{grid-template-columns:1fr;gap:16px}
+ .osma-feature{padding:23px 20px}
+ .osma-feature-top{gap:13px;margin-bottom:12px}
+ .osma-feature-num{font-size:2rem}
+ .osma-feature p{font-size:.96rem}
+ .osma-feature-foot{align-items:stretch;flex-direction:column;gap:16px}
+}
+
 </style>
 <meta content="REALIZE PARTNER｜10社限定募集・無料体験" property="og:title"/></head>
 <body>
@@ -320,6 +347,7 @@ body{overflow-x:clip}
 <nav class="nav" id="siteNav">
 <a href="#overview">事業の全体像</a>
 <a href="#contents">コンテンツ</a>
+<a href="#osma-features">OSMAの4機能</a>
 <a href="#economics">収益・募集条件</a>
 </nav>
 <div class="head-cta"><a class="btn btn-primary" href="#contact">無料体験を申し込む</a></div>
@@ -479,6 +507,81 @@ body{overflow-x:clip}
 </div>
 </div>
 </section>
+
+<section class="section osma-four" id="osma-features" aria-labelledby="osma-features-title">
+<div class="content-shell">
+<div class="osma-four-head">
+<div class="label-en">OSMA / FOUR FUNCTIONS</div>
+<h2 class="section-title title-mincho" id="osma-features-title">
+<span class="line">OSMAの4つの機能で、</span>
+<span class="line">社員の成長と、</span>
+<span class="line">企業の前進を支える。</span>
+</h2>
+<p class="osma-lead">
+<span class="line">REALIZE PARTNERが提案する、</span>
+<span class="line">REALIZE OSの経営支援機能「OSMA」。</span>
+<span class="line">社員の日々の成長から、</span>
+<span class="line">営業・採用・組織づくりまで、</span>
+<span class="line">4つの視点で支援します。</span>
+</p>
+</div>
+<div class="osma-feature-grid">
+<article class="osma-feature">
+<div class="osma-feature-top">
+<span class="osma-feature-num" aria-hidden="true">01</span>
+<h3>AI成長日報</h3>
+</div>
+<p>
+<span class="line">日々の振り返りを通じて、</span>
+<span class="line">気づきや次の行動を言葉に。</span>
+<span class="line">社員が自ら考え、</span>
+<span class="line">成長する習慣づくりを支援します。</span>
+</p>
+</article>
+<article class="osma-feature">
+<div class="osma-feature-top">
+<span class="osma-feature-num" aria-hidden="true">02</span>
+<h3>AI営業進捗</h3>
+</div>
+<p>
+<span class="line">企業への接触から商談、</span>
+<span class="line">契約後のフォローまで。</span>
+<span class="line">営業の状況を見える化し、</span>
+<span class="line">次に取るべき行動を整理します。</span>
+</p>
+</article>
+<article class="osma-feature">
+<div class="osma-feature-top">
+<span class="osma-feature-num" aria-hidden="true">03</span>
+<h3>AI採用サポート</h3>
+</div>
+<p>
+<span class="line">採用活動の情報や進捗を整理し、</span>
+<span class="line">対応状況を共有しやすく。</span>
+<span class="line">採用の振り返りと、</span>
+<span class="line">より良い組織づくりを支援します。</span>
+</p>
+</article>
+<article class="osma-feature">
+<div class="osma-feature-top">
+<span class="osma-feature-num" aria-hidden="true">04</span>
+<h3>AI幸せ共有</h3>
+</div>
+<p>
+<span class="line">日常の感謝や、</span>
+<span class="line">前向きな出来事を共有。</span>
+<span class="line">社員同士の理解を深め、</span>
+<span class="line">温かな職場づくりにつなげます。</span>
+</p>
+</article>
+</div>
+<div class="osma-feature-foot">
+<p>※ 体験版で利用できる画面・機能は、提供状況により異なる場合があります。</p>
+<a class="btn btn-primary" href="#contact">OSMAを無料体験する</a>
+</div>
+</div>
+</section>
+
 <section class="section" id="economics">
 <div class="content-shell">
 <div class="label-en">REVENUE &amp; REQUIREMENTS</div>
