@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="#0c4b3b" name="theme-color"/>
-<meta content="REALIZE PARTNER 10社限定募集。企業と社員、その先の人生まで支える事業パートナー募集ページ。" name="description"/>
+<meta content="REALIZE PARTNER募集。会社の成長を社員と家族の未来につなげる事業。初回報酬と月額報酬、加盟条件をわかりやすくご案内。" name="description"/>
 <title>REALIZE PARTNER｜無料体験申込</title>
 <style>
 :root{
@@ -338,6 +338,63 @@ body{overflow-x:clip}
  .osma-feature-foot{align-items:stretch;flex-direction:column;gap:16px}
 }
 
+/* 2026-10-27 partner deck: offer, role, and revenue styling */
+.rp-role{background:#f6f4ee;scroll-margin-top:88px}
+.rp-role .rp-role-intro{max-width:920px;margin-bottom:38px}
+.rp-role .rp-role-lead{color:#55685f;font-size:1.05rem}
+.rp-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid #d6d5cb;border-bottom:1px solid #d6d5cb}
+.rp-step{padding:24px 20px 28px;border-right:1px solid #d6d5cb;min-width:0}
+.rp-step:first-child{padding-left:4px}.rp-step:last-child{border-right:none}
+.rp-step-number{font-family:'Yu Mincho','Hiragino Mincho ProN',serif;font-size:2.8rem;color:#b48a39;display:block;line-height:1.2;margin-bottom:15px}
+.rp-step h3{font-size:1.06rem;margin-bottom:9px;color:#0c4b3b;line-height:1.55}
+.rp-step p{font-size:.93rem;color:#586960;line-height:1.88;margin:0}
+.rp-promise{border-left:3px solid #b48a39;padding:16px 22px;margin-top:28px;font-weight:700;color:#0c4b3b;background:#fff}
+.rp-economics{scroll-margin-top:88px}
+.rp-section-pre{max-width:840px;margin-bottom:38px}
+.rp-section-pre .sub{font-size:1.05rem;color:#59695f;line-height:1.85}
+.rp-econ-subtitle{font-size:1.5rem;color:#0c4b3b;line-height:1.5;margin:0 0 22px;font-weight:800}
+.rp-econ-group{margin-bottom:60px}
+.rp-earn-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.rp-earn-card{background:#102c3b;color:#fff;padding:38px 36px 34px;border-top:5px solid #c9a25b;min-width:0}
+.rp-earn-card:nth-child(2){background:#0c4b3b}
+.rp-earn-card .rp-earn-type{font-size:.96rem;color:#e5e9e6;margin:0 0 9px}
+.rp-earn-value{font-size:clamp(2.7rem,5vw,4.5rem);font-weight:800;letter-spacing:-.035em;line-height:1.3;margin:0 0 6px;font-variant-numeric:tabular-nums}
+.rp-earn-card:nth-child(2) .rp-earn-value{color:#e2bd72}
+.rp-earn-card .rp-earn-sub{color:#d7dfda;font-size:.91rem;margin:0;line-height:1.8}
+.rp-price-note{font-size:.84rem;color:#607168;margin:13px 0 0;line-height:1.8}
+.rp-membership{display:grid;grid-template-columns:1.08fr .92fr;gap:20px;align-items:start}
+.rp-price-panel{border:1px solid #dddcd1;background:#fff;padding:29px 30px 27px;min-width:0}
+.rp-price-panel .rp-panel-title{font-size:1.16rem;color:#0c4b3b;font-weight:800;margin:0 0 19px}
+.rp-fee-rows{display:grid;gap:0}
+.rp-fee-row{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;border-top:1px solid #e4e4db;padding:15px 0}
+.rp-fee-row strong{font-size:1.5rem;white-space:nowrap;color:#102c3b;font-variant-numeric:tabular-nums}
+.rp-fee-row .rp-phase{font-weight:700}
+.rp-fee-row .rp-phase small{display:block;color:#738277;font-size:.78rem;font-weight:500;margin-top:3px}
+.rp-month-panel{background:#102c3b;color:#fff;padding:29px 30px 30px;min-width:0}
+.rp-month-panel h3{font-size:1.16rem;color:#fff;margin:0 0 14px}
+.rp-formula{font-size:1.3rem;line-height:1.5;font-weight:800;margin:0 0 22px}
+.rp-formula em{font-style:normal;color:#dfbd70}
+.rp-month-panel .rp-example{padding:17px 18px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);font-size:.92rem}
+.rp-month-panel .rp-example strong{font-size:1.6rem;color:#f2d68f;display:block;line-height:1.5}
+.rp-month-panel .rp-small{font-size:.82rem;color:#e2e7e1;margin:13px 0 0}
+.rp-sim-table-wrap{overflow-x:auto;border:1px solid #d6d7ce;background:#fff}
+.rp-sim-table{width:100%;border-collapse:collapse;min-width:580px}
+.rp-sim-table thead{background:#102c3b;color:#fff}
+.rp-sim-table th,.rp-sim-table td{padding:17px 18px;text-align:center;border-bottom:1px solid #e1e3db;font-size:.95rem;white-space:normal}
+.rp-sim-table thead th{color:#fff}
+.rp-sim-table tbody tr:last-child td{border-bottom:none}
+.rp-sim-table tbody td:first-child{font-weight:800;text-align:left;color:#0c4b3b}
+.rp-sim-table td.rp-numbers{font-size:1.17rem;font-weight:800;font-variant-numeric:tabular-nums}
+.rp-sim-preamble{font-size:1rem;color:#59695f;margin-bottom:18px}
+.rp-calculation{background:#efe9dc;border-left:3px solid #b48a39;margin-top:23px;padding:22px 24px}
+.rp-calculation h4{font-size:1.07rem;color:#0c4b3b;margin-bottom:10px}
+.rp-calc-line{font-size:1.07rem;font-weight:750;line-height:1.8;margin-bottom:8px}
+.rp-calculation p{font-size:.86rem;line-height:1.85;color:#526358;margin-bottom:0}
+.rp-checklist{margin-top:22px;border-top:1px solid #d6d7ce;padding-top:19px;font-size:.87rem;color:#5a6b61;line-height:1.9}
+@media(max-width:960px){.rp-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.rp-step:nth-child(2){border-right:0}.rp-step:nth-child(-n+2){border-bottom:1px solid #d6d5cb}.rp-membership{grid-template-columns:1fr}}
+@media(max-width:760px){.rp-role,.rp-economics{scroll-margin-top:74px}.rp-steps{grid-template-columns:1fr}.rp-step{padding:22px 4px;border-right:0;border-bottom:1px solid #d6d5cb}.rp-step:nth-child(2){border-bottom:1px solid #d6d5cb}.rp-step:last-child{border-bottom:0}.rp-step-number{font-size:2.25rem;margin-bottom:8px}.rp-earn-cards{grid-template-columns:1fr}.rp-earn-card{padding:25px 23px}.rp-earn-value{font-size:3rem}.rp-price-panel,.rp-month-panel{padding:23px 19px}.rp-econ-subtitle{font-size:1.33rem}.rp-fee-row strong{font-size:1.28rem}.rp-calculation{padding:18px}.rp-calc-line{font-size:.96rem}}
+
+
 </style>
 <meta content="REALIZE PARTNER｜10社限定募集・無料体験" property="og:title"/></head>
 <body>
@@ -347,6 +404,7 @@ body{overflow-x:clip}
 <nav class="nav" id="siteNav">
 <a href="#overview">事業の全体像</a>
 <a href="#contents">コンテンツ</a>
+<a href="#rp-process">RPの役割</a>
 <a href="#osma-features">OSMAの4機能</a>
 <a href="#economics">収益・募集条件</a>
 </nav>
@@ -360,7 +418,7 @@ body{overflow-x:clip}
 <div class="hero-copy">
 <div class="eyebrow">人生支援経営の、新しい事業へ。</div>
 <div class="hero-kicker">REALIZE PARTNER</div>
-<h1 class="title-mincho"><span class="line">採用の先に、</span><span class="line">人生まで、</span><span class="line">支える力を。</span></h1>
+<h1 class="title-mincho"><span class="line">支えるほど、</span><span class="line">積み上がる事業へ。</span></h1>
 <p class="subcopy">
 <span class="line">企業と社員、</span>
 <span class="line">その先の家族や人生まで。</span>
@@ -508,6 +566,23 @@ body{overflow-x:clip}
 </div>
 </section>
 
+<section class="section rp-role" id="rp-process" aria-labelledby="rp-process-title">
+<div class="content-shell">
+<div class="rp-role-intro">
+<div class="label-en">REALIZE PARTNER / SUPPORT FLOW</div>
+<h2 class="section-title title-mincho" id="rp-process-title"><span class="line">ひとつの困りごとから、</span><span class="line">仕事と人生の支援をつなぐ。</span></h2>
+<p class="rp-role-lead"><span class="line">REALIZE PARTNERが担うのは、</span><span class="line">商品を一度に説明することではなく、</span><span class="line">経営者の課題と、使える仕組みをつなぐ役割です。</span></p>
+</div>
+<div class="rp-steps">
+<article class="rp-step"><span class="rp-step-number">01</span><h3>課題を聞く</h3><p><span class="line">社長の想いと、</span><span class="line">変えたいことをひとつ聞く。</span></p></article>
+<article class="rp-step"><span class="rp-step-number">02</span><h3>一緒に体験</h3><p><span class="line">PRESIDENT JOURNEYと、</span><span class="line">OSMAの画面を実際に確かめる。</span></p></article>
+<article class="rp-step"><span class="rp-step-number">03</span><h3>適合を確認</h3><p><span class="line">提供範囲・利用人数・</span><span class="line">費用と運用方法を確認する。</span></p></article>
+<article class="rp-step"><span class="rp-step-number">04</span><h3>導入を設計</h3><p><span class="line">誰が、誰に、何を届けるか、</span><span class="line">最初の使い方を決める。</span></p></article>
+</div>
+<div class="rp-promise"><span class="line">仕事の成長も、人生の備えも。</span><span class="line">会社から、届けられる。</span></div>
+</div></section>
+
+
 <section class="section osma-four" id="osma-features" aria-labelledby="osma-features-title">
 <div class="content-shell">
 <div class="osma-four-head">
@@ -582,41 +657,55 @@ body{overflow-x:clip}
 </div>
 </section>
 
-<section class="section" id="economics">
+<section class="section rp-economics" id="economics">
 <div class="content-shell">
-<div class="label-en">REVENUE &amp; REQUIREMENTS</div>
-<h2 class="section-title title-mincho">
-<span class="line">REALIZE PARTNERで、</span>
-<span class="line">「支える価値」を、</span>
-<span class="line">継続する収益へ。</span>
-</h2>
-<div class="economics-grid">
-<div>
-<div class="box-panel">
-<h3 class="title-mincho" style="font-size:1.9rem; margin-bottom:18px;">REALIZE PARTNER 募集条件</h3>
-<p class="lead"><span class="line">REALIZE PARTNERの加盟条件と、</span><span class="line">成果報酬の仕組みをご案内します。</span></p>
-<div class="fee-list">
-<div class="fee-item"><strong>RP初期導入費：250万円（税別）</strong><span class="muted">※ 自社導入分を含む条件として案内</span></div>
-<div class="fee-item"><strong>RP月額固定費：10万円（税別）</strong><span class="muted">※ 継続支援・運用体制込みの前提</span></div>
-<div class="fee-item"><strong>初期成果報酬：40万円／社</strong><span class="muted">※ 企業導入時</span></div>
-<div class="fee-item"><strong>継続成果報酬：1.5万円／月・社</strong><span class="muted">※ 継続契約・入金確認等の条件あり</span></div>
-<div class="fee-item"><strong>募集枠：10社限定</strong><span class="muted">※ 研修2回完了後に営業開始</span></div>
+<div class="rp-section-pre">
+<div class="label-en">PARTNER BUSINESS / RETURNS & COSTS</div>
+<h2 class="section-title title-mincho"><span class="line">支えるほど、</span><span class="line">積み上がる事業へ。</span></h2>
+<p class="sub"><span class="line">初回報酬で立ち上げ、</span><span class="line">継続報酬で育てる。</span><span class="line">加盟に必要な費用と、受け取る報酬を、</span><span class="line">分けてわかりやすくご案内します。</span></p>
+</div>
+<div class="rp-econ-group" id="rp-rewards">
+<h3 class="rp-econ-subtitle">① REALIZE PARTNERが受け取る報酬</h3>
+<div class="rp-earn-cards">
+<div class="rp-earn-card"><p class="rp-earn-type">導入時の初回報酬</p><p class="rp-earn-value">40万円</p><p class="rp-earn-sub"><span class="line">1社導入するごとの、</span><span class="line">初回の成果報酬。</span></p></div>
+<div class="rp-earn-card"><p class="rp-earn-type">契約継続中の月額報酬</p><p class="rp-earn-value">1.5万円<span style="font-size:.38em;letter-spacing:0">／社</span></p><p class="rp-earn-sub"><span class="line">導入企業との契約が続く間、</span><span class="line">毎月積み上がる報酬。</span></p></div>
+</div>
+<p class="rp-price-note">※ 添付資料9ページの「導入先が30名未満」の例。報酬の発生・支払・終了条件は契約時に確認が必要です。受取報酬は利益ではありません。</p>
+</div>
+<div class="rp-econ-group" id="rp-fees">
+<h3 class="rp-econ-subtitle">② REALIZE PARTNERが負担する費用</h3>
+<div class="rp-membership">
+<div class="rp-price-panel">
+<h4 class="rp-panel-title">RP初期導入費（募集区分別）</h4>
+<div class="rp-fee-rows">
+<div class="rp-fee-row"><div class="rp-phase">一期<small>募集期の適用条件を確認</small></div><strong>250万円</strong></div>
+<div class="rp-fee-row"><div class="rp-phase">二期<small>募集期の適用条件を確認</small></div><strong>300万円</strong></div>
+<div class="rp-fee-row"><div class="rp-phase">通常<small>通常時の設定額</small></div><strong>350万円</strong></div>
+</div>
+<p class="rp-price-note">※ 現在の募集期・残枠はお問い合わせ時にご確認ください。</p>
+</div>
+<div class="rp-month-panel">
+<h3>RP月額利用料</h3>
+<p class="rp-formula"><span class="line">自社ROの人数別月額</span><em>＋ RP専用OSMA 5万円</em></p>
+<div class="rp-example"><span class="line">自社30名未満の場合</span><strong>5万円 ＋ 5万円 ＝ 月10万円</strong><span class="line">RO月額 ＋ RP専用OSMA</span></div>
+<p class="rp-small"><span class="line">自社の利用人数により、</span><span class="line">RO月額は変わります。</span></p>
 </div>
 </div>
+<p class="rp-price-note">※ 初期導入費・月額利用料の税区分、人数境界、利用条件は正式契約書で確認してください。上記は添付資料14ページの2026年10月22日付設定です。</p>
 </div>
-<div>
-<div class="sim-card">
-<h3>月額報酬シミュレーション</h3>
-<p class="small">企業10社が継続した場合</p>
-<div class="sim-line">
-<span class="pill">継続報酬 1.5万円 × 10社 = 15万円</span>
+<div class="rp-econ-group" id="rp-simulation">
+<h3 class="rp-econ-subtitle">③ 導入が積み上がるイメージ</h3>
+<p class="rp-sim-preamble"><span class="line">毎月一定数の企業を導入した場合の、</span><span class="line">12か月間の報酬試算です。</span></p>
+<div class="rp-sim-table-wrap"><table class="rp-sim-table"><thead><tr><th>毎月の新規導入数</th><th>12か月後の導入企業数</th><th>12か月目の月額報酬</th><th>初年度の報酬累計</th></tr></thead>
+<tbody><tr><td>1社／月</td><td>12社</td><td class="rp-numbers">18万円</td><td class="rp-numbers">597万円</td></tr>
+<tr><td>2社／月</td><td>24社</td><td class="rp-numbers">36万円</td><td class="rp-numbers">1,194万円</td></tr>
+<tr><td>3社／月</td><td>36社</td><td class="rp-numbers">54万円</td><td class="rp-numbers">1,791万円</td></tr></tbody></table></div>
+<p class="rp-price-note">※ すべての導入先が30名未満、毎月同じ社数を獲得、導入月から満額報酬、12か月間解約なしと仮定。初年度累計は初回報酬＋月額報酬であり、売上や利益を保証するものではありません。</p>
+<div class="rp-calculation"><h4>1社／月を導入した場合の初年度モデル</h4>
+<div class="rp-calc-line"><span class="line">報酬累計597万円 − 初期導入費250万円</span><span class="line">− 月額利用料120万円（10万円 × 12か月）</span><span class="line">＝ 参考差引227万円</span></div>
+<p>227万円は「利益」ではありません。営業人件費・広告費・交通費・税金等を差し引く前の概算です。募集一期・自社30名未満の場合を想定した例です。</p>
 </div>
-<div class="sim-line">
-<span class="pill">15万円</span><span class="arrow">−</span><span class="pill">月額固定費 10万円</span><span class="arrow">＝</span><span class="pill">5万円</span>
-</div>
-<div class="result">差引イメージ：月5万円</div>
-<p class="small" style="color:#e8efe9; margin-top:8px;">※ 初期成果報酬40万円／社は、別途積み上がります。</p>
-</div>
+<div class="rp-checklist"><strong>ご検討時に確認いただきたいこと：</strong> 募集区分と残枠／自社人数に応じたRO月額／提供機能・研修・担当体制／支払・成果報酬の条件</div>
 </div>
 </div>
 <div class="trial-intro" id="experience">
