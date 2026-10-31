@@ -808,11 +808,11 @@ REALIZE PARTNER 運営窓口
 <label class="privacy-check" for="agree">
 <input id="agree" name="agree" required="" type="checkbox">
 <span>体験URLのご案内メールの送付と、<wbr/>担当者からの電話連絡に同意します。
-<small>申込内容は、体験案内・申込通知・お電話のために使用します。送信には外部フォーム受付サービス（FormSubmit）を利用します。</small></span>
+<small>申込内容は、体験案内・申込通知・お電話のために使用します。送信には外部フォーム受付サービス（FormSubmit）を利用します。広告効果の測定にGoogle・MetaのCookie等を利用し、ページ閲覧と申込完了を記録します。氏名・メールアドレス・電話番号は広告の計測イベントに含めません。</small></span>
 </input></label>
 <button class="btn btn-form" id="trialSubmit" type="submit">無料体験を申し込む <span aria-hidden="true">↗</span></button>
 <div aria-live="polite" class="trial-status-message" hidden="" id="trialStatus" role="status"></div>
-<p class="form-footnote">※ 送信後、受付サービスの確認画面が開きます。自動返信メールが届かない場合は、迷惑メールフォルダもご確認ください。</p>
+<p class="form-footnote">※ 送信後、受付サービスで確認を完了すると、このページに受付完了が表示されます。自動返信メールが届かない場合は、迷惑メールフォルダもご確認ください。</p>
 </form></div></section>
 </main>
 <footer class="footer">
@@ -835,19 +835,6 @@ if(btn && nav){
   }));
 }
 </script>
-<script>
-// Browser validation remains enabled. FormSubmit native POST is needed for auto-response.
-const trialForm=document.getElementById('trialForm');
-const trialStatus=document.getElementById('trialStatus');
-if(trialForm && trialStatus){
-  trialForm.addEventListener('submit',(event)=>{
-    if(location.protocol==='file:'){
-      event.preventDefault();
-      trialStatus.hidden=false;
-      trialStatus.textContent='このファイルはローカルプレビューです。メール送信は行われていません。実際の申し込みは公開済みのLPから行ってください。';
-    }
-  });
-}
-</script>
+<script src="./tracking.js" defer></script>
 </body>
 </html>
